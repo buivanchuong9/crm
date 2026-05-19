@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls d:/Git/reborn/reborn-cloud/cloud-ver2/cloud-crm/vite.config.*)",
+      "Bash(yarn build:*)",
+      "Bash(rm -rf bundle)",
+      "Bash(NODE_OPTIONS=--max-old-space-size=8192 yarn build)",
+      "WebFetch(domain:docs.google.com)",
+      "mcp__claude_ai_Google_Drive__read_file_content",
+      "WebFetch(domain:doc-00-8s-docstext.googleusercontent.com)",
+      "Bash(grep -E \"src[\\\\\\\\/]services[\\\\\\\\/]CustomerService|src[\\\\\\\\/]pages[\\\\\\\\/]CustomerPerson[\\\\\\\\/]CustomerPersonList\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(grep -E \"playwright|\\\\.spec\\\\.ts$|auth\\\\.json\")",
+      "Bash(ls C:/Users/HP/AppData/Local/Temp/playwright* 2>&1; ls D:/tmp/playwright* 2>&1; ls D:/tmp 2>&1 | head -30)",
+      "Read(//c/Users/HP/AppData/Local/Temp/**)",
+      "Bash(node verify-cashloan-source-bug.mjs)",
+      "Bash(node repro-cashloan-source-ui.mjs)",
+      "Bash(node probe-multi-source.mjs)",
+      "Bash(node probe-forsign-detail.mjs)",
+      "Bash(node probe-tester-url.mjs)"
+    ]
+  }
+}

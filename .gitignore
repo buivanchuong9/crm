@@ -1,0 +1,17 @@
+# production
+bundle/
+
+# dependencies
+node_modules/
+dist/
+.vscode/
+.DS_Store
+# misc
+.env
+.env.prod
+.env.staging
+
+# package-lock
+package-lock.json
+yarn.lock
+yarn-error.log
