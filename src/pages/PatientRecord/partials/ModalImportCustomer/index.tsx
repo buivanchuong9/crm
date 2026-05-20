@@ -175,7 +175,7 @@ export default function ModalImportCustomer(props: IModalImportCustomerProps) {
               <div className="file__example">
                 <h4>
                   Tải về file mẫu:
-                  <a href="https://cdn.reborn.vn/2023/11/01/cf531fd5-b3e5-49e2-aa81-34f4f1434977-1698844548.xlsx">Excel file</a>
+                  <a href="https://cdn.mock.local/2023/11/01/cf531fd5-b3e5-49e2-aa81-34f4f1434977-1698844548.xlsx">Excel file</a>
                 </h4>
               </div>
             </div>

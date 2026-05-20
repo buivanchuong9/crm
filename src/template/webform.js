@@ -7,7 +7,7 @@
     var t = new XMLHttpRequest();
     var domain = window.location.hostname; // Lấy domain hiện tại
 
-    t.open("POST", "https://cloud.reborn.vn/adminapi/customer/update/webform", true);
+    t.open("POST", "https://cloud.DermaHealth.vn/adminapi/customer/update/webform", true);
 
     // Thiết lập các headers
     t.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -29,7 +29,7 @@
   //   var t = new XMLHttpRequest();
   //   var domain = window.location.hostname; // Lấy domain hiện tại
 
-  //   // t.open("POST", "https://cloud.reborn.vn/adminapi/customer/update/fromPartner", true);
+  //   // t.open("POST", "https://cloud.DermaHealth.vn/adminapi/customer/update/fromPartner", true);
   //   t.open("POST", "http://192.168.137.1:9100/adminapi/customer/update/fromPartner", true);
 
   //   // Thiết lập các headers
@@ -53,7 +53,7 @@
   //   var t = new XMLHttpRequest();
   //   var domain = window.location.hostname; // Lấy domain hiện tại
 
-  //   t.open("POST", "https://cloud.reborn.vn/adminapi/contact/update/webform", true);
+  //   t.open("POST", "https://cloud.DermaHealth.vn/adminapi/contact/update/webform", true);
 
   //   // Thiết lập các headers
   //   t.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -75,9 +75,9 @@
     const domain = window.location.hostname;
 
     try {
-      // const response = await fetch("https://cloud.reborn.vn/adminapi/customer/update/webform", {
+      // const response = await fetch("https://cloud.DermaHealth.vn/adminapi/customer/update/webform", {
       // const response = await fetch("http://192.168.200.33:9100/adminapi/contact/update/landingPage", {
-      const response = await fetch("https://cloud.reborn.vn/adminapi/contact/update/landingPage", {
+      const response = await fetch("https://cloud.DermaHealth.vn/adminapi/contact/update/landingPage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
@@ -105,7 +105,7 @@
     const domain = window.location.hostname;
 
     try {
-      const response = await fetch("https://cloud.reborn.vn/adminapi/contact/update/webform", {
+      const response = await fetch("https://cloud.DermaHealth.vn/adminapi/contact/update/webform", {
         // const response = await fetch("http://192.168.23.33:9100/adminapi/contact/update/webform", {
         method: "POST",
         headers: {

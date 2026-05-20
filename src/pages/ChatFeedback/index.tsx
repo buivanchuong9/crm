@@ -176,7 +176,7 @@ export default function ChatFeedback() {
       <div className="chat__feedback--header">
         <div className="header__left" ref={refContainerStatus} onClick={() => setIsChangeStatus(!isChangeStatus)}>
           <div className="title__feedback">
-            <span className="name">Góp ý cải tiến cho Reborn</span>
+            <span className="name">Góp ý cải tiến</span>
             <span className="status">
               {lstStatus.find((item) => item.value === activeStatus).label} <Icon name="ChevronDown" />
             </span>
@@ -287,7 +287,7 @@ export default function ChatFeedback() {
             </div>
             <div className="no__content--message">
               <h2>
-                Bạn có vấn đề cần góp ý cho <strong>Reborn</strong> hãy nhắn bên dưới nhé !
+                Bạn có vấn đề cần góp ý cho <strong>DermaHealth</strong> hãy nhắn bên dưới nhé !
               </h2>
             </div>
           </div>

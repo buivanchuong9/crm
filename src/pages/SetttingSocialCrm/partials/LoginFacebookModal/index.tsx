@@ -34,7 +34,7 @@ export default function LoginFacebookModal(props: LoginFanpageModalProps) {
   //Trường hợp facebook
   window.addEventListener("message", (event) => {
     // Data sent with postMessage is stored in event.data
-    if (event.origin === "https://sso.reborn.vn") {
+    if (event.origin === "https://sso.mock.local") {
       let accessToken = event.data?.accessToken;
 
       console.log("access token is: ", accessToken);
@@ -54,7 +54,7 @@ export default function LoginFacebookModal(props: LoginFanpageModalProps) {
             {/* Nhúng iframe vào đây và truyền tham số là login vào fb để callback có xử lý thêm */}
             <iframe
               id="iframe_callback"
-              src={`https://sso.reborn.vn/login_crm?sourceDomain=${getDomain(document.location.href)}&method=facebook`}
+              src={`https://sso.mock.local/login_crm?sourceDomain=${getDomain(document.location.href)}&method=facebook`}
               style={{ width: "100%", minHeight: "600px", border: "none" }}
             ></iframe>
           </div>

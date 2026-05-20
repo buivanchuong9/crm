@@ -15,7 +15,6 @@ import LogoImg from "assets/images/logo-sidebar.png";
 
 export default function Sidebar() {
   const location = useLocation();
-  const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const { isCollapsedSidebar, setIsCollapsedSidebar, dataBeauty } = useContext(UserContext) as ContextType;
   const { width, height } = useWindowDimensions();
 
@@ -46,35 +45,27 @@ export default function Sidebar() {
 
   return (
     <Fragment>
-      <div
-        className={`sidebar${isCollapsedSidebar ? " sidebar--collapsed" : ""}${isMouseOver && isCollapsedSidebar ? " sidebar--hover" : ""}`}
-        onMouseOver={() => setIsMouseOver(true)}
-        onMouseLeave={() => setIsMouseOver(false)}
-      >
+      <div className={`sidebar${isCollapsedSidebar ? " sidebar--collapsed" : ""}`}>
         <div className="sidebar-logo d-flex align-items-center justify-content-between">
           <Link to="/" className="logo">
             <img src={LogoImg} style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "4px" }} alt="Logo" />
           </Link>
-          {isMouseOver || !isCollapsedSidebar ? (
-            <Button
-              type="button"
-              color="transparent"
-              className="btn-collapsed-sidebar d-none d-xl-flex"
-              onlyIcon={true}
-              onClick={() => setIsCollapsedSidebar(!isCollapsedSidebar)}
-            >
-              {isCollapsedSidebar ? <Icon name="ChevronDoubleRight" /> : <Icon name="ChevronDoubleLeft" />}
-            </Button>
-          ) : null}
+          <Button
+            type="button"
+            color="transparent"
+            className="btn-collapsed-sidebar d-none d-xl-flex"
+            onlyIcon={true}
+            onClick={() => setIsCollapsedSidebar(!isCollapsedSidebar)}
+          >
+            {isCollapsedSidebar ? <Icon name="ChevronDoubleRight" /> : <Icon name="ChevronDoubleLeft" />}
+          </Button>
         </div>
         <CustomScrollbar className="sidebar-menu d-flex flex-column" width="100%" height={height - 57} autoHide={true}>
           <Navigation menuItemList={menu} />
         </CustomScrollbar>
 
         {/* <div
-          className={`sidebar__option${isCollapsedSidebar ? " sidebar__option--show" : ""}${
-            isMouseOver && isCollapsedSidebar ? " sidebar__option--show" : ""
-          } d-flex align-items-center justify-content-between`}
+          className={`sidebar__option${isCollapsedSidebar ? " sidebar__option--show" : ""} d-flex align-items-center justify-content-between`}
         >
           <Link to="" className="item">
             CRM

@@ -111,7 +111,7 @@ export default function ShowModalPayment(props: IShowModalPaymentProps) {
                       <span style={{ fontSize: "16px", fontWeight: "bold", color: "#004B91" }}>MB Bank</span>
                     </div>
                     <div className="user-receive">
-                      <strong>Chủ tài khoản:</strong> REBORN JSC.
+                      <strong>Chủ tài khoản:</strong> DermaHealth.
                     </div>
                     <div className="user-receive">
                       <strong>Số tài khoản:</strong> 3536899899.

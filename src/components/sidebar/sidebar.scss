@@ -49,6 +49,9 @@
         box-shadow: none;
         background: none;
       }
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 0.18s ease, transform 0.18s ease;
     }
   }
 
@@ -91,14 +94,13 @@
       width: 7.2rem;
       .sidebar {
         &-logo {
-          // padding: 1.2rem 1.4rem;
-          padding: 0.7rem 2rem 0.7rem 2.2rem;
+          padding: 0.7rem 0.8rem;
+          gap: 0.4rem;
           .logo {
-            // width: 4.3rem;
+            width: 2.4rem;
             transition: width 0.5s ease-in-out;
             svg {
               flex-shrink: 0;
-              // padding-left: 1rem;
             }
           }
         }
@@ -119,44 +121,20 @@
           }
         }
       }
-      &:not(.sidebar--hover) {
-        .sidebar {
-          &-menu {
+      .sidebar {
+        &-menu {
+          ul {
             ul {
-              ul {
-                max-height: 0 !important;
-              }
+              max-height: 0 !important;
             }
           }
         }
       }
     }
-    &--hover {
-      width: 28rem;
-      .sidebar {
-        &-logo {
-          // padding: 1.2rem 2rem 1.2rem 2.8rem;
-          padding: 0.7rem 2rem 0.7rem 1.5rem;
-          .logo {
-            // width: 17.2rem;
-          }
-        }
-        &-menu {
-          ul {
-            .level-1 {
-              & > a {
-                padding-left: 1.6rem;
-                span {
-                  opacity: 1;
-                }
-                .arrow-menu {
-                  opacity: 1;
-                }
-              }
-            }
-          }
-        }
-      }
+
+    .btn-collapsed-sidebar {
+      opacity: 1;
+      transform: translateX(0);
     }
     &__option--show {
       display: none !important;

@@ -24,11 +24,11 @@ export default function ImportModal(props: IImportModalProps) {
 
   const [exampleFile] = useState<string>(() => {
     if (type === "customer") {
-      return "https://cdn.reborn.vn/2023/11/19/eb5c60dc-3036-4582-837c-347ee02b6a43-1700396923.xlsx";
+      return "https://cdn.mock.local/2023/11/19/eb5c60dc-3036-4582-837c-347ee02b6a43-1700396923.xlsx";
     } else if (type === "contract") {
-      return "https://cdn.reborn.vn/2023/11/19/d566c184-e664-4b98-abb6-7f6d3e8e83a3-1700397288.xlsx";
+      return "https://cdn.mock.local/2023/11/19/d566c184-e664-4b98-abb6-7f6d3e8e83a3-1700397288.xlsx";
     } else {
-      return "https://cdn.reborn.vn/2023/11/19/a10c5cd1-7b70-47d6-9c8f-f197dc6f88b9-1700397202.xlsx";
+      return "https://cdn.mock.local/2023/11/19/a10c5cd1-7b70-47d6-9c8f-f197dc6f88b9-1700397202.xlsx";
     }
   });
 

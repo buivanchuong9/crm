@@ -647,7 +647,7 @@ export default function CashBookTable({ dataProjectReport }) {
         code="cashbook"
         onShow={showModalExport}
         onHide={() => setShowModalExport(false)}
-        exampleFile="https://cdn.reborn.vn/2023/04/18/a283bb81-666a-4b44-afd3-c22460dd760a-1681809889.xlsx"
+        exampleFile="https://cdn.mock.local/2023/04/18/a283bb81-666a-4b44-afd3-c22460dd760a-1681809889.xlsx"
         chooseTemplate={(template) => {
           params.template = template;
           exportCashBookReport(params);

@@ -82,7 +82,7 @@ export default function SocialCrm() {
           </li>
           <li className="menu__social">
             <a
-              href="https://oauth.zaloapp.com/v4/oa/permission?app_id=2865768106189456835&redirect_uri=https%3A%2F%2Fbetacloud.reborn.vn%2Fadminapi%2Fzalo%2Fredirect"
+              href="https://oauth.zaloapp.com/v4/oa/permission?app_id=2865768106189456835&redirect_uri=https%3A%2F%2Fbetacloud.mock.local%2Fadminapi%2Fzalo%2Fredirect"
               target={"_blank"}
             >
               Đăng nhập qua Zalo

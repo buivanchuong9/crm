@@ -426,7 +426,7 @@ export default function ChatBot() {
                             </div>
                             <div className="no__content--message">
                                 <h2>
-                                    Bạn có vấn đề cần hỏi <strong>Reborn</strong> hãy nhắn bên dưới nhé !
+                                    Bạn có vấn đề cần hỏi <strong>DermaHealth</strong> hãy nhắn bên dưới nhé !
                                 </h2>
                             </div>
                         </div>

@@ -211,7 +211,7 @@ export default function ListChat(props: IListChatProps) {
           <div className="image-chatbot">
             <img src={NoImageChatBot} alt="" />
           </div>
-          <h2>Chào mừng bạn đến với tính năng chat qua fanpage của Reborn !</h2>
+          <h2>Chào mừng bạn đến với tính năng chat qua fanpage của DermaHealth !</h2>
         </div>
       )}
     </Fragment>

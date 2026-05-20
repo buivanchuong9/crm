@@ -53,7 +53,7 @@ export default function ImportModal(props: IImportModalProps) {
   // const [exampleFile] = useState<string>(() => {
   //   //TODO: đoạn này sau không cần thì xóa đi
   //   if (type !== "customer" && type !== "partner") {
-  //     return "https://cdn.reborn.vn/2024/01/02/885a4307-b65d-4b8f-91c6-6e5bce8f6195-1704205902.xlsx";
+  //     return "https://cdn.mock.local/2024/01/02/885a4307-b65d-4b8f-91c6-6e5bce8f6195-1704205902.xlsx";
   //   }
   // });
 

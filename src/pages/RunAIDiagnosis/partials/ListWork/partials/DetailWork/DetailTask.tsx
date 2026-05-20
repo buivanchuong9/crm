@@ -759,8 +759,8 @@ const DetailTask = (props: any) => {
     const folder = zip.folder("files");
 
     // const listFile = [
-    //   'https://bpmapi.reborn.vn/adminapi/file/41e94e5d-f35a-4e9b-8aad-4c7c240a664a-1745636960.docx',
-    //   'https://bpmapi.reborn.vn/adminapi/file/537f2d8e-f012-4619-ade3-24059e2bf7fe-1745636956.docx'
+    //   'https://bpmapi.mock.local/adminapi/file/41e94e5d-f35a-4e9b-8aad-4c7c240a664a-1745636960.docx',
+    //   'https://bpmapi.mock.local/adminapi/file/537f2d8e-f012-4619-ade3-24059e2bf7fe-1745636956.docx'
     // ]
 
     // Tải từng file và thêm vào file nén

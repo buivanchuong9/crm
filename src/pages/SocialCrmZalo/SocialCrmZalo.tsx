@@ -68,7 +68,7 @@ export default function SocialCrmZalo() {
         //                 },
         //                 {
         //                     id: '123',
-        //                     name: 'Reborn Zalo',
+        //                     name: 'DermaHealth Zalo',
         //                     oaId: '123OA'
         //                 }
         //             ]

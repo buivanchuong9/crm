@@ -268,7 +268,7 @@ export async function ExportExcel(userOptions, product_store?: any, name?: strin
   }
   const workbook = new ExcelJS.Workbook();
 
-  workbook.creator = "Reborn";
+  workbook.creator = "DermaHealth";
 
   workbook.created = new Date();
   workbook.calcProperties.fullCalcOnLoad = true;

@@ -749,7 +749,7 @@ export default function AddCustomerCompanyModal(props: AddCustomerModalProps) {
           type: "text",
           fill: true,
           // required: sourceDomain == "localhost" ? true : false,
-          required: sourceDomain == "tnteco.reborn.vn" ? true : false,
+          required: sourceDomain == "tnteco.mock.local" ? true : false,
         },
         // {
         //   label: "Người đại diện pháp luật",

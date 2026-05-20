@@ -3,9 +3,9 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 var firebaseConfig = {
   apiKey: "AIzaSyD9OUVhQ_QR-McUSan_hG1WI_7BLE1D7Ts",
-  authDomain: "reborn-crm.firebaseapp.com",
-  projectId: "reborn-crm",
-  storageBucket: "reborn-crm.appspot.com",
+  authDomain: "mock-crm.firebaseapp.com",
+  projectId: "mock-crm",
+  storageBucket: "mock-crm.appspot.com",
   messagingSenderId: "175031404504",
   appId: "1:175031404504:web:868bf345f199a3281dd4ad",
   measurementId: "G-4T77GWKS8C"

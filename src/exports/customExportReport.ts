@@ -253,7 +253,7 @@ export async function CustomExportReport(userOptions, name?: string, setFilebase
   }
   const workbook = new ExcelJS.Workbook();
 
-  workbook.creator = "Reborn";
+  workbook.creator = "DermaHealth";
 
   workbook.created = new Date();
   workbook.calcProperties.fullCalcOnLoad = true;

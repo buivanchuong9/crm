@@ -147,7 +147,7 @@ export default function ListChat(props: IListChatZaloProps) {
     }
     if (id && (socket === null || socket.readyState == WebSocket.CLOSED)) {
       console.log("luong vao");
-      setSocket(new WebSocket(`wss://cloud.reborn.vn/chat/ws/zalo/${id}`));
+      setSocket(new WebSocket(`wss://cloud.mock.local/chat/ws/zalo/${id}`));
     }
   };
 
@@ -290,7 +290,7 @@ export default function ListChat(props: IListChatZaloProps) {
           <div className="image-chatbot">
             <img src={NoImageChatBot} alt="" />
           </div>
-          <h2>Chào mừng bạn đến với tính năng chat qua Zalo của Reborn !</h2>
+          <h2>Chào mừng bạn đến với tính năng chat qua Zalo của DermaHealth !</h2>
         </div>
       )}
     </Fragment>

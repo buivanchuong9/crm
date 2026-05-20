@@ -27,13 +27,13 @@ export default function ViewNewPassword(props: IViewNewPasswordProps) {
     // if (optionChangePassword == '0') {
     //   setValuePassword(data?.phone)
     // } else {
-    //   setValuePassword("Reborn@32123")
+    //   setValuePassword("DermaHealth@32123")
     // }
     if (optionChangePassword == "0") {
       if (data?.phone) {
         setValuePassword(data?.phone);
       } else {
-        setValuePassword("Reborn@32123");
+        setValuePassword("DermaHealth@32123");
       }
     }
   }, [data, optionChangePassword, onShow]);

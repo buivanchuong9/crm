@@ -33,10 +33,10 @@ export default function RegisterFetch() {
         config.headers["Content-Type"] = "application/json";
       }
       config.headers["Hostname"] = location.hostname || "";
-      // config.headers["Hostname"] = "rebornjsc.reborn.vn";
-      // config.headers["Hostname"] = "kcn.reborn.vn";
-      // config.headers["Hostname"] = "boutique2shop.reborn.vn";
-      // https://ducnang24.reborn.vn/crm/setting_account
+      // config.headers["Hostname"] = "mockjsc.mock.local";
+      // config.headers["Hostname"] = "kcn.mock.local";
+      // config.headers["Hostname"] = "boutique2shop.mock.local";
+      // https://ducnang24.mock.local/crm/setting_account
 
       // if (urlsFormData.filter((urlForm) => url.indexOf(urlForm) !== -1).length > 0) {
       //   delete config.headers["Content-Type"];

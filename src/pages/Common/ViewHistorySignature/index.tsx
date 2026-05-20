@@ -43,7 +43,7 @@ export default function ViewHistorySignature(props: IViewHistorySignatureProps) 
 
   const docs = [
     {
-      uri: "https://cdn.reborn.vn/2024/04/02/9dd1393f-d4de-4445-9744-6cf227c825a1-1712046032.xlsx",
+      uri: "https://cdn.mock.local/2024/04/02/9dd1393f-d4de-4445-9744-6cf227c825a1-1712046032.xlsx",
       fileType: "xlsx",
     },
   ];

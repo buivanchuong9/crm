@@ -873,7 +873,7 @@ export default function PatientRecordList() {
 
   const [pagination, setPagination] = useState<PaginationProps>({
     ...DataPaginationDefault,
-    name: sourceDomain === "hasedu.reborn.vn" ? "Học sinh" : "Khách hàng",
+    name: sourceDomain === "hasedu.mock.local" ? "Học sinh" : "Khách hàng",
     isChooseSizeLimit: true,
     setPage: (page) => {
       setParams((prevParams) => ({ ...prevParams, page: page }));
@@ -886,7 +886,7 @@ export default function PatientRecordList() {
 
   const [paginationPartner, setPaginationPartner] = useState<PaginationProps>({
     ...DataPaginationDefault,
-    name: sourceDomain === "hasedu.reborn.vn" ? "Học sinh" : "Khách hàng",
+    name: sourceDomain === "hasedu.mock.local" ? "Học sinh" : "Khách hàng",
     isChooseSizeLimit: true,
     setPage: (page) => {
       setParamsCustomerPartner((prevParams) => ({ ...prevParams, page: page }));
@@ -1445,7 +1445,7 @@ export default function PatientRecordList() {
     },
     { headerName: "Id", field: "id", hide: true },
     { headerName: "dataItem", field: "data", hide: true },
-    { headerName: sourceDomain === "hasedu.reborn.vn" ? "Tên học sinh" : "Tên khách hàng", field: "name", cellRenderer: LinkToAction },
+    { headerName: sourceDomain === "hasedu.mock.local" ? "Tên học sinh" : "Tên khách hàng", field: "name", cellRenderer: LinkToAction },
     {
       headerName: "Điện thoại",
       headerComponent: StyleHeaderTable,
@@ -1557,7 +1557,7 @@ export default function PatientRecordList() {
     },
     { headerName: "Id", field: "id", hide: true },
     { headerName: "dataItem", field: "data", hide: true },
-    { headerName: sourceDomain === "hasedu.reborn.vn" ? "Tên học sinh" : "Tên khách hàng", field: "name", cellRenderer: LinkToAction },
+    { headerName: sourceDomain === "hasedu.mock.local" ? "Tên học sinh" : "Tên khách hàng", field: "name", cellRenderer: LinkToAction },
     {
       headerName: "Điện thoại",
       width: 135,
@@ -2923,7 +2923,7 @@ export default function PatientRecordList() {
 
   const lstTitleHeader = [
     {
-      name: sourceDomain === "hasedu.reborn.vn" ? "Danh sách học sinh" : "Danh sách khách hàng",
+      name: sourceDomain === "hasedu.mock.local" ? "Danh sách học sinh" : "Danh sách khách hàng",
       type: 1,
     },
     {
@@ -2939,7 +2939,7 @@ export default function PatientRecordList() {
     //   type: 4,
     // },
     {
-      name: sourceDomain === "hasedu.reborn.vn" ? "Phân tích nguồn học sinh" : "Phân tích nguồn khách hàng",
+      name: sourceDomain === "hasedu.mock.local" ? "Phân tích nguồn học sinh" : "Phân tích nguồn khách hàng",
       type: 2,
     },
   ];
@@ -2986,7 +2986,7 @@ export default function PatientRecordList() {
       <div
         className={`page-content page-customer${isNoItem ? " bg-white" : ""}${showPageSendSMS ? " d-none" : ""}${showPageSendEmail ? " d-none" : ""}`}
       >
-        <TitleAction title={sourceDomain === "hasedu.reborn.vn" ? "Học sinh" : "Khách hàng"} titleActions={titleActions} />
+        <TitleAction title={sourceDomain === "hasedu.mock.local" ? "Học sinh" : "Khách hàng"} titleActions={titleActions} />
         <div className="card-box d-flex flex-column">
           <div className="quick__search">
             <ul className="quick__search--left">

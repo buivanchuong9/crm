@@ -142,7 +142,7 @@ export default function ContactList() {
   const [listSaveSearch] = useState<ISaveSearch[]>([
     {
       key: "all",
-      name: sourceDomain === "hasedu.reborn.vn" ? "Danh sách phụ huynh" : "Danh sách người liên hệ",
+      name: sourceDomain === "hasedu.mock.local" ? "Danh sách phụ huynh" : "Danh sách người liên hệ",
       is_active: true,
     },
   ]);
@@ -1374,7 +1374,7 @@ export default function ContactList() {
 
   return (
     <div className={`page-content page-contact${isNoItem ? " bg-white" : ""}`}>
-      <TitleAction title={sourceDomain === "hasedu.reborn.vn" ? "Danh sách phụ huynh" : "Danh sách người liên hệ"} titleActions={titleActions} />
+      <TitleAction title={sourceDomain === "hasedu.mock.local" ? "Danh sách phụ huynh" : "Danh sách người liên hệ"} titleActions={titleActions} />
 
       <div className={`card-box d-flex flex-column`}>
         {listPipeline && listPipeline.length > 0 ? (

@@ -7,6 +7,39 @@ export const commonHandlers = [
   http.all(internalApiRegex, ({ request }) => {
     const { method, pathname } = getRequestInfo(request);
 
+    if (pathname.includes("/adminapi/user/profile")) {
+      return HttpResponse.json(
+        buildDetailResponse({
+          user: {
+            id: 1,
+            name: "Mock User",
+            phone: "0369062042",
+            avatar: "",
+            gender: 0,
+            role: "mock",
+          },
+        })
+      );
+    }
+
+    if (pathname.includes("/adminapi/employee/init")) {
+      return HttpResponse.json(buildDetailResponse(1));
+    }
+
+    if (pathname.includes("/adminapi/permission/resource")) {
+      return HttpResponse.json(buildDetailResponse([]));
+    }
+
+    if (pathname.includes("/api/beautysalon/get_bydomain")) {
+      return HttpResponse.json(
+        buildDetailResponse({
+          isBeauty: true,
+          logo: "",
+          logoTransparent: "",
+        })
+      );
+    }
+
     const isList =
       pathname.includes("/list") ||
       pathname.includes("/filter") ||

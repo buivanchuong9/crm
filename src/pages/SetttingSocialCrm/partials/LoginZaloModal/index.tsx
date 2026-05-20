@@ -36,7 +36,7 @@ export default function LoginZaloModal(props: LoginZaloModalProps) {
   //Trường hợp zalo
   window.addEventListener("message", (event) => {
     // Data sent with postMessage is stored in event.data
-    if (event.origin === "https://sso.reborn.vn") {
+    if (event.origin === "https://sso.mock.local") {
       console.log("show event zalo =>", event);
 
       const code = event.data?.code;
@@ -62,7 +62,7 @@ export default function LoginZaloModal(props: LoginZaloModalProps) {
             {/* Nhúng iframe vào đây và truyền tham số là login vào để callback có xử lý thêm */}
             <iframe
               id="iframe_callback"
-              src={`https://sso.reborn.vn/login_crm?sourceDomain=${getDomain(document.location.href)}&method=zalo`}
+              src={`https://sso.mock.local/login_crm?sourceDomain=${getDomain(document.location.href)}&method=zalo`}
               style={{ width: "100%", minHeight: "600px", border: "none" }}
             ></iframe>
           </div>

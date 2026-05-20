@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "./contexts/userContext";
 // Start css của thư viện
-import "swiper/css";
 import "styles/main.scss";
 import "tippy.js/dist/tippy.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -24,15 +23,12 @@ import { ToastContainer } from "react-toastify";
 import LayoutPage from "pages/layout";
 import moment from "moment";
 // import { fetchToken, onMessageListener } from "configs/firebaseConfig";
-import { getAppSSOLink, showToast, getPermissions } from "utils/common";
+import { showToast, getPermissions } from "utils/common";
 import EmployeeService from "services/EmployeeService";
 import { getDomain } from "reborn-util";
 import { getRootDomain } from "utils/common";
 import ChooseRole from "pages/Common/ChooseRole";
 import LinkSurvey from "pages/LinkSurvey";
-import { PublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider } from "@azure/msal-react";
-import { msalConfig } from "./configs/authConfig";
 import UploadDocument from "pages/AIImageAnalysis/UploadDocument/UploadDocument";
 import CollectTicket from "pages/Ticket/partials/CollectTicket";
 import CollectWarranty from "pages/Warranty/partials/CollectWarranty";
@@ -44,14 +40,13 @@ import { useSTWebRTC } from "webrtc/useSTWebRTC";
 import WebRtcCallIncomeModal from "pages/DoctorQnA/partials/WebRtcCallIncomeModal";
 import ringtone from "assets/sounds/call_in_sound.wav";
 
-const msalInstance = new PublicClientApplication(msalConfig);
 
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const returnUrl = new URLSearchParams(location.search).get("returnUrl");
   const [cookies, setCookie, removeCookie] = useCookies();
-  const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
+  const isMockEnabled = true;
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [user, setUser] = useState<IUser>(null);
   const [isRunRefresh, setIsRunRefresh] = useState<boolean>(false);
@@ -157,22 +152,17 @@ export default function App() {
       return;
     }
 
-    const sourceDomain = getDomain(decodeURIComponent(document.location.href));
-    const rootDomain = getRootDomain(sourceDomain);
-    const dateExpires = moment().add(7, "days").toDate();
-    const mockUser = {
-      id: 1,
-      name: "Mock User",
-      phone: "0369062042",
-      avatar: "",
-      gender: 0,
-      role: "mock",
-    };
+    if (!cookies.token || !cookies.user) {
+      setIsLogin(false);
+      if (location.pathname !== "/login") {
+        const returnUrl = routes.find((r) => r.path === location.pathname) ? `?returnUrl=${location.pathname}${location.search}` : "";
+        navigate(`/login${returnUrl}`);
+      }
+      return;
+    }
 
-    setCookie("token", "mock-token", { path: "/", domain: rootDomain, expires: dateExpires });
-    setCookie("user", JSON.stringify(mockUser), { path: "/", domain: rootDomain, expires: dateExpires });
-    localStorage.setItem("permissions", "{}");
-    localStorage.setItem("user.root", "1");
+    setUser({ ...cookies.user, token: cookies.token });
+    setIsLogin(true);
     setDataExpired({
       numDay: 9999,
       name: "Gói Vĩnh Viễn (Mock)",
@@ -183,13 +173,14 @@ export default function App() {
       name: "Bùi Văn Chương",
       branchId: 1,
       branchName: "Chi nhánh Hà Nội - Trụ sở chính",
-      lstOrgApp: [{
-        endDate: "2030-12-31T23:59:59Z",
-        packageName: "Gói Vĩnh Viễn"
-      }]
+      lstOrgApp: [
+        {
+          endDate: "2030-12-31T23:59:59Z",
+          packageName: "Gói Vĩnh Viễn",
+        },
+      ],
     });
-    setIsLogin(true);
-  }, [isMockEnabled, setCookie]);
+  }, [isMockEnabled, cookies.token, cookies.user, location.pathname, location.search]);
 
   // useEffect(() => {
   //   fetchToken().then((token) => {
@@ -278,24 +269,7 @@ export default function App() {
     }
 
     showToast("Bạn không phải là nhân viên của tổ chức này!", "warning");
-    setTimeout(() => {
-      let sourceDomain = getDomain(decodeURIComponent(document.location.href));
 
-      //Chuyển hướng về trang đăng nhập sso (để chọn tài khoản khác)
-      let rootDomain = getRootDomain(sourceDomain);
-      let env = process.env.APP_ENV;
-      let crmLink;
-      if (rootDomain == "localhost") {
-        crmLink = `${process.env.APP_CRM_LINK}/crm/login`;
-      } else {
-        crmLink = `https://${sourceDomain}/crm/login`;
-      }
-
-      let appSSOLink = getAppSSOLink(rootDomain);
-      document.location.href = `${appSSOLink}?redirect_uri=${crmLink}&domain=${rootDomain}&env=${env}`;
-    }, 5000);
-
-    //Trả về thất bại
     setIsChecking(false);
     return false;
   };
@@ -327,14 +301,17 @@ export default function App() {
    * Chỉ request khi tồn tại cookies.token
    */
   useEffect(() => {
+    if (isMockEnabled || !messaging) {
+      return;
+    }
+
     requestPermission(cookies.token);
 
     onMessage(messaging, (payload) => {
       console.log("Thông báo nhận được:", payload);
-      // alert(`🔥 Notification: ${payload.notification?.title}`);
       getCountUnread();
     });
-  }, []);
+  }, [isMockEnabled, cookies.token]);
 
   // Khởi tạo tổng đài
   const [showModalCallIncome, setShowModalCallIncome] = useState<boolean>(false);
@@ -467,43 +444,41 @@ export default function App() {
         transfer: transfer,
       }}
     >
-      <MsalProvider instance={msalInstance}>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-        <Routes>
-          {isLogin && <Route path="*" element={<LayoutPage />} />}
-          {location.pathname == "/grid_form" && <Route path="/grid_form" element={<GridFormNew />} />}
-          {/* {location.pathname == "/grid_form_new" && <Route path="/grid_form_new" element={<GridAg />} />} */}
-          {location.pathname == "/link_survey" && <Route path="/link_survey" element={<LinkSurvey />} />}
-          {location.pathname == "/upload_document" && <Route path="/upload_document" element={<UploadDocument />} />}
-          {location.pathname == "/collect_ticket" && <Route path="/collect_ticket" element={<CollectTicket />} />}
-          {location.pathname == "/collect_warranty" && <Route path="/collect_warranty" element={<CollectWarranty />} />}
-          <Route path="/login" element={<Login />} />
-        </Routes>
-        <ChooseRole onShow={chooseRoleInit} onHide={() => setChooseRoleInit(false)} lstRole={lstRole} />
-        <WebRtcCallIncomeModal
-          // onShow={true}
-          onShow={showModalCallIncome}
-          makeCall={makeCall}
-          hangup={hangup}
-          answer={answer}
-          transfer={transfer}
-          callState={callState}
-          // callState={"oncall"}
-          incomingNumber={incomingNumber}
-          onHide={() => setShowModalCallIncome(false)}
-        />
-      </MsalProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <Routes>
+        {isLogin && <Route path="*" element={<LayoutPage />} />}
+        {location.pathname == "/grid_form" && <Route path="/grid_form" element={<GridFormNew />} />}
+        {/* {location.pathname == "/grid_form_new" && <Route path="/grid_form_new" element={<GridAg />} />} */}
+        {location.pathname == "/link_survey" && <Route path="/link_survey" element={<LinkSurvey />} />}
+        {location.pathname == "/upload_document" && <Route path="/upload_document" element={<UploadDocument />} />}
+        {location.pathname == "/collect_ticket" && <Route path="/collect_ticket" element={<CollectTicket />} />}
+        {location.pathname == "/collect_warranty" && <Route path="/collect_warranty" element={<CollectWarranty />} />}
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      <ChooseRole onShow={chooseRoleInit} onHide={() => setChooseRoleInit(false)} lstRole={lstRole} />
+      <WebRtcCallIncomeModal
+        // onShow={true}
+        onShow={showModalCallIncome}
+        makeCall={makeCall}
+        hangup={hangup}
+        answer={answer}
+        transfer={transfer}
+        callState={callState}
+        // callState={"oncall"}
+        incomingNumber={incomingNumber}
+        onHide={() => setShowModalCallIncome(false)}
+      />
     </UserContext.Provider>
   );
 }
