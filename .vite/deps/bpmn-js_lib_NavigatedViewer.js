@@ -1,8 +1,6 @@
-import { n as Ids, t as Injector } from "./dist-B7vrgYhE.js";
-import { assign, bind, debounce, every, filter, find, findIndex, forEach, has, isArray as isArray$1, isDefined, isFunction, isNumber, isObject, isString, map, matchPattern, omit, pick, reduce, set, some } from "./min-dash.js";
-import { a as clear, c as domify$1, d as query, f as remove$1, i as classes, l as event, n as assign$1, o as closest, r as attr, s as delegate } from "./index.esm-E5VQvuu4.js";
-import { A as attr$1, C as getBBox, D as componentsToPath, E as isFrameElement$1, F as innerSVG, I as remove$2, L as transform$1, N as create$1, O as createLine, P as createMatrix, R as isMac, T as getType, V as toPoint, _ as install, a as getDi, b as selection_default, c as rotate, d as isConnection, f as isLabel, g as delta, h as getVisual, i as getBusinessObject, j as classes$1, k as append, l as transform, m as getChildren, n as getLabel, o as is$1, p as IdGenerator, r as isLabelExternal, s as isAny, t as getExternalLabelBounds, u as translate$1, v as set$1, x as outline_default$1, y as unset } from "./LabelUtil-ClWHG_I1.js";
-import { t as keyboard_default } from "./keyboard-73UrQn1H.js";
+import { A as attr, E as reduce, F as domify$1$1, I as event$1, M as clear, N as closest$1, S as isString$3, _ as isArray$5, b as isNumber, d as debounce, f as every, h as forEach$3, j as classes$1, k as assign$5, l as assign$4, m as find$1, p as filter$1, u as bind$3, v as isDefined$1, w as matchPattern, x as isObject$1, y as isFunction$1, z as remove$2 } from "./KeyboardUtil-ClONEu6g.js";
+import { $ as remove$3, A as IdGenerator, B as getBBox, C as some, D as translate$1, E as transform, F as set$1, G as createLine, H as getType, I as unset, J as classes$2, K as append, L as selection_default, M as getVisual, N as delta, O as isConnection, P as install, Q as innerSVG, R as outline_default$1, T as rotate, U as isFrameElement$1, W as componentsToPath, X as create$1, Z as createMatrix, _ as isObject$2, a as getDi, c as assign$6, d as forEach$4, et as transform$1, f as has$3, g as isNumber$1, i as getBusinessObject, it as toPoint, j as getChildren, k as isLabel, l as filter$2, n as getLabel, o as is$1, q as attr$1, r as isLabelExternal, s as isAny, t as getExternalLabelBounds, tt as isMac, u as find$2, x as omit, y as map$1 } from "./LabelUtil-8G_9Eg79.js";
+import { t as keyboard_default } from "./keyboard-B5MlLfV_.js";
 //#region node_modules/inherits-browser/dist/index.es.js
 function e(e, t) {
 	t && (e.super_ = t, e.prototype = Object.create(t.prototype, { constructor: {
@@ -398,7 +396,7 @@ function getBounds(bounds, overrides = {}) {
 * @returns {number}
 */
 function getWidth(bounds, overrides = {}) {
-	return has(overrides, "width") ? overrides.width : bounds.width;
+	return has$3(overrides, "width") ? overrides.width : bounds.width;
 }
 /**
 * Get height from element or overrides.
@@ -409,8 +407,504 @@ function getWidth(bounds, overrides = {}) {
 * @returns {number}
 */
 function getHeight(bounds, overrides = {}) {
-	return has(overrides, "height") ? overrides.height : bounds.height;
+	return has$3(overrides, "height") ? overrides.height : bounds.height;
 }
+//#endregion
+//#region node_modules/bpmn-js/node_modules/min-dom/dist/index.esm.js
+function _mergeNamespaces(n, m) {
+	m.forEach(function(e) {
+		e && typeof e !== "string" && !Array.isArray(e) && Object.keys(e).forEach(function(k) {
+			if (k !== "default" && !(k in n)) {
+				var d = Object.getOwnPropertyDescriptor(e, k);
+				Object.defineProperty(n, k, d.get ? d : {
+					enumerable: true,
+					get: function() {
+						return e[k];
+					}
+				});
+			}
+		});
+	});
+	return Object.freeze(n);
+}
+/**
+* Flatten array, one level deep.
+*
+* @template T
+*
+* @param {T[][] | T[] | null} [arr]
+*
+* @return {T[]}
+*/
+var nativeToString$3 = Object.prototype.toString;
+var nativeHasOwnProperty$2 = Object.prototype.hasOwnProperty;
+function isUndefined$3(obj) {
+	return obj === void 0;
+}
+function isArray$4(obj) {
+	return nativeToString$3.call(obj) === "[object Array]";
+}
+/**
+* Return true, if target owns a property with the given key.
+*
+* @param {Object} target
+* @param {String} key
+*
+* @return {Boolean}
+*/
+function has$2(target, key) {
+	return nativeHasOwnProperty$2.call(target, key);
+}
+/**
+* Iterate over collection; returning something
+* (non-undefined) will stop iteration.
+*
+* @template T
+* @param {Collection<T>} collection
+* @param { ((item: T, idx: number) => (boolean|void)) | ((item: T, key: string) => (boolean|void)) } iterator
+*
+* @return {T} return result that stopped the iteration
+*/
+function forEach$2(collection, iterator) {
+	let val, result;
+	if (isUndefined$3(collection)) return;
+	const convertKey = isArray$4(collection) ? toNum$2 : identity$2;
+	for (let key in collection) if (has$2(collection, key)) {
+		val = collection[key];
+		result = iterator(val, convertKey(key));
+		if (result === false) return val;
+	}
+}
+function identity$2(arg) {
+	return arg;
+}
+function toNum$2(arg) {
+	return Number(arg);
+}
+/**
+* Assigns style attributes in a style-src compliant way.
+*
+* @param {Element} element
+* @param {...Object} styleSources
+*
+* @return {Element} the element
+*/
+function assign$3(element, ...styleSources) {
+	const target = element.style;
+	forEach$2(styleSources, function(style) {
+		if (!style) return;
+		forEach$2(style, function(value, key) {
+			target[key] = value;
+		});
+	});
+	return element;
+}
+/**
+* Taken from https://github.com/component/classes
+*
+* Without the component bits.
+*/
+/**
+* toString reference.
+*/
+var toString = Object.prototype.toString;
+/**
+* Wrap `el` in a `ClassList`.
+*
+* @param {Element} el
+* @return {ClassList}
+* @api public
+*/
+function classes(el) {
+	return new ClassList(el);
+}
+/**
+* Initialize a new ClassList for `el`.
+*
+* @param {Element} el
+* @api private
+*/
+function ClassList(el) {
+	if (!el || !el.nodeType) throw new Error("A DOM element reference is required");
+	this.el = el;
+	this.list = el.classList;
+}
+/**
+* Add class `name` if not already present.
+*
+* @param {String} name
+* @return {ClassList}
+* @api public
+*/
+ClassList.prototype.add = function(name) {
+	this.list.add(name);
+	return this;
+};
+/**
+* Remove class `name` when present, or
+* pass a regular expression to remove
+* any which match.
+*
+* @param {String|RegExp} name
+* @return {ClassList}
+* @api public
+*/
+ClassList.prototype.remove = function(name) {
+	if ("[object RegExp]" == toString.call(name)) return this.removeMatching(name);
+	this.list.remove(name);
+	return this;
+};
+/**
+* Remove all classes matching `re`.
+*
+* @param {RegExp} re
+* @return {ClassList}
+* @api private
+*/
+ClassList.prototype.removeMatching = function(re) {
+	const arr = this.array();
+	for (let i = 0; i < arr.length; i++) if (re.test(arr[i])) this.remove(arr[i]);
+	return this;
+};
+/**
+* Toggle class `name`, can force state via `force`.
+*
+* For browsers that support classList, but do not support `force` yet,
+* the mistake will be detected and corrected.
+*
+* @param {String} name
+* @param {Boolean} force
+* @return {ClassList}
+* @api public
+*/
+ClassList.prototype.toggle = function(name, force) {
+	if ("undefined" !== typeof force) {
+		if (force !== this.list.toggle(name, force)) this.list.toggle(name);
+	} else this.list.toggle(name);
+	return this;
+};
+/**
+* Return an array of classes.
+*
+* @return {Array}
+* @api public
+*/
+ClassList.prototype.array = function() {
+	return Array.from(this.list);
+};
+/**
+* Check if class `name` is present.
+*
+* @param {String} name
+* @return {ClassList}
+* @api public
+*/
+ClassList.prototype.has = ClassList.prototype.contains = function(name) {
+	return this.list.contains(name);
+};
+/**
+* Closest
+*
+* @param {Element} el
+* @param {string} selector
+* @param {boolean} checkYourSelf (optional)
+*/
+function closest(element, selector, checkYourSelf) {
+	var actualElement = checkYourSelf ? element : element.parentNode;
+	return actualElement && typeof actualElement.closest === "function" && actualElement.closest(selector) || null;
+}
+var componentEvent = {};
+var bind$1, unbind$1, prefix;
+function detect() {
+	bind$1 = window.addEventListener ? "addEventListener" : "attachEvent";
+	unbind$1 = window.removeEventListener ? "removeEventListener" : "detachEvent";
+	prefix = bind$1 !== "addEventListener" ? "on" : "";
+}
+var event = /* @__PURE__ */ _mergeNamespaces({
+	__proto__: null,
+	bind: componentEvent.bind = function(el, type, fn, capture) {
+		if (!bind$1) detect();
+		el[bind$1](prefix + type, fn, capture || false);
+		return fn;
+	},
+	unbind: componentEvent.unbind = function(el, type, fn, capture) {
+		if (!unbind$1) detect();
+		el[unbind$1](prefix + type, fn, capture || false);
+		return fn;
+	},
+	"default": componentEvent
+}, [componentEvent]);
+/**
+* Module dependencies.
+*/
+/**
+* Delegate event `type` to `selector`
+* and invoke `fn(e)`. A callback function
+* is returned which may be passed to `.unbind()`.
+*
+* @param {Element} el
+* @param {String} selector
+* @param {String} type
+* @param {Function} fn
+* @param {Boolean} capture
+* @return {Function}
+* @api public
+*/
+var forceCaptureEvents = ["focus", "blur"];
+function bind$2(el, selector, type, fn, capture) {
+	if (forceCaptureEvents.indexOf(type) !== -1) capture = true;
+	return event.bind(el, type, function(e) {
+		e.delegateTarget = closest(e.target || e.srcElement, selector, true);
+		if (e.delegateTarget) fn.call(el, e);
+	}, capture);
+}
+/**
+* Unbind event `type`'s callback `fn`.
+*
+* @param {Element} el
+* @param {String} type
+* @param {Function} fn
+* @param {Boolean} capture
+* @api public
+*/
+function unbind(el, type, fn, capture) {
+	if (forceCaptureEvents.indexOf(type) !== -1) capture = true;
+	return event.unbind(el, type, fn, capture);
+}
+var delegate = {
+	bind: bind$2,
+	unbind
+};
+/**
+* Expose `parse`.
+*/
+var domify = parse;
+/**
+* Tests for browser support.
+*/
+var innerHTMLBug = false;
+var bugTestDiv;
+if (typeof document !== "undefined") {
+	bugTestDiv = document.createElement("div");
+	bugTestDiv.innerHTML = "  <link/><table></table><a href=\"/a\">a</a><input type=\"checkbox\"/>";
+	innerHTMLBug = !bugTestDiv.getElementsByTagName("link").length;
+	bugTestDiv = void 0;
+}
+/**
+* Wrap map from jquery.
+*/
+var map = {
+	legend: [
+		1,
+		"<fieldset>",
+		"</fieldset>"
+	],
+	tr: [
+		2,
+		"<table><tbody>",
+		"</tbody></table>"
+	],
+	col: [
+		2,
+		"<table><tbody></tbody><colgroup>",
+		"</colgroup></table>"
+	],
+	_default: innerHTMLBug ? [
+		1,
+		"X<div>",
+		"</div>"
+	] : [
+		0,
+		"",
+		""
+	]
+};
+map.td = map.th = [
+	3,
+	"<table><tbody><tr>",
+	"</tr></tbody></table>"
+];
+map.option = map.optgroup = [
+	1,
+	"<select multiple=\"multiple\">",
+	"</select>"
+];
+map.thead = map.tbody = map.colgroup = map.caption = map.tfoot = [
+	1,
+	"<table>",
+	"</table>"
+];
+map.polyline = map.ellipse = map.polygon = map.circle = map.text = map.line = map.path = map.rect = map.g = [
+	1,
+	"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">",
+	"</svg>"
+];
+/**
+* Parse `html` and return a DOM Node instance, which could be a TextNode,
+* HTML DOM Node of some kind (<div> for example), or a DocumentFragment
+* instance, depending on the contents of the `html` string.
+*
+* @param {String} html - HTML string to "domify"
+* @param {Document} doc - The `document` instance to create the Node for
+* @return {DOMNode} the TextNode, DOM Node, or DocumentFragment instance
+* @api private
+*/
+function parse(html, doc) {
+	if ("string" != typeof html) throw new TypeError("String expected");
+	if (!doc) doc = document;
+	var m = /<([\w:]+)/.exec(html);
+	if (!m) return doc.createTextNode(html);
+	html = html.replace(/^\s+|\s+$/g, "");
+	var tag = m[1];
+	if (tag == "body") {
+		var el = doc.createElement("html");
+		el.innerHTML = html;
+		return el.removeChild(el.lastChild);
+	}
+	var wrap = Object.prototype.hasOwnProperty.call(map, tag) ? map[tag] : map._default;
+	var depth = wrap[0];
+	var prefix = wrap[1];
+	var suffix = wrap[2];
+	var el = doc.createElement("div");
+	el.innerHTML = prefix + html + suffix;
+	while (depth--) el = el.lastChild;
+	if (el.firstChild == el.lastChild) return el.removeChild(el.firstChild);
+	var fragment = doc.createDocumentFragment();
+	while (el.firstChild) fragment.appendChild(el.removeChild(el.firstChild));
+	return fragment;
+}
+var domify$1 = domify;
+function query(selector, el) {
+	el = el || document;
+	return el.querySelector(selector);
+}
+function remove$1(el) {
+	el.parentNode && el.parentNode.removeChild(el);
+}
+//#endregion
+//#region node_modules/bpmn-js/node_modules/ids/dist/index.esm.js
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+var hat_1 = createCommonjsModule(function(module) {
+	var hat = module.exports = function(bits, base) {
+		if (!base) base = 16;
+		if (bits === void 0) bits = 128;
+		if (bits <= 0) return "0";
+		var digits = Math.log(Math.pow(2, bits)) / Math.log(base);
+		for (var i = 2; digits === Infinity; i *= 2) digits = Math.log(Math.pow(2, bits / i)) / Math.log(base) * i;
+		var rem = digits - Math.floor(digits);
+		var res = "";
+		for (var i = 0; i < Math.floor(digits); i++) {
+			var x = Math.floor(Math.random() * base).toString(base);
+			res = x + res;
+		}
+		if (rem) {
+			var x = Math.floor(Math.random() * Math.pow(base, rem)).toString(base);
+			res = x + res;
+		}
+		var parsed = parseInt(res, base);
+		if (parsed !== Infinity && parsed >= Math.pow(2, bits)) return hat(bits, base);
+		else return res;
+	};
+	hat.rack = function(bits, base, expandBy) {
+		var fn = function(data) {
+			var iters = 0;
+			do {
+				if (iters++ > 10) if (expandBy) bits += expandBy;
+				else throw new Error("too many ID collisions, use more bits");
+				var id = hat(bits, base);
+			} while (Object.hasOwnProperty.call(hats, id));
+			hats[id] = data;
+			return id;
+		};
+		var hats = fn.hats = {};
+		fn.get = function(id) {
+			return fn.hats[id];
+		};
+		fn.set = function(id, value) {
+			fn.hats[id] = value;
+			return fn;
+		};
+		fn.bits = bits || 128;
+		fn.base = base || 16;
+		return fn;
+	};
+});
+/**
+* Create a new id generator / cache instance.
+*
+* You may optionally provide a seed that is used internally.
+*
+* @param {Seed} seed
+*/
+function Ids(seed) {
+	if (!(this instanceof Ids)) return new Ids(seed);
+	seed = seed || [
+		128,
+		36,
+		1
+	];
+	this._seed = seed.length ? hat_1.rack(seed[0], seed[1], seed[2]) : seed;
+}
+/**
+* Generate a next id.
+*
+* @param {Object} [element] element to bind the id to
+*
+* @return {String} id
+*/
+Ids.prototype.next = function(element) {
+	return this._seed(element || true);
+};
+/**
+* Generate a next id with a given prefix.
+*
+* @param {Object} [element] element to bind the id to
+*
+* @return {String} id
+*/
+Ids.prototype.nextPrefixed = function(prefix, element) {
+	var id;
+	do
+		id = prefix + this.next(true);
+	while (this.assigned(id));
+	this.claim(id, element);
+	return id;
+};
+/**
+* Manually claim an existing id.
+*
+* @param {String} id
+* @param {String} [element] element the id is claimed by
+*/
+Ids.prototype.claim = function(id, element) {
+	this._seed.set(id, element || true);
+};
+/**
+* Returns true if the given id has already been assigned.
+*
+* @param  {String} id
+* @return {Boolean}
+*/
+Ids.prototype.assigned = function(id) {
+	return this._seed.get(id) || false;
+};
+/**
+* Unclaim an id.
+*
+* @param  {String} id the id to unclaim
+*/
+Ids.prototype.unclaim = function(id) {
+	delete this._seed.hats[id];
+};
+/**
+* Clear all claimed ids.
+*/
+Ids.prototype.clear = function() {
+	var hats = this._seed.hats, id;
+	for (id in hats) this.unclaim(id);
+};
 //#endregion
 //#region node_modules/bpmn-js/lib/draw/BpmnRenderer.js
 var markerIds = new Ids();
@@ -610,7 +1104,7 @@ function BpmnRenderer(config, eventBus, styles, pathMap, canvas, textRenderer, p
 		});
 	}
 	function drawCircle(parentGfx, width, height, offset, attrs = {}) {
-		if (isObject(offset)) {
+		if (isObject$2(offset)) {
 			attrs = offset;
 			offset = 0;
 		}
@@ -626,7 +1120,7 @@ function BpmnRenderer(config, eventBus, styles, pathMap, canvas, textRenderer, p
 		return circle;
 	}
 	function drawRect(parentGfx, width, height, r, offset, attrs) {
-		if (isObject(offset)) {
+		if (isObject$2(offset)) {
 			attrs = offset;
 			offset = 0;
 		}
@@ -709,7 +1203,7 @@ function BpmnRenderer(config, eventBus, styles, pathMap, canvas, textRenderer, p
 		return path;
 	}
 	function drawMarker(type, parentGfx, path, attrs) {
-		return drawPath(parentGfx, path, assign({ "data-marker": type }, attrs));
+		return drawPath(parentGfx, path, assign$6({ "data-marker": type }, attrs));
 	}
 	function renderer(type) {
 		return handlers[type];
@@ -1092,7 +1586,7 @@ function BpmnRenderer(config, eventBus, styles, pathMap, canvas, textRenderer, p
 			loop: 0,
 			adhoc: 10
 		};
-		forEach(taskMarkers, function(marker) {
+		forEach$4(taskMarkers, function(marker) {
 			renderTaskMarker(marker, parentGfx, element, attrs);
 		});
 		if (semantic.get("isForCompensation")) renderTaskMarker("CompensationMarker", parentGfx, element, attrs);
@@ -1105,9 +1599,9 @@ function BpmnRenderer(config, eventBus, styles, pathMap, canvas, textRenderer, p
 		}
 	}
 	function renderLabel(parentGfx, label, attrs = {}) {
-		attrs = assign({ size: { width: 100 } }, attrs);
+		attrs = assign$6({ size: { width: 100 } }, attrs);
 		var text = textRenderer.createText(label || "", attrs);
-		classes$1(text).add("djs-label");
+		classes$2(text).add("djs-label");
 		append(parentGfx, text);
 		return text;
 	}
@@ -1136,7 +1630,7 @@ function BpmnRenderer(config, eventBus, styles, pathMap, canvas, textRenderer, p
 		return renderLabel(parentGfx, getLabel(element), {
 			box,
 			fitBox: true,
-			style: assign({}, textRenderer.getExternalStyle(), { fill: getLabelColor(element, defaultLabelColor, defaultStrokeColor, attrs.stroke) })
+			style: assign$6({}, textRenderer.getExternalStyle(), { fill: getLabelColor(element, defaultLabelColor, defaultStrokeColor, attrs.stroke) })
 		});
 	}
 	function renderLaneLabel(parentGfx, text, element, attrs = {}) {
@@ -1997,7 +2491,7 @@ function parseAlign(align) {
 * @return {Padding}
 */
 function parsePadding(padding) {
-	if (isObject(padding)) return assign({
+	if (isObject$1(padding)) return assign$4({
 		top: 0,
 		left: 0,
 		right: 0,
@@ -2120,7 +2614,7 @@ function getHelperSvg() {
 	if (!helperSvg) {
 		helperSvg = create$1("svg");
 		attr$1(helperSvg, { id: "helper-svg" });
-		assign$1(helperSvg, {
+		assign$5(helperSvg, {
 			visibility: "hidden",
 			position: "fixed",
 			width: 0,
@@ -2136,7 +2630,7 @@ function getHelperSvg() {
 * @param {TextConfig} [config]
 */
 function Text(config) {
-	this._config = assign({}, {
+	this._config = assign$4({}, {
 		size: DEFAULT_LABEL_SIZE,
 		padding: DEFAULT_BOX_PADDING,
 		style: {},
@@ -2177,7 +2671,7 @@ Text.prototype.getDimensions = function(text, options) {
 * } }
 */
 Text.prototype.layoutText = function(text, options) {
-	var box = assign({}, this._config.size, options.box), style = assign({}, this._config.style, options.style), align = parseAlign(options.align || this._config.align), padding = parsePadding(options.padding !== void 0 ? options.padding : this._config.padding), fitBox = options.fitBox || false;
+	var box = assign$4({}, this._config.size, options.box), style = assign$4({}, this._config.style, options.style), align = parseAlign(options.align || this._config.align), padding = parsePadding(options.padding !== void 0 ? options.padding : this._config.padding), fitBox = options.fitBox || false;
 	var lineHeight = getLineHeight(style);
 	var lines = text.split(/\u00AD?\r?\n/), layouted = [];
 	var maxWidth = box.width - padding.left - padding.right;
@@ -2201,7 +2695,7 @@ Text.prototype.layoutText = function(text, options) {
 	y -= (lineHeight || layouted[0].height) / 4;
 	var textElement = create$1("text");
 	attr$1(textElement, style);
-	forEach(layouted, function(line) {
+	forEach$3(layouted, function(line) {
 		var x;
 		y += lineHeight || line.height;
 		switch (align.horizontal) {
@@ -2221,7 +2715,7 @@ Text.prototype.layoutText = function(text, options) {
 		tspan.textContent = line.text;
 		append(textElement, tspan);
 	});
-	remove$2(helperText);
+	remove$3(helperText);
 	return {
 		dimensions: {
 			width: maxLineWidth,
@@ -2261,13 +2755,13 @@ var MIN_TEXT_ANNOTATION_HEIGHT = 30;
 * @param {TextRendererConfig} [config]
 */
 function TextRenderer(config) {
-	var defaultStyle = assign({
+	var defaultStyle = assign$6({
 		fontFamily: "Arial, sans-serif",
 		fontSize: DEFAULT_FONT_SIZE,
 		fontWeight: "normal",
 		lineHeight: LINE_HEIGHT_RATIO
 	}, config && config.defaultStyle || {});
-	var externalStyle = assign({}, defaultStyle, { fontSize: parseInt(defaultStyle.fontSize, 10) - 1 }, config && config.externalStyle || {});
+	var externalStyle = assign$6({}, defaultStyle, { fontSize: parseInt(defaultStyle.fontSize, 10) - 1 }, config && config.externalStyle || {});
 	var textUtil = new Text({ style: defaultStyle });
 	/**
 	* Get the new bounds of an externally rendered,
@@ -2978,7 +3472,7 @@ function elementToString(e) {
 * @return {Object}
 */
 function elementData(semantic, di, attrs) {
-	return assign({
+	return assign$6({
 		id: semantic.id,
 		type: semantic.$type,
 		businessObject: semantic,
@@ -3286,7 +3780,7 @@ function Overlays(config, eventBus, canvas, elementRegistry) {
 	/**
 	* @type {OverlaysConfigDefault}
 	*/
-	this._overlayDefaults = assign({
+	this._overlayDefaults = assign$4({
 		show: null,
 		scale: true
 	}, config && config.defaults);
@@ -3335,13 +3829,13 @@ Overlays.$inject = [
 * @return {Overlay|Overlay[]} The overlay(s).
 */
 Overlays.prototype.get = function(search) {
-	if (isString(search)) search = { id: search };
-	if (isString(search.element)) search.element = this._elementRegistry.get(search.element);
+	if (isString$3(search)) search = { id: search };
+	if (isString$3(search.element)) search.element = this._elementRegistry.get(search.element);
 	if (search.element) {
 		var container = this._getOverlayContainer(search.element, true);
-		if (container) return search.type ? filter(container.overlays, matchPattern({ type: search.type })) : container.overlays.slice();
+		if (container) return search.type ? filter$1(container.overlays, matchPattern({ type: search.type })) : container.overlays.slice();
 		else return [];
-	} else if (search.type) return filter(this._overlays, matchPattern({ type: search.type }));
+	} else if (search.type) return filter$1(this._overlays, matchPattern({ type: search.type }));
 	else return search.id ? this._overlays[search.id] : null;
 };
 /**
@@ -3354,7 +3848,7 @@ Overlays.prototype.get = function(search) {
 * @return {string} The overlay's ID that can be used to get or remove it.
 */
 Overlays.prototype.add = function(element, type, overlay) {
-	if (isObject(type)) {
+	if (isObject$1(type)) {
 		overlay = type;
 		type = null;
 	}
@@ -3363,7 +3857,7 @@ Overlays.prototype.add = function(element, type, overlay) {
 	if (!overlay.html) throw new Error("must specifiy overlay html");
 	if (!element) throw new Error("invalid element specified");
 	var id = this._ids.next();
-	overlay = assign({}, this._overlayDefaults, overlay, {
+	overlay = assign$4({}, this._overlayDefaults, overlay, {
 		id,
 		type,
 		element,
@@ -3381,13 +3875,13 @@ Overlays.prototype.add = function(element, type, overlay) {
 */
 Overlays.prototype.remove = function(filter) {
 	var overlays = this.get(filter) || [];
-	if (!isArray$1(overlays)) overlays = [overlays];
+	if (!isArray$5(overlays)) overlays = [overlays];
 	var self = this;
-	forEach(overlays, function(overlay) {
+	forEach$3(overlays, function(overlay) {
 		var container = self._getOverlayContainer(overlay.element, true);
 		if (overlay) {
-			remove$1(overlay.html);
-			remove$1(overlay.htmlContainer);
+			remove$2(overlay.html);
+			remove$2(overlay.htmlContainer);
 			delete overlay.htmlContainer;
 			delete overlay.element;
 			delete self._overlays[overlay.id];
@@ -3456,8 +3950,8 @@ Overlays.prototype._updateOverlay = function(overlay) {
 	this._updateOverlayVisibilty(overlay, this._canvas.viewbox());
 };
 Overlays.prototype._createOverlayContainer = function(element) {
-	var html = domify$1("<div class=\"djs-overlays\" />");
-	assign$1(html, { position: "absolute" });
+	var html = domify$1$1("<div class=\"djs-overlays\" />");
+	assign$5(html, { position: "absolute" });
 	this._overlayRoot.appendChild(html);
 	var container = {
 		html,
@@ -3481,7 +3975,7 @@ Overlays.prototype._updateRoot = function(viewbox) {
 	setTransform(this._overlayRoot, matrix);
 };
 Overlays.prototype._getOverlayContainer = function(element, raw) {
-	var container = find(this._overlayContainers, function(c) {
+	var container = find$1(this._overlayContainers, function(c) {
 		return c.element === element;
 	});
 	if (!container && !raw) return this._createOverlayContainer(element);
@@ -3490,12 +3984,12 @@ Overlays.prototype._getOverlayContainer = function(element, raw) {
 Overlays.prototype._addOverlay = function(overlay) {
 	var id = overlay.id, element = overlay.element, html = overlay.html, htmlContainer, overlayContainer;
 	if (html.get && html.constructor.prototype.jquery) html = html.get(0);
-	if (isString(html)) html = domify$1(html);
+	if (isString$3(html)) html = domify$1$1(html);
 	overlayContainer = this._getOverlayContainer(element);
-	htmlContainer = domify$1("<div class=\"djs-overlay\" data-overlay-id=\"" + id + "\">");
-	assign$1(htmlContainer, { position: "absolute" });
+	htmlContainer = domify$1$1("<div class=\"djs-overlay\" data-overlay-id=\"" + id + "\">");
+	assign$5(htmlContainer, { position: "absolute" });
 	htmlContainer.appendChild(html);
-	if (overlay.type) classes(htmlContainer).add("djs-overlay-" + overlay.type);
+	if (overlay.type) classes$1(htmlContainer).add("djs-overlay-" + overlay.type);
 	var elementRoot = this._canvas.findRoot(element);
 	var activeRoot = this._canvas.getRootElement();
 	setVisible(htmlContainer, elementRoot === activeRoot);
@@ -3510,7 +4004,7 @@ Overlays.prototype._updateOverlayVisibilty = function(overlay, viewbox) {
 	var show = overlay.show, rootElement = this._canvas.findRoot(overlay.element), minZoom = show && show.minZoom, maxZoom = show && show.maxZoom, htmlContainer = overlay.htmlContainer, activeRootElement = this._canvas.getRootElement(), visible = true;
 	if (rootElement !== activeRootElement) visible = false;
 	else if (show) {
-		if (isDefined(minZoom) && minZoom > viewbox.scale || isDefined(maxZoom) && maxZoom < viewbox.scale) visible = false;
+		if (isDefined$1(minZoom) && minZoom > viewbox.scale || isDefined$1(maxZoom) && maxZoom < viewbox.scale) visible = false;
 	}
 	setVisible(htmlContainer, visible);
 	this._updateOverlayScale(overlay, viewbox);
@@ -3526,15 +4020,15 @@ Overlays.prototype._updateOverlayScale = function(overlay, viewbox) {
 			minScale = shouldScale.min;
 			maxScale = shouldScale.max;
 		}
-		if (isDefined(minScale) && viewbox.scale < minScale) scale = (1 / viewbox.scale || 1) * minScale;
-		if (isDefined(maxScale) && viewbox.scale > maxScale) scale = (1 / viewbox.scale || 1) * maxScale;
+		if (isDefined$1(minScale) && viewbox.scale < minScale) scale = (1 / viewbox.scale || 1) * minScale;
+		if (isDefined$1(maxScale) && viewbox.scale > maxScale) scale = (1 / viewbox.scale || 1) * maxScale;
 	}
-	if (isDefined(scale)) transform = "scale(" + scale + "," + scale + ")";
+	if (isDefined$1(scale)) transform = "scale(" + scale + "," + scale + ")";
 	setTransform(htmlContainer, transform);
 };
 Overlays.prototype._updateOverlaysVisibilty = function(viewbox) {
 	var self = this;
-	forEach(this._overlays, function(overlay) {
+	forEach$3(this._overlays, function(overlay) {
 		self._updateOverlayVisibilty(overlay, viewbox);
 	});
 };
@@ -3554,12 +4048,12 @@ Overlays.prototype._init = function() {
 	});
 	eventBus.on(["shape.remove", "connection.remove"], function(e) {
 		var element = e.element;
-		forEach(self.get({ element }), function(o) {
+		forEach$3(self.get({ element }), function(o) {
 			self.remove(o.id);
 		});
 		var container = self._getOverlayContainer(element);
 		if (container) {
-			remove$1(container.html);
+			remove$2(container.html);
 			var i = self._overlayContainers.indexOf(container);
 			if (i !== -1) self._overlayContainers.splice(i, 1);
 		}
@@ -3568,7 +4062,7 @@ Overlays.prototype._init = function() {
 		var element = e.element;
 		var container = self._getOverlayContainer(element, true);
 		if (container) {
-			forEach(container.overlays, function(overlay) {
+			forEach$3(container.overlays, function(overlay) {
 				self._updateOverlay(overlay);
 			});
 			self._updateOverlayContainer(container);
@@ -3576,7 +4070,7 @@ Overlays.prototype._init = function() {
 	});
 	eventBus.on("element.marker.update", function(e) {
 		var container = self._getOverlayContainer(e.element, true);
-		if (container) classes(container.html)[e.add ? "add" : "remove"](e.marker);
+		if (container) classes$1(container.html)[e.add ? "add" : "remove"](e.marker);
 	});
 	eventBus.on("root.set", function() {
 		self._updateOverlaysVisibilty(self._canvas.viewbox());
@@ -3584,8 +4078,8 @@ Overlays.prototype._init = function() {
 	eventBus.on("diagram.clear", this.clear, this);
 };
 function createRoot(parentNode) {
-	var root = domify$1("<div class=\"djs-overlay-container\" />");
-	assign$1(root, {
+	var root = domify$1$1("<div class=\"djs-overlay-container\" />");
+	assign$5(root, {
 		position: "absolute",
 		width: 0,
 		height: 0
@@ -3594,7 +4088,7 @@ function createRoot(parentNode) {
 	return root;
 }
 function setPosition(el, x, y) {
-	assign$1(el, {
+	assign$5(el, {
 		left: x + "px",
 		top: y + "px"
 	});
@@ -3742,27 +4236,27 @@ function unwrapEvent(fn, that) {
 * @param {any} [that]
 */
 CommandInterceptor.prototype.on = function(events, hook, priority, handlerFn, unwrap, that) {
-	if (isFunction(hook) || isNumber(hook)) {
+	if (isFunction$1(hook) || isNumber(hook)) {
 		that = unwrap;
 		unwrap = handlerFn;
 		handlerFn = priority;
 		priority = hook;
 		hook = null;
 	}
-	if (isFunction(priority)) {
+	if (isFunction$1(priority)) {
 		that = unwrap;
 		unwrap = handlerFn;
 		handlerFn = priority;
 		priority = DEFAULT_PRIORITY$1;
 	}
-	if (isObject(unwrap)) {
+	if (isObject$1(unwrap)) {
 		that = unwrap;
 		unwrap = false;
 	}
-	if (!isFunction(handlerFn)) throw new Error("handlerFn must be a function");
-	if (!isArray$1(events)) events = [events];
+	if (!isFunction$1(handlerFn)) throw new Error("handlerFn must be a function");
+	if (!isArray$5(events)) events = [events];
 	var eventBus = this._eventBus;
-	forEach(events, function(event) {
+	forEach$3(events, function(event) {
 		var fullEvent = [
 			"commandStack",
 			event,
@@ -3874,7 +4368,7 @@ function createHook(hook) {
 	* @param {any} [that]
 	*/
 	const hookFn = function(events, priority, handlerFn, unwrap, that) {
-		if (isFunction(events) || isNumber(events)) {
+		if (isFunction$1(events) || isNumber(events)) {
 			that = unwrap;
 			unwrap = handlerFn;
 			handlerFn = priority;
@@ -3990,7 +4484,7 @@ function DrilldownBreadcrumbs(eventBus, elementRegistry, canvas) {
 	var businessObjectParents = [];
 	eventBus.on("element.changed", function(event) {
 		var shape = event.element, businessObject = getBusinessObject(shape);
-		if (!find(businessObjectParents, function(element) {
+		if (!find$2(businessObjectParents, function(element) {
 			return element === businessObject;
 		})) return;
 		updateBreadcrumbs();
@@ -4536,12 +5030,12 @@ OutlineProvider.prototype.getOutline = function(element) {
 	if (isLabel(element)) return;
 	if (is$1(element, "bpmn:Gateway")) {
 		outline = create$1("rect");
-		assign(outline.style, {
+		assign$6(outline.style, {
 			"transform-box": "fill-box",
 			"transform": "rotate(45deg)",
 			"transform-origin": "center"
 		});
-		attr$1(outline, assign({
+		attr$1(outline, assign$6({
 			x: 2,
 			y: 2,
 			rx: 4,
@@ -4555,7 +5049,7 @@ OutlineProvider.prototype.getOutline = function(element) {
 		"bpmn:CallActivity"
 	])) {
 		outline = create$1("rect");
-		attr$1(outline, assign({
+		attr$1(outline, assign$6({
 			x: -DEFAULT_OFFSET,
 			y: -DEFAULT_OFFSET,
 			rx: 14,
@@ -4564,14 +5058,14 @@ OutlineProvider.prototype.getOutline = function(element) {
 		}, OUTLINE_STYLE));
 	} else if (is$1(element, "bpmn:EndEvent")) {
 		outline = create$1("circle");
-		attr$1(outline, assign({
+		attr$1(outline, assign$6({
 			cx: element.width / 2,
 			cy: element.height / 2,
 			r: element.width / 2 + DEFAULT_OFFSET + 1
 		}, OUTLINE_STYLE));
 	} else if (is$1(element, "bpmn:Event")) {
 		outline = create$1("circle");
-		attr$1(outline, assign({
+		attr$1(outline, assign$6({
 			cx: element.width / 2,
 			cy: element.height / 2,
 			r: element.width / 2 + DEFAULT_OFFSET
@@ -4624,6 +5118,334 @@ var outline_default = {
 	outlineProvider: ["type", OutlineProvider]
 };
 //#endregion
+//#region node_modules/diagram-js/node_modules/didi/dist/index.js
+var CLASS_PATTERN = /^class[ {]/;
+/**
+* @param {function} fn
+*
+* @return {boolean}
+*/
+function isClass(fn) {
+	return CLASS_PATTERN.test(fn.toString());
+}
+/**
+* @param {any} obj
+*
+* @return {boolean}
+*/
+function isArray$2(obj) {
+	return Array.isArray(obj);
+}
+/**
+* @param {any} obj
+* @param {string} prop
+*
+* @return {boolean}
+*/
+function hasOwnProp(obj, prop) {
+	return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+/**
+* @typedef {import('./index.js').InjectAnnotated } InjectAnnotated
+*/
+/**
+* @template T
+*
+* @params {[...string[], T] | ...string[], T} args
+*
+* @return {T & InjectAnnotated}
+*/
+function annotate(...args) {
+	if (args.length === 1 && isArray$2(args[0])) args = args[0];
+	args = [...args];
+	const fn = args.pop();
+	fn.$inject = args;
+	return fn;
+}
+var CONSTRUCTOR_ARGS = /constructor\s*[^(]*\(\s*([^)]*)\)/m;
+var FN_ARGS = /^(?:async\s+)?(?:function\s*[^(]*)?(?:\(\s*([^)]*)\)|(\w+))/m;
+var FN_ARG = /\/\*([^*]*)\*\//m;
+/**
+* @param {unknown} fn
+*
+* @return {string[]}
+*/
+function parseAnnotations(fn) {
+	if (typeof fn !== "function") throw new Error(`Cannot annotate "${fn}". Expected a function!`);
+	const match = fn.toString().match(isClass(fn) ? CONSTRUCTOR_ARGS : FN_ARGS);
+	if (!match) return [];
+	const args = match[1] || match[2];
+	return args && args.split(",").map((arg) => {
+		const argMatch = arg.match(FN_ARG);
+		return (argMatch && argMatch[1] || arg).trim();
+	}) || [];
+}
+/**
+* @typedef { import('./index.js').ModuleDeclaration } ModuleDeclaration
+* @typedef { import('./index.js').ModuleDefinition } ModuleDefinition
+* @typedef { import('./index.js').InjectorContext } InjectorContext
+*
+* @typedef { import('./index.js').TypedDeclaration<any, any> } TypedDeclaration
+*/
+/**
+* Create a new injector with the given modules.
+*
+* @param {ModuleDefinition[]} modules
+* @param {InjectorContext} [_parent]
+*/
+function Injector(modules, _parent) {
+	const parent = _parent || { get: function(name, strict) {
+		currentlyResolving.push(name);
+		if (strict === false) return null;
+		else throw error(`No provider for "${name}"!`);
+	} };
+	const currentlyResolving = [];
+	const providers = this._providers = Object.create(parent._providers || null);
+	const instances = this._instances = Object.create(null);
+	const self = instances.injector = this;
+	const error = function(msg) {
+		const stack = currentlyResolving.join(" -> ");
+		currentlyResolving.length = 0;
+		return new Error(stack ? `${msg} (Resolving: ${stack})` : msg);
+	};
+	/**
+	* Return a named service.
+	*
+	* @param {string} name
+	* @param {boolean} [strict=true] if false, resolve missing services to null
+	*
+	* @return {any}
+	*/
+	function get(name, strict) {
+		if (!providers[name] && name.includes(".")) {
+			const parts = name.split(".");
+			let pivot = get(parts.shift());
+			while (parts.length) pivot = pivot[parts.shift()];
+			return pivot;
+		}
+		if (hasOwnProp(instances, name)) return instances[name];
+		if (hasOwnProp(providers, name)) {
+			if (currentlyResolving.indexOf(name) !== -1) {
+				currentlyResolving.push(name);
+				throw error("Cannot resolve circular dependency!");
+			}
+			currentlyResolving.push(name);
+			instances[name] = providers[name][0](providers[name][1]);
+			currentlyResolving.pop();
+			return instances[name];
+		}
+		return parent.get(name, strict);
+	}
+	function fnDef(fn, locals) {
+		if (typeof locals === "undefined") locals = {};
+		if (typeof fn !== "function") if (isArray$2(fn)) fn = annotate(fn.slice());
+		else throw error(`Cannot invoke "${fn}". Expected a function!`);
+		const dependencies = (fn.$inject || parseAnnotations(fn)).map((dep) => {
+			if (hasOwnProp(locals, dep)) return locals[dep];
+			else return get(dep);
+		});
+		return {
+			fn,
+			dependencies
+		};
+	}
+	/**
+	* Instantiate the given type, injecting dependencies.
+	*
+	* @template T
+	*
+	* @param { Function | [...string[], Function ]} type
+	*
+	* @return T
+	*/
+	function instantiate(type) {
+		const { fn, dependencies } = fnDef(type);
+		return new (Function.prototype.bind.call(fn, null, ...dependencies))();
+	}
+	/**
+	* Invoke the given function, injecting dependencies. Return the result.
+	*
+	* @template T
+	*
+	* @param { Function | [...string[], Function ]} func
+	* @param { Object } [context]
+	* @param { Object } [locals]
+	*
+	* @return {T} invocation result
+	*/
+	function invoke(func, context, locals) {
+		const { fn, dependencies } = fnDef(func, locals);
+		return fn.apply(context, dependencies);
+	}
+	/**
+	* @param {Injector} childInjector
+	*
+	* @return {Function}
+	*/
+	function createPrivateInjectorFactory(childInjector) {
+		return annotate((key) => childInjector.get(key));
+	}
+	/**
+	* @param {ModuleDefinition[]} modules
+	* @param {string[]} [forceNewInstances]
+	*
+	* @return {Injector}
+	*/
+	function createChild(modules, forceNewInstances) {
+		if (forceNewInstances && forceNewInstances.length) {
+			const fromParentModule = Object.create(null);
+			const matchedScopes = Object.create(null);
+			const privateInjectorsCache = [];
+			const privateChildInjectors = [];
+			const privateChildFactories = [];
+			let provider;
+			let cacheIdx;
+			let privateChildInjector;
+			let privateChildInjectorFactory;
+			for (let name in providers) {
+				provider = providers[name];
+				if (forceNewInstances.indexOf(name) !== -1) {
+					if (provider[2] === "private") {
+						cacheIdx = privateInjectorsCache.indexOf(provider[3]);
+						if (cacheIdx === -1) {
+							privateChildInjector = provider[3].createChild([], forceNewInstances);
+							privateChildInjectorFactory = createPrivateInjectorFactory(privateChildInjector);
+							privateInjectorsCache.push(provider[3]);
+							privateChildInjectors.push(privateChildInjector);
+							privateChildFactories.push(privateChildInjectorFactory);
+							fromParentModule[name] = [
+								privateChildInjectorFactory,
+								name,
+								"private",
+								privateChildInjector
+							];
+						} else fromParentModule[name] = [
+							privateChildFactories[cacheIdx],
+							name,
+							"private",
+							privateChildInjectors[cacheIdx]
+						];
+					} else fromParentModule[name] = [provider[2], provider[1]];
+					matchedScopes[name] = true;
+				}
+				if ((provider[2] === "factory" || provider[2] === "type") && provider[1].$scope) forceNewInstances.forEach((scope) => {
+					if (provider[1].$scope.indexOf(scope) !== -1) {
+						fromParentModule[name] = [provider[2], provider[1]];
+						matchedScopes[scope] = true;
+					}
+				});
+			}
+			forceNewInstances.forEach((scope) => {
+				if (!matchedScopes[scope]) throw new Error("No provider for \"" + scope + "\". Cannot use provider from the parent!");
+			});
+			modules.unshift(fromParentModule);
+		}
+		return new Injector(modules, self);
+	}
+	const factoryMap = {
+		factory: invoke,
+		type: instantiate,
+		value: function(value) {
+			return value;
+		}
+	};
+	/**
+	* @param {ModuleDefinition} moduleDefinition
+	* @param {Injector} injector
+	*/
+	function createInitializer(moduleDefinition, injector) {
+		const initializers = moduleDefinition.__init__ || [];
+		return function() {
+			initializers.forEach((initializer) => {
+				if (typeof initializer === "string") injector.get(initializer);
+				else injector.invoke(initializer);
+			});
+		};
+	}
+	/**
+	* @param {ModuleDefinition} moduleDefinition
+	*/
+	function loadModule(moduleDefinition) {
+		const moduleExports = moduleDefinition.__exports__;
+		if (moduleExports) {
+			const nestedModules = moduleDefinition.__modules__;
+			const clonedModule = Object.keys(moduleDefinition).reduce((clonedModule, key) => {
+				if (key !== "__exports__" && key !== "__modules__" && key !== "__init__" && key !== "__depends__") clonedModule[key] = moduleDefinition[key];
+				return clonedModule;
+			}, Object.create(null));
+			const privateInjector = createChild((nestedModules || []).concat(clonedModule));
+			const getFromPrivateInjector = annotate(function(key) {
+				return privateInjector.get(key);
+			});
+			moduleExports.forEach(function(key) {
+				providers[key] = [
+					getFromPrivateInjector,
+					key,
+					"private",
+					privateInjector
+				];
+			});
+			const initializers = (moduleDefinition.__init__ || []).slice();
+			initializers.unshift(function() {
+				privateInjector.init();
+			});
+			moduleDefinition = Object.assign({}, moduleDefinition, { __init__: initializers });
+			return createInitializer(moduleDefinition, privateInjector);
+		}
+		Object.keys(moduleDefinition).forEach(function(key) {
+			if (key === "__init__" || key === "__depends__") return;
+			const typeDeclaration = moduleDefinition[key];
+			if (typeDeclaration[2] === "private") {
+				providers[key] = typeDeclaration;
+				return;
+			}
+			const type = typeDeclaration[0];
+			const value = typeDeclaration[1];
+			providers[key] = [
+				factoryMap[type],
+				arrayUnwrap(type, value),
+				type
+			];
+		});
+		return createInitializer(moduleDefinition, self);
+	}
+	/**
+	* @param {ModuleDefinition[]} moduleDefinitions
+	* @param {ModuleDefinition} moduleDefinition
+	*
+	* @return {ModuleDefinition[]}
+	*/
+	function resolveDependencies(moduleDefinitions, moduleDefinition) {
+		if (moduleDefinitions.indexOf(moduleDefinition) !== -1) return moduleDefinitions;
+		moduleDefinitions = (moduleDefinition.__depends__ || []).reduce(resolveDependencies, moduleDefinitions);
+		if (moduleDefinitions.indexOf(moduleDefinition) !== -1) return moduleDefinitions;
+		return moduleDefinitions.concat(moduleDefinition);
+	}
+	/**
+	* @param {ModuleDefinition[]} moduleDefinitions
+	*
+	* @return { () => void } initializerFn
+	*/
+	function bootstrap(moduleDefinitions) {
+		const initializers = moduleDefinitions.reduce(resolveDependencies, []).map(loadModule);
+		let initialized = false;
+		return function() {
+			if (initialized) return;
+			initialized = true;
+			initializers.forEach((initializer) => initializer());
+		};
+	}
+	this.get = get;
+	this.invoke = invoke;
+	this.instantiate = instantiate;
+	this.createChild = createChild;
+	this.init = bootstrap(modules);
+}
+function arrayUnwrap(type, value) {
+	if (type !== "value" && isArray$2(value)) value = annotate(value.slice());
+	return value;
+}
+//#endregion
 //#region node_modules/diagram-js/lib/draw/DefaultRenderer.js
 /**
 * @typedef {import('../core/EventBus').default} EventBus
@@ -4671,8 +5493,8 @@ DefaultRenderer.prototype.drawShape = function drawShape(visuals, element, attrs
 		width: element.width || 0,
 		height: element.height || 0
 	});
-	if (isFrameElement$1(element)) attr$1(rect, assign({}, this.FRAME_STYLE, attrs || {}));
-	else attr$1(rect, assign({}, this.SHAPE_STYLE, attrs || {}));
+	if (isFrameElement$1(element)) attr$1(rect, assign$4({}, this.FRAME_STYLE, attrs || {}));
+	else attr$1(rect, assign$4({}, this.SHAPE_STYLE, attrs || {}));
 	append(visuals, rect);
 	return rect;
 };
@@ -4680,7 +5502,7 @@ DefaultRenderer.prototype.drawShape = function drawShape(visuals, element, attrs
 * @private
 */
 DefaultRenderer.prototype.drawConnection = function drawConnection(visuals, connection, attrs) {
-	var line = createLine(connection.waypoints, assign({}, this.CONNECTION_STYLE, attrs || {}));
+	var line = createLine(connection.waypoints, assign$4({}, this.CONNECTION_STYLE, attrs || {}));
 	append(visuals, line);
 	return line;
 };
@@ -4753,7 +5575,7 @@ function Styles() {
 	* @return {Object} the style definition
 	*/
 	this.cls = function(className, traits, additionalAttrs) {
-		return assign(this.style(traits, additionalAttrs), { "class": className });
+		return assign$4(this.style(traits, additionalAttrs), { "class": className });
 	};
 	/**
 	* Builds a style definition from a list of traits and an object of additional
@@ -4765,14 +5587,14 @@ function Styles() {
 	* @return {Object} the style definition
 	*/
 	this.style = function(traits, additionalAttrs) {
-		if (!isArray$1(traits) && !additionalAttrs) {
+		if (!isArray$5(traits) && !additionalAttrs) {
 			additionalAttrs = traits;
 			traits = [];
 		}
 		var attrs = reduce(traits, function(attrs, t) {
-			return assign(attrs, defaultTraits[t] || {});
+			return assign$4(attrs, defaultTraits[t] || {});
 		}, {});
-		return additionalAttrs ? assign(attrs, additionalAttrs) : attrs;
+		return additionalAttrs ? assign$4(attrs, additionalAttrs) : attrs;
 	};
 	/**
 	* Computes a style definition from a list of traits and an object of
@@ -4785,11 +5607,11 @@ function Styles() {
 	* @return {Object} the style definition
 	*/
 	this.computeStyle = function(custom, traits, defaultStyles) {
-		if (!isArray$1(traits)) {
+		if (!isArray$5(traits)) {
 			defaultStyles = traits;
 			traits = [];
 		}
-		return self.style(traits || [], assign({}, defaultStyles, custom || {}));
+		return self.style(traits || [], assign$4({}, defaultStyles, custom || {}));
 	};
 }
 //#endregion
@@ -4897,14 +5719,14 @@ function findRoot(element) {
 * @return {HTMLElement} the container element
 */
 function createContainer(options) {
-	options = assign({}, {
+	options = assign$4({}, {
 		width: "100%",
 		height: "100%"
 	}, options);
 	const container = options.container || document.body;
 	const parent = document.createElement("div");
 	parent.setAttribute("class", "djs-container djs-parent");
-	assign$1(parent, {
+	assign$5(parent, {
 		position: "relative",
 		overflow: "hidden",
 		width: ensurePx(options.width),
@@ -4915,7 +5737,7 @@ function createContainer(options) {
 }
 function createGroup(parent, cls, childIndex) {
 	const group = create$1("g");
-	classes$1(group).add(cls);
+	classes$2(group).add(cls);
 	const index = childIndex !== void 0 ? childIndex : parent.childNodes.length - 1;
 	parent.insertBefore(group, parent.childNodes[index] || null);
 	return group;
@@ -4998,7 +5820,7 @@ Canvas.prototype._init = function(config) {
 	});
 	append(container, svg);
 	const viewport = this._viewport = createGroup(svg, "viewport");
-	if (config.deferUpdate) this._viewboxChanged = debounce(bind(this._viewboxChanged, this), 300);
+	if (config.deferUpdate) this._viewboxChanged = debounce(bind$3(this._viewboxChanged, this), 300);
 	eventBus.on("diagram.init", () => {
 		/**
 		* An event indicating that the canvas is ready to be drawn on.
@@ -5150,7 +5972,7 @@ Canvas.prototype.hideLayer = function(name) {
 	if (!layer) throw new Error("layer <" + name + "> does not exist");
 	const group = layer.group;
 	if (!layer.visible) return group;
-	remove$2(group);
+	remove$3(group);
 	layer.visible = false;
 	return group;
 };
@@ -5158,7 +5980,7 @@ Canvas.prototype._removeLayer = function(name) {
 	const layer = this._layers[name];
 	if (layer) {
 		delete this._layers[name];
-		remove$2(layer.group);
+		remove$3(layer.group);
 	}
 };
 /**
@@ -5194,7 +6016,7 @@ Canvas.prototype.getRootElements = function() {
 	});
 };
 Canvas.prototype._findPlaneForRoot = function(rootElement) {
-	return find(this._planes, function(plane) {
+	return find$1(this._planes, function(plane) {
 		return plane.rootElement === rootElement;
 	});
 };
@@ -5213,13 +6035,13 @@ Canvas.prototype._updateMarker = function(element, marker, add) {
 	element.markers = element.markers || /* @__PURE__ */ new Set();
 	container = this._elementRegistry._elements[element.id];
 	if (!container) return;
-	forEach([container.gfx, container.secondaryGfx], function(gfx) {
+	forEach$3([container.gfx, container.secondaryGfx], function(gfx) {
 		if (gfx) if (add) {
 			element.markers.add(marker);
-			classes$1(gfx).add(marker);
+			classes$2(gfx).add(marker);
 		} else {
 			element.markers.delete(marker);
-			classes$1(gfx).remove(marker);
+			classes$2(gfx).remove(marker);
 		}
 	});
 	/**
@@ -5673,7 +6495,7 @@ Canvas.prototype.scroll = function(delta) {
 	const node = this._viewport;
 	let matrix = node.getCTM();
 	if (delta) this._changeViewbox(function() {
-		delta = assign({
+		delta = assign$4({
 			dx: 0,
 			dy: 0
 		}, delta || {});
@@ -5788,7 +6610,7 @@ Canvas.prototype._setZoom = function(scale, center) {
 	currentMatrix = viewport.getCTM();
 	const currentScale = currentMatrix.a;
 	if (center) {
-		centerPoint = assign(point, center);
+		centerPoint = assign$4(point, center);
 		originalPoint = centerPoint.matrixTransform(currentMatrix.inverse());
 		scaleMatrix = matrix.translate(originalPoint.x, originalPoint.y).scale(1 / currentScale * scale).translate(-originalPoint.x, -originalPoint.y);
 		newMatrix = currentMatrix.multiply(scaleMatrix);
@@ -6517,7 +7339,7 @@ var types = {
 function create(type, attrs) {
 	var Type = types[type];
 	if (!Type) throw new Error("unknown type: <" + type + ">");
-	return assign(new Type(), attrs);
+	return assign$4(new Type(), attrs);
 }
 //#endregion
 //#region node_modules/diagram-js/lib/core/ElementFactory.js
@@ -6611,7 +7433,7 @@ ElementFactory.prototype.createConnection = function(attrs) {
 * @return {U}
 */
 ElementFactory.prototype.create = function(type, attrs) {
-	attrs = assign({}, attrs || {});
+	attrs = assign$4({}, attrs || {});
 	if (!attrs.id) attrs.id = type + "_" + this._uid++;
 	return create(type, attrs);
 };
@@ -6774,8 +7596,8 @@ function EventBus() {
 * @param {any} [that] callback context
 */
 EventBus.prototype.on = function(events, priority, callback, that) {
-	events = isArray$1(events) ? events : [events];
-	if (isFunction(priority)) {
+	events = isArray$5(events) ? events : [events];
+	if (isFunction$1(priority)) {
 		that = callback;
 		callback = priority;
 		priority = DEFAULT_PRIORITY;
@@ -6783,7 +7605,7 @@ EventBus.prototype.on = function(events, priority, callback, that) {
 	if (!isNumber(priority)) throw new Error("priority must be a number");
 	var actualCallback = callback;
 	if (that) {
-		actualCallback = bind(callback, that);
+		actualCallback = bind$3(callback, that);
 		actualCallback[FN_REF] = callback[FN_REF] || callback;
 	}
 	var self = this;
@@ -6819,7 +7641,7 @@ EventBus.prototype.on = function(events, priority, callback, that) {
 */
 EventBus.prototype.once = function(events, priority, callback, that) {
 	var self = this;
-	if (isFunction(priority)) {
+	if (isFunction$1(priority)) {
 		that = callback;
 		callback = priority;
 		priority = DEFAULT_PRIORITY;
@@ -6843,7 +7665,7 @@ EventBus.prototype.once = function(events, priority, callback, that) {
 * @param {EventBusEventCallback} [callback]
 */
 EventBus.prototype.off = function(events, callback) {
-	events = isArray$1(events) ? events : [events];
+	events = isArray$5(events) ? events : [events];
 	var self = this;
 	events.forEach(function(event) {
 		self._removeListener(event, callback);
@@ -7043,7 +7865,7 @@ InternalEvent.prototype.preventDefault = function() {
 	this.defaultPrevented = true;
 };
 InternalEvent.prototype.init = function(data) {
-	assign(this, data || {});
+	assign$4(this, data || {});
 };
 /**
 * Invoke function. Be fast...
@@ -7089,7 +7911,7 @@ GraphicsFactory.prototype._getChildrenContainer = function(element) {
 		childrenGfx = getChildren(gfx);
 		if (!childrenGfx) {
 			childrenGfx = create$1("g");
-			classes$1(childrenGfx).add("djs-children");
+			classes$2(childrenGfx).add("djs-children");
 			append(gfx.parentNode, childrenGfx);
 		}
 	}
@@ -7133,16 +7955,16 @@ GraphicsFactory.prototype._clear = function(gfx) {
 */
 GraphicsFactory.prototype._createContainer = function(type, childrenGfx, parentIndex, isFrame) {
 	var outerGfx = create$1("g");
-	classes$1(outerGfx).add("djs-group");
+	classes$2(outerGfx).add("djs-group");
 	if (typeof parentIndex !== "undefined") prependTo(outerGfx, childrenGfx, childrenGfx.childNodes[parentIndex]);
 	else append(childrenGfx, outerGfx);
 	var gfx = create$1("g");
-	classes$1(gfx).add("djs-element");
-	classes$1(gfx).add("djs-" + type);
-	if (isFrame) classes$1(gfx).add("djs-frame");
+	classes$2(gfx).add("djs-element");
+	classes$2(gfx).add("djs-" + type);
+	if (isFrame) classes$2(gfx).add("djs-frame");
 	append(outerGfx, gfx);
 	var visual = create$1("g");
-	classes$1(visual).add("djs-visual");
+	classes$2(visual).add("djs-visual");
 	append(gfx, visual);
 	return gfx;
 };
@@ -7166,14 +7988,14 @@ GraphicsFactory.prototype.create = function(type, element, parentIndex) {
 */
 GraphicsFactory.prototype.updateContainments = function(elements) {
 	var self = this, elementRegistry = this._elementRegistry;
-	forEach(reduce(elements, function(map, e) {
+	forEach$3(reduce(elements, function(map, e) {
 		if (e.parent) map[e.parent.id] = e.parent;
 		return map;
 	}, {}), function(parent) {
 		var children = parent.children;
 		if (!children) return;
 		var childrenGfx = self._getChildrenContainer(parent);
-		forEach(children.slice().reverse(), function(child) {
+		forEach$3(children.slice().reverse(), function(child) {
 			prependTo(elementRegistry.getGraphics(child).parentNode, childrenGfx);
 		});
 	});
@@ -7254,7 +8076,7 @@ GraphicsFactory.prototype.update = function(type, element, gfx) {
 * @param {ElementLike} element The element.
 */
 GraphicsFactory.prototype.remove = function(element) {
-	remove$2(this._elementRegistry.getGraphics(element).parentNode);
+	remove$3(this._elementRegistry.getGraphics(element).parentNode);
 };
 function prependTo(newNode, parentNode, siblingNode) {
 	var node = siblingNode || parentNode.firstChild;
@@ -7481,6 +8303,151 @@ Diagram.prototype.clear = function() {
 	this.get("eventBus").fire("diagram.clear");
 };
 //#endregion
+//#region node_modules/bpmn-moddle/node_modules/min-dash/dist/index.esm.js
+var nativeToString$2 = Object.prototype.toString;
+function isString$2(obj) {
+	return nativeToString$2.call(obj) === "[object String]";
+}
+/**
+* Convenience wrapper for `Object.assign`.
+*
+* @param {Object} target
+* @param {...Object} others
+*
+* @return {Object} the target
+*/
+function assign$2(target, ...others) {
+	return Object.assign(target, ...others);
+}
+//#endregion
+//#region node_modules/moddle/node_modules/min-dash/dist/index.esm.js
+var nativeToString$1 = Object.prototype.toString;
+var nativeHasOwnProperty$1 = Object.prototype.hasOwnProperty;
+function isUndefined$2(obj) {
+	return obj === void 0;
+}
+function isDefined(obj) {
+	return obj !== void 0;
+}
+function isNil$1(obj) {
+	return obj == null;
+}
+function isArray$1(obj) {
+	return nativeToString$1.call(obj) === "[object Array]";
+}
+function isObject(obj) {
+	return nativeToString$1.call(obj) === "[object Object]";
+}
+function isString$1(obj) {
+	return nativeToString$1.call(obj) === "[object String]";
+}
+/**
+* Return true, if target owns a property with the given key.
+*
+* @param {Object} target
+* @param {String} key
+*
+* @return {Boolean}
+*/
+function has$1(target, key) {
+	return !isNil$1(target) && nativeHasOwnProperty$1.call(target, key);
+}
+/**
+* Iterate over collection; returning something
+* (non-undefined) will stop iteration.
+*
+* @template T
+* @param {Collection<T>} collection
+* @param { ((item: T, idx: number) => (boolean|void)) | ((item: T, key: string) => (boolean|void)) } iterator
+*
+* @return {T} return result that stopped the iteration
+*/
+function forEach$1(collection, iterator) {
+	let val, result;
+	if (isUndefined$2(collection)) return;
+	const convertKey = isArray$1(collection) ? toNum$1 : identity$1;
+	for (let key in collection) if (has$1(collection, key)) {
+		val = collection[key];
+		result = iterator(val, convertKey(key));
+		if (result === false) return val;
+	}
+}
+function identity$1(arg) {
+	return arg;
+}
+function toNum$1(arg) {
+	return Number(arg);
+}
+/**
+* Bind function against target <this>.
+*
+* @param  {Function} fn
+* @param  {Object}   target
+*
+* @return {Function} bound function
+*/
+function bind(fn, target) {
+	return fn.bind(target);
+}
+/**
+* Convenience wrapper for `Object.assign`.
+*
+* @param {Object} target
+* @param {...Object} others
+*
+* @return {Object} the target
+*/
+function assign$1(target, ...others) {
+	return Object.assign(target, ...others);
+}
+/**
+* Sets a nested property of a given object to the specified value.
+*
+* This mutates the object and returns it.
+*
+* @template T
+*
+* @param {T} target The target of the set operation.
+* @param {(string|number)[]} path The path to the nested value.
+* @param {any} value The value to set.
+*
+* @return {T}
+*/
+function set(target, path, value) {
+	let currentTarget = target;
+	forEach$1(path, function(key, idx) {
+		if (typeof key !== "number" && typeof key !== "string") throw new Error("illegal key type: " + typeof key + ". Key should be of type number or string.");
+		if (key === "constructor") throw new Error("illegal key: constructor");
+		if (key === "__proto__") throw new Error("illegal key: __proto__");
+		let nextKey = path[idx + 1];
+		let nextTarget = currentTarget[key];
+		if (isDefined(nextKey) && isNil$1(nextTarget)) nextTarget = currentTarget[key] = isNaN(+nextKey) ? {} : [];
+		if (isUndefined$2(nextKey)) if (isUndefined$2(value)) delete currentTarget[key];
+		else currentTarget[key] = value;
+		else currentTarget = nextTarget;
+	});
+	return target;
+}
+/**
+* Pick properties from the given target.
+*
+* @template T
+* @template {any[]} V
+*
+* @param {T} target
+* @param {V} properties
+*
+* @return Pick<T, V>
+*/
+function pick(target, properties) {
+	let result = {};
+	let obj = Object(target);
+	forEach$1(properties, function(prop) {
+		if (prop in obj) result[prop] = target[prop];
+	});
+	return result;
+}
+//#endregion
 //#region node_modules/moddle/dist/index.esm.js
 /**
 * Moddle base element.
@@ -7505,7 +8472,7 @@ function Factory(model, properties) {
 Factory.prototype.createType = function(descriptor) {
 	var model = this.model;
 	var props = this.properties, prototype = Object.create(Base.prototype);
-	forEach(descriptor.properties, function(p) {
+	forEach$1(descriptor.properties, function(p) {
 		if (!p.isMany && p.default !== void 0) prototype[p.name] = p.default;
 	});
 	props.defineModel(prototype, model);
@@ -7521,7 +8488,7 @@ Factory.prototype.createType = function(descriptor) {
 		});
 		props.define(this, "$attrs", { value: {} });
 		props.define(this, "$parent", { writable: true });
-		forEach(attrs, bind(function(val, key) {
+		forEach$1(attrs, bind(function(val, key) {
 			this.set(key, val);
 		}, this));
 	}
@@ -7706,8 +8673,8 @@ DescriptorBuilder.prototype.addTrait = function(t, inherited) {
 	var typesByName = this.allTypesByName, types = this.allTypes;
 	var typeName = t.name;
 	if (typeName in typesByName) return;
-	forEach(t.properties, bind(function(p) {
-		p = assign({}, p, {
+	forEach$1(t.properties, bind(function(p) {
+		p = assign$1({}, p, {
 			name: p.ns.localName,
 			inherited
 		});
@@ -7734,7 +8701,7 @@ function Registry(packages, properties) {
 	this.typeMap = {};
 	this.packages = [];
 	this.properties = properties;
-	forEach(packages, bind(this.registerPackage, this));
+	forEach$1(packages, bind(this.registerPackage, this));
 }
 Registry.prototype.getPackage = function(uriOrPrefix) {
 	return this.packageMap[uriOrPrefix];
@@ -7743,11 +8710,11 @@ Registry.prototype.getPackages = function() {
 	return this.packages;
 };
 Registry.prototype.registerPackage = function(pkg) {
-	pkg = assign({}, pkg);
+	pkg = assign$1({}, pkg);
 	var pkgMap = this.packageMap;
 	ensureAvailable(pkgMap, pkg, "prefix");
 	ensureAvailable(pkgMap, pkg, "uri");
-	forEach(pkg.types, bind(function(descriptor) {
+	forEach$1(pkg.types, bind(function(descriptor) {
 		this.registerType(descriptor, pkg);
 	}, this));
 	pkgMap[pkg.uri] = pkgMap[pkg.prefix] = pkg;
@@ -7757,28 +8724,28 @@ Registry.prototype.registerPackage = function(pkg) {
 * Register a type from a specific package with us
 */
 Registry.prototype.registerType = function(type, pkg) {
-	type = assign({}, type, {
+	type = assign$1({}, type, {
 		superClass: (type.superClass || []).slice(),
 		extends: (type.extends || []).slice(),
 		properties: (type.properties || []).slice(),
-		meta: assign(type.meta || {})
+		meta: assign$1(type.meta || {})
 	});
 	var ns = parseName(type.name, pkg.prefix), name = ns.name, propertiesByName = {};
-	forEach(type.properties, bind(function(p) {
+	forEach$1(type.properties, bind(function(p) {
 		var propertyNs = parseName(p.name, ns.prefix), propertyName = propertyNs.name;
 		if (!isBuiltIn(p.type)) p.type = parseName(p.type, propertyNs.prefix).name;
-		assign(p, {
+		assign$1(p, {
 			ns: propertyNs,
 			name: propertyName
 		});
 		propertiesByName[propertyName] = p;
 	}, this));
-	assign(type, {
+	assign$1(type, {
 		ns,
 		name,
 		propertiesByName
 	});
-	forEach(type.extends, bind(function(extendsName) {
+	forEach$1(type.extends, bind(function(extendsName) {
 		var extendsNameNs = parseName(extendsName, ns.prefix);
 		var extended = this.typeMap[extendsNameNs.name];
 		extended.traits = extended.traits || [];
@@ -7826,9 +8793,9 @@ Registry.prototype.mapTypes = function(nsName, iterator, trait) {
 		return traverse(cls, false);
 	}
 	if (!type) throw new Error("unknown type <" + nsName.name + ">");
-	forEach(type.superClass, trait ? traverseTrait : traverseSuper);
+	forEach$1(type.superClass, trait ? traverseTrait : traverseSuper);
 	iterator(type, !trait);
-	forEach(type.traits, traverseTrait);
+	forEach$1(type.traits, traverseTrait);
 };
 /**
 * Returns the effective descriptor for a type.
@@ -7871,10 +8838,10 @@ function Properties(model) {
 * @param {Object} value
 */
 Properties.prototype.set = function(target, name, value) {
-	if (!isString(name) || !name.length) throw new TypeError("property name must be a non-empty string");
+	if (!isString$1(name) || !name.length) throw new TypeError("property name must be a non-empty string");
 	var property = this.getProperty(target, name);
 	var propertyName = property && property.name;
-	if (isUndefined(value)) if (property) delete target[propertyName];
+	if (isUndefined$1(value)) if (property) delete target[propertyName];
 	else delete target.$attrs[stripGlobal(name)];
 	else if (property) if (propertyName in target) target[propertyName] = value;
 	else defineProperty(target, property, value);
@@ -7905,7 +8872,7 @@ Properties.prototype.get = function(target, name) {
 Properties.prototype.define = function(target, name, options) {
 	if (!options.writable) {
 		var value = options.value;
-		options = assign({}, options, { get: function() {
+		options = assign$1({}, options, { get: function() {
 			return value;
 		} });
 		delete options.value;
@@ -7945,7 +8912,7 @@ Properties.prototype.getProperty = function(target, name) {
 	}
 	return null;
 };
-function isUndefined(val) {
+function isUndefined$1(val) {
 	return typeof val === "undefined";
 }
 function defineProperty(target, property, value) {
@@ -8023,7 +8990,7 @@ Moddle.prototype.create = function(descriptor, attrs) {
 */
 Moddle.prototype.getType = function(descriptor) {
 	var cache = this.typeCache;
-	var name = isString(descriptor) ? descriptor : descriptor.ns.name;
+	var name = isString$1(descriptor) ? descriptor : descriptor.ns.name;
 	var type = cache[name];
 	if (!type) {
 		descriptor = this.registry.getEffectiveDescriptor(name);
@@ -8099,7 +9066,7 @@ Moddle.prototype.createAny = function(name, nsUri, properties) {
 		enumerable: false,
 		writable: true
 	});
-	forEach(properties, function(a, key) {
+	forEach$1(properties, function(a, key) {
 		if (isObject(a) && a.value !== void 0) element[a.name] = a.value;
 		else element[key] = a;
 	});
@@ -8153,6 +9120,189 @@ Moddle.prototype.getPropertyDescriptor = function(element, property) {
 Moddle.prototype.getTypeDescriptor = function(type) {
 	return this.registry.typeMap[type];
 };
+//#endregion
+//#region node_modules/moddle-xml/node_modules/min-dash/dist/index.esm.js
+var nativeToString = Object.prototype.toString;
+var nativeHasOwnProperty = Object.prototype.hasOwnProperty;
+function isUndefined(obj) {
+	return obj === void 0;
+}
+function isNil(obj) {
+	return obj == null;
+}
+function isArray(obj) {
+	return nativeToString.call(obj) === "[object Array]";
+}
+/**
+* @param {any} obj
+*
+* @return {boolean}
+*/
+function isFunction(obj) {
+	const tag = nativeToString.call(obj);
+	return tag === "[object Function]" || tag === "[object AsyncFunction]" || tag === "[object GeneratorFunction]" || tag === "[object AsyncGeneratorFunction]" || tag === "[object Proxy]";
+}
+function isString(obj) {
+	return nativeToString.call(obj) === "[object String]";
+}
+/**
+* Return true, if target owns a property with the given key.
+*
+* @param {Object} target
+* @param {String} key
+*
+* @return {Boolean}
+*/
+function has(target, key) {
+	return !isNil(target) && nativeHasOwnProperty.call(target, key);
+}
+/**
+* @template T
+* @typedef { (
+*   ((e: T) => boolean) |
+*   ((e: T, idx: number) => boolean) |
+*   ((e: T, key: string) => boolean) |
+*   string |
+*   number
+* ) } Matcher
+*/
+/**
+* @template T
+* @template U
+*
+* @typedef { (
+*   ((e: T) => U) | string | number
+* ) } Extractor
+*/
+/**
+* @template T
+* @typedef { (val: T, key: any) => boolean } MatchFn
+*/
+/**
+* @template T
+* @typedef { T[] } ArrayCollection
+*/
+/**
+* @template T
+* @typedef { { [key: string]: T } } StringKeyValueCollection
+*/
+/**
+* @template T
+* @typedef { { [key: number]: T } } NumberKeyValueCollection
+*/
+/**
+* @template T
+* @typedef { StringKeyValueCollection<T> | NumberKeyValueCollection<T> } KeyValueCollection
+*/
+/**
+* @template T
+* @typedef { KeyValueCollection<T> | ArrayCollection<T> } Collection
+*/
+/**
+* Find element in collection.
+*
+* @template T
+* @param {Collection<T>} collection
+* @param {Matcher<T>} matcher
+*
+* @return {Object}
+*/
+function find(collection, matcher) {
+	const matchFn = toMatcher(matcher);
+	let match;
+	forEach(collection, function(val, key) {
+		if (matchFn(val, key)) {
+			match = val;
+			return false;
+		}
+	});
+	return match;
+}
+/**
+* Find element index in collection.
+*
+* @template T
+* @param {Collection<T>} collection
+* @param {Matcher<T>} matcher
+*
+* @return {number | string | undefined}
+*/
+function findIndex(collection, matcher) {
+	const matchFn = toMatcher(matcher);
+	let idx = isArray(collection) ? -1 : void 0;
+	forEach(collection, function(val, key) {
+		if (matchFn(val, key)) {
+			idx = key;
+			return false;
+		}
+	});
+	return idx;
+}
+/**
+* Filter elements in collection.
+*
+* @template T
+* @param {Collection<T>} collection
+* @param {Matcher<T>} matcher
+*
+* @return {T[]} result
+*/
+function filter(collection, matcher) {
+	const matchFn = toMatcher(matcher);
+	let result = [];
+	forEach(collection, function(val, key) {
+		if (matchFn(val, key)) result.push(val);
+	});
+	return result;
+}
+/**
+* Iterate over collection; returning something
+* (non-undefined) will stop iteration.
+*
+* @template T
+* @param {Collection<T>} collection
+* @param { ((item: T, idx: number) => (boolean|void)) | ((item: T, key: string) => (boolean|void)) } iterator
+*
+* @return {T} return result that stopped the iteration
+*/
+function forEach(collection, iterator) {
+	let val, result;
+	if (isUndefined(collection)) return;
+	const convertKey = isArray(collection) ? toNum : identity;
+	for (let key in collection) if (has(collection, key)) {
+		val = collection[key];
+		result = iterator(val, convertKey(key));
+		if (result === false) return val;
+	}
+}
+/**
+* @template T
+* @param {Matcher<T>} matcher
+*
+* @return {MatchFn<T>}
+*/
+function toMatcher(matcher) {
+	return isFunction(matcher) ? matcher : (e) => {
+		return e === matcher;
+	};
+}
+function identity(arg) {
+	return arg;
+}
+function toNum(arg) {
+	return Number(arg);
+}
+/**
+* Convenience wrapper for `Object.assign`.
+*
+* @param {Object} target
+* @param {...Object} others
+*
+* @return {Object} the target
+*/
+function assign(target, ...others) {
+	return Object.assign(target, ...others);
+}
 //#endregion
 //#region node_modules/saxen/dist/index.esm.js
 var fromCharCode = String.fromCharCode;
@@ -9787,11 +10937,11 @@ BpmnModdle.prototype = Object.create(Moddle.prototype);
 * @returns {Promise<ParseResult, ParseError>}
 */
 BpmnModdle.prototype.fromXML = function(xmlStr, typeName, options) {
-	if (!isString(typeName)) {
+	if (!isString$2(typeName)) {
 		options = typeName;
 		typeName = "bpmn:Definitions";
 	}
-	var reader = new Reader(assign({
+	var reader = new Reader(assign$2({
 		model: this,
 		lax: true
 	}, options));
@@ -12752,7 +13902,7 @@ var packages = {
 	}
 };
 function simple(additionalPackages, options) {
-	return new BpmnModdle(assign({}, packages, additionalPackages), options);
+	return new BpmnModdle(assign$2({}, packages, additionalPackages), options);
 }
 //#endregion
 //#region node_modules/bpmn-js/lib/util/CompatibilityUtil.js
@@ -12766,7 +13916,7 @@ var DI_ERROR_MESSAGE = "Tried to access di from the businessObject. The di is av
 * @param {ModdleElement} businessObject
 */
 function ensureCompatDiRef(businessObject) {
-	if (!has(businessObject, "di")) Object.defineProperty(businessObject, "di", {
+	if (!has$3(businessObject, "di")) Object.defineProperty(businessObject, "di", {
 		enumerable: false,
 		get: function() {
 			throw new Error(DI_ERROR_MESSAGE);
@@ -12798,7 +13948,7 @@ function is(element, type) {
 * @return {ModdleElement}
 */
 function findDisplayCandidate(definitions) {
-	return find(definitions.rootElements, function(e) {
+	return find$2(definitions.rootElements, function(e) {
 		return is(e, "bpmn:Process") || is(e, "bpmn:Collaboration");
 	});
 }
@@ -12857,7 +14007,7 @@ function BpmnTreeWalker(handler) {
 	}
 	function handlePlane(plane) {
 		registerDi(plane);
-		forEach(plane.planeElement, handlePlaneElement);
+		forEach$4(plane.planeElement, handlePlaneElement);
 	}
 	function handlePlaneElement(planeElement) {
 		registerDi(planeElement);
@@ -12911,7 +14061,7 @@ function BpmnTreeWalker(handler) {
 		handled(process);
 	}
 	function handleUnhandledProcesses(rootElements, ctx) {
-		filter(rootElements, function(e) {
+		filter$2(rootElements, function(e) {
 			return !isHandled(e) && is(e, "bpmn:Process") && e.laneSets;
 		}).forEach(contextual(handleProcess, ctx));
 	}
@@ -12919,7 +14069,7 @@ function BpmnTreeWalker(handler) {
 		visitIfDi(messageFlow, context);
 	}
 	function handleMessageFlows(messageFlows, context) {
-		forEach(messageFlows, contextual(handleMessageFlow, context));
+		forEach$4(messageFlows, contextual(handleMessageFlow, context));
 	}
 	function handleDataAssociation(association, context) {
 		visitIfDi(association, context);
@@ -12934,7 +14084,7 @@ function BpmnTreeWalker(handler) {
 		visitIfDi(artifact, context);
 	}
 	function handleArtifacts(artifacts, context) {
-		forEach(artifacts, function(e) {
+		forEach$4(artifacts, function(e) {
 			if (is(e, "bpmn:Association")) deferred.push(function() {
 				handleArtifact(e, context);
 			});
@@ -12943,8 +14093,8 @@ function BpmnTreeWalker(handler) {
 	}
 	function handleIoSpecification(ioSpecification, context) {
 		if (!ioSpecification) return;
-		forEach(ioSpecification.dataInputs, contextual(handleDataInput, context));
-		forEach(ioSpecification.dataOutputs, contextual(handleDataOutput, context));
+		forEach$4(ioSpecification.dataInputs, contextual(handleDataInput, context));
+		forEach$4(ioSpecification.dataOutputs, contextual(handleDataOutput, context));
 	}
 	var handleSubProcess = this.handleSubProcess = function handleSubProcess(subProcess, context) {
 		handleFlowElementsContainer(subProcess, context);
@@ -12955,8 +14105,8 @@ function BpmnTreeWalker(handler) {
 		if (is(flowNode, "bpmn:SubProcess")) handleSubProcess(flowNode, childCtx || context);
 		if (is(flowNode, "bpmn:Activity")) handleIoSpecification(flowNode.ioSpecification, context);
 		deferred.push(function() {
-			forEach(flowNode.dataInputAssociations, contextual(handleDataAssociation, context));
-			forEach(flowNode.dataOutputAssociations, contextual(handleDataAssociation, context));
+			forEach$4(flowNode.dataInputAssociations, contextual(handleDataAssociation, context));
+			forEach$4(flowNode.dataOutputAssociations, contextual(handleDataAssociation, context));
 		});
 	}
 	function handleSequenceFlow(sequenceFlow, context) {
@@ -12973,17 +14123,17 @@ function BpmnTreeWalker(handler) {
 		});
 	}
 	function handleLaneSet(laneSet, context) {
-		forEach(laneSet.lanes, contextual(handleLane, context));
+		forEach$4(laneSet.lanes, contextual(handleLane, context));
 	}
 	function handleLaneSets(laneSets, context) {
-		forEach(laneSets, contextual(handleLaneSet, context));
+		forEach$4(laneSets, contextual(handleLaneSet, context));
 	}
 	function handleFlowElementsContainer(container, context) {
 		handleFlowElements(container.flowElements, context);
 		if (container.laneSets) handleLaneSets(container.laneSets, context);
 	}
 	function handleFlowElements(flowElements, context) {
-		forEach(flowElements, function(flowElement) {
+		forEach$4(flowElements, function(flowElement) {
 			if (is(flowElement, "bpmn:SequenceFlow")) deferred.push(function() {
 				handleSequenceFlow(flowElement, context);
 			});
@@ -13005,14 +14155,14 @@ function BpmnTreeWalker(handler) {
 		if (process) handleProcess(process, newCtx || context);
 	}
 	function handleCollaboration(collaboration, context) {
-		forEach(collaboration.participants, contextual(handleParticipant, context));
+		forEach$4(collaboration.participants, contextual(handleParticipant, context));
 		handleArtifacts(collaboration.artifacts, context);
 		deferred.push(function() {
 			handleMessageFlows(collaboration.messageFlows, context);
 		});
 	}
 	function wireFlowNodeRefs(lane) {
-		forEach(lane.flowNodeRef, function(flowNode) {
+		forEach$4(lane.flowNodeRef, function(flowNode) {
 			var lanes = flowNode.get("lanes");
 			if (lanes) lanes.push(lane);
 		});
@@ -13069,7 +14219,7 @@ function importBpmnDiagram(diagram, definitions, bpmnDiagram) {
 		bpmnDiagram = bpmnDiagram || definitions.diagrams && definitions.diagrams[0];
 		var diagramsToImport = getDiagramsToImport(definitions, bpmnDiagram);
 		if (!diagramsToImport) throw new Error("no diagram to display");
-		forEach(diagramsToImport, function(diagram) {
+		forEach$4(diagramsToImport, function(diagram) {
 			walker.handleDefinitions(definitions, diagram);
 		});
 		var rootId = bpmnDiagram.plane.bpmnElement.id;
@@ -13108,15 +14258,15 @@ function getDiagramsToImport(definitions, bpmnDiagram) {
 	if (!is$1(bpmnElement, "bpmn:Process") && !is$1(bpmnElement, "bpmn:Collaboration")) rootElement = findRootProcess(bpmnElement);
 	var collaboration;
 	if (is$1(rootElement, "bpmn:Collaboration")) collaboration = rootElement;
-	else collaboration = find(definitions.rootElements, function(element) {
+	else collaboration = find$2(definitions.rootElements, function(element) {
 		if (!is$1(element, "bpmn:Collaboration")) return;
-		return find(element.participants, function(participant) {
+		return find$2(element.participants, function(participant) {
 			return participant.processRef === rootElement;
 		});
 	});
 	var rootElements = [rootElement];
 	if (collaboration) {
-		rootElements = map(collaboration.participants, function(participant) {
+		rootElements = map$1(collaboration.participants, function(participant) {
 			return participant.processRef;
 		});
 		rootElements.push(collaboration);
@@ -13124,7 +14274,7 @@ function getDiagramsToImport(definitions, bpmnDiagram) {
 	var allChildren = selfAndAllFlowElements(rootElements);
 	var diagramsToImport = [bpmnDiagram];
 	var handledElements = [bpmnElement];
-	forEach(definitions.diagrams, function(diagram) {
+	forEach$4(definitions.diagrams, function(diagram) {
 		if (!diagram.plane) return;
 		var businessObject = diagram.plane.bpmnElement;
 		if (allChildren.indexOf(businessObject) !== -1 && handledElements.indexOf(businessObject) === -1) {
@@ -13136,7 +14286,7 @@ function getDiagramsToImport(definitions, bpmnDiagram) {
 }
 function selfAndAllFlowElements(elements) {
 	var result = [];
-	forEach(elements, function(element) {
+	forEach$4(elements, function(element) {
 		if (!element) return;
 		result.push(element);
 		result = result.concat(selfAndAllFlowElements(element.flowElements));
@@ -13184,11 +14334,11 @@ var LIGHTBOX_MARKUP = "<div class=\"bjs-powered-by-lightbox\"><div class=\"backd
 var lightbox;
 function createLightbox() {
 	lightbox = domify$1(LIGHTBOX_MARKUP);
-	assign$1(lightbox, LIGHTBOX_STYLES);
-	assign$1(query("svg", lightbox), LOGO_STYLES);
-	assign$1(query(".backdrop", lightbox), BACKDROP_STYLES);
-	assign$1(query(".notice", lightbox), NOTICE_STYLES);
-	assign$1(query(".link", lightbox), LINK_STYLES, {
+	assign$3(lightbox, LIGHTBOX_STYLES);
+	assign$3(query("svg", lightbox), LOGO_STYLES);
+	assign$3(query(".backdrop", lightbox), BACKDROP_STYLES);
+	assign$3(query(".notice", lightbox), NOTICE_STYLES);
+	assign$3(query(".link", lightbox), LINK_STYLES, {
 		"margin": "15px 20px 15px 10px",
 		"alignSelf": "center"
 	});
@@ -13319,7 +14469,7 @@ function BaseViewer(options) {
 	/**
 	* @type {BaseViewerOptions}
 	*/
-	options = assign({}, DEFAULT_OPTIONS, options);
+	options = assign$6({}, DEFAULT_OPTIONS, options);
 	/**
 	* @type {Moddle}
 	*/
@@ -13720,8 +14870,8 @@ BaseViewer.prototype._init = function(container, moddle, options) {
 		moddle: ["value", moddle]
 	}];
 	const diagramModules = [].concat(staticModules, baseModules, additionalModules);
-	const diagramOptions = assign(omit(options, ["additionalModules"]), {
-		canvas: assign({}, options.canvas, { container }),
+	const diagramOptions = assign$6(omit(options, ["additionalModules"]), {
+		canvas: assign$6({}, options.canvas, { container }),
 		modules: diagramModules
 	});
 	Diagram.call(this, diagramOptions);
@@ -13745,7 +14895,7 @@ BaseViewer.prototype._emit = function(type, event) {
 */
 BaseViewer.prototype._createContainer = function(options) {
 	const container = domify$1("<div class=\"bjs-container\"></div>");
-	assign$1(container, {
+	assign$3(container, {
 		width: ensureUnit(options.width),
 		height: ensureUnit(options.height),
 		position: options.position
@@ -13758,7 +14908,7 @@ BaseViewer.prototype._createContainer = function(options) {
 * @return {Moddle}
 */
 BaseViewer.prototype._createModdle = function(options) {
-	return new simple(assign({}, this._moddleExtensions, options.moddleExtensions));
+	return new simple(assign$6({}, this._moddleExtensions, options.moddleExtensions));
 };
 BaseViewer.prototype._modules = [];
 function addWarningsToError(err, warningsAry) {
@@ -13779,7 +14929,7 @@ var DEFAULT_OPTIONS = {
 * Ensure the passed argument is a proper unit (defaulting to px)
 */
 function ensureUnit(val) {
-	return val + (isNumber(val) ? "px" : "");
+	return val + (isNumber$1(val) ? "px" : "");
 }
 /**
 * Find BPMNDiagram in definitions by ID
@@ -13791,7 +14941,7 @@ function ensureUnit(val) {
 */
 function findBPMNDiagram(definitions, diagramId) {
 	if (!diagramId) return null;
-	return find(definitions.diagrams, function(element) {
+	return find$2(definitions.diagrams, function(element) {
 		return element.id === diagramId;
 	}) || null;
 }
@@ -13805,8 +14955,8 @@ function findBPMNDiagram(definitions, diagramId) {
 */
 function addProjectLogo(container) {
 	const linkElement = domify$1("<a href=\"http://bpmn.io\" target=\"_blank\" class=\"bjs-powered-by\" title=\"Powered by bpmn.io\" >" + BPMNIO_IMG + "</a>");
-	assign$1(query("svg", linkElement), LOGO_STYLES);
-	assign$1(linkElement, LINK_STYLES, {
+	assign$3(query("svg", linkElement), LOGO_STYLES);
+	assign$3(linkElement, LINK_STYLES, {
 		position: "absolute",
 		bottom: "15px",
 		right: "15px",
@@ -13902,7 +15052,7 @@ var DEFAULT_CONFIG = {
 */
 function KeyboardMove(config, keyboard, canvas) {
 	var self = this;
-	this._config = assign({}, DEFAULT_CONFIG, config || {});
+	this._config = assign$4({}, DEFAULT_CONFIG, config || {});
 	keyboard.addListener(arrowsListener);
 	function arrowsListener(context) {
 		var event = context.keyEvent, config = self._config;
@@ -14023,22 +15173,22 @@ function MoveCanvas(eventBus, canvas) {
 		}
 		event.preventDefault();
 	}
-	function handleEnd(event$1) {
-		event.unbind(document, "mousemove", handleMove);
-		event.unbind(document, "mouseup", handleEnd);
+	function handleEnd(event) {
+		event$1.unbind(document, "mousemove", handleMove);
+		event$1.unbind(document, "mouseup", handleEnd);
 		context = null;
 		unset();
 	}
-	function handleStart(event$2) {
-		if (closest(event$2.target, ".djs-draggable")) return;
-		var button = event$2.button;
-		if (button >= 2 || event$2.ctrlKey || event$2.shiftKey || event$2.altKey) return;
+	function handleStart(event) {
+		if (closest$1(event.target, ".djs-draggable")) return;
+		var button = event.button;
+		if (button >= 2 || event.ctrlKey || event.shiftKey || event.altKey) return;
 		context = {
 			button,
-			start: toPoint(event$2)
+			start: toPoint(event)
 		};
-		event.bind(document, "mousemove", handleMove);
-		event.bind(document, "mouseup", handleEnd);
+		event$1.bind(document, "mousemove", handleMove);
+		event$1.bind(document, "mouseup", handleEnd);
 		return true;
 	}
 	this.isActive = function() {
@@ -14127,7 +15277,7 @@ function ZoomScroll(config, eventBus, canvas) {
 	this._enabled = false;
 	this._canvas = canvas;
 	this._container = canvas._container;
-	this._handleWheel = bind(this._handleWheel, this);
+	this._handleWheel = bind$3(this._handleWheel, this);
 	this._totalDelta = 0;
 	this._scale = config.scale || DEFAULT_SCALE;
 	var self = this;
@@ -14164,7 +15314,7 @@ ZoomScroll.prototype.zoom = function zoom(delta, position) {
 	}
 };
 ZoomScroll.prototype._handleWheel = function handleWheel(event) {
-	if (closest(event.target, ".djs-scrollable", true)) return;
+	if (closest$1(event.target, ".djs-scrollable", true)) return;
 	var element = this._container;
 	event.preventDefault();
 	var isZoom = event.ctrlKey || isMac() && event.metaKey;
@@ -14228,7 +15378,7 @@ ZoomScroll.prototype.toggle = function toggle(newEnabled) {
 	var handleWheel = this._handleWheel;
 	var oldEnabled = this._enabled;
 	if (typeof newEnabled === "undefined") newEnabled = !oldEnabled;
-	if (oldEnabled !== newEnabled) event[newEnabled ? "bind" : "unbind"](element, "wheel", handleWheel, false);
+	if (oldEnabled !== newEnabled) event$1[newEnabled ? "bind" : "unbind"](element, "wheel", handleWheel, false);
 	this._enabled = newEnabled;
 	return newEnabled;
 };

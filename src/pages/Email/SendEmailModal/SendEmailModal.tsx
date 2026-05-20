@@ -79,7 +79,7 @@ export default function SendEmailModal(props: IAddEmailModelProps) {
     () =>
       ({
         name: data?.name || "",
-        // emailTo: "nguyenngoctrung666@gmail.com",
+        // emailTo: "buivanchuong991510@gmail.com",
         //   emailTo: data?.emailFrom || "",
         emailTos: [],
         title: data?.title || "",

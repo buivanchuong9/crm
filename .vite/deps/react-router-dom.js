@@ -1,11 +1,11 @@
 import { o as __toESM } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { t as require_react_dom } from "./react-dom-J2wNTDgO.js";
+import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
 //#region node_modules/@remix-run/router/dist/router.js
 var import_react = /* @__PURE__ */ __toESM(require_react());
 var import_react_dom = /* @__PURE__ */ __toESM(require_react_dom());
 /**
-* @remix-run/router v1.23.0
+* @remix-run/router v1.23.2
 *
 * Copyright (c) Remix Software Inc.
 *
@@ -649,6 +649,8 @@ function stripBasename(pathname, basename) {
 	if (nextChar && nextChar !== "/") return null;
 	return pathname.slice(startIndex) || "/";
 }
+var ABSOLUTE_URL_REGEX$1 = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
+var isAbsoluteUrl = (url) => ABSOLUTE_URL_REGEX$1.test(url);
 /**
 * Returns a resolved path object relative to the given pathname.
 *
@@ -657,8 +659,20 @@ function stripBasename(pathname, basename) {
 function resolvePath(to, fromPathname) {
 	if (fromPathname === void 0) fromPathname = "/";
 	let { pathname: toPathname, search = "", hash = "" } = typeof to === "string" ? parsePath(to) : to;
+	let pathname;
+	if (toPathname) if (isAbsoluteUrl(toPathname)) pathname = toPathname;
+	else {
+		if (toPathname.includes("//")) {
+			let oldPathname = toPathname;
+			toPathname = toPathname.replace(/\/\/+/g, "/");
+			warning(false, "Pathnames cannot have embedded double slashes - normalizing " + (oldPathname + " -> " + toPathname));
+		}
+		if (toPathname.startsWith("/")) pathname = resolvePathname(toPathname.substring(1), "/");
+		else pathname = resolvePathname(toPathname, fromPathname);
+	}
+	else pathname = fromPathname;
 	return {
-		pathname: toPathname ? toPathname.startsWith("/") ? toPathname : resolvePathname(toPathname, fromPathname) : fromPathname,
+		pathname,
 		search: normalizeSearch(search),
 		hash: normalizeHash(hash)
 	};
@@ -983,7 +997,7 @@ var IDLE_BLOCKER = {
 	reset: void 0,
 	location: void 0
 };
-var ABSOLUTE_URL_REGEX$1 = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
+var ABSOLUTE_URL_REGEX$2 = /^(?:[a-z][a-z0-9+.-]*:|\/\/)/i;
 var defaultMapRouteProperties = (route) => ({ hasErrorBoundary: Boolean(route.hasErrorBoundary) });
 var TRANSITIONS_STORAGE_KEY = "remix-router-transitions";
 /**
@@ -1419,7 +1433,7 @@ function createRouter(init) {
 		if (isRedirectResult(result)) {
 			let replace;
 			if (opts && opts.replace != null) replace = opts.replace;
-			else replace = normalizeRedirectLocation(result.response.headers.get("Location"), new URL(request.url), basename) === state.location.pathname + state.location.search;
+			else replace = normalizeRedirectLocation(result.response.headers.get("Location"), new URL(request.url), basename, init.history) === state.location.pathname + state.location.search;
 			await startRedirectNavigation(request, result, true, {
 				submission,
 				replace
@@ -1762,12 +1776,12 @@ function createRouter(init) {
 		if (redirect.response.headers.has("X-Remix-Revalidate")) isRevalidationRequired = true;
 		let location = redirect.response.headers.get("Location");
 		invariant(location, "Expected a Location header on the redirect Response");
-		location = normalizeRedirectLocation(location, new URL(request.url), basename);
+		location = normalizeRedirectLocation(location, new URL(request.url), basename, init.history);
 		let redirectLocation = createLocation(state.location, location, { _isRedirect: true });
 		if (isBrowser) {
 			let isDocumentReload = false;
 			if (redirect.response.headers.has("X-Remix-Reload-Document")) isDocumentReload = true;
-			else if (ABSOLUTE_URL_REGEX$1.test(location)) {
+			else if (ABSOLUTE_URL_REGEX$2.test(location)) {
 				const url = init.history.createURL(location);
 				isDocumentReload = url.origin !== routerWindow.location.origin || stripBasename(url.pathname, basename) == null;
 			}
@@ -2580,20 +2594,37 @@ async function convertDataStrategyResultToDataResult(dataStrategyResult) {
 function normalizeRelativeRoutingRedirectResponse(response, request, routeId, matches, basename, v7_relativeSplatPath) {
 	let location = response.headers.get("Location");
 	invariant(location, "Redirects returned/thrown from loaders/actions must have a Location header");
-	if (!ABSOLUTE_URL_REGEX$1.test(location)) {
+	if (!ABSOLUTE_URL_REGEX$2.test(location)) {
 		let trimmedMatches = matches.slice(0, matches.findIndex((m) => m.route.id === routeId) + 1);
 		location = normalizeTo(new URL(request.url), trimmedMatches, basename, true, location, v7_relativeSplatPath);
 		response.headers.set("Location", location);
 	}
 	return response;
 }
-function normalizeRedirectLocation(location, currentUrl, basename) {
-	if (ABSOLUTE_URL_REGEX$1.test(location)) {
+function normalizeRedirectLocation(location, currentUrl, basename, historyInstance) {
+	let invalidProtocols = [
+		"about:",
+		"blob:",
+		"chrome:",
+		"chrome-untrusted:",
+		"content:",
+		"data:",
+		"devtools:",
+		"file:",
+		"filesystem:",
+		"javascript:"
+	];
+	if (ABSOLUTE_URL_REGEX$2.test(location)) {
 		let normalizedLocation = location;
 		let url = normalizedLocation.startsWith("//") ? new URL(currentUrl.protocol + normalizedLocation) : new URL(normalizedLocation);
+		if (invalidProtocols.includes(url.protocol)) throw new Error("Invalid redirect location");
 		let isSameBasename = stripBasename(url.pathname, basename) != null;
 		if (url.origin === currentUrl.origin && isSameBasename) return url.pathname + url.search + url.hash;
 	}
+	try {
+		let url = historyInstance.createURL(location);
+		if (invalidProtocols.includes(url.protocol)) throw new Error("Invalid redirect location");
+	} catch (e) {}
 	return location;
 }
 function createClientSideRequest(history, location, signal, submission) {
@@ -2982,7 +3013,7 @@ function persistAppliedTransitions(_window, transitions) {
 //#endregion
 //#region node_modules/react-router/dist/index.js
 /**
-* React Router v6.30.1
+* React Router v6.30.3
 *
 * Copyright (c) Remix Software Inc.
 *
@@ -3908,7 +3939,7 @@ function createMemoryRouter(routes, opts) {
 //#endregion
 //#region node_modules/react-router-dom/dist/index.js
 /**
-* React Router DOM v6.30.1
+* React Router DOM v6.30.3
 *
 * Copyright (c) Remix Software Inc.
 *

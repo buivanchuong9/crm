@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import TitleAction from "components/titleAction/titleAction";
-// import PositionList from "pages/SettingCustomer/partials/Position/PositionList";
-import PositionList from "pages/SettingContract/partials/Position/PositionList";
 import ContactPipelineList from "./ContactPipeline/ContactPipelineList";
 import "./SettingContactList.scss";
 import ContactAttributeList from "./ContactAttribute/ContactAttributeList";
+
+const PositionList = () => null;
 
 export default function SettingContactList() {
   document.title = "Cài đặt người liên hệ";

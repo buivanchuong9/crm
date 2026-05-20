@@ -14,7 +14,7 @@ import NoImageChat from "assets/images/img-no-chatting.png";
 import ListChat from "./partials/ListChat";
 import ListComment from "./partials/ListComment";
 import "./SocialCrmFacebook.scss";
-import AddCustomerPersonModal from "pages/CustomerPerson/partials/AddCustomerPersonModal";
+import AddPatientRecordModal from "pages/PatientRecord/partials/AddPatientRecordModal";
 
 export default function SocialCrmFacebook() {
   document.title = "Kết nối với facebook";
@@ -234,7 +234,7 @@ export default function SocialCrmFacebook() {
         </div>
       </div>
 
-      <AddCustomerPersonModal
+      <AddPatientRecordModal
         onShow={showModalAdd}
         onHide={() => setShowModalAdd(false)}
         nameCustomer={dataFanpageDialog?.name}

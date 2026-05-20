@@ -1,4 +1,4 @@
-import { C as isIndexedDBAvailable, S as getModularInstance, b as FirebaseError, c as _getProvider, f as getApp, g as registerVersion, l as _registerComponent, v as Component, w as validateIndexedDBOpenable, x as areCookiesEnabled, y as ErrorFactory } from "./index.esm2017-B2mDTt43.js";
+import { C as isIndexedDBAvailable, S as getModularInstance, b as FirebaseError, c as _getProvider, f as getApp, g as registerVersion, l as _registerComponent, v as Component, w as validateIndexedDBOpenable, x as areCookiesEnabled, y as ErrorFactory } from "./index.esm2017-CsFHauUC.js";
 //#region node_modules/@firebase/installations/node_modules/idb/build/wrap-idb-value.js
 var instanceOfAny$1 = (object, constructors) => constructors.some((c) => object instanceof c);
 var idbProxyableTypes$1;
@@ -203,6 +203,22 @@ var PACKAGE_VERSION = `w:${version$1}`;
 var INTERNAL_AUTH_VERSION = "FIS_v2";
 var INSTALLATIONS_API_URL = "https://firebaseinstallations.googleapis.com/v1";
 var TOKEN_EXPIRATION_BUFFER = 3600 * 1e3;
+/**
+* @license
+* Copyright 2019 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 var ERROR_FACTORY$1 = new ErrorFactory("installations", "Installations", {
 	["missing-app-config-values"]: "Missing App configuration value: \"{$valueName}\"",
 	["not-registered"]: "Firebase Installation is not registered.",
@@ -893,6 +909,70 @@ async function completeInstallationRegistration(installations) {
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+/**
+* @license
+* Copyright 2019 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+* @license
+* Copyright 2019 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+* @license
+* Copyright 2020 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+/**
+* @license
+* Copyright 2019 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 function extractAppConfig$1(app) {
 	if (!app || !app.options) throw getMissingValueError$1("App Configuration");
 	if (!app.name) throw getMissingValueError$1("App Name");
@@ -1372,6 +1452,22 @@ async function dbRemove(firebaseDependencies) {
 function getKey({ appConfig }) {
 	return appConfig.appId;
 }
+/**
+* @license
+* Copyright 2017 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 var ERROR_FACTORY = new ErrorFactory("messaging", "Messaging", {
 	["missing-app-config-values"]: "Missing App configuration value: \"{$valueName}\"",
 	["only-available-in-window"]: "This method is available in a Window context.",

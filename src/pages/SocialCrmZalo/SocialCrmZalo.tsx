@@ -16,7 +16,7 @@ import ListChat from "./partials/ListChat";
 import "./SocialCrmZalo.scss";
 import ZaloOAService from "services/ZaloOAService";
 import { IZaloFollowerFilterRequest } from "model/zaloOA/ZaloOARequest";
-import AddCustomerPersonModal from "pages/CustomerPerson/partials/AddCustomerPersonModal";
+import AddPatientRecordModal from "pages/PatientRecord/partials/AddPatientRecordModal";
 
 export default function SocialCrmZalo() {
   document.title = "Kết nối với Zalo";
@@ -310,7 +310,7 @@ export default function SocialCrmZalo() {
               </div>
           </div>
         </div>
-        <AddCustomerPersonModal
+        <AddPatientRecordModal
           onShow={showModalAdd}
           onHide={() => setShowModalAdd(false)}
           nameCustomer= {dataDialog?.displayName}

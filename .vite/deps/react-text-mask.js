@@ -404,7 +404,7 @@ var require_reactTextMask = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 			function(e, t, r) {
 				"use strict";
 				function n(e, t, r, n, i, a, u, s) {
-					if (o(t), !e) {
+					if (!e) {
 						var l;
 						if (void 0 === t) l = /* @__PURE__ */ new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");
 						else {
@@ -423,7 +423,6 @@ var require_reactTextMask = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 						throw l.framesToPop = 1, l;
 					}
 				}
-				var o = function(e) {};
 				e.exports = n;
 			},
 			function(e, t, r) {

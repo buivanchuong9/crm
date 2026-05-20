@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import urls from "configs/urls";
 import { IMenuItem } from "model/OtherModel";
 import TitleAction from "components/titleAction/titleAction";
-import "./ReportCommon.scss";
+import "./MedicalAIStatistics.scss";
 
-export default function ReportCommon() {
+export default function MedicalAIStatistics() {
   document.title = "Báo cáo";
 
   const menuReport: IMenuItem[] = [

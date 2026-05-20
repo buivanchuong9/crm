@@ -1,6 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import Navigation from "components/navigation/navigation";
-import LogoMenu from "assets/images/logo-menu.svg";
 import { menu } from "configs/routes";
 import Button from "components/button/button";
 import Icon from "components/icon";
@@ -12,6 +11,7 @@ import { fadeIn, fadeOut } from "reborn-util";
 import { useWindowDimensions } from "utils/hookCustom";
 import { getDomain } from "reborn-util";
 import "./sidebar.scss";
+import LogoImg from "assets/images/logo-sidebar.png";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -53,7 +53,7 @@ export default function Sidebar() {
       >
         <div className="sidebar-logo d-flex align-items-center justify-content-between">
           <Link to="/" className="logo">
-            {logoOrganization ? <img src={logoOrganization} style={{ height: "100%", width: "auto" }} /> : <LogoMenu />}
+            <img src={LogoImg} style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "4px" }} alt="Logo" />
           </Link>
           {isMouseOver || !isCollapsedSidebar ? (
             <Button

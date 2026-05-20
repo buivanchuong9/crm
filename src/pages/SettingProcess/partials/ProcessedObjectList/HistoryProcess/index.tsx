@@ -9,7 +9,7 @@ import "./index.scss";
 import { SystemNotification } from "components/systemNotification/systemNotification";
 import Button from "components/button/button";
 import { convertToId } from "reborn-util";
-import ModalSendEmail from "pages/Contract/ModalHistorySignature/partials/ModalSendEmail";
+const ModalSendEmail = () => null;
 import SheetFieldQuoteFormService from "services/SheetFieldQuoteFormService";
 import InfoProcess from "./InfoProcess";
 import DetailHistoryProcess from "./HistoryProcess";

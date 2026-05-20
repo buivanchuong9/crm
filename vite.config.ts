@@ -101,7 +101,7 @@ export default defineConfig(({ mode }) => {
 
     server: {
       port: 4000,
-      open: true,
+      open: "/crm/",
     },
 
     build: {

@@ -13,7 +13,7 @@ import ContactAttributeService from "services/ContactAttributeService";
 import _, { forEach } from "lodash";
 import Button from "components/button/button";
 import Loading from "components/loading";
-import FormViewerComponent from "pages/BPM/BpmForm/FormViewer";
+import FormViewerComponent from "pages/AIImageAnalysis/BpmForm/FormViewer";
 import ObjectGroupService from "services/ObjectGroupService";
 import { mapConfigData } from "utils/mapConfigData";
 

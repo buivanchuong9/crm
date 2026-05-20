@@ -1,240 +1,123 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import Icon from "components/icon";
-import Button from "components/button/button";
-import OverView from "./partials/overview";
-import Shortcut from "./partials/shortcut";
-import Warehouse from "./partials/warehouse";
-import EventTransaction from "./partials/eventTransaction";
-import VideoHelp from "./partials/videoHelp/videoHelp";
-import ReportRevenue from "./partials/reportRevenue";
-import ReportProduct from "./partials/reportService";
-import InfoBox from "./partials/infoBox";
-import Banner from "./partials/banner";
-import { useWindowDimensions } from "utils/hookCustom";
-import { getDomain } from "reborn-util";
-import { getRootDomain, showToast } from "utils/common";
-import { ContextType, UserContext } from "contexts/userContext";
 import "./index.scss";
-import ReportChartService from "services/ReportChartService";
-import DashboardInvoice from "components/ChartComponent/partials/DashboardInvoice/DashboardInvoice";
-import DashboardCustomer from "components/ChartComponent/partials/DashboardCustomer/DashboardCustomer";
-import DashboardReportRevenue from "components/ChartComponent/partials/DashboardReportRevenue/DashboardReportRevenue";
 
 export default function Dashboard() {
   const { t } = useTranslation();
 
   document.title = t(`pageDashboard.title`);
 
-  const { width } = useWindowDimensions();
+  const dashboardStats = [
+    { label: "Ca nặng", value: 12, note: "+2 so với hôm qua", tone: "danger" },
+    { label: "Ca vừa", value: 34, note: "-5 so với hôm qua", tone: "warning" },
+    { label: "Ca nhẹ", value: 89, note: "Bình thường", tone: "info" },
+  ];
 
-  const { setIsShowFeedback } = useContext(UserContext) as ContextType;
+  const activeCases = [
+    { name: "Trần Thị Thu Nhi", type: "Nặng", typeKey: "nang", status: "Phản ứng thuốc", updated: "10 phút trước" },
+    { name: "Lê Văn Hùng", type: "Vừa", typeKey: "vua", status: "Tái khám viêm da", updated: "45 phút trước" },
+    { name: "Phạm Thị Lan Anh", type: "Nhẹ", typeKey: "nhe", status: "Hỏi kết quả", updated: "2 giờ trước" },
+  ];
 
-  const sourceDomain = getDomain(decodeURIComponent(document.location.href));
-  const rootDomain = getRootDomain(sourceDomain);
+  const quickMessages = [
+    {
+      sender: "Trần Thị Thu Nhi",
+      text: "Bác sĩ ơi, vết thương của em sưng to và rất đau. Nên làm gì ạ?",
+      time: "10:05 AM",
+    },
+    {
+      sender: "Bùi Văn Minh",
+      text: "Chào bác sĩ, em có thể gửi ảnh chụp cận cảnh vết thương qua đây không?",
+      time: "10:28 AM",
+    },
+  ];
 
-  const checkTNTechProvider = (sourceDomain: string) => {
-    switch (sourceDomain) {
-      case "tnteco.reborn.vn":
-      case "tnpm.reborn.vn":
-      case "imc.reborn.vn":
-      case "nhatviet.reborn.vn":
-      case "cone.reborn.vn":
-      case "crm.tnteco.vn":
-      case "crm.apphub.vn":
-        return true;
-      default:
-        return false;
-    }
-  };
-
-  const checkNotTNTechProvider = (sourceDomain: string) => {
-    return (
-      sourceDomain !== "tnteco.reborn.vn" &&
-      sourceDomain !== "tnpm.reborn.vn" &&
-      sourceDomain !== "imc.reborn.vn" &&
-      sourceDomain !== "nhatviet.reborn.vn" &&
-      sourceDomain !== "cone.reborn.vn" &&
-      sourceDomain !== "crm.tnteco.vn" &&
-      sourceDomain !== "crm.apphub.vn"
-    );
-  };
-
-  const [listReportDashboard, setListReportDashboard] = useState([]);
-
-  const getListChart = async () => {
-    const response = await ReportChartService.listArtifactByEmployee();
-
-    if (response.code === 0) {
-      const result = response.result;
-      setListReportDashboard(result || []);
-    } else {
-      // showToast(response.message ?? "Có lỗi xảy ra. Vui lòng thử lại sau", "error");
-    }
-  };
-
-  useEffect(() => {
-    getListChart();
-  }, []);
-
-  const typeChart = (type, width) => {
-    switch (type) {
-      // case "pie_chart":
-      //   return <PieChart/>
-
-      // case "basic_column":
-      //   return <BasicColumn/>
-
-      // case "column":
-      //   return <Column/>
-
-      // case "line_chart":
-      //   return <LineChart/>
-
-      // case "stacked_bar":
-      //   return <StackedBar/>
-
-      case "dashboard_invoice":
-        return (
-          <div style={{ width: `${width === 50 ? "calc(50% - 1.4rem)" : "100%"}` }}>
-            <DashboardInvoice />
-          </div>
-        );
-
-      case "dashboard_customer":
-        if (sourceDomain != "tnteco.reborn.vn") {
-          return (
-            <div style={{ width: `${width === 50 ? "calc(50% - 1.4rem)" : "100%"}` }}>
-              <DashboardCustomer />
-            </div>
-          );
-        } else {
-          return "";
-        }
-
-      case "dashboard_report_revenue":
-        return (
-          <div style={{ width: `${width === 50 ? "calc(50% - 1.4rem)" : "100%"}` }}>
-            <DashboardReportRevenue />
-          </div>
-        );
-
-      default:
-        return "";
-    }
-  };
+  const todoItems = [
+    { text: "Duyệt hồ sơ bệnh nhân P.T.Nhi", time: "Hạn: 9:20 AM" },
+    { text: "Gọi điện hỗ trợ bệnh nhân T.T. Nhi", time: "Hạn: 11:00 AM" },
+    { text: "Lên lịch hẹn tái khám cho Lê Văn Hùng", time: "Hạn: 3:00 PM" },
+  ];
 
   return (
-    <div className="page-content page-dashboard d-flex align-items-start justify-content-between">
-      <div className={`page-dashboard__left`} style={sourceDomain != "tnteco.reborn.vn" ? { width: "calc(100% - 34.8rem)" } : { width: "100%" }}>
-        {width > 991 && (
-          <Fragment>
-            {/* <OverView />
-            <ReportRevenue />
-            <ReportProduct /> */}
-
-            {listReportDashboard && listReportDashboard.length > 0 ? (
-              <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
-                {listReportDashboard.map((item, index) => typeChart(item.code, item.width))}
-              </div>
-            ) : null}
-          </Fragment>
-        )}
-
-        {rootDomain == "reborn.vn" && (
-          <Fragment>
-            {sourceDomain != "tnteco.reborn.vn" && (
-              <>
-                <InfoBox />
-                <div className="d-flex align-items-center justify-content-center" style={{ gap: "2rem" }}>
-                  <Button
-                    type="button"
-                    color="primary"
-                    className="btn-question"
-                    onClick={(e) => {
-                      e && e.preventDefault();
-                      window.open("https://ecosystem.reborn.vn/ho-tro/support-crm?query=@linkquestion", "_blank");
-                    }}
-                  >
-                    <Icon name="Chat" /> Những câu hỏi thường gặp
-                  </Button>
-                  <Button
-                    type="button"
-                    color="primary"
-                    className="btn-question"
-                    onClick={(e) => {
-                      e && e.preventDefault();
-                      setIsShowFeedback(true);
-                    }}
-                  >
-                    <Icon name="Feedback" /> Góp ý cải tiến
-                  </Button>
-                </div>
-              </>
-            )}
-          </Fragment>
-        )}
-      </div>
-      {sourceDomain != "tnteco.reborn.vn" && (
-        // {rootDomain != "tnteco.reborn.vn" && ( nếu là tnteco thì ẩn phần này
-        <div className="page-dashboard__right">
-          <Shortcut />
-
-          {sourceDomain == "dailyspa.reborn.vn" || sourceDomain == "novacell.reborn.vn" || checkTNTechProvider(sourceDomain) ? (
-            <Fragment>
-              {width < 991 && (
-                <Fragment>
-                  <OverView />
-                  <ReportRevenue />
-                  <ReportProduct />
-                </Fragment>
-              )}
-              {checkNotTNTechProvider(sourceDomain) && (
-                <div className="card-box banner__dashboard">
-                  <Banner />
-                </div>
-              )}
-              {/* <Warehouse /> */}
-              {/* <EventTransaction /> */}
-              {width > 767 && <VideoHelp />}
-            </Fragment>
-          ) : (
-            <Fragment>
-              {width < 991 && (
-                <Fragment>
-                  <OverView />
-                  <ReportRevenue />
-                  <ReportProduct />
-                </Fragment>
-              )}
-              <div className="card-box banner__dashboard">
-                <Banner />
-              </div>
-              <Warehouse />
-              <EventTransaction />
-              {width > 767 && <VideoHelp />}
-            </Fragment>
-          )}
-
-          {/* {rootDomain == "reborn.vn" && (
-          <Fragment>
-            {width < 991 && (
-              <Fragment>
-                <OverView />
-                <ReportRevenue />
-                <ReportProduct />
-              </Fragment>
-            )}
-            <div className="card-box banner__dashboard">
-              <Banner />
+    <div className="page-content page-dashboard d-flex align-items-start">
+      <div className="page-dashboard__left page-dashboard__left--full">
+        <div className="card-box clinic-dashboard">
+          <div className="clinic-dashboard__header">
+            <div>
+              <h2>Bảng điều khiển CSKH</h2>
+              <p>Tổng quan hoạt động và ca bệnh ngày hôm nay.</p>
             </div>
-            <Warehouse />
-            <EventTransaction />
-            {width > 767 && <VideoHelp />}
-          </Fragment>
-        )} */}
+            <div className="clinic-dashboard__date">Thứ Năm, 24 Tháng 10, 2024</div>
+          </div>
+
+          <div className="clinic-dashboard__stats">
+            {dashboardStats.map((stat) => (
+              <div key={stat.label} className={`stat-card stat-card--${stat.tone}`}>
+                <div className="stat-card__label">{stat.label}</div>
+                <div className="stat-card__value">{stat.value}</div>
+                <div className="stat-card__note">{stat.note}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="clinic-dashboard__grid">
+            <div className="clinic-dashboard__panel">
+              <div className="panel-header">
+                <span>Danh sách ca bệnh đang xử lý</span>
+                <span className="panel-link">Xem tất cả</span>
+              </div>
+              <div className="panel-table">
+                <div className="panel-table__head">
+                  <span>Bệnh nhân</span>
+                  <span>Phân loại</span>
+                  <span>Tình trạng</span>
+                  <span>Cập nhật</span>
+                </div>
+                {activeCases.map((item) => (
+                  <div key={item.name} className="panel-table__row">
+                    <span>{item.name}</span>
+                    <span className={`badge badge--${item.typeKey}`}>{item.type}</span>
+                    <span>{item.status}</span>
+                    <span>{item.updated}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="clinic-dashboard__aside">
+              <div className="aside-card">
+                <div className="aside-card__title">Tin nhắn trực tiếp</div>
+                {quickMessages.map((msg) => (
+                  <div key={msg.sender} className="message-item">
+                    <div className="message-item__header">
+                      <span className="message-item__name">{msg.sender}</span>
+                      <span className="message-item__time">{msg.time}</span>
+                    </div>
+                    <div className="message-item__text">{msg.text}</div>
+                  </div>
+                ))}
+                <div className="message-input">Nhập tin nhắn...</div>
+              </div>
+
+              <div className="aside-card">
+                <div className="aside-card__title">Công việc cần làm</div>
+                <div className="todo-list">
+                  {todoItems.map((task) => (
+                    <div key={task.text} className="todo-item">
+                      <span className="todo-item__dot" />
+                      <div>
+                        <div className="todo-item__text">{task.text}</div>
+                        <div className="todo-item__time">{task.time}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="todo-add">+ Thêm công việc mới</div>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

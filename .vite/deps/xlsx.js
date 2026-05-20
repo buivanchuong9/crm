@@ -12361,7 +12361,6 @@ function write_TABLESTYLES_bin(ba) {
 	write_record(ba, 508, write_BrtBeginTableStyles(0, "TableStyleMedium9", "PivotStyleMedium4"));
 	write_record(ba, 509);
 }
-function write_COLORPALETTE_bin() {}
 function write_sty_bin(wb, opts) {
 	var ba = buf_array();
 	write_record(ba, 278);
@@ -12374,7 +12373,6 @@ function write_sty_bin(wb, opts) {
 	write_STYLES_bin(ba, wb);
 	write_DXFS_bin(ba, wb);
 	write_TABLESTYLES_bin(ba, wb);
-	write_COLORPALETTE_bin(ba, wb);
 	write_record(ba, 279);
 	return ba.end();
 }
@@ -12991,7 +12989,6 @@ function parse_cc_bin(data, name, opts) {
 	});
 	return out;
 }
-function parse_xlink_xml() {}
 function parse_xlink_bin(data, rel, name, _opts) {
 	if (!data) return data;
 	var opts = _opts || {};
@@ -17901,7 +17898,6 @@ function write_WSVIEWS2(ba, ws, Workbook) {
 	write_record(ba, 138);
 	write_record(ba, 134);
 }
-function write_WSFMTINFO() {}
 function write_SHEETPROTECT(ba, ws) {
 	if (!ws["!protect"]) return;
 	write_record(ba, 535, write_BrtSheetProtection(ws["!protect"]));
@@ -17925,7 +17921,6 @@ function write_ws_bin(idx, opts, wb, rels) {
 	if (wb.vbaraw || ws["!outline"]) write_record(ba, 147, write_BrtWsProp(c, ws["!outline"]));
 	write_record(ba, 148, write_BrtWsDim(r));
 	write_WSVIEWS2(ba, ws, wb.Workbook);
-	write_WSFMTINFO(ba, ws);
 	write_COLINFOS(ba, ws, idx, opts, wb);
 	write_CELLTABLE(ba, ws, idx, opts, wb);
 	write_SHEETPROTECT(ba, ws);
@@ -18783,7 +18778,6 @@ function parse_cc(data, name, opts) {
 }
 function parse_xlink(data, rel, name, opts) {
 	if (name.slice(-4) === ".bin") return parse_xlink_bin(data, rel, name, opts);
-	return parse_xlink_xml(data, rel, name, opts);
 }
 function parse_xlmeta(data, name, opts) {
 	if (name.slice(-4) === ".bin") return parse_xlmeta_bin(data, name, opts);

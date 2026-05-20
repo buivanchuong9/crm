@@ -1,6 +1,6 @@
-import { IReportCommonFilterRequest } from "./ReportRequest";
+import { IMedicalAIStatisticsFilterRequest } from "./ReportRequest";
 
-export interface IReportCommonProps {
-  params: IReportCommonFilterRequest;
+export interface IMedicalAIStatisticsProps {
+  params: IMedicalAIStatisticsFilterRequest;
   callback?: (data) => void;
 }

@@ -1,6 +1,6 @@
 //#region node_modules/@fingerprintjs/fingerprintjs/dist/fp.esm.js
 /**
-* FingerprintJS v5.0.1 - Copyright (c) FingerprintJS, Inc, 2025 (https://fingerprint.com)
+* FingerprintJS v5.2.0 - Copyright (c) FingerprintJS, Inc, 2026 (https://fingerprint.com)
 *
 * Licensed under MIT License
 *
@@ -24,7 +24,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 * SOFTWARE.
 */
-var version = "5.0.1";
+var version = "5.2.0";
 function wait(durationMs, resolveWith) {
 	return new Promise((resolve) => setTimeout(resolve, durationMs, resolveWith));
 }
@@ -646,6 +646,42 @@ function isGecko() {
 	]) >= 4;
 }
 /**
+* Checks whether the browser is based on Gecko version ≥120 (Firefox ≥120) without using user-agent.
+* It doesn't check that the browser is based on Gecko; there is a separate function for this.
+*
+* @see https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/120 Firefox 120 release notes
+*/
+function isGecko120OrNewer() {
+	const w = window;
+	const n = navigator;
+	const { CSS } = w;
+	return countTruthy([
+		"userActivation" in n,
+		CSS.supports("color", "light-dark(#000, #fff)"),
+		CSS.supports("height", "1lh"),
+		"globalPrivacyControl" in n
+	]) >= 3;
+}
+/**
+* Checks whether the browser is based on Gecko version ≥143 (Firefox ≥143) without using user-agent.
+* It doesn't check that the browser is based on Gecko; there is a separate function for this.
+*
+* Firefox 143 shipped Phase 2 fingerprinting protections (screen resolution, processor count, touch points)
+* in Private Browsing and ETP Strict mode.
+*
+* @see https://developer.mozilla.org/en-US/docs/Mozilla/Firefox/Releases/143 Firefox 143 release notes
+* @see https://bugzilla.mozilla.org/show_bug.cgi?id=1978414 Bug that shipped these protections
+*/
+function isGecko143OrNewer() {
+	const { CSS } = window;
+	return countTruthy([
+		CSS.supports("selector(::details-content)"),
+		CSS.supports("selector(::before::marker)"),
+		CSS.supports("selector(::after::marker)"),
+		!("locale" in CompositionEvent.prototype)
+	]) >= 3;
+}
+/**
 * Checks whether the browser is based on Chromium version ≥86 without using user-agent.
 * It doesn't check that the browser is based on Chromium, there is a separate function for this.
 */
@@ -670,6 +706,21 @@ function isChromium122OrNewer() {
 		"Iterator" in w,
 		URLPattern && "hasRegExpGroups" in URLPattern.prototype,
 		"RGB8" in WebGLRenderingContext.prototype
+	]) >= 3;
+}
+/**
+* Checks whether the browser is based on Chromium version ≥128 without using user-agent.
+* It doesn't check that the browser is based on Chromium, there is a separate function for this.
+*/
+function isChromium128OrNewer() {
+	const w = window;
+	const d = document;
+	const { CSS, Promise, AudioContext } = w;
+	return countTruthy([
+		Promise && "try" in Promise,
+		"caretPositionFromPoint" in d,
+		AudioContext && "onerror" in AudioContext.prototype,
+		CSS.supports("ruby-align", "space-around")
 	]) >= 3;
 }
 /**
@@ -784,7 +835,7 @@ function isSamsungInternet() {
 * Audio signal is noised in private mode of Safari 17, so audio fingerprinting is skipped in Safari 17.
 */
 function getAudioFingerprint() {
-	if (doesBrowserPerformAntifingerprinting$1()) return -4;
+	if (doesBrowserPerformAntifingerprinting()) return -4;
 	return getUnstableAudioFingerprint();
 }
 /**
@@ -831,7 +882,7 @@ function doesBrowserSuspendAudioContext() {
 /**
 * Checks if the current browser is known for applying anti-fingerprinting measures in all or some critical modes
 */
-function doesBrowserPerformAntifingerprinting$1() {
+function doesBrowserPerformAntifingerprinting() {
 	return isWebKit() && isWebKit616OrNewer() && isSafariWebKit() || isChromium() && isSamsungInternet() && isChromium122OrNewer();
 }
 /**
@@ -1112,13 +1163,17 @@ function getPlugins() {
 	return plugins;
 }
 /**
-* @see https://www.browserleaks.com/canvas#how-does-it-work
-*
 * A version of the entropy source with stabilization to make it suitable for static fingerprinting.
+*
 * Canvas image is noised in private mode of Safari 17, so image rendering is skipped in Safari 17.
+* Firefox 120+ randomizes canvas data in private browsing and strict ETP mode,
+* so image rendering is skipped in Firefox 120+.
+*
+* @see https://www.browserleaks.com/canvas#how-does-it-work
+* @see https://bugzilla.mozilla.org/show_bug.cgi?id=1816189 Firefox canvas randomization
 */
 function getCanvasFingerprint() {
-	return getUnstableCanvasFingerprint(doesBrowserPerformAntifingerprinting());
+	return getUnstableCanvasFingerprint(doesBrowserPerformAntiFingerprinting());
 }
 /**
 * A version of the entropy source without stabilization.
@@ -1214,10 +1269,16 @@ function canvasToString(canvas) {
 	return canvas.toDataURL();
 }
 /**
-* Checks if the current browser is known for applying anti-fingerprinting measures in all or some critical modes
+* Checks if the current browser is known for applying anti-fingerprinting measures in all or some critical modes:
+* - Safari 17+: noises canvas image in private mode
+* - Firefox 120+: randomizes canvas data in private browsing and strict ETP mode (CanvasRandomization)
+*
+* @see https://bugzilla.mozilla.org/show_bug.cgi?id=1816189 Firefox canvas randomization
 */
-function doesBrowserPerformAntifingerprinting() {
-	return isWebKit() && isWebKit616OrNewer() && isSafariWebKit();
+function doesBrowserPerformAntiFingerprinting() {
+	const isSafari17OrAbove = isWebKit() && isWebKit616OrNewer() && isSafariWebKit();
+	const isFirefox120OrAbove = isGecko() && isGecko120OrNewer();
+	return isSafari17OrAbove || isFirefox120OrAbove;
 }
 /**
 * This is a crude and primitive touch screen detection. It's not possible to currently reliably detect the availability
@@ -1339,10 +1400,16 @@ function getUnstableScreenFrame() {
 * Sometimes the available screen resolution changes a bit, e.g. 1900x1440 → 1900x1439. A possible reason: macOS Dock
 * shrinks to fit more icons when there is too little space. The rounding is used to mitigate the difference.
 *
-* The frame width is always 0 in private mode of Safari 17, so the frame is not used in Safari 17.
+* The frame width is always 0 in the private mode of Safari 17, so the frame is not used in Safari 17.
+* Firefox 143+ spoofs screen frame (ScreenAvailRect) in private browsing and strict ETP mode,
+* so the frame is not used in Firefox 143+.
+*
+* @see https://bugzilla.mozilla.org/show_bug.cgi?id=1978414 Firefox screen resolution spoofing
 */
 function getScreenFrame() {
-	if (isWebKit() && isWebKit616OrNewer() && isSafariWebKit()) return () => Promise.resolve(void 0);
+	const isSafari17OrAbove = isWebKit() && isWebKit616OrNewer() && isSafariWebKit();
+	const isFirefox143OrAbove = isGecko() && isGecko143OrNewer();
+	if (isSafari17OrAbove || isFirefox143OrAbove) return () => Promise.resolve(void 0);
 	const screenFrameGetter = getUnstableScreenFrame();
 	return async () => {
 		const frameSize = await screenFrameGetter();
@@ -1368,7 +1435,28 @@ function isFrameSizeNull(frameSize) {
 	for (let i = 0; i < 4; ++i) if (frameSize[i]) return false;
 	return true;
 }
+/**
+* A version of the entropy source with stabilization to make it suitable for static fingerprinting.
+*
+* Firefox 143+ spoofs hardwareConcurrency (NavigatorHWConcurrency) in private browsing and strict ETP mode
+* using tiered values: ≤4 cores -> 4, >4 cores -> 8. We apply the same tiering to stabilize the fingerprint
+* across all browsing modes, since the tiering function is idempotent.
+*
+* @see https://bugzilla.mozilla.org/show_bug.cgi?id=1978414 Firefox processor count spoofing
+* @see https://searchfox.org/firefox-main/source/dom/workers/RuntimeService.cpp#2057:~:text=if%20(MOZ_UNLIKELY(aRFPTiered))%20%7B
+*/
 function getHardwareConcurrency() {
+	const value = getUnstableHardwareConcurrency();
+	if (value !== void 0 && isGecko() && isGecko143OrNewer()) return value >= 8 ? 8 : 4;
+	return value;
+}
+/**
+* A version of the entropy source without stabilization.
+*
+* Warning for package users:
+* This function is out of Semantic Versioning, i.e. can change unexpectedly. Usage is at your own risk.
+*/
+function getUnstableHardwareConcurrency() {
 	return replaceNaN(toInt(navigator.hardwareConcurrency), void 0);
 }
 function getTimezone() {
@@ -2014,7 +2102,7 @@ var presets = {
 * The "min" and the "mono" (only on Windows) value may change when the page is zoomed in Firefox 87.
 */
 function getFontPreferences() {
-	return withNaturalFonts((document, container) => {
+	return withNaturalFonts((document, container, iframeWindow) => {
 		const elements = {};
 		const sizes = {};
 		for (const key of Object.keys(presets)) {
@@ -2029,9 +2117,23 @@ function getFontPreferences() {
 			elements[key] = element;
 			container.append(document.createElement("br"), element);
 		}
-		for (const key of Object.keys(presets)) sizes[key] = elements[key].getBoundingClientRect().width;
+		const shouldNormalizeMeasurement = isChromium() && isChromium128OrNewer();
+		for (const key of Object.keys(presets)) {
+			const rawWidth = elements[key].getBoundingClientRect().width;
+			sizes[key] = shouldNormalizeMeasurement ? normalizeFontMeasurement(rawWidth * iframeWindow.devicePixelRatio) : rawWidth;
+		}
 		return sizes;
 	});
+}
+/**
+* Floor font measurement values to reduce floating-point errors and maintain stability
+* - On Android: rounds to whole numbers for maximum stability across devices
+* - On other platforms: rounds down to 3 decimal places
+*/
+function normalizeFontMeasurement(value) {
+	const decimals = isAndroid() ? 0 : 3;
+	const pow = Math.pow(10, decimals);
+	return Math.floor(value * pow) / pow;
 }
 /**
 * Creates a DOM environment that provides the most natural font available, including Android OS font.
@@ -2050,7 +2152,7 @@ function withNaturalFonts(action, containerWidthPx = 4e3) {
 		const linesOfText = iframeDocument.createElement("div");
 		linesOfText.textContent = [...Array(containerWidthPx / 20 << 0)].map(() => "word").join(" ");
 		iframeBody.appendChild(linesOfText);
-		return action(iframeDocument, iframeBody);
+		return action(iframeDocument, iframeBody, iframeWindow);
 	}, "<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
 }
 function isPdfViewerEnabled() {
@@ -2376,6 +2478,41 @@ function getDateTimeLocale() {
 	if (!locale && locale !== "") return -3;
 	return locale;
 }
+function isGreaseBrand(brand) {
+	return /not/i.test(brand);
+}
+/**
+* Collects browser and OS identity data from the User-Agent Client Hints API.
+* Only available in Chromium-based browsers (Chrome, Edge, Opera, Brave).
+*
+* @see https://developer.mozilla.org/en-US/docs/Web/API/User-Agent_Client_Hints_API
+*/
+async function getUserAgentData() {
+	const uaData = navigator.userAgentData;
+	if (!uaData) return;
+	const filteredBrands = uaData.brands.filter(({ brand }) => !isGreaseBrand(brand)).map(({ brand }) => brand);
+	const result = {
+		brands: filteredBrands.length > 1 ? filteredBrands.filter((b) => b !== "Chromium") : filteredBrands,
+		mobile: uaData.mobile,
+		platform: uaData.platform
+	};
+	if (uaData.getHighEntropyValues) try {
+		const highEntropy = await uaData.getHighEntropyValues([
+			"architecture",
+			"bitness",
+			"model",
+			"platformVersion"
+		]);
+		result.architecture = highEntropy.architecture;
+		result.bitness = highEntropy.bitness;
+		result.model = highEntropy.model;
+		result.platformVersion = highEntropy.platformVersion;
+	} catch (error) {
+		if (error instanceof DOMException && error.name === "NotAllowedError") result.highEntropyStatus = "not_allowed";
+		else throw error;
+	}
+	return result;
+}
 /**
 * The list of entropy sources used to make visitor identifiers.
 *
@@ -2386,6 +2523,7 @@ function getDateTimeLocale() {
 * no need to export the sources individually.
 */
 var sources = {
+	userAgentData: getUserAgentData,
 	fonts: getFonts,
 	domBlockers: getDomBlockers,
 	fontPreferences: getFontPreferences,
@@ -2435,7 +2573,7 @@ var sources = {
 function loadBuiltinSources(options) {
 	return loadSources(sources, options, []);
 }
-var commentTemplate = "$ if upgrade to Pro: https://fpjs.dev/pro";
+var commentTemplate = "$ if upgrade to Pro: https://fingerprint.com/github/?utm_source=oss&utm_medium=referral&utm_campaign=confidence_score";
 function getConfidence(components) {
 	const openConfidenceScore = getOpenConfidenceScore(components);
 	const proConfidenceScore = deriveProConfidenceScore(openConfidenceScore);
@@ -2543,9 +2681,8 @@ function monitor() {
 * Builds an instance of Agent and waits a delay required for a proper operation.
 */
 async function load(options = {}) {
-	var _a;
-	if ((_a = options.monitoring) !== null && _a !== void 0 ? _a : true) monitor();
-	const { delayFallback, debug } = options;
+	const { delayFallback, debug, monitoring = true } = options;
+	if (monitoring) monitor();
 	await prepareForSources(delayFallback);
 	return makeAgent(loadBuiltinSources({
 		cache: {},
@@ -2560,6 +2697,6 @@ var index = {
 /** Not documented, out of Semantic Versioning, usage is at your own risk */
 var murmurX64Hash128 = x64hash128;
 //#endregion
-export { componentsToDebugString, index as default, getFullscreenElement, getUnstableAudioFingerprint, getUnstableCanvasFingerprint, getUnstableScreenFrame, getUnstableScreenResolution, getWebGLContext, hashComponents, isAndroid, isChromium, isDesktopWebKit, isEdgeHTML, isGecko, isSamsungInternet, isTrident, isWebKit, load, loadSources, murmurX64Hash128, prepareForSources, sources, transformSource, withIframe };
+export { componentsToDebugString, index as default, getFullscreenElement, getUnstableAudioFingerprint, getUnstableCanvasFingerprint, getUnstableHardwareConcurrency, getUnstableScreenFrame, getUnstableScreenResolution, getWebGLContext, hashComponents, isAndroid, isChromium, isDesktopWebKit, isEdgeHTML, isGecko, isSamsungInternet, isTrident, isWebKit, load, loadSources, murmurX64Hash128, prepareForSources, sources, transformSource, withIframe };
 
 //# sourceMappingURL=@fingerprintjs_fingerprintjs.js.map

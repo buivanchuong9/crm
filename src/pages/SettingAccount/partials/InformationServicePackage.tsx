@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
 import Tippy from "@tippyjs/react";
 import type { Swiper as SwiperCore } from "swiper";
-import { Navigation } from "swiper";
+import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { formatCurrency } from "reborn-util";
 import NummericInput from "components/input/numericInput";
@@ -13,6 +13,34 @@ import PackageService from "services/PackageService";
 import ShowModalPayment from "./ShowModalPayment";
 
 export default function InformationServicePackage({ isShowDialog }) {
+  const packageFeatureMap: Record<number, string[]> = {
+    1: [
+      "Quản lý hồ sơ bệnh nhân (Tối đa 100 bệnh nhân)",
+      "Lên lịch hẹn và quản lý lịch khám cơ bản",
+      "Lưu trữ hồ sơ bệnh án điện tử (EMR)",
+      "Phân tích ảnh da liễu bằng AI (Giới hạn 50 lượt/tháng)",
+      "Theo dõi tiến triển vết thương thủ công",
+      "Giao diện chẩn đoán cơ bản",
+    ],
+    3: [
+      "Quản lý hồ sơ bệnh nhân (Không giới hạn)",
+      "Lên lịch khám thông minh và tránh trùng lịch",
+      "Phân tích ảnh da liễu bằng AI (Giới hạn 500 lượt/tháng)",
+      "Đo lường tự động diện tích tổn thương",
+      "Tự động nhắc lịch tái khám qua SMS/Email",
+      "Báo cáo thống kê số ca bệnh trong tháng",
+      "Quản lý 1 cơ sở / 3 tài khoản bác sĩ",
+    ],
+    4: [
+      "Sử dụng AI phân tích và chẩn đoán không giới hạn",
+      "Phác đồ điều trị AI và so sánh biểu đồ phục hồi",
+      "Hệ thống CSKH tự động (Gửi tin nhắn Zalo OA, Email)",
+      "Thiết lập quy trình lâm sàng (BPM Workflow) tùy chỉnh",
+      "Lưu trữ hình ảnh y tế Cloud (Không giới hạn dung lượng)",
+      "Phân quyền nhiều cơ sở và đa phòng ban",
+      "Trích xuất báo cáo Y",
+    ],
+  };
   const [dataService, setDataService] = useState(null);
 
   const { dataExpired, phone, dataInfoEmployee, showModalPackage, lastShowModalPayment, setShowModalPackage } = useContext(
@@ -78,13 +106,15 @@ export default function InformationServicePackage({ isShowDialog }) {
         const changeMatchedItems = matchedItems.map((ul) => {
           const condition = ul.packageType;
           const settingMore = JSON.parse(ul.settingMore || "");
+          const fallbackFeatures = JSON.parse(ul.features || "[]");
+          const features = packageFeatureMap[ul.packageType] ?? fallbackFeatures;
 
           return {
             id: ul.id,
             name: ul.name,
             extend: `${ul.period < 10 ? `0${ul.period} tháng` : ul.period > 100 ? "Vĩnh viễn" : `${ul.period} tháng`}`,
             code: condition === 1 ? "free" : condition === 2 ? "basic" : condition === 3 ? "silver" : condition === 4 ? "gold" : "diamond",
-            function: JSON.parse(ul.features || "[]"),
+            function: features,
             price: ul.priceDiscount,
             periodBonus: ul.periodBonus,
             descript: ul.content,

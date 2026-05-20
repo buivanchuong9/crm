@@ -1,7 +1,6 @@
 import React, { Fragment, useMemo, useState } from "react";
 import { formatCurrency } from "reborn-util";
 import Modal, { ModalBody, ModalFooter, ModalHeader } from "components/modal/modal";
-import LogoMB from "assets/images/logo-mb.png";
 import QR from "assets/images/qr-mb.png";
 import { IActionModal } from "model/OtherModel";
 import FileUpload from "components/fileUpload/fileUpload";
@@ -109,7 +108,7 @@ export default function ShowModalPayment(props: IShowModalPaymentProps) {
                   </div>
                   <div className="info-step--right">
                     <div className="user-receive logo-bank">
-                      <img src={LogoMB} alt="logo-mb" />
+                      <span style={{ fontSize: "16px", fontWeight: "bold", color: "#004B91" }}>MB Bank</span>
                     </div>
                     <div className="user-receive">
                       <strong>Chủ tài khoản:</strong> REBORN JSC.

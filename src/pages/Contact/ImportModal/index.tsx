@@ -800,7 +800,7 @@ export default function ImportModal(props: IImportModalProps) {
           <ModalFooter actions={actions} />
         </form>
       </Modal>
-      {/* <AddCustomerPersonModal onShow={showModalCustomer} onHide={() => setShowModalCustomer(false)} data={dataDuplicate} lstDataOrigin={lstData} /> */}
+      {/* <AddPatientRecordModal onShow={showModalCustomer} onHide={() => setShowModalCustomer(false)} data={dataDuplicate} lstDataOrigin={lstData} /> */}
     </Fragment>
   );
 }

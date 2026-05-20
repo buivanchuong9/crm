@@ -1,6 +1,6 @@
 import { o as __toESM, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { t as require_react_dom } from "./react-dom-J2wNTDgO.js";
+import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
 //#region node_modules/classcat/index.js
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 function cc(names) {
@@ -1605,28 +1605,6 @@ function hsl2rgb(h, m1, m2) {
 	return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 }
 //#endregion
-//#region node_modules/d3-interpolate/src/basis.js
-function basis(t1, v0, v1, v2, v3) {
-	var t2 = t1 * t1, t3 = t2 * t1;
-	return ((1 - 3 * t1 + 3 * t2 - t3) * v0 + (4 - 6 * t2 + 3 * t3) * v1 + (1 + 3 * t1 + 3 * t2 - 3 * t3) * v2 + t3 * v3) / 6;
-}
-function basis_default(values) {
-	var n = values.length - 1;
-	return function(t) {
-		var i = t <= 0 ? t = 0 : t >= 1 ? (t = 1, n - 1) : Math.floor(t * n), v1 = values[i], v2 = values[i + 1], v0 = i > 0 ? values[i - 1] : 2 * v1 - v2, v3 = i < n - 1 ? values[i + 2] : 2 * v2 - v1;
-		return basis((t - i / n) * n, v0, v1, v2, v3);
-	};
-}
-//#endregion
-//#region node_modules/d3-interpolate/src/basisClosed.js
-function basisClosed_default(values) {
-	var n = values.length;
-	return function(t) {
-		var i = Math.floor(((t %= 1) < 0 ? ++t : t) * n), v0 = values[(i + n - 1) % n], v1 = values[i % n], v2 = values[(i + 1) % n], v3 = values[(i + 2) % n];
-		return basis((t - i / n) * n, v0, v1, v2, v3);
-	};
-}
-//#endregion
 //#region node_modules/d3-interpolate/src/constant.js
 var constant_default$1 = (x) => () => x;
 //#endregion
@@ -1667,29 +1645,6 @@ var rgb_default = (function rgbGamma(y) {
 	rgb$1.gamma = rgbGamma;
 	return rgb$1;
 })(1);
-function rgbSpline(spline) {
-	return function(colors) {
-		var n = colors.length, r = new Array(n), g = new Array(n), b = new Array(n), i, color;
-		for (i = 0; i < n; ++i) {
-			color = rgb(colors[i]);
-			r[i] = color.r || 0;
-			g[i] = color.g || 0;
-			b[i] = color.b || 0;
-		}
-		r = spline(r);
-		g = spline(g);
-		b = spline(b);
-		color.opacity = 1;
-		return function(t) {
-			color.r = r(t);
-			color.g = g(t);
-			color.b = b(t);
-			return color + "";
-		};
-	};
-}
-rgbSpline(basis_default);
-rgbSpline(basisClosed_default);
 //#endregion
 //#region node_modules/d3-interpolate/src/number.js
 function number_default(a, b) {

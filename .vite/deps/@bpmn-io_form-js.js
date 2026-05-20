@@ -1,11 +1,10 @@
 import { o as __toESM, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
+import { $ as RepeatRenderModule, $n as Facet, A as FormFields, An as Decoration, At as getSchemaVariables, B as MINUTES_IN_DAY, Bn as keymap, Bt as runUnaryTestEvaluation, C as FieldFactory, Cn as foldInside, Ct as createInjector, D as FormContext, Dn as indentOnInput, Dt as generateIndexForType, E as FormComponent, En as indentNodeProp, Et as generateIdForType, F as IFrame, Fn as dropCursor, Ft as pathParse, G as OPTIONS_SOURCES_DEFAULTS, Gn as showDialog, Gt as sanitizeMultiSelectValue, H as MarkdownRendererModule, Hn as placeholder, Ht as sanitizeHTML, I as Image, In as getPanel, It as pathsEqual, J as OPTIONS_SOURCE_DEFAULT, Jn as crelt, Jt as useExpressionEvaluation, K as OPTIONS_SOURCES_LABELS, Kn as showPanel, Kt as sanitizeSingleSelectValue, L as Importer, Ln as highlightActiveLine, Lt as pruneAt, M as FormRenderContext, Mn as ViewPlugin, Mt as hasEqualValue, N as Group, Nn as crosshairCursor, Nt as iconsByType, O as FormField, On as syntaxHighlighting, Ot as getAncestryList, P as Html, Pn as drawSelection, Pt as isRequired, Q as RepeatRenderManager, Qn as EditorState, Qt as wrapObjectKeysWithUnderscores, R as Label, Rn as highlightActiveLineGutter, Rt as runExpressionEvaluation, S as FeelersTemplating, Sn as foldGutter, St as createFormContainer, T as Form, Tn as foldNodeProp, Tt as formFields, U as Numberfield, Un as rectangularSelection, Ut as sanitizeIFrameSource, V as MarkdownRenderer, Vn as lineNumbers, Vt as sanitizeDateTimePickerValue, W as OPTIONS_SOURCES, Wn as runScopeHandlers, Wt as sanitizeImageSource, X as Radio, Xn as Compartment, Xt as useTemplateEvaluation, Y as PathRegistry, Yn as CharCategory, Yt as useSingleLineTemplateEvaluation, Z as RenderModule, Zn as EditorSelection, Zt as wrapCSSStyles, _ as ExpressionField, _n as LanguageSupport, _t as ViewerCommands, a as ConditionChecker, an as defaultKeymap, ar as codePointSize, at as TEXT_VIEW_DEFAULT_TEXT, b as ExpressionLoopPreventer, bn as defaultHighlightStyle, bt as clone, c as DATETIME_SUBTYPE_PATH, cn as indentWithTab, cr as fromCodePoint, ct as TIME_SERIALISINGFORMAT_LABELS, d as Datetime, dn as closeBracketsKeymap, dr as styleTags, dt as TIME_USE24H_PATH, er as Prec, et as SANDBOX_ATTRIBUTE, f as Default, fr as tags, ft as Table, g as Errors, gn as LRLanguage, gr as o, gt as Textfield, h as DynamicList, ht as Textarea, i as Checklist, ir as codePointAt, it as Spacer, j as FormLayouter, jn as EditorView, jt as getScrollContainer, k as FormFieldRegistry, kn as syntaxTree, kt as getOptionsSource, l as DATE_DISALLOW_PAST_PATH, ln as autocompletion, lt as TIME_SERIALISING_FORMATS, m as DocumentPreview, mt as Text, n as Button, nn as lintKeymap, nr as StateEffect, nt as Select, o as DATETIME_SUBTYPES, on as history, or as combineConfig, ot as TIME_INTERVAL_PATH, p as Description, pn as completionKeymap, pr as LRParser, pt as Taglist, q as OPTIONS_SOURCES_PATHS, qt as schemaVersion, r as Checkbox, rn as linter, rr as StateField, rt as Separator, s as DATETIME_SUBTYPES_LABELS, sn as historyKeymap, sr as findClusterBreak, st as TIME_LABEL_PATH, t as ALLOW_ATTRIBUTE, tn as lintGutter, tr as RangeSetBuilder, tt as SECURITY_ATTRIBUTES_DEFINITIONS, u as DATE_LABEL_PATH, un as closeBrackets, ut as TIME_SERIALISING_FORMAT_PATH, v as ExpressionFieldModule, vn as bracketMatching, vt as ViewerCommandsModule, w as FilePicker, wn as foldKeymap, wt as escapeHTML, x as FeelExpressionLanguage, xt as createForm, y as ExpressionLanguageModule, yn as continuedIndent, yt as buildExpressionContext, z as LocalExpressionContext, zn as highlightSpecialChars, zt as runRecursively } from "./index.es-CMvMby7r.js";
 import { isFunction } from "./min-dash.js";
-import { $ as RepeatRenderModule, $n as StateField, $t as lintKeymap, A as FormFields, An as crosshairCursor, At as getSchemaVariables, B as MINUTES_IN_DAY, Bn as rectangularSelection, Bt as sanitizeHTML, C as FieldFactory, Cn as indentNodeProp, Ct as createInjector, D as FormContext, Dn as Decoration, Dt as generateIndexForType, E as FormComponent, En as syntaxTree, Et as generateIdForType, F as IFrame, Fn as highlightActiveLineGutter, Ft as pathParse, G as OPTIONS_SOURCES_DEFAULTS, Gn as CharCategory, Gt as schemaVersion, H as MarkdownRendererModule, Hn as showPanel, Ht as sanitizeImageSource, I as Image, In as highlightSpecialChars, It as pathsEqual, J as OPTIONS_SOURCE_DEFAULT, Jn as EditorState, Jt as useTemplateEvaluation, K as OPTIONS_SOURCES_LABELS, Kn as Compartment, Kt as useExpressionEvaluation, L as Importer, Ln as keymap, Lt as runExpressionEvaluation, M as FormRenderContext, Mn as dropCursor, Mt as hasEqualValue, N as Group, Nn as getPanel, Nt as iconsByType, O as FormField, On as EditorView, Ot as getAncestryList, P as Html, Pn as highlightActiveLine, Pt as isRequired, Q as RepeatRenderManager, Qn as StateEffect, Qt as lintGutter, R as Label, Rn as lineNumbers, Rt as runRecursively, S as FeelersTemplating, Sn as foldNodeProp, St as createFormContainer, T as Form, Tn as syntaxHighlighting, Tt as formFields, U as Numberfield, Ut as sanitizeMultiSelectValue, V as MarkdownRenderer, Vn as runScopeHandlers, Vt as sanitizeIFrameSource, W as OPTIONS_SOURCES, Wn as crelt, Wt as sanitizeSingleSelectValue, X as Radio, Xn as Prec, Xt as wrapObjectKeysWithUnderscores, Y as PathRegistry, Yn as Facet, Yt as wrapCSSStyles, Z as RenderModule, Zn as RangeSetBuilder, _ as ExpressionField, _n as defaultHighlightStyle, _t as ViewerCommands, a as ConditionChecker, an as indentWithTab, ar as styleTags, at as TEXT_VIEW_DEFAULT_TEXT, b as ExpressionLoopPreventer, bn as foldInside, bt as clone, c as DATETIME_SUBTYPE_PATH, cn as closeBracketsKeymap, ct as TIME_SERIALISINGFORMAT_LABELS, d as Datetime, dt as TIME_USE24H_PATH, en as linter, er as codePointAt, et as SANDBOX_ATTRIBUTE, f as Default, fr as u, ft as Table, g as Errors, gn as continuedIndent, gt as Textfield, h as DynamicList, hn as bracketMatching, ht as Textarea, i as Checklist, in as historyKeymap, ir as fromCodePoint, it as Spacer, j as FormLayouter, jn as drawSelection, jt as getScrollContainer, k as FormFieldRegistry, kn as ViewPlugin, kt as getOptionsSource, l as DATE_DISALLOW_PAST_PATH, lr as LRParser, lt as TIME_SERIALISING_FORMATS, m as DocumentPreview, mn as LanguageSupport, mt as Text, n as Button, nn as defaultKeymap, nr as combineConfig, nt as Select, o as DATETIME_SUBTYPES, on as autocompletion, or as tags, ot as TIME_INTERVAL_PATH, p as Description, pn as LRLanguage, pt as Taglist, q as OPTIONS_SOURCES_PATHS, qn as EditorSelection, qt as useSingleLineTemplateEvaluation, r as Checkbox, rn as history, rr as findClusterBreak, rt as Separator, s as DATETIME_SUBTYPES_LABELS, sn as closeBrackets, st as TIME_LABEL_PATH, t as ALLOW_ATTRIBUTE, tr as codePointSize, tt as SECURITY_ATTRIBUTES_DEFINITIONS, u as DATE_LABEL_PATH, un as completionKeymap, ut as TIME_SERIALISING_FORMAT_PATH, v as ExpressionFieldModule, vt as ViewerCommandsModule, w as FilePicker, wn as indentOnInput, wt as escapeHTML, x as FeelExpressionLanguage, xn as foldKeymap, xt as createForm, y as ExpressionLanguageModule, yn as foldGutter, yt as buildExpressionContext, z as LocalExpressionContext, zn as placeholder, zt as sanitizeDateTimePickerValue } from "./index.es-BzGRxDPK.js";
 import { t as require_classnames } from "./classnames.js";
-import { render as G } from "./preact.js";
-import { useCallback as q, useEffect as y, useRef as A, useState as d } from "./preact_hooks.js";
-import { a as useService, i as usePrevious$1, n as createFormEditor, o as useService$1, r as useDebounce$1, s as useVariables, t as FormEditor } from "./index.es-B-weAqi4.js";
-import { c as domify$1, i as classes } from "./index.esm-E5VQvuu4.js";
+import { render as D } from "./preact.js";
+import { useCallback as T, useEffect as p, useRef as _, useState as h } from "./preact_hooks.js";
+import { a as useService, c as mitt_default, i as usePrevious$1, l as classes, n as createFormEditor, o as useService$1, r as useDebounce$1, s as useVariables, t as FormEditor, u as domify } from "./index.es-DHRx7E7T.js";
 //#region node_modules/file-drops/dist/index.js
 var OVERLAY_HTML = "<div class=\"drop-overlay\"><div class=\"box\"><div class=\"label\">{label}</div></div></div>";
 /**
@@ -136,35 +135,12 @@ function slice(arr) {
 	return Array.prototype.slice.call(arr);
 }
 function createOverlay(label) {
-	const overlay = domify$1(OVERLAY_HTML.replace("{label}", label));
+	const overlay = domify(OVERLAY_HTML.replace("{label}", label));
 	overlay.style.pointerEvents = "none";
 	return overlay;
 }
 function preventDrop(event) {
 	event.preventDefault();
-}
-//#endregion
-//#region node_modules/mitt/dist/mitt.mjs
-function mitt_default(n) {
-	return {
-		all: n = n || /* @__PURE__ */ new Map(),
-		on: function(t, e) {
-			var i = n.get(t);
-			i ? i.push(e) : n.set(t, [e]);
-		},
-		off: function(t, e) {
-			var i = n.get(t);
-			i && (e ? i.splice(i.indexOf(e) >>> 0, 1) : n.set(t, []));
-		},
-		emit: function(t, e) {
-			var i = n.get(t);
-			i && i.slice().map(function(n) {
-				n(e);
-			}), (i = n.get("*")) && i.slice().map(function(n) {
-				n(t, e);
-			});
-		}
-	};
 }
 //#endregion
 //#region node_modules/downloadjs/download.js
@@ -294,10 +270,16 @@ var SearchCursor = class {
 		The current match (only holds a meaningful value after
 		[`next`](https://codemirror.net/6/docs/ref/#search.SearchCursor.next) has been called and when
 		`done` is false).
+		
+		The `precise` flag will be set to false if the match starts or
+		ends _inside_ a character that, when normalized, expands to
+		multiple characters. It indicates that the `from`-`to` range
+		covers content that isn't part of the actual match.
 		*/
 		this.value = {
 			from: 0,
-			to: 0
+			to: 0,
+			precise: false
 		};
 		/**
 		Whether the end of the iterated region has been reached.
@@ -346,42 +328,45 @@ var SearchCursor = class {
 			let str = fromCodePoint(next), start = this.bufferStart + this.bufferPos;
 			this.bufferPos += codePointSize(next);
 			let norm = this.normalize(str);
-			if (norm.length) for (let i = 0, pos = start;; i++) {
+			if (norm.length) for (let i = 0, pos = start, posPrecise = true;; i++) {
 				let code = norm.charCodeAt(i);
-				let match = this.match(code, pos, this.bufferPos + this.bufferStart);
-				if (i == norm.length - 1) {
-					if (match) {
-						this.value = match;
-						return this;
-					}
-					break;
+				let match = this.match(code, pos, posPrecise, this.bufferPos + this.bufferStart, i == norm.length - 1);
+				if (match) {
+					this.value = match;
+					return this;
 				}
-				if (pos == start && i < str.length && str.charCodeAt(i) == code) pos++;
+				if (i == norm.length - 1) break;
+				if (posPrecise && i < str.length && str.charCodeAt(i) == code) pos++;
+				else posPrecise = false;
 			}
 		}
 	}
-	match(code, pos, end) {
+	match(code, pos, posPrecise, end, endPrecise) {
 		let match = null;
-		for (let i = 0; i < this.matches.length; i += 2) {
-			let index = this.matches[i], keep = false;
-			if (this.query.charCodeAt(index) == code) if (index == this.query.length - 1) match = {
-				from: this.matches[i + 1],
-				to: end
+		for (let i = 0; i < this.matches.length;) {
+			let partial = this.matches[i], keep = false;
+			if (this.query.charCodeAt(partial.index) == code) if (partial.index == this.query.length - 1) match = {
+				from: partial.from,
+				to: end,
+				precise: endPrecise && partial.precise
 			};
 			else {
-				this.matches[i]++;
+				partial.index++;
 				keep = true;
 			}
-			if (!keep) {
-				this.matches.splice(i, 2);
-				i -= 2;
-			}
+			if (keep) i++;
+			else this.matches.splice(i, 1);
 		}
 		if (this.query.charCodeAt(0) == code) if (this.query.length == 1) match = {
 			from: pos,
-			to: end
+			to: end,
+			precise: posPrecise && endPrecise
 		};
-		else this.matches.push(1, pos);
+		else this.matches.push({
+			from: pos,
+			index: 1,
+			precise: posPrecise
+		});
 		if (match && this.test && !this.test(match.from, match.to, this.buffer, this.bufferStart)) match = null;
 		return match;
 	}
@@ -392,7 +377,8 @@ if (typeof Symbol != "undefined") SearchCursor.prototype[Symbol.iterator] = func
 var empty = {
 	from: -1,
 	to: -1,
-	match: /* @__PURE__ */ /.*/.exec("")
+	match: /* @__PURE__ */ /.*/.exec(""),
+	precise: true
 };
 var baseFlags = "gm" + (/x/.unicode == null ? "" : "u");
 /**
@@ -418,7 +404,9 @@ var RegExpCursor = class {
 		/**
 		Will contain an object with the extent of the match and the
 		match object when [`next`](https://codemirror.net/6/docs/ref/#search.RegExpCursor.next)
-		sucessfully finds a match.
+		sucessfully finds a match. The `precise` flag is always true for
+		this type of cursor, and only there to make sure this cursor is
+		a subtype of `SearchCursor`.
 		*/
 		this.value = empty;
 		if (/\\[sWDnr]|\n|\r|\[\^/.test(query)) return new MultilineRegExpCursor(text, query, options, from, to);
@@ -459,6 +447,7 @@ var RegExpCursor = class {
 					this.value = {
 						from,
 						to,
+						precise: true,
 						match
 					};
 					return this;
@@ -529,6 +518,7 @@ var MultilineRegExpCursor = class {
 					this.value = {
 						from,
 						to,
+						precise: true,
 						match
 					};
 					this.matchPos = toCharEnd(this.text, to + (from == to ? 1 : 0));
@@ -560,44 +550,35 @@ function toCharEnd(text, pos) {
 	while (pos < line.to && (next = line.text.charCodeAt(pos - line.from)) >= 56320 && next < 57344) pos++;
 	return pos;
 }
-function createLineDialog(view) {
-	let input = crelt("input", {
-		class: "cm-textfield",
-		name: "line",
-		value: String(view.state.doc.lineAt(view.state.selection.main.head).number)
+/**
+Command that shows a dialog asking the user for a line number, and
+when a valid position is provided, moves the cursor to that line.
+
+Supports line numbers, relative line offsets prefixed with `+` or
+`-`, document percentages suffixed with `%`, and an optional
+column position by adding `:` and a second number after the line
+number.
+*/
+var gotoLine = (view) => {
+	let { state } = view;
+	let line = String(state.doc.lineAt(view.state.selection.main.head).number);
+	let { close, result } = showDialog(view, {
+		label: state.phrase("Go to line"),
+		input: {
+			type: "text",
+			name: "line",
+			value: line
+		},
+		focus: true,
+		submitLabel: state.phrase("go")
 	});
-	let dom = crelt("form", {
-		class: "cm-gotoLine",
-		onkeydown: (event) => {
-			if (event.keyCode == 27) {
-				event.preventDefault();
-				view.dispatch({ effects: dialogEffect.of(false) });
-				view.focus();
-			} else if (event.keyCode == 13) {
-				event.preventDefault();
-				go();
-			}
-		},
-		onsubmit: (event) => {
-			event.preventDefault();
-			go();
+	result.then((form) => {
+		let match = form && /^([+-])?(\d+)?(:\d+)?(%)?$/.exec(form.elements["line"].value);
+		if (!match) {
+			view.dispatch({ effects: close });
+			return;
 		}
-	}, crelt("label", view.state.phrase("Go to line"), ": ", input), " ", crelt("button", {
-		class: "cm-button",
-		type: "submit"
-	}, view.state.phrase("go")), crelt("button", {
-		name: "close",
-		onclick: () => {
-			view.dispatch({ effects: dialogEffect.of(false) });
-			view.focus();
-		},
-		"aria-label": view.state.phrase("close"),
-		type: "button"
-	}, ["×"]));
-	function go() {
-		let match = /^([+-])?(\d+)?(:\d+)?(%)?$/.exec(input.value);
-		if (!match) return;
-		let { state } = view, startLine = state.doc.lineAt(state.selection.main.head);
+		let startLine = state.doc.lineAt(state.selection.main.head);
 		let [, sign, ln, cl, percent] = match;
 		let col = cl ? +cl.slice(1) : 0;
 		let line = ln ? +ln : startLine.number;
@@ -609,59 +590,12 @@ function createLineDialog(view) {
 		let docLine = state.doc.line(Math.max(1, Math.min(state.doc.lines, line)));
 		let selection = EditorSelection.cursor(docLine.from + Math.max(0, Math.min(col, docLine.length)));
 		view.dispatch({
-			effects: [dialogEffect.of(false), EditorView.scrollIntoView(selection.from, { y: "center" })],
+			effects: [close, EditorView.scrollIntoView(selection.from, { y: "center" })],
 			selection
 		});
-		view.focus();
-	}
-	return { dom };
-}
-var dialogEffect = /* @__PURE__ */ StateEffect.define();
-var dialogField = /* @__PURE__ */ StateField.define({
-	create() {
-		return true;
-	},
-	update(value, tr) {
-		for (let e of tr.effects) if (e.is(dialogEffect)) value = e.value;
-		return value;
-	},
-	provide: (f) => showPanel.from(f, (val) => val ? createLineDialog : null)
-});
-/**
-Command that shows a dialog asking the user for a line number, and
-when a valid position is provided, moves the cursor to that line.
-
-Supports line numbers, relative line offsets prefixed with `+` or
-`-`, document percentages suffixed with `%`, and an optional
-column position by adding `:` and a second number after the line
-number.
-*/
-var gotoLine = (view) => {
-	let panel = getPanel(view, createLineDialog);
-	if (!panel) {
-		let effects = [dialogEffect.of(true)];
-		if (view.state.field(dialogField, false) == null) effects.push(StateEffect.appendConfig.of([dialogField, baseTheme$1]));
-		view.dispatch({ effects });
-		panel = getPanel(view, createLineDialog);
-	}
-	if (panel) panel.dom.querySelector("input").select();
+	});
 	return true;
 };
-var baseTheme$1 = /* @__PURE__ */ EditorView.baseTheme({ ".cm-panel.cm-gotoLine": {
-	padding: "2px 6px 4px",
-	position: "relative",
-	"& label": { fontSize: "80%" },
-	"& [name=close]": {
-		position: "absolute",
-		top: "0",
-		bottom: "0",
-		right: "4px",
-		backgroundColor: "inherit",
-		border: "none",
-		font: "inherit",
-		padding: "0"
-	}
-} });
 var defaultHighlightOptions = {
 	highlightWordAroundCursor: false,
 	minSelectionLength: 1,
@@ -816,6 +750,7 @@ var SearchQuery = class {
 		this.valid = !!this.search && (!this.regexp || validRegExp(this.search));
 		this.unquoted = this.unquote(this.search);
 		this.wholeWord = !!config.wholeWord;
+		this.test = config.test;
 	}
 	/**
 	@internal
@@ -827,7 +762,7 @@ var SearchQuery = class {
 	Compare this query to another query.
 	*/
 	eq(other) {
-		return this.search == other.search && this.replace == other.replace && this.caseSensitive == other.caseSensitive && this.regexp == other.regexp && this.wholeWord == other.wholeWord;
+		return this.search == other.search && this.replace == other.replace && this.caseSensitive == other.caseSensitive && this.regexp == other.regexp && this.wholeWord == other.wholeWord && this.test == other.test;
 	}
 	/**
 	@internal
@@ -850,8 +785,17 @@ var QueryType = class {
 		this.spec = spec;
 	}
 };
+function wrapStringTest(test, state, inner) {
+	return (from, to, buffer, bufferPos) => {
+		if (inner && !inner(from, to, buffer, bufferPos)) return false;
+		return test(from >= bufferPos && to <= bufferPos + buffer.length ? buffer.slice(from - bufferPos, to - bufferPos) : state.doc.sliceString(from, to), state, from, to);
+	};
+}
 function stringCursor(spec, state, from, to) {
-	return new SearchCursor(state.doc, spec.unquoted, from, to, spec.caseSensitive ? void 0 : (x) => x.toLowerCase(), spec.wholeWord ? stringWordTest(state.doc, state.charCategorizer(state.selection.main.head)) : void 0);
+	let test;
+	if (spec.wholeWord) test = stringWordTest(state.doc, state.charCategorizer(state.selection.main.head));
+	if (spec.test) test = wrapStringTest(spec.test, state, test);
+	return new SearchCursor(state.doc, spec.unquoted, from, to, spec.caseSensitive ? void 0 : (x) => x.toLowerCase(), test);
 }
 function stringWordTest(doc, categorizer) {
 	return (from, to, buf, bufPos) => {
@@ -905,10 +849,18 @@ var StringQuery = class extends QueryType {
 		while (!cursor.next().done) add(cursor.value.from, cursor.value.to);
 	}
 };
+function wrapRegexpTest(test, state, inner) {
+	return (from, to, match) => {
+		return (!inner || inner(from, to, match)) && test(match[0], state, from, to);
+	};
+}
 function regexpCursor(spec, state, from, to) {
+	let test;
+	if (spec.wholeWord) test = regexpWordTest(state.charCategorizer(state.selection.main.head));
+	if (spec.test) test = wrapRegexpTest(spec.test, state, test);
 	return new RegExpCursor(state.doc, spec.search, {
 		ignoreCase: !spec.caseSensitive,
-		test: spec.wholeWord ? regexpWordTest(state.charCategorizer(state.selection.main.head)) : void 0
+		test
 	}, from, to);
 }
 function charBefore(str, index) {
@@ -1100,14 +1052,14 @@ var replaceNext = /* @__PURE__ */ searchCommand((view, { query }) => {
 	let next = match;
 	let changes = [], selection, replacement;
 	let effects = [];
-	if (next.from == from && next.to == to) {
+	if (!next.precise) next = query.nextMatch(state, next.from, next.to);
+	else if (next.from == from && next.to == to) {
 		replacement = state.toText(query.getReplacement(next));
 		changes.push({
 			from: next.from,
 			to: next.to,
 			insert: replacement
 		});
-		next = query.nextMatch(state, next.from, next.to);
 		effects.push(EditorView.announce.of(state.phrase("replaced match on line $", state.doc.lineAt(from).number) + "."));
 	}
 	let changeSet = view.state.changes(changes);
@@ -1130,14 +1082,15 @@ replacement.
 */
 var replaceAll = /* @__PURE__ */ searchCommand((view, { query }) => {
 	if (view.state.readOnly) return false;
-	let changes = query.matchAll(view.state, 1e9).map((match) => {
-		let { from, to } = match;
-		return {
+	let changes = [];
+	for (let match of query.matchAll(view.state, 1e9)) {
+		let { from, to, precise } = match;
+		if (precise) changes.push({
 			from,
 			to,
 			insert: query.getReplacement(match)
-		};
-	});
+		});
+	}
 	if (!changes.length) return false;
 	let announceText = view.state.phrase("replaced $ matches", changes.length) + ".";
 	view.dispatch({
@@ -1599,7 +1552,7 @@ function json() {
 //#endregion
 //#region node_modules/@bpmn-io/form-js-playground/dist/index.es.js
 function Modal(props) {
-	y(() => {
+	p(() => {
 		function handleKey(event) {
 			if (event.key === "Escape") {
 				event.stopPropagation();
@@ -1611,25 +1564,25 @@ function Modal(props) {
 			document.removeEventListener("keydown", handleKey);
 		};
 	});
-	return u("div", {
+	return o("div", {
 		class: "fjs-pgl-modal",
-		children: [u("div", {
+		children: [o("div", {
 			class: "fjs-pgl-modal-backdrop",
 			onClick: props.onClose
-		}), u("div", {
+		}), o("div", {
 			class: "fjs-pgl-modal-content",
 			children: [
-				u("h1", {
+				o("h1", {
 					class: "fjs-pgl-modal-header",
 					children: props.name
 				}),
-				u("div", {
+				o("div", {
 					class: "fjs-pgl-modal-body",
 					children: props.children
 				}),
-				u("div", {
+				o("div", {
 					class: "fjs-pgl-modal-footer",
-					children: u("button", {
+					children: o("button", {
 						type: "button",
 						class: "fjs-pgl-button fjs-pgl-button-default",
 						onClick: props.onClose,
@@ -1643,7 +1596,7 @@ function Modal(props) {
 function EmbedModal(props) {
 	const schema = serializeValue(props.schema);
 	const data = serializeValue(props.data || {});
-	const fieldRef = A();
+	const fieldRef = _();
 	const snippet = `<!-- styles needed for rendering -->
 <link rel="stylesheet" href="https://unpkg.com/@bpmn-io/form-js@0.2.4/dist/assets/form-js.css">
 
@@ -1671,20 +1624,20 @@ function EmbedModal(props) {
   });
 <\/script>
   `.trim();
-	y(() => {
+	p(() => {
 		fieldRef.current.select();
 	});
-	return u(Modal, {
+	return o(Modal, {
 		name: "Embed form",
 		onClose: props.onClose,
-		children: [u("p", { children: [
+		children: [o("p", { children: [
 			"Use the following HTML snippet to embed your form with ",
-			u("a", {
+			o("a", {
 				href: "https://github.com/bpmn-io/form-js",
 				children: "form-js"
 			}),
 			":"
-		] }), u("textarea", {
+		] }), o("textarea", {
 			spellCheck: "false",
 			ref: fieldRef,
 			children: snippet
@@ -1805,6 +1758,7 @@ function completions(context) {
 	let nodeBefore = syntaxTree(context.state).resolve(context.pos, -1);
 	let word = context.matchBefore(/\w*/);
 	if (["Object", "{"].includes(nodeBefore.type.name)) finalOptions = objectOptions;
+	if (nodeBefore.type.name === "," && nodeBefore.parent?.type.name === "Object") finalOptions = objectOptions;
 	if (nodeBefore.type.name === "PropertyName") {
 		context.explicit = true;
 		finalOptions = propertyNameOptions;
@@ -1814,6 +1768,7 @@ function completions(context) {
 		"[",
 		"Array"
 	].includes(nodeBefore.type.name)) finalOptions = propertyValueOptions;
+	if (nodeBefore.type.name === ":" && nodeBefore.parent?.type.name === "Property") finalOptions = propertyValueOptions;
 	if (word.from == word.to && !context.explicit) return null;
 	return {
 		from: word.from,
@@ -1896,6 +1851,7 @@ function JSONEditor(options = {}) {
 	};
 	function createPlaceholderLinterExtension() {
 		return linter((view) => {
+			if (!container) return [];
 			if (view.dom.querySelectorAll(".cm-placeholder").length > 0) classes(container, document.body).add(NO_LINT_CLS);
 			else classes(container, document.body).remove(NO_LINT_CLS);
 			return [];
@@ -1934,19 +1890,19 @@ function Section(props) {
 		headerItems: [],
 		children: []
 	});
-	return u("div", {
+	return o("div", {
 		class: "fjs-pgl-section",
-		children: [u("h1", {
+		children: [o("h1", {
 			class: "header",
 			children: [
 				props.name,
 				" ",
-				headerItems.length ? u("span", {
+				headerItems.length ? o("span", {
 					class: "header-items",
 					children: headerItems
 				}) : null
 			]
-		}), u("div", {
+		}), o("div", {
 			class: "body",
 			children
 		})]
@@ -1956,28 +1912,27 @@ Section.HeaderItem = function(props) {
 	return props.children;
 };
 function PlaygroundRoot(config) {
-	const { additionalModules, actions: actionsConfig, emit, exporter: exporterConfig, viewerProperties, editorProperties, viewerAdditionalModules, editorAdditionalModules, propertiesPanel: propertiesPanelConfig, apiLinkTarget, onInit } = config;
+	const { additionalModules, actions: actionsConfig, emit, exporter: exporterConfig, viewerProperties, editorProperties, viewerAdditionalModules, editorAdditionalModules, editorSlots, propertiesPanel: propertiesPanelConfig, apiLinkTarget, onInit } = config;
 	const { display: displayActions = true } = actionsConfig || {};
-	const editorContainerRef = A();
-	const paletteContainerRef = A();
-	const propertiesPanelContainerRef = A();
-	const viewerContainerRef = A();
-	const inputDataContainerRef = A();
-	const outputDataContainerRef = A();
-	const formEditorRef = A();
-	const formViewerRef = A();
-	const inputDataRef = A();
-	const outputDataRef = A();
-	const [showEmbed, setShowEmbed] = d(false);
-	const [schema, setSchema] = d();
-	const [data, setData] = d();
-	const load = q((schema, data) => {
+	const editorContainerRef = _();
+	const paletteContainerRef = _();
+	const propertiesPanelContainerRef = _();
+	const viewerContainerRef = _();
+	const inputDataContainerRef = _();
+	const outputDataContainerRef = _();
+	const formEditorRef = _();
+	const formViewerRef = _();
+	const inputDataRef = _();
+	const outputDataRef = _();
+	const [showEmbed, setShowEmbed] = h(false);
+	const [schema, setSchema] = h();
+	const [data, setData] = h();
+	const load = T((schema, data) => {
 		formEditorRef.current.importSchema(schema, data);
 		inputDataRef.current.setValue(toString(data));
-		setSchema(schema);
 		setData(data);
 	}, []);
-	y(() => {
+	p(() => {
 		const inputDataEditor = inputDataRef.current = new JSONEditor({
 			contentAttributes: {
 				"aria-label": "Form Input",
@@ -2013,7 +1968,8 @@ function PlaygroundRoot(config) {
 				...editorProperties || {},
 				ariaLabel: "Form Definition"
 			},
-			additionalModules: [...additionalModules || [], ...editorAdditionalModules || []]
+			additionalModules: [...additionalModules || [], ...editorAdditionalModules || []],
+			...editorSlots ? { slots: editorSlots } : {}
 		});
 		formEditor.on("formField.add", ({ formField }) => {
 			const { config } = formEditor.get("formFields").get(formField.type);
@@ -2063,13 +2019,14 @@ function PlaygroundRoot(config) {
 		additionalModules,
 		editorAdditionalModules,
 		editorProperties,
+		editorSlots,
 		emit,
 		exporterConfig,
 		propertiesPanelConfig,
 		viewerAdditionalModules,
 		viewerProperties
 	]);
-	y(() => {
+	p(() => {
 		if (!config.initialSchema) return;
 		load(config.initialSchema, config.initialData || {});
 	}, [
@@ -2077,16 +2034,16 @@ function PlaygroundRoot(config) {
 		config.initialData,
 		load
 	]);
-	y(() => {
+	p(() => {
 		schema && formViewerRef.current.importSchema(schema, data);
 	}, [schema, data]);
-	y(() => {
+	p(() => {
 		if (schema && inputDataContainerRef.current) {
 			const variables = getSchemaVariables(schema);
 			inputDataRef.current.setVariables(variables);
 		}
 	}, [schema]);
-	y(() => {
+	p(() => {
 		if (!apiLinkTarget) return;
 		apiLinkTarget.api = {
 			attachDataContainer: (node) => inputDataRef.current.attachTo(node),
@@ -2102,12 +2059,14 @@ function PlaygroundRoot(config) {
 			getResultView: () => outputDataRef.current,
 			getSchema: () => formEditorRef.current.getSchema(),
 			saveSchema: () => formEditorRef.current.saveSchema(),
-			setSchema,
+			setSchema: (newSchema) => {
+				return formEditorRef.current.importSchema(newSchema);
+			},
 			setData
 		};
 		onInit();
 	}, [apiLinkTarget, onInit]);
-	y(() => {
+	p(() => {
 		if (!apiLinkTarget) return;
 		apiLinkTarget.api.getState = () => ({
 			schema,
@@ -2120,79 +2079,79 @@ function PlaygroundRoot(config) {
 		data,
 		load
 	]);
-	const handleDownload = q(() => {
+	const handleDownload = T(() => {
 		(0, import_download.default)(JSON.stringify(schema, null, "  "), "form.json", "text/json");
 	}, [schema]);
-	const hideEmbedModal = q(() => {
+	const hideEmbedModal = T(() => {
 		setShowEmbed(false);
 	}, []);
-	const showEmbedModal = q(() => {
+	const showEmbedModal = T(() => {
 		setShowEmbed(true);
 	}, []);
-	return u("div", {
+	return o("div", {
 		class: (0, import_classnames.default)("fjs-container", "fjs-pgl-root"),
 		children: [
-			u("div", {
+			o("div", {
 				class: "fjs-pgl-modals",
-				children: showEmbed ? u(EmbedModal, {
+				children: showEmbed ? o(EmbedModal, {
 					schema,
 					data,
 					onClose: hideEmbedModal
 				}) : null
 			}),
-			u("div", {
+			o("div", {
 				class: "fjs-pgl-palette-container",
 				ref: paletteContainerRef
 			}),
-			u("div", {
+			o("div", {
 				class: "fjs-pgl-main",
 				children: [
-					u(Section, {
+					o(Section, {
 						name: "Form Definition",
 						children: [
-							displayActions && u(Section.HeaderItem, { children: u("button", {
+							displayActions && o(Section.HeaderItem, { children: o("button", {
 								type: "button",
 								class: "fjs-pgl-button",
 								title: "Download form definition",
 								onClick: handleDownload,
 								children: "Download"
 							}) }),
-							displayActions && u(Section.HeaderItem, { children: u("button", {
+							displayActions && o(Section.HeaderItem, { children: o("button", {
 								type: "button",
 								class: "fjs-pgl-button",
 								onClick: showEmbedModal,
 								children: "Embed"
 							}) }),
-							u("div", {
+							o("div", {
 								ref: editorContainerRef,
 								class: "fjs-pgl-form-container"
 							})
 						]
 					}),
-					u(Section, {
+					o(Section, {
 						name: "Form Preview",
-						children: u("div", {
+						children: o("div", {
 							ref: viewerContainerRef,
 							class: "fjs-pgl-form-container"
 						})
 					}),
-					u(Section, {
+					o(Section, {
 						name: "Form Input",
-						children: u("div", {
+						children: o("div", {
 							ref: inputDataContainerRef,
 							class: "fjs-pgl-text-container"
 						})
 					}),
-					u(Section, {
+					o(Section, {
 						name: "Form Output",
-						children: u("div", {
+						children: o("div", {
 							ref: outputDataContainerRef,
 							class: "fjs-pgl-text-container"
 						})
 					})
 				]
 			}),
-			u("div", {
+			o("div", {
 				class: "fjs-pgl-properties-container",
 				ref: propertiesPanelContainerRef
 			})
@@ -2229,7 +2188,7 @@ function Playground(options) {
 		emitter.emit("formPlayground.init");
 	};
 	container.addEventListener("dragover", handleDrop);
-	G(u(PlaygroundRoot, {
+	D(o(PlaygroundRoot, {
 		initialSchema,
 		initialData,
 		emit: emitter.emit,
@@ -2241,7 +2200,7 @@ function Playground(options) {
 	this.off = emitter.off;
 	this.emit = emitter.emit;
 	this.on("destroy", () => {
-		G(null, container);
+		D(null, container);
 		parent.removeChild(container);
 	});
 	this.destroy = () => this.emit("destroy");
@@ -2262,6 +2221,6 @@ function Playground(options) {
 	this.attachPropertiesPanelContainer = safe((node) => this.api.attachPropertiesPanelContainer(node));
 }
 //#endregion
-export { ALLOW_ATTRIBUTE, Button, Checkbox, Checklist, ConditionChecker, DATETIME_SUBTYPES, DATETIME_SUBTYPES_LABELS, DATETIME_SUBTYPE_PATH, DATE_DISALLOW_PAST_PATH, DATE_LABEL_PATH, Datetime, Default, Description, DocumentPreview, DynamicList, Errors, ExpressionField, ExpressionFieldModule, ExpressionLanguageModule, ExpressionLoopPreventer, FeelExpressionLanguage, FeelersTemplating, FieldFactory, FilePicker, Form, FormComponent, FormContext, FormEditor, FormField, FormFieldRegistry, FormFields, FormLayouter, Playground as FormPlayground, FormRenderContext, Group, Html, IFrame, Image, Importer, Label, LocalExpressionContext, MINUTES_IN_DAY, MarkdownRenderer, MarkdownRendererModule, Numberfield, OPTIONS_SOURCES, OPTIONS_SOURCES_DEFAULTS, OPTIONS_SOURCES_LABELS, OPTIONS_SOURCES_PATHS, OPTIONS_SOURCE_DEFAULT, PathRegistry, Radio, RenderModule, RepeatRenderManager, RepeatRenderModule, SANDBOX_ATTRIBUTE, SECURITY_ATTRIBUTES_DEFINITIONS, Select, Separator, Spacer, TEXT_VIEW_DEFAULT_TEXT, TIME_INTERVAL_PATH, TIME_LABEL_PATH, TIME_SERIALISINGFORMAT_LABELS, TIME_SERIALISING_FORMATS, TIME_SERIALISING_FORMAT_PATH, TIME_USE24H_PATH, Table, Taglist, Text, Textarea, Textfield, ViewerCommands, ViewerCommandsModule, buildExpressionContext, clone, createForm, createFormContainer, createFormEditor, createInjector, escapeHTML, formFields, generateIdForType, generateIndexForType, getAncestryList, getOptionsSource, getSchemaVariables, getScrollContainer, hasEqualValue, iconsByType, isRequired, pathParse, pathsEqual, runExpressionEvaluation, runRecursively, sanitizeDateTimePickerValue, sanitizeHTML, sanitizeIFrameSource, sanitizeImageSource, sanitizeMultiSelectValue, sanitizeSingleSelectValue, schemaVersion, useDebounce$1 as useDebounce, useExpressionEvaluation, usePrevious$1 as usePrevious, useService as usePropertiesPanelService, useService$1 as useService, useSingleLineTemplateEvaluation, useTemplateEvaluation, useVariables, wrapCSSStyles, wrapObjectKeysWithUnderscores };
+export { ALLOW_ATTRIBUTE, Button, Checkbox, Checklist, ConditionChecker, DATETIME_SUBTYPES, DATETIME_SUBTYPES_LABELS, DATETIME_SUBTYPE_PATH, DATE_DISALLOW_PAST_PATH, DATE_LABEL_PATH, Datetime, Default, Description, DocumentPreview, DynamicList, Errors, ExpressionField, ExpressionFieldModule, ExpressionLanguageModule, ExpressionLoopPreventer, FeelExpressionLanguage, FeelersTemplating, FieldFactory, FilePicker, Form, FormComponent, FormContext, FormEditor, FormField, FormFieldRegistry, FormFields, FormLayouter, Playground as FormPlayground, FormRenderContext, Group, Html, IFrame, Image, Importer, Label, LocalExpressionContext, MINUTES_IN_DAY, MarkdownRenderer, MarkdownRendererModule, Numberfield, OPTIONS_SOURCES, OPTIONS_SOURCES_DEFAULTS, OPTIONS_SOURCES_LABELS, OPTIONS_SOURCES_PATHS, OPTIONS_SOURCE_DEFAULT, PathRegistry, Radio, RenderModule, RepeatRenderManager, RepeatRenderModule, SANDBOX_ATTRIBUTE, SECURITY_ATTRIBUTES_DEFINITIONS, Select, Separator, Spacer, TEXT_VIEW_DEFAULT_TEXT, TIME_INTERVAL_PATH, TIME_LABEL_PATH, TIME_SERIALISINGFORMAT_LABELS, TIME_SERIALISING_FORMATS, TIME_SERIALISING_FORMAT_PATH, TIME_USE24H_PATH, Table, Taglist, Text, Textarea, Textfield, ViewerCommands, ViewerCommandsModule, buildExpressionContext, clone, createForm, createFormContainer, createFormEditor, createInjector, escapeHTML, formFields, generateIdForType, generateIndexForType, getAncestryList, getOptionsSource, getSchemaVariables, getScrollContainer, hasEqualValue, iconsByType, isRequired, pathParse, pathsEqual, pruneAt, runExpressionEvaluation, runRecursively, runUnaryTestEvaluation, sanitizeDateTimePickerValue, sanitizeHTML, sanitizeIFrameSource, sanitizeImageSource, sanitizeMultiSelectValue, sanitizeSingleSelectValue, schemaVersion, useDebounce$1 as useDebounce, useExpressionEvaluation, usePrevious$1 as usePrevious, useService as usePropertiesPanelService, useService$1 as useService, useSingleLineTemplateEvaluation, useTemplateEvaluation, useVariables, wrapCSSStyles, wrapObjectKeysWithUnderscores };
 
 //# sourceMappingURL=@bpmn-io_form-js.js.map

@@ -5,7 +5,7 @@ import moment from "moment";
 import Tippy from "@tippyjs/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperCore } from "swiper";
-import { Navigation, Grid } from "swiper";
+import { Navigation, Grid } from "swiper/modules";
 import { getSearchParameters, getPageOffset } from "reborn-util";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Icon from "components/icon";

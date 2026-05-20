@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useEffect, useRef, useState } from "react"
 import moment from "moment";
 import { useReactToPrint } from "react-to-print";
 import ImgQrBill from "assets/images/qr-bill.png";
-import ImgBill from "assets/images/logo-print.png";
+import LogoImg from "assets/images/logo.jpeg";
 import { UserContext, ContextType } from "contexts/userContext";
 // import PrintingSettingsService from "services/PrintingSettingsService";
 import { formatCurrency } from "utils/common";
@@ -57,7 +57,7 @@ export default function PrintSmall(props: IPrintSmallProps) {
               {infoSettingPrint && infoSettingPrint?.length > 0 && infoSettingPrint[2]["value"] ? (
                 <img src={infoSettingPrint[2]["value"]} alt="logo hóa đơn" />
               ) : (
-                <img src={ImgBill} alt="logo hóa đơn" />
+                <img src={LogoImg} alt="logo hóa đơn" style={{ height: "40px", width: "auto", borderRadius: "4px" }} />
               )}
             </div>
             <div className="info__product--store">

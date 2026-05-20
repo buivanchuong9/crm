@@ -1,7 +1,7 @@
 import { a as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { n as require_object_assign, t as require_react } from "./react.js";
-import { t as require_react_dom } from "./react-dom-J2wNTDgO.js";
-import { t as require_prop_types } from "./prop-types-CgEKHkd_.js";
+import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
+import { t as require_prop_types } from "./prop-types-DWpwruwU.js";
 //#region node_modules/ag-grid-community/dist/ag-grid-community.auto.esm.js
 var ag_grid_community_auto_esm_exports = /* @__PURE__ */ __exportAll({
 	AbstractHeaderCellCtrl: () => AbstractHeaderCellCtrl,
@@ -43603,6 +43603,12 @@ var init_ag_grid_community_auto_esm = __esmMin((() => {
 		BarColumnLabelPlacement["OutsideEnd"] = "outsideEnd";
 	})(BarColumnLabelPlacement || (BarColumnLabelPlacement = {}));
 	globalObj = typeof global === "undefined" ? {} : global;
+	/**
+	* @ag-grid-community/core - Advanced Data Grid / Data Table supporting Javascript / Typescript / React / Angular / Vue
+	* @version v30.2.1
+	* @link https://www.ag-grid.com/
+	* @license MIT
+	*/
 	globalObj.HTMLElement = typeof HTMLElement === "undefined" ? {} : HTMLElement;
 	globalObj.HTMLButtonElement = typeof HTMLButtonElement === "undefined" ? {} : HTMLButtonElement;
 	globalObj.HTMLSelectElement = typeof HTMLSelectElement === "undefined" ? {} : HTMLSelectElement;
@@ -52502,7 +52508,6 @@ var require_agGridReactUi = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var portalManager_1 = require_portalManager();
 	var reactFrameworkOverrides_1 = require_reactFrameworkOverrides();
 	var gridComp_1 = __importDefault(require_gridComp());
-	function debug(msg, obj) {}
 	var AgGridReactUi = function(props) {
 		var _a, _b;
 		var gridOptionsRef = react_1.useRef(null);
@@ -52522,7 +52527,6 @@ var require_agGridReactUi = /* @__PURE__ */ __commonJSMin(((exports) => {
 		var setRef = react_1.useCallback(function(e) {
 			eGui.current = e;
 			if (!eGui.current) {
-				debug("AgGridReactUi.destroy");
 				destroyFuncs.current.forEach(function(f) {
 					return f();
 				});
@@ -52556,7 +52560,6 @@ var require_agGridReactUi = /* @__PURE__ */ __commonJSMin(((exports) => {
 					context.destroy();
 				});
 				context.getBean(ag_grid_community_1.CtrlsService.NAME).whenReady(function() {
-					debug("AgGridReactUi. ctlService is ready");
 					if (context.isDestroyed()) return;
 					if (gridOptionsRef.current) {
 						var api = gridOptionsRef.current.api;
@@ -52568,7 +52571,6 @@ var require_agGridReactUi = /* @__PURE__ */ __commonJSMin(((exports) => {
 			};
 			var acceptChangesCallback = function(context) {
 				context.getBean(ag_grid_community_1.CtrlsService.NAME).whenReady(function() {
-					debug("AgGridReactUi.acceptChangesCallback");
 					whenReadyFuncs.current.forEach(function(f) {
 						return f();
 					});
@@ -52582,13 +52584,8 @@ var require_agGridReactUi = /* @__PURE__ */ __commonJSMin(((exports) => {
 			return __assign({ height: "100%" }, props.containerStyle || {});
 		}, [props.containerStyle]);
 		var processWhenReady = react_1.useCallback(function(func) {
-			if (ready.current) {
-				debug("AgGridReactUi.processWhenReady sync");
-				func();
-			} else {
-				debug("AgGridReactUi.processWhenReady async");
-				whenReadyFuncs.current.push(func);
-			}
+			if (ready.current) func();
+			else whenReadyFuncs.current.push(func);
 		}, []);
 		react_1.useEffect(function() {
 			var changes = {};

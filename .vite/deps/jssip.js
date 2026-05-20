@@ -4,12 +4,12 @@ var require_package = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = {
 		"name": "jssip",
 		"title": "JsSIP",
-		"description": "the Javascript SIP library",
-		"version": "3.10.1",
+		"description": "The Javascript SIP library",
+		"version": "3.13.8",
 		"homepage": "https://jssip.net",
 		"contributors": ["José Luis Millán <jmillan@aliax.net> (https://github.com/jmillan)", "Iñaki Baz Castillo <ibc@aliax.net> (https://inakibaz.me)"],
 		"types": "lib/JsSIP.d.ts",
-		"main": "lib-es5/JsSIP.js",
+		"main": "lib/JsSIP.js",
 		"keywords": [
 			"sip",
 			"websocket",
@@ -24,47 +24,60 @@ var require_package = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			"url": "https://github.com/versatica/JsSIP.git"
 		},
 		"bugs": { "url": "https://github.com/versatica/JsSIP/issues" },
+		"files": [
+			"LICENSE",
+			"README.md",
+			"npm-scripts.mjs",
+			"lib"
+		],
+		"scripts": {
+			"lint": "node npm-scripts.mjs lint",
+			"lint:fix": "node npm-scripts.mjs lint:fix",
+			"test": "node npm-scripts.mjs test",
+			"coverage": "node npm-scripts.mjs coverage",
+			"build": "node npm-scripts.mjs build",
+			"typescript:build": "node npm-scripts.mjs typescript:build",
+			"release": "node npm-scripts.mjs release",
+			"docs": "node npm-scripts.mjs docs",
+			"docs:watch": "node npm-scripts.mjs docs:watch",
+			"docs:check": "node npm-scripts.mjs docs:check"
+		},
 		"dependencies": {
-			"@types/events": "^3.0.0",
-			"@types/debug": "^4.1.7",
 			"debug": "^4.3.1",
 			"events": "^3.3.0",
 			"sdp-transform": "^2.14.1"
 		},
 		"devDependencies": {
-			"@babel/core": "^7.19.6",
-			"@babel/preset-env": "^7.19.4",
-			"ansi-colors": "^3.2.4",
-			"browserify": "^16.5.1",
-			"eslint": "^5.16.0",
-			"fancy-log": "^1.3.3",
-			"gulp": "^4.0.2",
-			"gulp-babel": "^8.0.0",
-			"gulp-eslint": "^5.0.0",
-			"gulp-expect-file": "^1.0.2",
-			"gulp-header": "^2.0.9",
-			"gulp-nodeunit-runner": "^0.2.2",
-			"gulp-plumber": "^1.2.1",
-			"gulp-rename": "^1.4.0",
-			"gulp-uglify-es": "^1.0.4",
+			"@eslint/eslintrc": "^3.3.3",
+			"@eslint/js": "^9.39.2",
+			"@types/debug": "^4.1.12",
+			"@types/events": "^3.0.3",
+			"@types/jest": "^30.0.0",
+			"@types/node": "^25.0.10",
+			"cpx": "^1.5.0",
+			"esbuild": "^0.27.2",
+			"eslint": "^9.39.1",
+			"eslint-config-prettier": "^10.1.8",
+			"eslint-plugin-jest": "^29.12.1",
+			"eslint-plugin-prettier": "^5.5.5",
+			"globals": "^17.0.0",
+			"jest": "^30.2.0",
+			"open-cli": "^8.0.0",
 			"pegjs": "^0.7.0",
-			"vinyl-buffer": "^1.0.1",
-			"vinyl-source-stream": "^2.0.0"
-		},
-		"scripts": {
-			"lint": "node npm-scripts.js lint",
-			"test": "node npm-scripts.js test",
-			"prepublish": "node npm-scripts.js prepublish",
-			"release": "node npm-scripts.js release"
+			"prettier": "^3.8.1",
+			"ts-jest": "^29.4.6",
+			"typedoc": "^0.28.16",
+			"typescript": "^5.9.3",
+			"typescript-eslint": "^8.53.1"
 		}
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Constants.js
+//#region node_modules/jssip/lib/Constants.js
 var require_Constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var pkg = require_package();
 	module.exports = {
-		USER_AGENT: "".concat(pkg.title, " ").concat(pkg.version),
+		USER_AGENT: `${pkg.title} ${pkg.version}`,
 		SIP: "sip",
 		SIPS: "sips",
 		causes: {
@@ -203,7 +216,7 @@ var require_Constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			604: "Does Not Exist Anywhere",
 			606: "Not Acceptable"
 		},
-		ALLOWED_METHODS: "INVITE,ACK,CANCEL,BYE,UPDATE,MESSAGE,OPTIONS,REFER,INFO,NOTIFY",
+		ALLOWED_METHODS: "INVITE,ACK,CANCEL,BYE,UPDATE,MESSAGE,OPTIONS,REFER,INFO,NOTIFY,SUBSCRIBE",
 		ACCEPTED_BODY_TYPES: "application/sdp, application/dtmf-relay",
 		MAX_FORWARDS: 69,
 		SESSION_EXPIRES: 90,
@@ -213,302 +226,127 @@ var require_Constants = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Exceptions.js
+//#region node_modules/jssip/lib/Exceptions.js
 var require_Exceptions = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _wrapNativeSuper(Class) {
-		var _cache = typeof Map === "function" ? /* @__PURE__ */ new Map() : void 0;
-		_wrapNativeSuper = function _wrapNativeSuper(Class) {
-			if (Class === null || !_isNativeFunction(Class)) return Class;
-			if (typeof Class !== "function") throw new TypeError("Super expression must either be null or a function");
-			if (typeof _cache !== "undefined") {
-				if (_cache.has(Class)) return _cache.get(Class);
-				_cache.set(Class, Wrapper);
-			}
-			function Wrapper() {
-				return _construct(Class, arguments, _getPrototypeOf(this).constructor);
-			}
-			Wrapper.prototype = Object.create(Class.prototype, { constructor: {
-				value: Wrapper,
-				enumerable: false,
-				writable: true,
-				configurable: true
-			} });
-			return _setPrototypeOf(Wrapper, Class);
-		};
-		return _wrapNativeSuper(Class);
-	}
-	function _construct(Parent, args, Class) {
-		if (_isNativeReflectConstruct()) _construct = Reflect.construct;
-		else _construct = function _construct(Parent, args, Class) {
-			var a = [null];
-			a.push.apply(a, args);
-			var instance = new (Function.bind.apply(Parent, a))();
-			if (Class) _setPrototypeOf(instance, Class.prototype);
-			return instance;
-		};
-		return _construct.apply(null, arguments);
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
+	var ConfigurationError = class extends Error {
+		constructor(parameter, value) {
+			super();
+			this.code = 1;
+			this.name = "CONFIGURATION_ERROR";
+			this.parameter = parameter;
+			this.value = value;
+			this.message = !this.value ? `Missing parameter: ${this.parameter}` : `Invalid value ${JSON.stringify(this.value)} for parameter "${this.parameter}"`;
 		}
-	}
-	function _isNativeFunction(fn) {
-		return Function.toString.call(fn).indexOf("[native code]") !== -1;
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
+	};
+	var InvalidStateError = class extends Error {
+		constructor(status) {
+			super();
+			this.code = 2;
+			this.name = "INVALID_STATE_ERROR";
+			this.status = status;
+			this.message = `Invalid status: ${status}`;
+		}
+	};
+	var NotSupportedError = class extends Error {
+		constructor(message) {
+			super();
+			this.code = 3;
+			this.name = "NOT_SUPPORTED_ERROR";
+			this.message = message;
+		}
+	};
+	var NotReadyError = class extends Error {
+		constructor(message) {
+			super();
+			this.code = 4;
+			this.name = "NOT_READY_ERROR";
+			this.message = message;
+		}
+	};
 	module.exports = {
-		ConfigurationError: /* @__PURE__ */ function(_Error) {
-			_inherits(ConfigurationError, _Error);
-			var _super = _createSuper(ConfigurationError);
-			function ConfigurationError(parameter, value) {
-				var _this;
-				_classCallCheck(this, ConfigurationError);
-				_this = _super.call(this);
-				_this.code = 1;
-				_this.name = "CONFIGURATION_ERROR";
-				_this.parameter = parameter;
-				_this.value = value;
-				_this.message = !_this.value ? "Missing parameter: ".concat(_this.parameter) : "Invalid value ".concat(JSON.stringify(_this.value), " for parameter \"").concat(_this.parameter, "\"");
-				return _this;
-			}
-			return ConfigurationError;
-		}(/* @__PURE__ */ _wrapNativeSuper(Error)),
-		InvalidStateError: /* @__PURE__ */ function(_Error2) {
-			_inherits(InvalidStateError, _Error2);
-			var _super2 = _createSuper(InvalidStateError);
-			function InvalidStateError(status) {
-				var _this2;
-				_classCallCheck(this, InvalidStateError);
-				_this2 = _super2.call(this);
-				_this2.code = 2;
-				_this2.name = "INVALID_STATE_ERROR";
-				_this2.status = status;
-				_this2.message = "Invalid status: ".concat(status);
-				return _this2;
-			}
-			return InvalidStateError;
-		}(/* @__PURE__ */ _wrapNativeSuper(Error)),
-		NotSupportedError: /* @__PURE__ */ function(_Error3) {
-			_inherits(NotSupportedError, _Error3);
-			var _super3 = _createSuper(NotSupportedError);
-			function NotSupportedError(message) {
-				var _this3;
-				_classCallCheck(this, NotSupportedError);
-				_this3 = _super3.call(this);
-				_this3.code = 3;
-				_this3.name = "NOT_SUPPORTED_ERROR";
-				_this3.message = message;
-				return _this3;
-			}
-			return NotSupportedError;
-		}(/* @__PURE__ */ _wrapNativeSuper(Error)),
-		NotReadyError: /* @__PURE__ */ function(_Error4) {
-			_inherits(NotReadyError, _Error4);
-			var _super4 = _createSuper(NotReadyError);
-			function NotReadyError(message) {
-				var _this4;
-				_classCallCheck(this, NotReadyError);
-				_this4 = _super4.call(this);
-				_this4.code = 4;
-				_this4.name = "NOT_READY_ERROR";
-				_this4.message = message;
-				return _this4;
-			}
-			return NotReadyError;
-		}(/* @__PURE__ */ _wrapNativeSuper(Error))
+		ConfigurationError,
+		InvalidStateError,
+		NotSupportedError,
+		NotReadyError
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/NameAddrHeader.js
+//#region node_modules/jssip/lib/NameAddrHeader.js
 var require_NameAddrHeader = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var URI = require_URI();
 	var Grammar = require_Grammar();
-	module.exports = /* @__PURE__ */ function() {
-		_createClass(NameAddrHeader, null, [{
-			key: "parse",
-			/**
-			* Parse the given string and returns a NameAddrHeader instance or undefined if
-			* it is an invalid NameAddrHeader.
-			*/
-			value: function parse(name_addr_header) {
-				name_addr_header = Grammar.parse(name_addr_header, "Name_Addr_Header");
-				if (name_addr_header !== -1) return name_addr_header;
-				else return;
-			}
-		}]);
-		function NameAddrHeader(uri, display_name, parameters) {
-			_classCallCheck(this, NameAddrHeader);
+	module.exports = class NameAddrHeader {
+		/**
+		* Parse the given string and returns a NameAddrHeader instance or undefined if
+		* it is an invalid NameAddrHeader.
+		*/
+		static parse(name_addr_header) {
+			name_addr_header = Grammar.parse(name_addr_header, "Name_Addr_Header");
+			if (name_addr_header !== -1) return name_addr_header;
+			else return;
+		}
+		constructor(uri, display_name, parameters) {
 			if (!uri || !(uri instanceof URI)) throw new TypeError("missing or invalid \"uri\" parameter");
 			this._uri = uri;
 			this._parameters = {};
 			this.display_name = display_name;
-			for (var param in parameters) if (Object.prototype.hasOwnProperty.call(parameters, param)) this.setParam(param, parameters[param]);
+			for (const param in parameters) if (Object.prototype.hasOwnProperty.call(parameters, param)) this.setParam(param, parameters[param]);
 		}
-		_createClass(NameAddrHeader, [
-			{
-				key: "setParam",
-				value: function setParam(key, value) {
-					if (key) this._parameters[key.toLowerCase()] = typeof value === "undefined" || value === null ? null : value.toString();
-				}
-			},
-			{
-				key: "getParam",
-				value: function getParam(key) {
-					if (key) return this._parameters[key.toLowerCase()];
-				}
-			},
-			{
-				key: "hasParam",
-				value: function hasParam(key) {
-					if (key) return this._parameters.hasOwnProperty(key.toLowerCase()) && true || false;
-				}
-			},
-			{
-				key: "deleteParam",
-				value: function deleteParam(parameter) {
-					parameter = parameter.toLowerCase();
-					if (this._parameters.hasOwnProperty(parameter)) {
-						var value = this._parameters[parameter];
-						delete this._parameters[parameter];
-						return value;
-					}
-				}
-			},
-			{
-				key: "clearParams",
-				value: function clearParams() {
-					this._parameters = {};
-				}
-			},
-			{
-				key: "clone",
-				value: function clone() {
-					return new NameAddrHeader(this._uri.clone(), this._display_name, JSON.parse(JSON.stringify(this._parameters)));
-				}
-			},
-			{
-				key: "_quote",
-				value: function _quote(str) {
-					return str.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
-				}
-			},
-			{
-				key: "toString",
-				value: function toString() {
-					var body = this._display_name ? "\"".concat(this._quote(this._display_name), "\" ") : "";
-					body += "<".concat(this._uri.toString(), ">");
-					for (var parameter in this._parameters) if (Object.prototype.hasOwnProperty.call(this._parameters, parameter)) {
-						body += ";".concat(parameter);
-						if (this._parameters[parameter] !== null) body += "=".concat(this._parameters[parameter]);
-					}
-					return body;
-				}
-			},
-			{
-				key: "uri",
-				get: function get() {
-					return this._uri;
-				}
-			},
-			{
-				key: "display_name",
-				get: function get() {
-					return this._display_name;
-				},
-				set: function set(value) {
-					this._display_name = value === 0 ? "0" : value;
-				}
+		get uri() {
+			return this._uri;
+		}
+		get display_name() {
+			return this._display_name;
+		}
+		set display_name(value) {
+			this._display_name = value === 0 ? "0" : value;
+		}
+		setParam(key, value) {
+			if (key) this._parameters[key.toLowerCase()] = typeof value === "undefined" || value === null ? null : value.toString();
+		}
+		getParam(key) {
+			if (key) return this._parameters[key.toLowerCase()];
+		}
+		hasParam(key) {
+			if (key) return this._parameters.hasOwnProperty(key.toLowerCase()) && true || false;
+		}
+		deleteParam(parameter) {
+			parameter = parameter.toLowerCase();
+			if (this._parameters.hasOwnProperty(parameter)) {
+				const value = this._parameters[parameter];
+				delete this._parameters[parameter];
+				return value;
 			}
-		]);
-		return NameAddrHeader;
-	}();
+		}
+		clearParams() {
+			this._parameters = {};
+		}
+		clone() {
+			return new NameAddrHeader(this._uri.clone(), this._display_name, JSON.parse(JSON.stringify(this._parameters)));
+		}
+		_quote(str) {
+			return str.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+		}
+		toString() {
+			let body = this._display_name ? `"${this._quote(this._display_name)}" ` : "";
+			body += `<${this._uri.toString()}>`;
+			for (const parameter in this._parameters) if (Object.prototype.hasOwnProperty.call(this._parameters, parameter)) {
+				body += `;${parameter}`;
+				if (this._parameters[parameter] !== null) body += `=${this._parameters[parameter]}`;
+			}
+			return body;
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Grammar.js
+//#region node_modules/jssip/lib/Grammar.js
 var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	module.exports = function() {
+	module.exports = (function() {
 		function quote(s) {
 			return "\"" + s.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\x08/g, "\\b").replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/\f/g, "\\f").replace(/\r/g, "\\r").replace(/[\x00-\x07\x0B\x0E-\x1F\x80-\uFFFF]/g, escape) + "\"";
 		}
 		var result = {
-			parse: function parse(input, startRule) {
+			parse: function(input, startRule) {
 				var parseFunctions = {
 					"CRLF": parse_CRLF,
 					"DIGIT": parse_DIGIT,
@@ -1063,9 +901,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, escaped) {
+					if (result0 !== null) result0 = (function(offset, escaped) {
 						return escaped.join("");
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -1108,9 +946,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return " ";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -1157,9 +995,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return ":";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -1224,9 +1062,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -1462,9 +1300,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -1637,9 +1475,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2205,9 +2043,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2242,9 +2080,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "*";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2279,9 +2117,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "/";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2316,9 +2154,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "=";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2353,9 +2191,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "(";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2390,9 +2228,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return ")";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2417,9 +2255,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return ">";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2444,9 +2282,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "<";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2481,9 +2319,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return ",";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2518,9 +2356,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return ";";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2555,9 +2393,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return ":";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2576,9 +2414,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "\"";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2597,9 +2435,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return "\"";
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2715,9 +2553,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2760,10 +2598,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var trimmed = input.substring(pos, offset).trim();
 						return trimmed.substring(1, trimmed.length - 1).replace(/\\([\x00-\x09\x0b-\x0c\x0e-\x7f])/g, "$1");
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2883,7 +2721,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						try {
 							data.uri = new URI(data.scheme, data.user, data.host, data.port);
 							delete data.scheme;
@@ -2894,7 +2732,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						} catch (e) {
 							data = -1;
 						}
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2952,7 +2790,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						try {
 							data.uri = new URI(data.scheme, data.user, data.host, data.port, data.uri_params, data.uri_headers);
 							delete data.scheme;
@@ -2965,7 +2803,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						} catch (e) {
 							data = -1;
 						}
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -2984,9 +2822,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						if (reportFailures === 0) matchFailed("\"sips\"");
 					}
-					if (result0 !== null) result0 = function(offset, scheme) {
+					if (result0 !== null) result0 = (function(offset, scheme) {
 						data.scheme = scheme.toLowerCase();
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -3000,9 +2838,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						if (reportFailures === 0) matchFailed("\"sip\"");
 					}
-					if (result0 !== null) result0 = function(offset, scheme) {
+					if (result0 !== null) result0 = (function(offset, scheme) {
 						data.scheme = scheme.toLowerCase();
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -3056,9 +2894,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.user = decodeURIComponent(input.substring(pos - 1, offset));
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -3254,9 +3092,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.password = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -3304,10 +3142,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = parse_IPv4address();
 						if (result0 === null) result0 = parse_IPv6reference();
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.host = input.substring(pos, offset).toLowerCase();
 						return data.host;
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -3384,10 +3222,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.host_type = "domain";
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -3536,10 +3374,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.host_type = "IPv6";
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5092,10 +4930,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.host_type = "IPv6";
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5241,10 +5079,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.host_type = "IPv4";
 						return input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5411,11 +5249,11 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, port) {
+					if (result0 !== null) result0 = (function(offset, port) {
 						port = parseInt(port.join(""));
 						data.port = port;
 						return port;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5541,10 +5379,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, transport) {
+					if (result0 !== null) result0 = (function(offset, transport) {
 						if (!data.uri_params) data.uri_params = {};
 						data.uri_params["transport"] = transport.toLowerCase();
-					}(pos0, result0[1]);
+					})(pos0, result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5585,10 +5423,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, user) {
+					if (result0 !== null) result0 = (function(offset, user) {
 						if (!data.uri_params) data.uri_params = {};
 						data.uri_params["user"] = user.toLowerCase();
-					}(pos0, result0[1]);
+					})(pos0, result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5613,10 +5451,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, method) {
+					if (result0 !== null) result0 = (function(offset, method) {
 						if (!data.uri_params) data.uri_params = {};
 						data.uri_params["method"] = method;
-					}(pos0, result0[1]);
+					})(pos0, result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5641,10 +5479,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, ttl) {
+					if (result0 !== null) result0 = (function(offset, ttl) {
 						if (!data.params) data.params = {};
 						data.params["ttl"] = ttl;
-					}(pos0, result0[1]);
+					})(pos0, result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5669,10 +5507,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, maddr) {
+					if (result0 !== null) result0 = (function(offset, maddr) {
 						if (!data.uri_params) data.uri_params = {};
 						data.uri_params["maddr"] = maddr;
-					}(pos0, result0[1]);
+					})(pos0, result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5716,10 +5554,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						if (!data.uri_params) data.uri_params = {};
 						data.uri_params["lr"] = void 0;
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5757,12 +5595,12 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, param, value) {
+					if (result0 !== null) result0 = (function(offset, param, value) {
 						if (!data.uri_params) data.uri_params = {};
 						if (typeof value === "undefined") value = void 0;
 						else value = value[1];
 						data.uri_params[param.toLowerCase()] = value;
-					}(pos0, result0[0], result0[1]);
+					})(pos0, result0[0], result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5777,9 +5615,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result1 = parse_paramchar();
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset, pname) {
+					if (result0 !== null) result0 = (function(offset, pname) {
 						return pname.join("");
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5794,9 +5632,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result1 = parse_paramchar();
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset, pvalue) {
+					if (result0 !== null) result0 = (function(offset, pvalue) {
 						return pvalue.join("");
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -5976,13 +5814,13 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, hname, hvalue) {
+					if (result0 !== null) result0 = (function(offset, hname, hvalue) {
 						hname = hname.join("").toLowerCase();
 						hvalue = hvalue.join("");
 						if (!data.uri_headers) data.uri_headers = {};
 						if (!data.uri_headers[hname]) data.uri_headers[hname] = [hvalue];
 						else data.uri_headers[hname].push(hvalue);
-					}(pos0, result0[0], result0[2]);
+					})(pos0, result0[0], result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -6652,9 +6490,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.scheme = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -6935,9 +6773,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.sip_version = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7069,10 +6907,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.method = input.substring(pos, offset);
 						return data.method;
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7121,9 +6959,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_extension_code();
-					if (result0 !== null) result0 = function(offset, status_code) {
+					if (result0 !== null) result0 = (function(offset, status_code) {
 						data.status_code = parseInt(status_code.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7195,9 +7033,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.reason_phrase = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7281,9 +7119,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7335,7 +7173,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							pos = pos1;
 						}
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var idx, length = data.multi_header.length;
 						for (idx = 0; idx < length; idx++) if (data.multi_header[idx].parsed === null) {
 							data = null;
@@ -7343,7 +7181,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						}
 						if (data !== null) data = data.multi_header;
 						else data = -1;
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7392,7 +7230,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var header;
 						if (!data.multi_header) data.multi_header = [];
 						try {
@@ -7408,7 +7246,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							"offset": offset,
 							"parsed": header
 						});
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7492,12 +7330,12 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						pos = pos1;
 					}
 					if (result0 === null) result0 = parse_quoted_string_clean();
-					if (result0 !== null) result0 = function(offset, display_name) {
+					if (result0 !== null) result0 = (function(offset, display_name) {
 						if (typeof display_name === "string") data.display_name = display_name;
 						else data.display_name = display_name[1].reduce(function(acc, cur) {
 							return acc + cur[0] + cur[1];
 						}, display_name[0]);
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7540,10 +7378,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, q) {
+					if (result0 !== null) result0 = (function(offset, q) {
 						if (!data.params) data.params = {};
 						data.params["q"] = q;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7578,10 +7416,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, expires) {
+					if (result0 !== null) result0 = (function(offset, expires) {
 						if (!data.params) data.params = {};
 						data.params["expires"] = expires;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7596,9 +7434,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result1 = parse_DIGIT();
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset, delta_seconds) {
+					if (result0 !== null) result0 = (function(offset, delta_seconds) {
 						return parseInt(delta_seconds.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7662,9 +7500,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						return parseFloat(input.substring(pos, offset));
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7696,12 +7534,12 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, param, value) {
+					if (result0 !== null) result0 = (function(offset, param, value) {
 						if (!data.params) data.params = {};
 						if (typeof value === "undefined") value = void 0;
 						else value = value[1];
 						data.params[param.toLowerCase()] = value;
-					}(pos0, result0[0], result0[1]);
+					})(pos0, result0[0], result0[1]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7909,9 +7747,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result1 = parse_DIGIT();
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset, length) {
+					if (result0 !== null) result0 = (function(offset, length) {
 						data = parseInt(length.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -7919,9 +7757,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_media_type();
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8165,9 +8003,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result1 = parse_DIGIT();
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset, cseq_value) {
+					if (result0 !== null) result0 = (function(offset, cseq_value) {
 						data.value = parseInt(cseq_value.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8175,9 +8013,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_delta_seconds();
-					if (result0 !== null) result0 = function(offset, expires) {
+					if (result0 !== null) result0 = (function(offset, expires) {
 						data = expires;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8225,9 +8063,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, event_type) {
+					if (result0 !== null) result0 = (function(offset, event_type) {
 						data.event = event_type.join("").toLowerCase();
-					}(pos0, result0[0]);
+					})(pos0, result0[0]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8334,7 +8172,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var tag = data.tag;
 						try {
 							data = new NameAddrHeader(data.uri, data.display_name, data.params);
@@ -8342,7 +8180,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						} catch (e) {
 							data = -1;
 						}
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8382,9 +8220,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, tag) {
+					if (result0 !== null) result0 = (function(offset, tag) {
 						data.tag = tag;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8399,9 +8237,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result1 = parse_DIGIT();
 						}
 					} else result0 = null;
-					if (result0 !== null) result0 = function(offset, forwards) {
+					if (result0 !== null) result0 = (function(offset, forwards) {
 						data = parseInt(forwards.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8409,9 +8247,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_delta_seconds();
-					if (result0 !== null) result0 = function(offset, min_expires) {
+					if (result0 !== null) result0 = (function(offset, min_expires) {
 						data = min_expires;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8488,13 +8326,13 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						try {
 							data = new NameAddrHeader(data.uri, data.display_name, data.params);
 						} catch (e) {
 							data = -1;
 						}
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8722,9 +8560,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_quoted_string_clean();
-					if (result0 !== null) result0 = function(offset, realm) {
+					if (result0 !== null) result0 = (function(offset, realm) {
 						data.realm = realm;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8867,9 +8705,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_quoted_string_clean();
-					if (result0 !== null) result0 = function(offset, nonce) {
+					if (result0 !== null) result0 = (function(offset, nonce) {
 						data.nonce = nonce;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8904,9 +8742,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, opaque) {
+					if (result0 !== null) result0 = (function(offset, opaque) {
 						data.opaque = opaque;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -8931,9 +8769,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 								result2 = null;
 								if (reportFailures === 0) matchFailed("\"true\"");
 							}
-							if (result2 !== null) result2 = function(offset) {
+							if (result2 !== null) result2 = (function(offset) {
 								data.stale = true;
-							}(pos1);
+							})(pos1);
 							if (result2 === null) pos = pos1;
 							if (result2 === null) {
 								pos1 = pos;
@@ -8944,9 +8782,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 									result2 = null;
 									if (reportFailures === 0) matchFailed("\"false\"");
 								}
-								if (result2 !== null) result2 = function(offset) {
+								if (result2 !== null) result2 = (function(offset) {
 									data.stale = false;
-								}(pos1);
+								})(pos1);
 								if (result2 === null) pos = pos1;
 							}
 							if (result2 !== null) result0 = [
@@ -9015,9 +8853,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, algorithm) {
+					if (result0 !== null) result0 = (function(offset, algorithm) {
 						data.algorithm = algorithm.toUpperCase();
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9141,10 +8979,10 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						}
 						if (result0 === null) result0 = parse_token();
 					}
-					if (result0 !== null) result0 = function(offset, qop_value) {
+					if (result0 !== null) result0 = (function(offset, qop_value) {
 						data.qop || (data.qop = []);
 						data.qop.push(qop_value.toLowerCase());
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9238,7 +9076,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var idx, length = data.multi_header.length;
 						for (idx = 0; idx < length; idx++) if (data.multi_header[idx].parsed === null) {
 							data = null;
@@ -9246,7 +9084,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						}
 						if (data !== null) data = data.multi_header;
 						else data = -1;
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9294,7 +9132,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var header;
 						if (!data.multi_header) data.multi_header = [];
 						try {
@@ -9310,7 +9148,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							"offset": offset,
 							"parsed": header
 						});
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9365,7 +9203,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, protocol) {
+					if (result0 !== null) result0 = (function(offset, protocol) {
 						data.protocol = protocol.toLowerCase();
 						if (!data.params) data.params = {};
 						if (data.params.text && data.params.text[0] === "\"") {
@@ -9373,7 +9211,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							data.text = text.substring(1, text.length - 1);
 							delete data.params.text;
 						}
-					}(pos0, result0[0]);
+					})(pos0, result0[0]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9420,9 +9258,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, cause) {
+					if (result0 !== null) result0 = (function(offset, cause) {
 						data.cause = parseInt(cause.join(""));
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9639,9 +9477,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							if (result0 === null) result0 = parse_token();
 						}
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.state = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -9676,9 +9514,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, reason) {
+					if (result0 !== null) result0 = (function(offset, reason) {
 						if (typeof reason !== "undefined") data.reason = reason;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					if (result0 === null) {
 						pos0 = pos;
@@ -9711,9 +9549,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							result0 = null;
 							pos = pos1;
 						}
-						if (result0 !== null) result0 = function(offset, expires) {
+						if (result0 !== null) result0 = (function(offset, expires) {
 							if (typeof expires !== "undefined") data.expires = expires;
-						}(pos0, result0[2]);
+						})(pos0, result0[2]);
 						if (result0 === null) pos = pos0;
 						if (result0 === null) {
 							pos0 = pos;
@@ -9746,9 +9584,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 								result0 = null;
 								pos = pos1;
 							}
-							if (result0 !== null) result0 = function(offset, retry_after) {
+							if (result0 !== null) result0 = (function(offset, retry_after) {
 								if (typeof retry_after !== "undefined") data.retry_after = retry_after;
-							}(pos0, result0[2]);
+							})(pos0, result0[2]);
 							if (result0 === null) pos = pos0;
 							if (result0 === null) result0 = parse_generic_param();
 						}
@@ -9918,7 +9756,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						var tag = data.tag;
 						try {
 							data = new NameAddrHeader(data.uri, data.display_name, data.params);
@@ -9926,7 +9764,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						} catch (e) {
 							data = -1;
 						}
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10092,9 +9930,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, via_ttl_value) {
+					if (result0 !== null) result0 = (function(offset, via_ttl_value) {
 						data.ttl = via_ttl_value;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10129,9 +9967,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, via_maddr) {
+					if (result0 !== null) result0 = (function(offset, via_maddr) {
 						data.maddr = via_maddr;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10167,9 +10005,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, via_received) {
+					if (result0 !== null) result0 = (function(offset, via_received) {
 						data.received = via_received;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10204,9 +10042,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, via_branch) {
+					if (result0 !== null) result0 = (function(offset, via_branch) {
 						data.branch = via_branch;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10290,9 +10128,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, rport) {
+					if (result0 !== null) result0 = (function(offset, rport) {
 						data.rport = parseInt(rport.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10348,9 +10186,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						if (reportFailures === 0) matchFailed("\"SIP\"");
 					}
 					if (result0 === null) result0 = parse_token();
-					if (result0 !== null) result0 = function(offset, via_protocol) {
+					if (result0 !== null) result0 = (function(offset, via_protocol) {
 						data.protocol = via_protocol;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10392,9 +10230,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 							}
 						}
 					}
-					if (result0 !== null) result0 = function(offset, via_transport) {
+					if (result0 !== null) result0 = (function(offset, via_transport) {
 						data.transport = via_transport;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10436,9 +10274,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = parse_IPv6reference();
 						if (result0 === null) result0 = parse_hostname();
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.host = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10486,9 +10324,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, via_sent_by_port) {
+					if (result0 !== null) result0 = (function(offset, via_sent_by_port) {
 						data.port = parseInt(via_sent_by_port.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10519,9 +10357,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, ttl) {
+					if (result0 !== null) result0 = (function(offset, ttl) {
 						return parseInt(ttl.join(""));
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10578,9 +10416,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					var result0;
 					var pos0 = pos;
 					result0 = parse_delta_seconds();
-					if (result0 !== null) result0 = function(offset, expires) {
+					if (result0 !== null) result0 = (function(offset, expires) {
 						data.expires = expires;
-					}(pos0, result0);
+					})(pos0, result0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10633,9 +10471,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, s_e_refresher_value) {
+					if (result0 !== null) result0 = (function(offset, s_e_refresher_value) {
 						data.refresher = s_e_refresher_value.toLowerCase();
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10804,9 +10642,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, uuid) {
+					if (result0 !== null) result0 = (function(offset, uuid) {
 						data = input.substring(pos + 5, offset);
-					}(pos0, result0[0]);
+					})(pos0, result0[0]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -10933,13 +10771,13 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						try {
 							data = new NameAddrHeader(data.uri, data.display_name, data.params);
 						} catch (e) {
 							data = -1;
 						}
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -11023,9 +10861,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.call_id = input.substring(pos, offset);
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -11071,9 +10909,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, to_tag) {
+					if (result0 !== null) result0 = (function(offset, to_tag) {
 						data.to_tag = to_tag;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -11108,9 +10946,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						pos = pos1;
 					}
-					if (result0 !== null) result0 = function(offset, from_tag) {
+					if (result0 !== null) result0 = (function(offset, from_tag) {
 						data.from_tag = from_tag;
-					}(pos0, result0[2]);
+					})(pos0, result0[2]);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -11124,9 +10962,9 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 						result0 = null;
 						if (reportFailures === 0) matchFailed("\"early-only\"");
 					}
-					if (result0 !== null) result0 = function(offset) {
+					if (result0 !== null) result0 = (function(offset) {
 						data.early_only = true;
-					}(pos0);
+					})(pos0);
 					if (result0 === null) pos = pos0;
 					return result0;
 				}
@@ -11176,7 +11014,7 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 				}
 				return data;
 			},
-			toSource: function toSource() {
+			toSource: function() {
 				return this._source;
 			}
 		};
@@ -11205,88 +11043,11 @@ var require_Grammar = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		};
 		result.SyntaxError.prototype = Error.prototype;
 		return result;
-	}();
+	})();
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/URI.js
+//#region node_modules/jssip/lib/URI.js
 var require_URI = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e) {
-						throw _e;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e2) {
-				didErr = true;
-				err = _e2;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var JsSIP_C = require_Constants();
 	var Utils = require_Utils();
 	var Grammar = require_Grammar();
@@ -11299,23 +11060,17 @@ var require_URI = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	* -param {Object} [headers]
 	*
 	*/
-	module.exports = /* @__PURE__ */ function() {
-		_createClass(URI, null, [{
-			key: "parse",
-			/**
-			* Parse the given string and returns a JsSIP.URI instance or undefined if
-			* it is an invalid URI.
-			*/
-			value: function parse(uri) {
-				uri = Grammar.parse(uri, "SIP_URI");
-				if (uri !== -1) return uri;
-				else return;
-			}
-		}]);
-		function URI(scheme, user, host, port) {
-			var parameters = arguments.length > 4 && arguments[4] !== void 0 ? arguments[4] : {};
-			var headers = arguments.length > 5 && arguments[5] !== void 0 ? arguments[5] : {};
-			_classCallCheck(this, URI);
+	module.exports = class URI {
+		/**
+		* Parse the given string and returns a JsSIP.URI instance or undefined if
+		* it is an invalid URI.
+		*/
+		static parse(uri) {
+			uri = Grammar.parse(uri, "SIP_URI");
+			if (uri !== -1) return uri;
+			else return;
+		}
+		constructor(scheme, user, host, port, parameters = {}, headers = {}) {
 			if (!host) throw new TypeError("missing or invalid \"host\" parameter");
 			this._parameters = {};
 			this._headers = {};
@@ -11323,285 +11078,138 @@ var require_URI = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			this._user = user;
 			this._host = host;
 			this._port = port;
-			for (var param in parameters) if (Object.prototype.hasOwnProperty.call(parameters, param)) this.setParam(param, parameters[param]);
-			for (var header in headers) if (Object.prototype.hasOwnProperty.call(headers, header)) this.setHeader(header, headers[header]);
+			for (const param in parameters) if (Object.prototype.hasOwnProperty.call(parameters, param)) this.setParam(param, parameters[param]);
+			for (const header in headers) if (Object.prototype.hasOwnProperty.call(headers, header)) this.setHeader(header, headers[header]);
 		}
-		_createClass(URI, [
-			{
-				key: "setParam",
-				value: function setParam(key, value) {
-					if (key) this._parameters[key.toLowerCase()] = typeof value === "undefined" || value === null ? null : value.toString();
-				}
-			},
-			{
-				key: "getParam",
-				value: function getParam(key) {
-					if (key) return this._parameters[key.toLowerCase()];
-				}
-			},
-			{
-				key: "hasParam",
-				value: function hasParam(key) {
-					if (key) return this._parameters.hasOwnProperty(key.toLowerCase()) && true || false;
-				}
-			},
-			{
-				key: "deleteParam",
-				value: function deleteParam(parameter) {
-					parameter = parameter.toLowerCase();
-					if (this._parameters.hasOwnProperty(parameter)) {
-						var value = this._parameters[parameter];
-						delete this._parameters[parameter];
-						return value;
-					}
-				}
-			},
-			{
-				key: "clearParams",
-				value: function clearParams() {
-					this._parameters = {};
-				}
-			},
-			{
-				key: "setHeader",
-				value: function setHeader(name, value) {
-					this._headers[Utils.headerize(name)] = Array.isArray(value) ? value : [value];
-				}
-			},
-			{
-				key: "getHeader",
-				value: function getHeader(name) {
-					if (name) return this._headers[Utils.headerize(name)];
-				}
-			},
-			{
-				key: "hasHeader",
-				value: function hasHeader(name) {
-					if (name) return this._headers.hasOwnProperty(Utils.headerize(name)) && true || false;
-				}
-			},
-			{
-				key: "deleteHeader",
-				value: function deleteHeader(header) {
-					header = Utils.headerize(header);
-					if (this._headers.hasOwnProperty(header)) {
-						var value = this._headers[header];
-						delete this._headers[header];
-						return value;
-					}
-				}
-			},
-			{
-				key: "clearHeaders",
-				value: function clearHeaders() {
-					this._headers = {};
-				}
-			},
-			{
-				key: "clone",
-				value: function clone() {
-					return new URI(this._scheme, this._user, this._host, this._port, JSON.parse(JSON.stringify(this._parameters)), JSON.parse(JSON.stringify(this._headers)));
-				}
-			},
-			{
-				key: "toString",
-				value: function toString() {
-					var headers = [];
-					var uri = "".concat(this._scheme, ":");
-					if (this._user) uri += "".concat(Utils.escapeUser(this._user), "@");
-					uri += this._host;
-					if (this._port || this._port === 0) uri += ":".concat(this._port);
-					for (var parameter in this._parameters) if (Object.prototype.hasOwnProperty.call(this._parameters, parameter)) {
-						uri += ";".concat(parameter);
-						if (this._parameters[parameter] !== null) uri += "=".concat(this._parameters[parameter]);
-					}
-					for (var header in this._headers) if (Object.prototype.hasOwnProperty.call(this._headers, header)) {
-						var _iterator = _createForOfIteratorHelper(this._headers[header]), _step;
-						try {
-							for (_iterator.s(); !(_step = _iterator.n()).done;) {
-								var item = _step.value;
-								headers.push("".concat(header, "=").concat(item));
-							}
-						} catch (err) {
-							_iterator.e(err);
-						} finally {
-							_iterator.f();
-						}
-					}
-					if (headers.length > 0) uri += "?".concat(headers.join("&"));
-					return uri;
-				}
-			},
-			{
-				key: "toAor",
-				value: function toAor(show_port) {
-					var aor = "".concat(this._scheme, ":");
-					if (this._user) aor += "".concat(Utils.escapeUser(this._user), "@");
-					aor += this._host;
-					if (show_port && (this._port || this._port === 0)) aor += ":".concat(this._port);
-					return aor;
-				}
-			},
-			{
-				key: "scheme",
-				get: function get() {
-					return this._scheme;
-				},
-				set: function set(value) {
-					this._scheme = value.toLowerCase();
-				}
-			},
-			{
-				key: "user",
-				get: function get() {
-					return this._user;
-				},
-				set: function set(value) {
-					this._user = value;
-				}
-			},
-			{
-				key: "host",
-				get: function get() {
-					return this._host;
-				},
-				set: function set(value) {
-					this._host = value.toLowerCase();
-				}
-			},
-			{
-				key: "port",
-				get: function get() {
-					return this._port;
-				},
-				set: function set(value) {
-					this._port = value === 0 ? value : parseInt(value, 10) || null;
-				}
+		get scheme() {
+			return this._scheme;
+		}
+		set scheme(value) {
+			this._scheme = value.toLowerCase();
+		}
+		get user() {
+			return this._user;
+		}
+		set user(value) {
+			this._user = value;
+		}
+		get host() {
+			return this._host;
+		}
+		set host(value) {
+			this._host = value.toLowerCase();
+		}
+		get port() {
+			return this._port;
+		}
+		set port(value) {
+			this._port = value === 0 ? value : parseInt(value, 10) || null;
+		}
+		setParam(key, value) {
+			if (key) this._parameters[key.toLowerCase()] = typeof value === "undefined" || value === null ? null : value.toString();
+		}
+		getParam(key) {
+			if (key) return this._parameters[key.toLowerCase()];
+		}
+		hasParam(key) {
+			if (key) return this._parameters.hasOwnProperty(key.toLowerCase()) && true || false;
+		}
+		deleteParam(parameter) {
+			parameter = parameter.toLowerCase();
+			if (this._parameters.hasOwnProperty(parameter)) {
+				const value = this._parameters[parameter];
+				delete this._parameters[parameter];
+				return value;
 			}
-		]);
-		return URI;
-	}();
+		}
+		clearParams() {
+			this._parameters = {};
+		}
+		setHeader(name, value) {
+			this._headers[Utils.headerize(name)] = Array.isArray(value) ? value : [value];
+		}
+		getHeader(name) {
+			if (name) return this._headers[Utils.headerize(name)];
+		}
+		hasHeader(name) {
+			if (name) return this._headers.hasOwnProperty(Utils.headerize(name)) && true || false;
+		}
+		deleteHeader(header) {
+			header = Utils.headerize(header);
+			if (this._headers.hasOwnProperty(header)) {
+				const value = this._headers[header];
+				delete this._headers[header];
+				return value;
+			}
+		}
+		clearHeaders() {
+			this._headers = {};
+		}
+		clone() {
+			return new URI(this._scheme, this._user, this._host, this._port, JSON.parse(JSON.stringify(this._parameters)), JSON.parse(JSON.stringify(this._headers)));
+		}
+		toString() {
+			const headers = [];
+			let uri = `${this._scheme}:`;
+			if (this._user) uri += `${Utils.escapeUser(this._user)}@`;
+			uri += this._host;
+			if (this._port || this._port === 0) uri += `:${this._port}`;
+			for (const parameter in this._parameters) if (Object.prototype.hasOwnProperty.call(this._parameters, parameter)) {
+				uri += `;${parameter}`;
+				if (this._parameters[parameter] !== null) uri += `=${this._parameters[parameter]}`;
+			}
+			for (const header in this._headers) if (Object.prototype.hasOwnProperty.call(this._headers, header)) for (const item of this._headers[header]) headers.push(`${header}=${item}`);
+			if (headers.length > 0) uri += `?${headers.join("&")}`;
+			return uri;
+		}
+		toAor(show_port) {
+			let aor = `${this._scheme}:`;
+			if (this._user) aor += `${Utils.escapeUser(this._user)}@`;
+			aor += this._host;
+			if (show_port && (this._port || this._port === 0)) aor += `:${this._port}`;
+			return aor;
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Utils.js
+//#region node_modules/jssip/lib/Utils.js
 var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e) {
-						throw _e;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e2) {
-				didErr = true;
-				err = _e2;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
 	var JsSIP_C = require_Constants();
 	var URI = require_URI();
 	var Grammar = require_Grammar();
-	exports.str_utf8_length = function(string) {
-		return unescape(encodeURIComponent(string)).length;
-	};
-	var isFunction = exports.isFunction = function(fn) {
+	exports.str_utf8_length = (string) => unescape(encodeURIComponent(string)).length;
+	var isFunction = exports.isFunction = (fn) => {
 		if (fn !== void 0) return Object.prototype.toString.call(fn) === "[object Function]" ? true : false;
 		else return false;
 	};
-	exports.isString = function(str) {
+	exports.isString = (str) => {
 		if (str !== void 0) return Object.prototype.toString.call(str) === "[object String]" ? true : false;
 		else return false;
 	};
-	exports.isDecimal = function(num) {
-		return !isNaN(num) && parseFloat(num) === parseInt(num, 10);
-	};
-	exports.isEmpty = function(value) {
+	exports.isDecimal = (num) => !isNaN(num) && parseFloat(num) === parseInt(num, 10);
+	exports.isEmpty = (value) => {
 		return value === null || value === "" || value === void 0 || Array.isArray(value) && value.length === 0 || typeof value === "number" && isNaN(value);
 	};
-	exports.hasMethods = function(obj) {
-		for (var _len = arguments.length, methodNames = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) methodNames[_key - 1] = arguments[_key];
-		for (var _i = 0, _methodNames = methodNames; _i < _methodNames.length; _i++) {
-			var methodName = _methodNames[_i];
-			if (isFunction(obj[methodName])) return false;
-		}
+	exports.hasMethods = function(obj, ...methodNames) {
+		for (const methodName of methodNames) if (isFunction(obj[methodName])) return false;
 		return true;
 	};
-	var createRandomToken = exports.createRandomToken = function(size) {
-		var base = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 32;
-		var i, r, token = "";
+	var createRandomToken = exports.createRandomToken = (size, base = 32) => {
+		let i, r, token = "";
 		for (i = 0; i < size; i++) {
 			r = Math.random() * base | 0;
 			token += r.toString(base);
 		}
 		return token;
 	};
-	exports.newTag = function() {
-		return createRandomToken(10);
-	};
-	exports.newUUID = function() {
-		return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-			var r = Math.random() * 16 | 0;
+	exports.newTag = () => createRandomToken(10);
+	exports.newUUID = () => {
+		return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+			const r = Math.random() * 16 | 0;
 			return (c === "x" ? r : r & 3 | 8).toString(16);
 		});
 	};
-	exports.hostType = function(host) {
+	exports.hostType = (host) => {
 		if (!host) return;
 		else {
 			host = Grammar.parse(host, "host");
@@ -11614,9 +11222,7 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 	*
 	* Used by 'normalizeTarget'.
 	*/
-	var escapeUser = exports.escapeUser = function(user) {
-		return encodeURIComponent(decodeURIComponent(user)).replace(/%3A/gi, ":").replace(/%2B/gi, "+").replace(/%3F/gi, "?").replace(/%2F/gi, "/");
-	};
+	var escapeUser = exports.escapeUser = (user) => encodeURIComponent(decodeURIComponent(user)).replace(/%3A/gi, ":").replace(/%2B/gi, "+").replace(/%3F/gi, "?").replace(/%2F/gi, "/");
 	/**
 	* Normalize SIP URI.
 	* NOTE: It does not allow a SIP URI without username.
@@ -11624,13 +11230,13 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 	* Detects the domain part (if given) and properly hex-escapes the user portion.
 	* If the user portion has only 'tel' number symbols the user portion is clean of 'tel' visual separators.
 	*/
-	exports.normalizeTarget = function(target, domain) {
+	exports.normalizeTarget = (target, domain) => {
 		if (!target) return;
 		else if (target instanceof URI) return target;
 		else if (typeof target === "string") {
-			var target_array = target.split("@");
-			var target_user;
-			var target_domain;
+			const target_array = target.split("@");
+			let target_user;
+			let target_domain;
 			switch (target_array.length) {
 				case 1:
 					if (!domain) return;
@@ -11647,22 +11253,22 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 			}
 			target_user = target_user.replace(/^(sips?|tel):/i, "");
 			if (/^[-.()]*\+?[0-9\-.()]+$/.test(target_user)) target_user = target_user.replace(/[-.()]/g, "");
-			target = "".concat(JsSIP_C.SIP, ":").concat(escapeUser(target_user), "@").concat(target_domain);
-			var uri;
+			target = `${JsSIP_C.SIP}:${escapeUser(target_user)}@${target_domain}`;
+			let uri;
 			if (uri = URI.parse(target)) return uri;
 			else return;
 		} else return;
 	};
-	exports.headerize = function(string) {
-		var exceptions = {
+	exports.headerize = (string) => {
+		const exceptions = {
 			"Call-Id": "Call-ID",
-			"Cseq": "CSeq",
+			Cseq: "CSeq",
 			"Www-Authenticate": "WWW-Authenticate"
 		};
-		var name = string.toLowerCase().replace(/_/g, "-").split("-");
-		var hname = "";
-		var parts = name.length;
-		var part;
+		const name = string.toLowerCase().replace(/_/g, "-").split("-");
+		let hname = "";
+		const parts = name.length;
+		let part;
 		for (part = 0; part < parts; part++) {
 			if (part !== 0) hname += "-";
 			hname += name[part].charAt(0).toUpperCase() + name[part].substring(1);
@@ -11670,29 +11276,29 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 		if (exceptions[hname]) hname = exceptions[hname];
 		return hname;
 	};
-	exports.sipErrorCause = function(status_code) {
-		for (var cause in JsSIP_C.SIP_ERROR_CAUSES) if (JsSIP_C.SIP_ERROR_CAUSES[cause].indexOf(status_code) !== -1) return JsSIP_C.causes[cause];
+	exports.sipErrorCause = (status_code) => {
+		for (const cause in JsSIP_C.SIP_ERROR_CAUSES) if (JsSIP_C.SIP_ERROR_CAUSES[cause].indexOf(status_code) !== -1) return JsSIP_C.causes[cause];
 		return JsSIP_C.causes.SIP_FAILURE_CODE;
 	};
 	/**
 	* Generate a random Test-Net IP (https://tools.ietf.org/html/rfc5735)
 	*/
-	exports.getRandomTestNetIP = function() {
+	exports.getRandomTestNetIP = () => {
 		function getOctet(from, to) {
 			return Math.floor(Math.random() * (to - from + 1) + from);
 		}
-		return "192.0.2.".concat(getOctet(1, 254));
+		return `192.0.2.${getOctet(1, 254)}`;
 	};
-	exports.calculateMD5 = function(string) {
+	exports.calculateMD5 = (string) => {
 		function rotateLeft(lValue, iShiftBits) {
 			return lValue << iShiftBits | lValue >>> 32 - iShiftBits;
 		}
 		function addUnsigned(lX, lY) {
-			var lX8 = lX & 2147483648;
-			var lY8 = lY & 2147483648;
-			var lX4 = lX & 1073741824;
-			var lY4 = lY & 1073741824;
-			var lResult = (lX & 1073741823) + (lY & 1073741823);
+			const lX8 = lX & 2147483648;
+			const lY8 = lY & 2147483648;
+			const lX4 = lX & 1073741824;
+			const lY4 = lY & 1073741824;
+			const lResult = (lX & 1073741823) + (lY & 1073741823);
 			if (lX4 & lY4) return lResult ^ 2147483648 ^ lX8 ^ lY8;
 			if (lX4 | lY4) if (lResult & 1073741824) return lResult ^ 3221225472 ^ lX8 ^ lY8;
 			else return lResult ^ 1073741824 ^ lX8 ^ lY8;
@@ -11727,13 +11333,13 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 			return addUnsigned(rotateLeft(a, s), b);
 		}
 		function convertToWordArray(str) {
-			var lWordCount;
-			var lMessageLength = str.length;
-			var lNumberOfWords_temp1 = lMessageLength + 8;
-			var lNumberOfWords = ((lNumberOfWords_temp1 - lNumberOfWords_temp1 % 64) / 64 + 1) * 16;
-			var lWordArray = new Array(lNumberOfWords - 1);
-			var lBytePosition = 0;
-			var lByteCount = 0;
+			let lWordCount;
+			const lMessageLength = str.length;
+			const lNumberOfWords_temp1 = lMessageLength + 8;
+			const lNumberOfWords = ((lNumberOfWords_temp1 - lNumberOfWords_temp1 % 64) / 64 + 1) * 16;
+			const lWordArray = new Array(lNumberOfWords - 1);
+			let lBytePosition = 0;
+			let lByteCount = 0;
 			while (lByteCount < lMessageLength) {
 				lWordCount = (lByteCount - lByteCount % 4) / 4;
 				lBytePosition = lByteCount % 4 * 8;
@@ -11748,36 +11354,36 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 			return lWordArray;
 		}
 		function wordToHex(lValue) {
-			var wordToHexValue = "", wordToHexValue_temp = "", lByte, lCount;
+			let wordToHexValue = "", wordToHexValue_temp = "", lByte, lCount;
 			for (lCount = 0; lCount <= 3; lCount++) {
 				lByte = lValue >>> lCount * 8 & 255;
-				wordToHexValue_temp = "0".concat(lByte.toString(16));
+				wordToHexValue_temp = `0${lByte.toString(16)}`;
 				wordToHexValue = wordToHexValue + wordToHexValue_temp.substr(wordToHexValue_temp.length - 2, 2);
 			}
 			return wordToHexValue;
 		}
 		function utf8Encode(str) {
-			var utftext = "";
-			for (var n = 0; n < str.length; n++) {
-				var _c = str.charCodeAt(n);
-				if (_c < 128) utftext += String.fromCharCode(_c);
-				else if (_c > 127 && _c < 2048) {
-					utftext += String.fromCharCode(_c >> 6 | 192);
-					utftext += String.fromCharCode(_c & 63 | 128);
+			let utftext = "";
+			for (let n = 0; n < str.length; n++) {
+				const c = str.charCodeAt(n);
+				if (c < 128) utftext += String.fromCharCode(c);
+				else if (c > 127 && c < 2048) {
+					utftext += String.fromCharCode(c >> 6 | 192);
+					utftext += String.fromCharCode(c & 63 | 128);
 				} else {
-					utftext += String.fromCharCode(_c >> 12 | 224);
-					utftext += String.fromCharCode(_c >> 6 & 63 | 128);
-					utftext += String.fromCharCode(_c & 63 | 128);
+					utftext += String.fromCharCode(c >> 12 | 224);
+					utftext += String.fromCharCode(c >> 6 & 63 | 128);
+					utftext += String.fromCharCode(c & 63 | 128);
 				}
 			}
 			return utftext;
 		}
-		var x = [];
-		var k, AA, BB, CC, DD, a, b, c, d;
-		var S11 = 7, S12 = 12, S13 = 17, S14 = 22;
-		var S21 = 5, S22 = 9, S23 = 14, S24 = 20;
-		var S31 = 4, S32 = 11, S33 = 16, S34 = 23;
-		var S41 = 6, S42 = 10, S43 = 15, S44 = 21;
+		let x = [];
+		let k, AA, BB, CC, DD, a, b, c, d;
+		const S11 = 7, S12 = 12, S13 = 17, S14 = 22;
+		const S21 = 5, S22 = 9, S23 = 14, S24 = 20;
+		const S31 = 4, S32 = 11, S33 = 16, S34 = 23;
+		const S41 = 6, S42 = 10, S43 = 15, S44 = 21;
 		string = utf8Encode(string);
 		x = convertToWordArray(string);
 		a = 1732584193;
@@ -11860,49 +11466,27 @@ var require_Utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 		return (wordToHex(a) + wordToHex(b) + wordToHex(c) + wordToHex(d)).toLowerCase();
 	};
-	exports.closeMediaStream = function(stream) {
+	exports.closeMediaStream = (stream) => {
 		if (!stream) return;
 		try {
-			var tracks;
+			let tracks;
 			if (stream.getTracks) {
 				tracks = stream.getTracks();
-				var _iterator = _createForOfIteratorHelper(tracks), _step;
-				try {
-					for (_iterator.s(); !(_step = _iterator.n()).done;) _step.value.stop();
-				} catch (err) {
-					_iterator.e(err);
-				} finally {
-					_iterator.f();
-				}
+				for (const track of tracks) track.stop();
 			} else {
 				tracks = stream.getAudioTracks();
-				var _iterator2 = _createForOfIteratorHelper(tracks), _step2;
-				try {
-					for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) _step2.value.stop();
-				} catch (err) {
-					_iterator2.e(err);
-				} finally {
-					_iterator2.f();
-				}
+				for (const track of tracks) track.stop();
 				tracks = stream.getVideoTracks();
-				var _iterator3 = _createForOfIteratorHelper(tracks), _step3;
-				try {
-					for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) _step3.value.stop();
-				} catch (err) {
-					_iterator3.e(err);
-				} finally {
-					_iterator3.f();
-				}
+				for (const track of tracks) track.stop();
 			}
 		} catch (error) {
-			if (typeof stream.stop === "function" || _typeof(stream.stop) === "object") stream.stop();
+			if (typeof stream.stop === "function" || typeof stream.stop === "object") stream.stop();
 		}
 	};
-	exports.cloneArray = function(array) {
+	exports.cloneArray = (array) => {
 		return array && array.slice() || [];
 	};
-	exports.cloneObject = function(obj) {
-		var fallback = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+	exports.cloneObject = (obj, fallback = {}) => {
 		return obj && Object.assign({}, obj) || fallback;
 	};
 }));
@@ -12714,65 +12298,35 @@ var require_browser = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Logger.js
+//#region node_modules/jssip/lib/Logger.js
 var require_Logger = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var debug = require_browser();
 	var APP_NAME = "JsSIP";
-	module.exports = /* @__PURE__ */ function() {
-		function Logger(prefix) {
-			_classCallCheck(this, Logger);
+	module.exports = class Logger {
+		constructor(prefix) {
 			if (prefix) {
-				this._debug = debug["default"]("".concat(APP_NAME, ":").concat(prefix));
-				this._warn = debug["default"]("".concat(APP_NAME, ":WARN:").concat(prefix));
-				this._error = debug["default"]("".concat(APP_NAME, ":ERROR:").concat(prefix));
+				this._debug = debug.default(`${APP_NAME}:${prefix}`);
+				this._warn = debug.default(`${APP_NAME}:WARN:${prefix}`);
+				this._error = debug.default(`${APP_NAME}:ERROR:${prefix}`);
 			} else {
-				this._debug = debug["default"](APP_NAME);
-				this._warn = debug["default"]("".concat(APP_NAME, ":WARN"));
-				this._error = debug["default"]("".concat(APP_NAME, ":ERROR"));
+				this._debug = debug.default(APP_NAME);
+				this._warn = debug.default(`${APP_NAME}:WARN`);
+				this._error = debug.default(`${APP_NAME}:ERROR`);
 			}
 			this._debug.log = console.info.bind(console);
 			this._warn.log = console.warn.bind(console);
 			this._error.log = console.error.bind(console);
 		}
-		_createClass(Logger, [
-			{
-				key: "debug",
-				get: function get() {
-					return this._debug;
-				}
-			},
-			{
-				key: "warn",
-				get: function get() {
-					return this._warn;
-				}
-			},
-			{
-				key: "error",
-				get: function get() {
-					return this._error;
-				}
-			}
-		]);
-		return Logger;
-	}();
+		get debug() {
+			return this._debug;
+		}
+		get warn() {
+			return this._warn;
+		}
+		get error() {
+			return this._error;
+		}
+	};
 }));
 //#endregion
 //#region node_modules/sdp-transform/lib/grammar.js
@@ -13411,147 +12965,8 @@ var require_lib = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.parseSimulcastStreamList = parser.parseSimulcastStreamList;
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/SIPMessage.js
+//#region node_modules/jssip/lib/SIPMessage.js
 var require_SIPMessage = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e) {
-						throw _e;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e2) {
-				didErr = true;
-				err = _e2;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var sdp_transform = require_lib();
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
@@ -13569,9 +12984,8 @@ var require_SIPMessage = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	* -param {Object} [headers] extra headers
 	* -param {String} [body]
 	*/
-	var OutgoingRequest = /* @__PURE__ */ function() {
-		function OutgoingRequest(method, ruri, ua, params, extraHeaders, body) {
-			_classCallCheck(this, OutgoingRequest);
+	var OutgoingRequest = class OutgoingRequest {
+		constructor(method, ruri, ua, params, extraHeaders, body) {
 			if (!method || !ruri || !ua) return null;
 			params = params || {};
 			this.ua = ua;
@@ -13582,243 +12996,167 @@ var require_SIPMessage = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			this.extraHeaders = Utils.cloneArray(extraHeaders);
 			if (this.ua.configuration.extra_headers) this.extraHeaders = this.extraHeaders.concat(this.ua.configuration.extra_headers);
 			if (params.route_set) this.setHeader("route", params.route_set);
-			else if (ua.configuration.use_preloaded_route) this.setHeader("route", "<".concat(ua.transport.sip_uri, ";lr>"));
+			else if (ua.configuration.use_preloaded_route) this.setHeader("route", `<${ua.transport.sip_uri};lr>`);
 			this.setHeader("via", "");
 			this.setHeader("max-forwards", JsSIP_C.MAX_FORWARDS);
-			var to_uri = params.to_uri || ruri;
-			var to_params = params.to_tag ? { tag: params.to_tag } : null;
-			var to_display_name = typeof params.to_display_name !== "undefined" ? params.to_display_name : null;
+			const to_uri = params.to_uri || ruri;
+			const to_params = params.to_tag ? { tag: params.to_tag } : null;
+			const to_display_name = typeof params.to_display_name !== "undefined" ? params.to_display_name : null;
 			this.to = new NameAddrHeader(to_uri, to_display_name, to_params);
 			this.setHeader("to", this.to.toString());
-			var from_uri = params.from_uri || ua.configuration.uri;
-			var from_params = { tag: params.from_tag || Utils.newTag() };
-			var display_name;
+			const from_uri = params.from_uri || ua.configuration.uri;
+			const from_params = { tag: params.from_tag || Utils.newTag() };
+			let display_name;
 			if (typeof params.from_display_name !== "undefined") display_name = params.from_display_name;
 			else if (ua.configuration.display_name) display_name = ua.configuration.display_name;
 			else display_name = null;
 			this.from = new NameAddrHeader(from_uri, display_name, from_params);
 			this.setHeader("from", this.from.toString());
-			var call_id = params.call_id || ua.configuration.jssip_id + Utils.createRandomToken(15);
+			const call_id = params.call_id || ua.configuration.jssip_id + Utils.createRandomToken(15);
 			this.call_id = call_id;
 			this.setHeader("call-id", call_id);
-			var cseq = params.cseq || Math.floor(Math.random() * 1e4);
+			const cseq = params.cseq || Math.floor(Math.random() * 1e4);
 			this.cseq = cseq;
-			this.setHeader("cseq", "".concat(cseq, " ").concat(method));
+			this.setHeader("cseq", `${cseq} ${method}`);
 		}
 		/**
 		* Replace the the given header by the given value.
 		* -param {String} name header name
 		* -param {String | Array} value header value
 		*/
-		_createClass(OutgoingRequest, [
-			{
-				key: "setHeader",
-				value: function setHeader(name, value) {
-					var regexp = new RegExp("^\\s*".concat(name, "\\s*:"), "i");
-					for (var idx = 0; idx < this.extraHeaders.length; idx++) if (regexp.test(this.extraHeaders[idx])) this.extraHeaders.splice(idx, 1);
-					this.headers[Utils.headerize(name)] = Array.isArray(value) ? value : [value];
-				}
-			},
-			{
-				key: "getHeader",
-				value: function getHeader(name) {
-					var headers = this.headers[Utils.headerize(name)];
-					if (headers) {
-						if (headers[0]) return headers[0];
-					} else {
-						var regexp = new RegExp("^\\s*".concat(name, "\\s*:"), "i");
-						var _iterator = _createForOfIteratorHelper(this.extraHeaders), _step;
-						try {
-							for (_iterator.s(); !(_step = _iterator.n()).done;) {
-								var header = _step.value;
-								if (regexp.test(header)) return header.substring(header.indexOf(":") + 1).trim();
-							}
-						} catch (err) {
-							_iterator.e(err);
-						} finally {
-							_iterator.f();
-						}
-					}
-				}
-			},
-			{
-				key: "getHeaders",
-				value: function getHeaders(name) {
-					var headers = this.headers[Utils.headerize(name)];
-					var result = [];
-					if (headers) {
-						var _iterator2 = _createForOfIteratorHelper(headers), _step2;
-						try {
-							for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-								var header = _step2.value;
-								result.push(header);
-							}
-						} catch (err) {
-							_iterator2.e(err);
-						} finally {
-							_iterator2.f();
-						}
-						return result;
-					} else {
-						var regexp = new RegExp("^\\s*".concat(name, "\\s*:"), "i");
-						var _iterator3 = _createForOfIteratorHelper(this.extraHeaders), _step3;
-						try {
-							for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-								var _header = _step3.value;
-								if (regexp.test(_header)) result.push(_header.substring(_header.indexOf(":") + 1).trim());
-							}
-						} catch (err) {
-							_iterator3.e(err);
-						} finally {
-							_iterator3.f();
-						}
-						return result;
-					}
-				}
-			},
-			{
-				key: "hasHeader",
-				value: function hasHeader(name) {
-					if (this.headers[Utils.headerize(name)]) return true;
-					else {
-						var regexp = new RegExp("^\\s*".concat(name, "\\s*:"), "i");
-						var _iterator4 = _createForOfIteratorHelper(this.extraHeaders), _step4;
-						try {
-							for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-								var header = _step4.value;
-								if (regexp.test(header)) return true;
-							}
-						} catch (err) {
-							_iterator4.e(err);
-						} finally {
-							_iterator4.f();
-						}
-					}
-					return false;
-				}
-			},
-			{
-				key: "parseSDP",
-				value: function parseSDP(force) {
-					if (!force && this.sdp) return this.sdp;
-					else {
-						this.sdp = sdp_transform.parse(this.body || "");
-						return this.sdp;
-					}
-				}
-			},
-			{
-				key: "toString",
-				value: function toString() {
-					var msg = "".concat(this.method, " ").concat(this.ruri, " SIP/2.0\r\n");
-					for (var headerName in this.headers) if (Object.prototype.hasOwnProperty.call(this.headers, headerName)) {
-						var _iterator5 = _createForOfIteratorHelper(this.headers[headerName]), _step5;
-						try {
-							for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-								var headerValue = _step5.value;
-								msg += "".concat(headerName, ": ").concat(headerValue, "\r\n");
-							}
-						} catch (err) {
-							_iterator5.e(err);
-						} finally {
-							_iterator5.f();
-						}
-					}
-					var _iterator6 = _createForOfIteratorHelper(this.extraHeaders), _step6;
-					try {
-						for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-							var header = _step6.value;
-							msg += "".concat(header.trim(), "\r\n");
-						}
-					} catch (err) {
-						_iterator6.e(err);
-					} finally {
-						_iterator6.f();
-					}
-					var supported = [];
-					switch (this.method) {
-						case JsSIP_C.REGISTER:
-							supported.push("path", "gruu");
-							break;
-						case JsSIP_C.INVITE:
-							if (this.ua.configuration.session_timers) supported.push("timer");
-							if (this.ua.contact.pub_gruu || this.ua.contact.temp_gruu) supported.push("gruu");
-							supported.push("ice", "replaces");
-							break;
-						case JsSIP_C.UPDATE:
-							if (this.ua.configuration.session_timers) supported.push("timer");
-							supported.push("ice");
-							break;
-					}
-					supported.push("outbound");
-					var userAgent = this.ua.configuration.user_agent || JsSIP_C.USER_AGENT;
-					msg += "Allow: ".concat(JsSIP_C.ALLOWED_METHODS, "\r\n");
-					msg += "Supported: ".concat(supported, "\r\n");
-					msg += "User-Agent: ".concat(userAgent, "\r\n");
-					if (this.body) {
-						var length = Utils.str_utf8_length(this.body);
-						msg += "Content-Length: ".concat(length, "\r\n\r\n");
-						msg += this.body;
-					} else msg += "Content-Length: 0\r\n\r\n";
-					return msg;
-				}
-			},
-			{
-				key: "clone",
-				value: function clone() {
-					var request = new OutgoingRequest(this.method, this.ruri, this.ua);
-					Object.keys(this.headers).forEach(function(name) {
-						request.headers[name] = this.headers[name].slice();
-					}, this);
-					request.body = this.body;
-					request.extraHeaders = Utils.cloneArray(this.extraHeaders);
-					request.to = this.to;
-					request.from = this.from;
-					request.call_id = this.call_id;
-					request.cseq = this.cseq;
-					return request;
-				}
-			}
-		]);
-		return OutgoingRequest;
-	}();
-	var InitialOutgoingInviteRequest = /* @__PURE__ */ function(_OutgoingRequest) {
-		_inherits(InitialOutgoingInviteRequest, _OutgoingRequest);
-		var _super = _createSuper(InitialOutgoingInviteRequest);
-		function InitialOutgoingInviteRequest(ruri, ua, params, extraHeaders, body) {
-			var _this;
-			_classCallCheck(this, InitialOutgoingInviteRequest);
-			_this = _super.call(this, JsSIP_C.INVITE, ruri, ua, params, extraHeaders, body);
-			_this.transaction = null;
-			return _this;
+		setHeader(name, value) {
+			const regexp = new RegExp(`^\\s*${name}\\s*:`, "i");
+			for (let idx = 0; idx < this.extraHeaders.length; idx++) if (regexp.test(this.extraHeaders[idx])) this.extraHeaders.splice(idx, 1);
+			this.headers[Utils.headerize(name)] = Array.isArray(value) ? value : [value];
 		}
-		_createClass(InitialOutgoingInviteRequest, [{
-			key: "cancel",
-			value: function cancel(reason) {
-				this.transaction.cancel(reason);
+		/**
+		* Get the value of the given header name at the given position.
+		* -param {String} name header name
+		* -returns {String|undefined} Returns the specified header, null if header doesn't exist.
+		*/
+		getHeader(name) {
+			const headers = this.headers[Utils.headerize(name)];
+			if (headers) {
+				if (headers[0]) return headers[0];
+			} else {
+				const regexp = new RegExp(`^\\s*${name}\\s*:`, "i");
+				for (const header of this.extraHeaders) if (regexp.test(header)) return header.substring(header.indexOf(":") + 1).trim();
 			}
-		}, {
-			key: "clone",
-			value: function clone() {
-				var request = new InitialOutgoingInviteRequest(this.ruri, this.ua);
-				Object.keys(this.headers).forEach(function(name) {
-					request.headers[name] = this.headers[name].slice();
-				}, this);
-				request.body = this.body;
-				request.extraHeaders = Utils.cloneArray(this.extraHeaders);
-				request.to = this.to;
-				request.from = this.from;
-				request.call_id = this.call_id;
-				request.cseq = this.cseq;
-				request.transaction = this.transaction;
-				return request;
+		}
+		/**
+		* Get the header/s of the given name.
+		* -param {String} name header name
+		* -returns {Array} Array with all the headers of the specified name.
+		*/
+		getHeaders(name) {
+			const headers = this.headers[Utils.headerize(name)];
+			const result = [];
+			if (headers) {
+				for (const header of headers) result.push(header);
+				return result;
+			} else {
+				const regexp = new RegExp(`^\\s*${name}\\s*:`, "i");
+				for (const header of this.extraHeaders) if (regexp.test(header)) result.push(header.substring(header.indexOf(":") + 1).trim());
+				return result;
 			}
-		}]);
-		return InitialOutgoingInviteRequest;
-	}(OutgoingRequest);
-	var IncomingMessage = /* @__PURE__ */ function() {
-		function IncomingMessage() {
-			_classCallCheck(this, IncomingMessage);
+		}
+		/**
+		* Verify the existence of the given header.
+		* -param {String} name header name
+		* -returns {boolean} true if header with given name exists, false otherwise
+		*/
+		hasHeader(name) {
+			if (this.headers[Utils.headerize(name)]) return true;
+			else {
+				const regexp = new RegExp(`^\\s*${name}\\s*:`, "i");
+				for (const header of this.extraHeaders) if (regexp.test(header)) return true;
+			}
+			return false;
+		}
+		/**
+		* Parse the current body as a SDP and store the resulting object
+		* into this.sdp.
+		* -param {Boolean} force: Parse even if this.sdp already exists.
+		*
+		* Returns this.sdp.
+		*/
+		parseSDP(force) {
+			if (!force && this.sdp) return this.sdp;
+			else {
+				this.sdp = sdp_transform.parse(this.body || "");
+				return this.sdp;
+			}
+		}
+		toString() {
+			let msg = `${this.method} ${this.ruri} SIP/2.0\r\n`;
+			for (const headerName in this.headers) if (Object.prototype.hasOwnProperty.call(this.headers, headerName)) for (const headerValue of this.headers[headerName]) msg += `${headerName}: ${headerValue}\r\n`;
+			for (const header of this.extraHeaders) msg += `${header.trim()}\r\n`;
+			const supported = [];
+			switch (this.method) {
+				case JsSIP_C.REGISTER:
+					supported.push("path", "gruu");
+					break;
+				case JsSIP_C.INVITE:
+					if (this.ua.configuration.session_timers) supported.push("timer");
+					if (this.ua.contact.pub_gruu || this.ua.contact.temp_gruu) supported.push("gruu");
+					supported.push("ice", "replaces");
+					break;
+				case JsSIP_C.UPDATE:
+					if (this.ua.configuration.session_timers) supported.push("timer");
+					supported.push("ice");
+					break;
+			}
+			supported.push("outbound");
+			const userAgent = this.ua.configuration.user_agent || JsSIP_C.USER_AGENT;
+			msg += `Allow: ${JsSIP_C.ALLOWED_METHODS}\r\n`;
+			msg += `Supported: ${supported}\r\n`;
+			msg += `User-Agent: ${userAgent}\r\n`;
+			if (this.body) {
+				const length = Utils.str_utf8_length(this.body);
+				msg += `Content-Length: ${length}\r\n\r\n`;
+				msg += this.body;
+			} else msg += "Content-Length: 0\r\n\r\n";
+			return msg;
+		}
+		clone() {
+			const request = new OutgoingRequest(this.method, this.ruri, this.ua);
+			Object.keys(this.headers).forEach(function(name) {
+				request.headers[name] = this.headers[name].slice();
+			}, this);
+			request.body = this.body;
+			request.extraHeaders = Utils.cloneArray(this.extraHeaders);
+			request.to = this.to;
+			request.from = this.from;
+			request.call_id = this.call_id;
+			request.cseq = this.cseq;
+			return request;
+		}
+	};
+	var InitialOutgoingInviteRequest = class InitialOutgoingInviteRequest extends OutgoingRequest {
+		constructor(ruri, ua, params, extraHeaders, body) {
+			super(JsSIP_C.INVITE, ruri, ua, params, extraHeaders, body);
+			this.transaction = null;
+		}
+		cancel(reason) {
+			this.transaction.cancel(reason);
+		}
+		clone() {
+			const request = new InitialOutgoingInviteRequest(this.ruri, this.ua);
+			Object.keys(this.headers).forEach(function(name) {
+				request.headers[name] = this.headers[name].slice();
+			}, this);
+			request.body = this.body;
+			request.extraHeaders = Utils.cloneArray(this.extraHeaders);
+			request.to = this.to;
+			request.from = this.from;
+			request.call_id = this.call_id;
+			request.cseq = this.cseq;
+			request.transaction = this.transaction;
+			return request;
+		}
+	};
+	var IncomingMessage = class {
+		constructor() {
 			this.data = null;
 			this.headers = null;
 			this.method = null;
@@ -13837,304 +13175,221 @@ var require_SIPMessage = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		* Insert a header of the given name and value into the last position of the
 		* header array.
 		*/
-		_createClass(IncomingMessage, [
-			{
-				key: "addHeader",
-				value: function addHeader(name, value) {
-					var header = { raw: value };
-					name = Utils.headerize(name);
-					if (this.headers[name]) this.headers[name].push(header);
-					else this.headers[name] = [header];
-				}
-			},
-			{
-				key: "getHeader",
-				value: function getHeader(name) {
-					var header = this.headers[Utils.headerize(name)];
-					if (header) {
-						if (header[0]) return header[0].raw;
-					} else return;
-				}
-			},
-			{
-				key: "getHeaders",
-				value: function getHeaders(name) {
-					var headers = this.headers[Utils.headerize(name)];
-					var result = [];
-					if (!headers) return [];
-					var _iterator7 = _createForOfIteratorHelper(headers), _step7;
-					try {
-						for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-							var header = _step7.value;
-							result.push(header.raw);
-						}
-					} catch (err) {
-						_iterator7.e(err);
-					} finally {
-						_iterator7.f();
-					}
-					return result;
-				}
-			},
-			{
-				key: "hasHeader",
-				value: function hasHeader(name) {
-					return this.headers[Utils.headerize(name)] ? true : false;
-				}
-			},
-			{
-				key: "parseHeader",
-				value: function parseHeader(name) {
-					var idx = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
-					name = Utils.headerize(name);
-					if (!this.headers[name]) {
-						logger.debug("header \"".concat(name, "\" not present"));
-						return;
-					} else if (idx >= this.headers[name].length) {
-						logger.debug("not so many \"".concat(name, "\" headers present"));
-						return;
-					}
-					var header = this.headers[name][idx];
-					var value = header.raw;
-					if (header.parsed) return header.parsed;
-					var parsed = Grammar.parse(value, name.replace(/-/g, "_"));
-					if (parsed === -1) {
-						this.headers[name].splice(idx, 1);
-						logger.debug("error parsing \"".concat(name, "\" header field with value \"").concat(value, "\""));
-						return;
-					} else {
-						header.parsed = parsed;
-						return parsed;
-					}
-				}
-			},
-			{
-				key: "s",
-				value: function s(name, idx) {
-					return this.parseHeader(name, idx);
-				}
-			},
-			{
-				key: "setHeader",
-				value: function setHeader(name, value) {
-					var header = { raw: value };
-					this.headers[Utils.headerize(name)] = [header];
-				}
-			},
-			{
-				key: "parseSDP",
-				value: function parseSDP(force) {
-					if (!force && this.sdp) return this.sdp;
-					else {
-						this.sdp = sdp_transform.parse(this.body || "");
-						return this.sdp;
-					}
-				}
-			},
-			{
-				key: "toString",
-				value: function toString() {
-					return this.data;
-				}
+		addHeader(name, value) {
+			const header = { raw: value };
+			name = Utils.headerize(name);
+			if (this.headers[name]) this.headers[name].push(header);
+			else this.headers[name] = [header];
+		}
+		/**
+		* Get the value of the given header name at the given position.
+		*/
+		getHeader(name) {
+			const header = this.headers[Utils.headerize(name)];
+			if (header) {
+				if (header[0]) return header[0].raw;
+			} else return;
+		}
+		/**
+		* Get the header/s of the given name.
+		*/
+		getHeaders(name) {
+			const headers = this.headers[Utils.headerize(name)];
+			const result = [];
+			if (!headers) return [];
+			for (const header of headers) result.push(header.raw);
+			return result;
+		}
+		/**
+		* Verify the existence of the given header.
+		*/
+		hasHeader(name) {
+			return this.headers[Utils.headerize(name)] ? true : false;
+		}
+		/**
+		* Parse the given header on the given index.
+		* -param {String} name header name
+		* -param {Number} [idx=0] header index
+		* -returns {Object|undefined} Parsed header object, undefined if the header
+		*  is not present or in case of a parsing error.
+		*/
+		parseHeader(name, idx = 0) {
+			name = Utils.headerize(name);
+			if (!this.headers[name]) {
+				logger.debug(`header "${name}" not present`);
+				return;
+			} else if (idx >= this.headers[name].length) {
+				logger.debug(`not so many "${name}" headers present`);
+				return;
 			}
-		]);
-		return IncomingMessage;
-	}();
+			const header = this.headers[name][idx];
+			const value = header.raw;
+			if (header.parsed) return header.parsed;
+			const parsed = Grammar.parse(value, name.replace(/-/g, "_"));
+			if (parsed === -1) {
+				this.headers[name].splice(idx, 1);
+				logger.debug(`error parsing "${name}" header field with value "${value}"`);
+				return;
+			} else {
+				header.parsed = parsed;
+				return parsed;
+			}
+		}
+		/**
+		* Message Header attribute selector. Alias of parseHeader.
+		* -param {String} name header name
+		* -param {Number} [idx=0] header index
+		* -returns {Object|undefined} Parsed header object, undefined if the header
+		*  is not present or in case of a parsing error.
+		*
+		* -example
+		* message.s('via',3).port
+		*/
+		s(name, idx) {
+			return this.parseHeader(name, idx);
+		}
+		/**
+		* Replace the value of the given header by the value.
+		* -param {String} name header name
+		* -param {String} value header value
+		*/
+		setHeader(name, value) {
+			const header = { raw: value };
+			this.headers[Utils.headerize(name)] = [header];
+		}
+		/**
+		* Parse the current body as a SDP and store the resulting object
+		* into this.sdp.
+		* -param {Boolean} force: Parse even if this.sdp already exists.
+		*
+		* Returns this.sdp.
+		*/
+		parseSDP(force) {
+			if (!force && this.sdp) return this.sdp;
+			else {
+				this.sdp = sdp_transform.parse(this.body || "");
+				return this.sdp;
+			}
+		}
+		toString() {
+			return this.data;
+		}
+	};
+	var IncomingRequest = class extends IncomingMessage {
+		constructor(ua) {
+			super();
+			this.ua = ua;
+			this.headers = {};
+			this.ruri = null;
+			this.transport = null;
+			this.server_transaction = null;
+		}
+		/**
+		* Stateful reply.
+		* -param {Number} code status code
+		* -param {String} reason reason phrase
+		* -param {Object} headers extra headers
+		* -param {String} body body
+		* -param {Function} [onSuccess] onSuccess callback
+		* -param {Function} [onFailure] onFailure callback
+		*/
+		reply(code, reason, extraHeaders, body, onSuccess, onFailure) {
+			const supported = [];
+			let to = this.getHeader("To");
+			code = code || null;
+			reason = reason || null;
+			if (!code || code < 100 || code > 699) throw new TypeError(`Invalid status_code: ${code}`);
+			else if (reason && typeof reason !== "string" && !(reason instanceof String)) throw new TypeError(`Invalid reason_phrase: ${reason}`);
+			reason = reason || JsSIP_C.REASON_PHRASE[code] || "";
+			extraHeaders = Utils.cloneArray(extraHeaders);
+			if (this.ua.configuration.extra_headers) extraHeaders = extraHeaders.concat(this.ua.configuration.extra_headers);
+			let response = `SIP/2.0 ${code} ${reason}\r\n`;
+			if (this.method === JsSIP_C.INVITE && code > 100 && code <= 200) {
+				const headers = this.getHeaders("record-route");
+				for (const header of headers) response += `Record-Route: ${header}\r\n`;
+			}
+			const vias = this.getHeaders("via");
+			for (const via of vias) response += `Via: ${via}\r\n`;
+			if (!this.to_tag && code > 100) to += `;tag=${Utils.newTag()}`;
+			else if (this.to_tag && !this.s("to").hasParam("tag")) to += `;tag=${this.to_tag}`;
+			response += `To: ${to}\r\n`;
+			response += `From: ${this.getHeader("From")}\r\n`;
+			response += `Call-ID: ${this.call_id}\r\n`;
+			response += `CSeq: ${this.cseq} ${this.method}\r\n`;
+			for (const header of extraHeaders) response += `${header.trim()}\r\n`;
+			switch (this.method) {
+				case JsSIP_C.INVITE:
+					if (this.ua.configuration.session_timers) supported.push("timer");
+					if (this.ua.contact.pub_gruu || this.ua.contact.temp_gruu) supported.push("gruu");
+					supported.push("ice", "replaces");
+					break;
+				case JsSIP_C.UPDATE:
+					if (this.ua.configuration.session_timers) supported.push("timer");
+					if (body) supported.push("ice");
+					supported.push("replaces");
+			}
+			supported.push("outbound");
+			if (this.method === JsSIP_C.OPTIONS) {
+				response += `Allow: ${JsSIP_C.ALLOWED_METHODS}\r\n`;
+				response += `Accept: ${JsSIP_C.ACCEPTED_BODY_TYPES}\r\n`;
+			} else if (code === 405) response += `Allow: ${JsSIP_C.ALLOWED_METHODS}\r\n`;
+			else if (code === 415) response += `Accept: ${JsSIP_C.ACCEPTED_BODY_TYPES}\r\n`;
+			response += `Supported: ${supported}\r\n`;
+			if (body) {
+				const length = Utils.str_utf8_length(body);
+				response += "Content-Type: application/sdp\r\n";
+				response += `Content-Length: ${length}\r\n\r\n`;
+				response += body;
+			} else response += `Content-Length: 0\r\n\r\n`;
+			this.server_transaction.receiveResponse(code, response, onSuccess, onFailure);
+		}
+		/**
+		* Stateless reply.
+		* -param {Number} code status code
+		* -param {String} reason reason phrase
+		*/
+		reply_sl(code = null, reason = null) {
+			const vias = this.getHeaders("via");
+			if (!code || code < 100 || code > 699) throw new TypeError(`Invalid status_code: ${code}`);
+			else if (reason && typeof reason !== "string" && !(reason instanceof String)) throw new TypeError(`Invalid reason_phrase: ${reason}`);
+			reason = reason || JsSIP_C.REASON_PHRASE[code] || "";
+			let response = `SIP/2.0 ${code} ${reason}\r\n`;
+			for (const via of vias) response += `Via: ${via}\r\n`;
+			let to = this.getHeader("To");
+			if (!this.to_tag && code > 100) to += `;tag=${Utils.newTag()}`;
+			else if (this.to_tag && !this.s("to").hasParam("tag")) to += `;tag=${this.to_tag}`;
+			response += `To: ${to}\r\n`;
+			response += `From: ${this.getHeader("From")}\r\n`;
+			response += `Call-ID: ${this.call_id}\r\n`;
+			response += `CSeq: ${this.cseq} ${this.method}\r\n`;
+			if (this.ua.configuration.extra_headers) for (const header of this.ua.configuration.extra_headers) response += `${header.trim()}\r\n`;
+			response += `Content-Length: 0\r\n\r\n`;
+			this.transport.send(response);
+		}
+	};
+	var IncomingResponse = class extends IncomingMessage {
+		constructor() {
+			super();
+			this.headers = {};
+			this.status_code = null;
+			this.reason_phrase = null;
+		}
+	};
 	module.exports = {
 		OutgoingRequest,
 		InitialOutgoingInviteRequest,
-		IncomingRequest: /* @__PURE__ */ function(_IncomingMessage) {
-			_inherits(IncomingRequest, _IncomingMessage);
-			var _super2 = _createSuper(IncomingRequest);
-			function IncomingRequest(ua) {
-				var _this2;
-				_classCallCheck(this, IncomingRequest);
-				_this2 = _super2.call(this);
-				_this2.ua = ua;
-				_this2.headers = {};
-				_this2.ruri = null;
-				_this2.transport = null;
-				_this2.server_transaction = null;
-				return _this2;
-			}
-			/**
-			* Stateful reply.
-			* -param {Number} code status code
-			* -param {String} reason reason phrase
-			* -param {Object} headers extra headers
-			* -param {String} body body
-			* -param {Function} [onSuccess] onSuccess callback
-			* -param {Function} [onFailure] onFailure callback
-			*/
-			_createClass(IncomingRequest, [{
-				key: "reply",
-				value: function reply(code, reason, extraHeaders, body, onSuccess, onFailure) {
-					var supported = [];
-					var to = this.getHeader("To");
-					code = code || null;
-					reason = reason || null;
-					if (!code || code < 100 || code > 699) throw new TypeError("Invalid status_code: ".concat(code));
-					else if (reason && typeof reason !== "string" && !(reason instanceof String)) throw new TypeError("Invalid reason_phrase: ".concat(reason));
-					reason = reason || JsSIP_C.REASON_PHRASE[code] || "";
-					extraHeaders = Utils.cloneArray(extraHeaders);
-					if (this.ua.configuration.extra_headers) extraHeaders = extraHeaders.concat(this.ua.configuration.extra_headers);
-					var response = "SIP/2.0 ".concat(code, " ").concat(reason, "\r\n");
-					if (this.method === JsSIP_C.INVITE && code > 100 && code <= 200) {
-						var _iterator8 = _createForOfIteratorHelper(this.getHeaders("record-route")), _step8;
-						try {
-							for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-								var header = _step8.value;
-								response += "Record-Route: ".concat(header, "\r\n");
-							}
-						} catch (err) {
-							_iterator8.e(err);
-						} finally {
-							_iterator8.f();
-						}
-					}
-					var _iterator9 = _createForOfIteratorHelper(this.getHeaders("via")), _step9;
-					try {
-						for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
-							var via = _step9.value;
-							response += "Via: ".concat(via, "\r\n");
-						}
-					} catch (err) {
-						_iterator9.e(err);
-					} finally {
-						_iterator9.f();
-					}
-					if (!this.to_tag && code > 100) to += ";tag=".concat(Utils.newTag());
-					else if (this.to_tag && !this.s("to").hasParam("tag")) to += ";tag=".concat(this.to_tag);
-					response += "To: ".concat(to, "\r\n");
-					response += "From: ".concat(this.getHeader("From"), "\r\n");
-					response += "Call-ID: ".concat(this.call_id, "\r\n");
-					response += "CSeq: ".concat(this.cseq, " ").concat(this.method, "\r\n");
-					var _iterator10 = _createForOfIteratorHelper(extraHeaders), _step10;
-					try {
-						for (_iterator10.s(); !(_step10 = _iterator10.n()).done;) {
-							var _header2 = _step10.value;
-							response += "".concat(_header2.trim(), "\r\n");
-						}
-					} catch (err) {
-						_iterator10.e(err);
-					} finally {
-						_iterator10.f();
-					}
-					switch (this.method) {
-						case JsSIP_C.INVITE:
-							if (this.ua.configuration.session_timers) supported.push("timer");
-							if (this.ua.contact.pub_gruu || this.ua.contact.temp_gruu) supported.push("gruu");
-							supported.push("ice", "replaces");
-							break;
-						case JsSIP_C.UPDATE:
-							if (this.ua.configuration.session_timers) supported.push("timer");
-							if (body) supported.push("ice");
-							supported.push("replaces");
-					}
-					supported.push("outbound");
-					if (this.method === JsSIP_C.OPTIONS) {
-						response += "Allow: ".concat(JsSIP_C.ALLOWED_METHODS, "\r\n");
-						response += "Accept: ".concat(JsSIP_C.ACCEPTED_BODY_TYPES, "\r\n");
-					} else if (code === 405) response += "Allow: ".concat(JsSIP_C.ALLOWED_METHODS, "\r\n");
-					else if (code === 415) response += "Accept: ".concat(JsSIP_C.ACCEPTED_BODY_TYPES, "\r\n");
-					response += "Supported: ".concat(supported, "\r\n");
-					if (body) {
-						var length = Utils.str_utf8_length(body);
-						response += "Content-Type: application/sdp\r\n";
-						response += "Content-Length: ".concat(length, "\r\n\r\n");
-						response += body;
-					} else response += "Content-Length: ".concat(0, "\r\n\r\n");
-					this.server_transaction.receiveResponse(code, response, onSuccess, onFailure);
-				}
-			}, {
-				key: "reply_sl",
-				value: function reply_sl() {
-					var code = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
-					var reason = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-					var vias = this.getHeaders("via");
-					if (!code || code < 100 || code > 699) throw new TypeError("Invalid status_code: ".concat(code));
-					else if (reason && typeof reason !== "string" && !(reason instanceof String)) throw new TypeError("Invalid reason_phrase: ".concat(reason));
-					reason = reason || JsSIP_C.REASON_PHRASE[code] || "";
-					var response = "SIP/2.0 ".concat(code, " ").concat(reason, "\r\n");
-					var _iterator11 = _createForOfIteratorHelper(vias), _step11;
-					try {
-						for (_iterator11.s(); !(_step11 = _iterator11.n()).done;) {
-							var via = _step11.value;
-							response += "Via: ".concat(via, "\r\n");
-						}
-					} catch (err) {
-						_iterator11.e(err);
-					} finally {
-						_iterator11.f();
-					}
-					var to = this.getHeader("To");
-					if (!this.to_tag && code > 100) to += ";tag=".concat(Utils.newTag());
-					else if (this.to_tag && !this.s("to").hasParam("tag")) to += ";tag=".concat(this.to_tag);
-					response += "To: ".concat(to, "\r\n");
-					response += "From: ".concat(this.getHeader("From"), "\r\n");
-					response += "Call-ID: ".concat(this.call_id, "\r\n");
-					response += "CSeq: ".concat(this.cseq, " ").concat(this.method, "\r\n");
-					if (this.ua.configuration.extra_headers) {
-						var _iterator12 = _createForOfIteratorHelper(this.ua.configuration.extra_headers), _step12;
-						try {
-							for (_iterator12.s(); !(_step12 = _iterator12.n()).done;) {
-								var header = _step12.value;
-								response += "".concat(header.trim(), "\r\n");
-							}
-						} catch (err) {
-							_iterator12.e(err);
-						} finally {
-							_iterator12.f();
-						}
-					}
-					response += "Content-Length: ".concat(0, "\r\n\r\n");
-					this.transport.send(response);
-				}
-			}]);
-			return IncomingRequest;
-		}(IncomingMessage),
-		IncomingResponse: /* @__PURE__ */ function(_IncomingMessage2) {
-			_inherits(IncomingResponse, _IncomingMessage2);
-			var _super3 = _createSuper(IncomingResponse);
-			function IncomingResponse() {
-				var _this3;
-				_classCallCheck(this, IncomingResponse);
-				_this3 = _super3.call(this);
-				_this3.headers = {};
-				_this3.status_code = null;
-				_this3.reason_phrase = null;
-				return _this3;
-			}
-			return IncomingResponse;
-		}(IncomingMessage)
+		IncomingRequest,
+		IncomingResponse
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/DigestAuthentication.js
+//#region node_modules/jssip/lib/DigestAuthentication.js
 var require_DigestAuthentication = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var Utils = require_Utils();
 	var logger = new Logger("DigestAuthentication");
-	module.exports = /* @__PURE__ */ function() {
-		function DigestAuthentication(credentials) {
-			_classCallCheck(this, DigestAuthentication);
+	module.exports = class DigestAuthentication {
+		constructor(credentials) {
 			this._credentials = credentials;
 			this._cnonce = null;
 			this._nc = 0;
@@ -14150,120 +13405,114 @@ var require_DigestAuthentication = /* @__PURE__ */ __commonJSMin(((exports, modu
 			this._ha1 = null;
 			this._response = null;
 		}
-		_createClass(DigestAuthentication, [
-			{
-				key: "get",
-				value: function get(parameter) {
-					switch (parameter) {
-						case "realm": return this._realm;
-						case "ha1": return this._ha1;
-						default:
-							logger.warn("get() | cannot get \"%s\" parameter", parameter);
-							return;
-					}
+		get(parameter) {
+			switch (parameter) {
+				case "realm": return this._realm;
+				case "ha1": return this._ha1;
+				default:
+					logger.warn("get() | cannot get \"%s\" parameter", parameter);
+					return;
+			}
+		}
+		/**
+		* Performs Digest authentication given a SIP request and the challenge
+		* received in a response to that request.
+		* Returns true if auth was successfully generated, false otherwise.
+		*/
+		authenticate({ method, ruri, body }, challenge, cnonce = null) {
+			this._algorithm = challenge.algorithm;
+			this._realm = challenge.realm;
+			this._nonce = challenge.nonce;
+			this._opaque = challenge.opaque;
+			this._stale = challenge.stale;
+			if (this._algorithm) {
+				if (this._algorithm !== "MD5") {
+					logger.warn("authenticate() | challenge with Digest algorithm different than \"MD5\", authentication aborted");
+					return false;
 				}
-			},
-			{
-				key: "authenticate",
-				value: function authenticate(_ref, challenge) {
-					var method = _ref.method, ruri = _ref.ruri, body = _ref.body;
-					var cnonce = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : null;
-					this._algorithm = challenge.algorithm;
-					this._realm = challenge.realm;
-					this._nonce = challenge.nonce;
-					this._opaque = challenge.opaque;
-					this._stale = challenge.stale;
-					if (this._algorithm) {
-						if (this._algorithm !== "MD5") {
-							logger.warn("authenticate() | challenge with Digest algorithm different than \"MD5\", authentication aborted");
-							return false;
-						}
-					} else this._algorithm = "MD5";
-					if (!this._nonce) {
-						logger.warn("authenticate() | challenge without Digest nonce, authentication aborted");
-						return false;
-					}
-					if (!this._realm) {
-						logger.warn("authenticate() | challenge without Digest realm, authentication aborted");
-						return false;
-					}
-					if (!this._credentials.password) {
-						if (!this._credentials.ha1) {
-							logger.warn("authenticate() | no plain SIP password nor ha1 provided, authentication aborted");
-							return false;
-						}
-						if (this._credentials.realm !== this._realm) {
-							logger.warn("authenticate() | no plain SIP password, and stored `realm` does not match the given `realm`, cannot authenticate [stored:\"%s\", given:\"%s\"]", this._credentials.realm, this._realm);
-							return false;
-						}
-					}
-					if (challenge.qop) if (challenge.qop.indexOf("auth-int") > -1) this._qop = "auth-int";
-					else if (challenge.qop.indexOf("auth") > -1) this._qop = "auth";
-					else {
-						logger.warn("authenticate() | challenge without Digest qop different than \"auth\" or \"auth-int\", authentication aborted");
-						return false;
-					}
-					else this._qop = null;
-					this._method = method;
-					this._uri = ruri;
-					this._cnonce = cnonce || Utils.createRandomToken(12);
-					this._nc += 1;
-					var hex = Number(this._nc).toString(16);
-					this._ncHex = "00000000".substr(0, 8 - hex.length) + hex;
-					if (this._nc === 4294967296) {
-						this._nc = 1;
-						this._ncHex = "00000001";
-					}
-					if (this._credentials.password) this._ha1 = Utils.calculateMD5("".concat(this._credentials.username, ":").concat(this._realm, ":").concat(this._credentials.password));
-					else this._ha1 = this._credentials.ha1;
-					var a2;
-					var ha2;
-					if (this._qop === "auth") {
-						a2 = "".concat(this._method, ":").concat(this._uri);
-						ha2 = Utils.calculateMD5(a2);
-						logger.debug("authenticate() | using qop=auth [a2:\"%s\"]", a2);
-						this._response = Utils.calculateMD5("".concat(this._ha1, ":").concat(this._nonce, ":").concat(this._ncHex, ":").concat(this._cnonce, ":auth:").concat(ha2));
-					} else if (this._qop === "auth-int") {
-						a2 = "".concat(this._method, ":").concat(this._uri, ":").concat(Utils.calculateMD5(body ? body : ""));
-						ha2 = Utils.calculateMD5(a2);
-						logger.debug("authenticate() | using qop=auth-int [a2:\"%s\"]", a2);
-						this._response = Utils.calculateMD5("".concat(this._ha1, ":").concat(this._nonce, ":").concat(this._ncHex, ":").concat(this._cnonce, ":auth-int:").concat(ha2));
-					} else if (this._qop === null) {
-						a2 = "".concat(this._method, ":").concat(this._uri);
-						ha2 = Utils.calculateMD5(a2);
-						logger.debug("authenticate() | using qop=null [a2:\"%s\"]", a2);
-						this._response = Utils.calculateMD5("".concat(this._ha1, ":").concat(this._nonce, ":").concat(ha2));
-					}
-					logger.debug("authenticate() | response generated");
-					return true;
+			} else this._algorithm = "MD5";
+			if (!this._nonce) {
+				logger.warn("authenticate() | challenge without Digest nonce, authentication aborted");
+				return false;
+			}
+			if (!this._realm) {
+				logger.warn("authenticate() | challenge without Digest realm, authentication aborted");
+				return false;
+			}
+			if (!this._credentials.password) {
+				if (!this._credentials.ha1) {
+					logger.warn("authenticate() | no plain SIP password nor ha1 provided, authentication aborted");
+					return false;
 				}
-			},
-			{
-				key: "toString",
-				value: function toString() {
-					var auth_params = [];
-					if (!this._response) throw new Error("response field does not exist, cannot generate Authorization header");
-					auth_params.push("algorithm=".concat(this._algorithm));
-					auth_params.push("username=\"".concat(this._credentials.username, "\""));
-					auth_params.push("realm=\"".concat(this._realm, "\""));
-					auth_params.push("nonce=\"".concat(this._nonce, "\""));
-					auth_params.push("uri=\"".concat(this._uri, "\""));
-					auth_params.push("response=\"".concat(this._response, "\""));
-					if (this._opaque) auth_params.push("opaque=\"".concat(this._opaque, "\""));
-					if (this._qop) {
-						auth_params.push("qop=".concat(this._qop));
-						auth_params.push("cnonce=\"".concat(this._cnonce, "\""));
-						auth_params.push("nc=".concat(this._ncHex));
-					}
-					return "Digest ".concat(auth_params.join(", "));
+				if (this._credentials.realm !== this._realm) {
+					logger.warn("authenticate() | no plain SIP password, and stored `realm` does not match the given `realm`, cannot authenticate [stored:\"%s\", given:\"%s\"]", this._credentials.realm, this._realm);
+					return false;
 				}
 			}
-		]);
-		return DigestAuthentication;
-	}();
+			if (challenge.qop) if (challenge.qop.indexOf("auth-int") > -1) this._qop = "auth-int";
+			else if (challenge.qop.indexOf("auth") > -1) this._qop = "auth";
+			else {
+				logger.warn("authenticate() | challenge without Digest qop different than \"auth\" or \"auth-int\", authentication aborted");
+				return false;
+			}
+			else this._qop = null;
+			this._method = method;
+			this._uri = ruri;
+			this._cnonce = cnonce || Utils.createRandomToken(12);
+			this._nc += 1;
+			const hex = Number(this._nc).toString(16);
+			this._ncHex = "00000000".substr(0, 8 - hex.length) + hex;
+			if (this._nc === 4294967296) {
+				this._nc = 1;
+				this._ncHex = "00000001";
+			}
+			if (this._credentials.password) this._ha1 = Utils.calculateMD5(`${this._credentials.username}:${this._realm}:${this._credentials.password}`);
+			else this._ha1 = this._credentials.ha1;
+			let a2;
+			let ha2;
+			if (this._qop === "auth") {
+				a2 = `${this._method}:${this._uri}`;
+				ha2 = Utils.calculateMD5(a2);
+				logger.debug("authenticate() | using qop=auth [a2:\"%s\"]", a2);
+				this._response = Utils.calculateMD5(`${this._ha1}:${this._nonce}:${this._ncHex}:${this._cnonce}:auth:${ha2}`);
+			} else if (this._qop === "auth-int") {
+				a2 = `${this._method}:${this._uri}:${Utils.calculateMD5(body ? body : "")}`;
+				ha2 = Utils.calculateMD5(a2);
+				logger.debug("authenticate() | using qop=auth-int [a2:\"%s\"]", a2);
+				this._response = Utils.calculateMD5(`${this._ha1}:${this._nonce}:${this._ncHex}:${this._cnonce}:auth-int:${ha2}`);
+			} else if (this._qop === null) {
+				a2 = `${this._method}:${this._uri}`;
+				ha2 = Utils.calculateMD5(a2);
+				logger.debug("authenticate() | using qop=null [a2:\"%s\"]", a2);
+				this._response = Utils.calculateMD5(`${this._ha1}:${this._nonce}:${ha2}`);
+			}
+			logger.debug("authenticate() | response generated");
+			return true;
+		}
+		/**
+		* Return the Proxy-Authorization or WWW-Authorization header value.
+		*/
+		toString() {
+			const auth_params = [];
+			if (!this._response) throw new Error("response field does not exist, cannot generate Authorization header");
+			auth_params.push(`algorithm=${this._algorithm}`);
+			auth_params.push(`username="${this._credentials.username}"`);
+			auth_params.push(`realm="${this._realm}"`);
+			auth_params.push(`nonce="${this._nonce}"`);
+			auth_params.push(`uri="${this._uri}"`);
+			auth_params.push(`response="${this._response}"`);
+			if (this._opaque) auth_params.push(`opaque="${this._opaque}"`);
+			if (this._qop) {
+				auth_params.push(`qop=${this._qop}`);
+				auth_params.push(`cnonce="${this._cnonce}"`);
+				auth_params.push(`nc=${this._ncHex}`);
+			}
+			return `Digest ${auth_params.join(", ")}`;
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Timers.js
+//#region node_modules/jssip/lib/Timers.js
 var require_Timers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var T1 = 500, T2 = 4e3, T4 = 5e3;
 	module.exports = {
@@ -14283,87 +13532,8 @@ var require_Timers = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Transactions.js
+//#region node_modules/jssip/lib/Transactions.js
 var require_Transactions = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
@@ -14387,541 +13557,395 @@ var require_Transactions = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		INVITE_CLIENT: "ict",
 		INVITE_SERVER: "ist"
 	};
-	var NonInviteClientTransaction = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(NonInviteClientTransaction, _EventEmitter);
-		var _super = _createSuper(NonInviteClientTransaction);
-		function NonInviteClientTransaction(ua, transport, request, eventHandlers) {
-			var _this;
-			_classCallCheck(this, NonInviteClientTransaction);
-			_this = _super.call(this);
-			_this.type = C.NON_INVITE_CLIENT;
-			_this.id = "z9hG4bK".concat(Math.floor(Math.random() * 1e7));
-			_this.ua = ua;
-			_this.transport = transport;
-			_this.request = request;
-			_this.eventHandlers = eventHandlers;
-			var via = "SIP/2.0/".concat(transport.via_transport);
-			via += " ".concat(ua.configuration.via_host, ";branch=").concat(_this.id);
-			_this.request.setHeader("via", via);
-			_this.ua.newTransaction(_assertThisInitialized(_this));
-			return _this;
+	var NonInviteClientTransaction = class extends EventEmitter {
+		constructor(ua, transport, request, eventHandlers) {
+			super();
+			this.type = C.NON_INVITE_CLIENT;
+			this.id = `z9hG4bK${Math.floor(Math.random() * 1e7)}`;
+			this.ua = ua;
+			this.transport = transport;
+			this.request = request;
+			this.eventHandlers = eventHandlers;
+			let via = `SIP/2.0/${transport.via_transport}`;
+			via += ` ${ua.configuration.via_host};branch=${this.id}`;
+			this.request.setHeader("via", via);
+			this.ua.newTransaction(this);
 		}
-		_createClass(NonInviteClientTransaction, [
-			{
-				key: "stateChanged",
-				value: function stateChanged(state) {
-					this.state = state;
-					this.emit("stateChanged");
-				}
-			},
-			{
-				key: "send",
-				value: function send() {
-					var _this2 = this;
-					this.stateChanged(C.STATUS_TRYING);
-					this.F = setTimeout(function() {
-						_this2.timer_F();
-					}, Timers.TIMER_F);
-					if (!this.transport.send(this.request)) this.onTransportError();
-				}
-			},
-			{
-				key: "onTransportError",
-				value: function onTransportError() {
-					loggernict.debug("transport error occurred, deleting transaction ".concat(this.id));
+		get C() {
+			return C;
+		}
+		stateChanged(state) {
+			this.state = state;
+			this.emit("stateChanged");
+		}
+		send() {
+			this.stateChanged(C.STATUS_TRYING);
+			this.F = setTimeout(() => {
+				this.timer_F();
+			}, Timers.TIMER_F);
+			if (!this.transport.send(this.request)) this.onTransportError();
+		}
+		onTransportError() {
+			loggernict.debug(`transport error occurred, deleting transaction ${this.id}`);
+			clearTimeout(this.F);
+			clearTimeout(this.K);
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+			this.eventHandlers.onTransportError();
+		}
+		timer_F() {
+			loggernict.debug(`Timer F expired for transaction ${this.id}`);
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+			this.eventHandlers.onRequestTimeout();
+		}
+		timer_K() {
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+		}
+		receiveResponse(response) {
+			const status_code = response.status_code;
+			if (status_code < 200) switch (this.state) {
+				case C.STATUS_TRYING:
+				case C.STATUS_PROCEEDING:
+					this.stateChanged(C.STATUS_PROCEEDING);
+					this.eventHandlers.onReceiveResponse(response);
+					break;
+			}
+			else switch (this.state) {
+				case C.STATUS_TRYING:
+				case C.STATUS_PROCEEDING:
+					this.stateChanged(C.STATUS_COMPLETED);
 					clearTimeout(this.F);
-					clearTimeout(this.K);
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-					this.eventHandlers.onTransportError();
-				}
-			},
-			{
-				key: "timer_F",
-				value: function timer_F() {
-					loggernict.debug("Timer F expired for transaction ".concat(this.id));
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-					this.eventHandlers.onRequestTimeout();
-				}
-			},
-			{
-				key: "timer_K",
-				value: function timer_K() {
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-				}
-			},
-			{
-				key: "receiveResponse",
-				value: function receiveResponse(response) {
-					var _this3 = this;
-					var status_code = response.status_code;
-					if (status_code < 200) switch (this.state) {
-						case C.STATUS_TRYING:
-						case C.STATUS_PROCEEDING:
-							this.stateChanged(C.STATUS_PROCEEDING);
-							this.eventHandlers.onReceiveResponse(response);
-							break;
-					}
-					else switch (this.state) {
-						case C.STATUS_TRYING:
-						case C.STATUS_PROCEEDING:
-							this.stateChanged(C.STATUS_COMPLETED);
-							clearTimeout(this.F);
-							if (status_code === 408) this.eventHandlers.onRequestTimeout();
-							else this.eventHandlers.onReceiveResponse(response);
-							this.K = setTimeout(function() {
-								_this3.timer_K();
-							}, Timers.TIMER_K);
-							break;
-						case C.STATUS_COMPLETED: break;
-					}
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
+					if (status_code === 408) this.eventHandlers.onRequestTimeout();
+					else this.eventHandlers.onReceiveResponse(response);
+					this.K = setTimeout(() => {
+						this.timer_K();
+					}, Timers.TIMER_K);
+					break;
+				case C.STATUS_COMPLETED: break;
 			}
-		]);
-		return NonInviteClientTransaction;
-	}(EventEmitter);
-	var InviteClientTransaction = /* @__PURE__ */ function(_EventEmitter2) {
-		_inherits(InviteClientTransaction, _EventEmitter2);
-		var _super2 = _createSuper(InviteClientTransaction);
-		function InviteClientTransaction(ua, transport, request, eventHandlers) {
-			var _this4;
-			_classCallCheck(this, InviteClientTransaction);
-			_this4 = _super2.call(this);
-			_this4.type = C.INVITE_CLIENT;
-			_this4.id = "z9hG4bK".concat(Math.floor(Math.random() * 1e7));
-			_this4.ua = ua;
-			_this4.transport = transport;
-			_this4.request = request;
-			_this4.eventHandlers = eventHandlers;
-			request.transaction = _assertThisInitialized(_this4);
-			var via = "SIP/2.0/".concat(transport.via_transport);
-			via += " ".concat(ua.configuration.via_host, ";branch=").concat(_this4.id);
-			_this4.request.setHeader("via", via);
-			_this4.ua.newTransaction(_assertThisInitialized(_this4));
-			return _this4;
 		}
-		_createClass(InviteClientTransaction, [
-			{
-				key: "stateChanged",
-				value: function stateChanged(state) {
-					this.state = state;
-					this.emit("stateChanged");
-				}
-			},
-			{
-				key: "send",
-				value: function send() {
-					var _this5 = this;
-					this.stateChanged(C.STATUS_CALLING);
-					this.B = setTimeout(function() {
-						_this5.timer_B();
-					}, Timers.TIMER_B);
-					if (!this.transport.send(this.request)) this.onTransportError();
-				}
-			},
-			{
-				key: "onTransportError",
-				value: function onTransportError() {
-					clearTimeout(this.B);
-					clearTimeout(this.D);
-					clearTimeout(this.M);
-					if (this.state !== C.STATUS_ACCEPTED) {
-						loggerict.debug("transport error occurred, deleting transaction ".concat(this.id));
-						this.eventHandlers.onTransportError();
-					}
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-				}
-			},
-			{
-				key: "timer_M",
-				value: function timer_M() {
-					loggerict.debug("Timer M expired for transaction ".concat(this.id));
-					if (this.state === C.STATUS_ACCEPTED) {
-						clearTimeout(this.B);
-						this.stateChanged(C.STATUS_TERMINATED);
-						this.ua.destroyTransaction(this);
-					}
-				}
-			},
-			{
-				key: "timer_B",
-				value: function timer_B() {
-					loggerict.debug("Timer B expired for transaction ".concat(this.id));
-					if (this.state === C.STATUS_CALLING) {
-						this.stateChanged(C.STATUS_TERMINATED);
-						this.ua.destroyTransaction(this);
-						this.eventHandlers.onRequestTimeout();
-					}
-				}
-			},
-			{
-				key: "timer_D",
-				value: function timer_D() {
-					loggerict.debug("Timer D expired for transaction ".concat(this.id));
-					clearTimeout(this.B);
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-				}
-			},
-			{
-				key: "sendACK",
-				value: function sendACK(response) {
-					var _this6 = this;
-					var ack = new SIPMessage.OutgoingRequest(JsSIP_C.ACK, this.request.ruri, this.ua, {
-						"route_set": this.request.getHeaders("route"),
-						"call_id": this.request.getHeader("call-id"),
-						"cseq": this.request.cseq
-					});
-					ack.setHeader("from", this.request.getHeader("from"));
-					ack.setHeader("via", this.request.getHeader("via"));
-					ack.setHeader("to", response.getHeader("to"));
-					this.D = setTimeout(function() {
-						_this6.timer_D();
-					}, Timers.TIMER_D);
-					this.transport.send(ack);
-				}
-			},
-			{
-				key: "cancel",
-				value: function cancel(reason) {
-					if (this.state !== C.STATUS_PROCEEDING) return;
-					var cancel = new SIPMessage.OutgoingRequest(JsSIP_C.CANCEL, this.request.ruri, this.ua, {
-						"route_set": this.request.getHeaders("route"),
-						"call_id": this.request.getHeader("call-id"),
-						"cseq": this.request.cseq
-					});
-					cancel.setHeader("from", this.request.getHeader("from"));
-					cancel.setHeader("via", this.request.getHeader("via"));
-					cancel.setHeader("to", this.request.getHeader("to"));
-					if (reason) cancel.setHeader("reason", reason);
-					this.transport.send(cancel);
-				}
-			},
-			{
-				key: "receiveResponse",
-				value: function receiveResponse(response) {
-					var _this7 = this;
-					var status_code = response.status_code;
-					if (status_code >= 100 && status_code <= 199) switch (this.state) {
-						case C.STATUS_CALLING:
-							this.stateChanged(C.STATUS_PROCEEDING);
-							this.eventHandlers.onReceiveResponse(response);
-							break;
-						case C.STATUS_PROCEEDING:
-							this.eventHandlers.onReceiveResponse(response);
-							break;
-					}
-					else if (status_code >= 200 && status_code <= 299) switch (this.state) {
-						case C.STATUS_CALLING:
-						case C.STATUS_PROCEEDING:
-							this.stateChanged(C.STATUS_ACCEPTED);
-							this.M = setTimeout(function() {
-								_this7.timer_M();
-							}, Timers.TIMER_M);
-							this.eventHandlers.onReceiveResponse(response);
-							break;
-						case C.STATUS_ACCEPTED:
-							this.eventHandlers.onReceiveResponse(response);
-							break;
-					}
-					else if (status_code >= 300 && status_code <= 699) switch (this.state) {
-						case C.STATUS_CALLING:
-						case C.STATUS_PROCEEDING:
-							this.stateChanged(C.STATUS_COMPLETED);
-							this.sendACK(response);
-							this.eventHandlers.onReceiveResponse(response);
-							break;
-						case C.STATUS_COMPLETED:
-							this.sendACK(response);
-							break;
-					}
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
-			}
-		]);
-		return InviteClientTransaction;
-	}(EventEmitter);
-	var AckClientTransaction = /* @__PURE__ */ function(_EventEmitter3) {
-		_inherits(AckClientTransaction, _EventEmitter3);
-		var _super3 = _createSuper(AckClientTransaction);
-		function AckClientTransaction(ua, transport, request, eventHandlers) {
-			var _this8;
-			_classCallCheck(this, AckClientTransaction);
-			_this8 = _super3.call(this);
-			_this8.id = "z9hG4bK".concat(Math.floor(Math.random() * 1e7));
-			_this8.transport = transport;
-			_this8.request = request;
-			_this8.eventHandlers = eventHandlers;
-			var via = "SIP/2.0/".concat(transport.via_transport);
-			via += " ".concat(ua.configuration.via_host, ";branch=").concat(_this8.id);
-			_this8.request.setHeader("via", via);
-			return _this8;
+	};
+	var InviteClientTransaction = class extends EventEmitter {
+		constructor(ua, transport, request, eventHandlers) {
+			super();
+			this.type = C.INVITE_CLIENT;
+			this.id = `z9hG4bK${Math.floor(Math.random() * 1e7)}`;
+			this.ua = ua;
+			this.transport = transport;
+			this.request = request;
+			this.eventHandlers = eventHandlers;
+			request.transaction = this;
+			let via = `SIP/2.0/${transport.via_transport}`;
+			via += ` ${ua.configuration.via_host};branch=${this.id}`;
+			this.request.setHeader("via", via);
+			this.ua.newTransaction(this);
 		}
-		_createClass(AckClientTransaction, [
-			{
-				key: "send",
-				value: function send() {
-					if (!this.transport.send(this.request)) this.onTransportError();
-				}
-			},
-			{
-				key: "onTransportError",
-				value: function onTransportError() {
-					loggeract.debug("transport error occurred for transaction ".concat(this.id));
-					this.eventHandlers.onTransportError();
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
-			}
-		]);
-		return AckClientTransaction;
-	}(EventEmitter);
-	var NonInviteServerTransaction = /* @__PURE__ */ function(_EventEmitter4) {
-		_inherits(NonInviteServerTransaction, _EventEmitter4);
-		var _super4 = _createSuper(NonInviteServerTransaction);
-		function NonInviteServerTransaction(ua, transport, request) {
-			var _this9;
-			_classCallCheck(this, NonInviteServerTransaction);
-			_this9 = _super4.call(this);
-			_this9.type = C.NON_INVITE_SERVER;
-			_this9.id = request.via_branch;
-			_this9.ua = ua;
-			_this9.transport = transport;
-			_this9.request = request;
-			_this9.last_response = "";
-			request.server_transaction = _assertThisInitialized(_this9);
-			_this9.state = C.STATUS_TRYING;
-			ua.newTransaction(_assertThisInitialized(_this9));
-			return _this9;
+		get C() {
+			return C;
 		}
-		_createClass(NonInviteServerTransaction, [
-			{
-				key: "stateChanged",
-				value: function stateChanged(state) {
-					this.state = state;
-					this.emit("stateChanged");
-				}
-			},
-			{
-				key: "timer_J",
-				value: function timer_J() {
-					loggernist.debug("Timer J expired for transaction ".concat(this.id));
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-				}
-			},
-			{
-				key: "onTransportError",
-				value: function onTransportError() {
-					if (!this.transportError) {
-						this.transportError = true;
-						loggernist.debug("transport error occurred, deleting transaction ".concat(this.id));
-						clearTimeout(this.J);
-						this.stateChanged(C.STATUS_TERMINATED);
-						this.ua.destroyTransaction(this);
-					}
-				}
-			},
-			{
-				key: "receiveResponse",
-				value: function receiveResponse(status_code, response, onSuccess, onFailure) {
-					var _this10 = this;
-					if (status_code === 100) switch (this.state) {
-						case C.STATUS_TRYING:
-							this.stateChanged(C.STATUS_PROCEEDING);
-							if (!this.transport.send(response)) this.onTransportError();
-							break;
-						case C.STATUS_PROCEEDING:
-							this.last_response = response;
-							if (!this.transport.send(response)) {
-								this.onTransportError();
-								if (onFailure) onFailure();
-							} else if (onSuccess) onSuccess();
-							break;
-					}
-					else if (status_code >= 200 && status_code <= 699) switch (this.state) {
-						case C.STATUS_TRYING:
-						case C.STATUS_PROCEEDING:
-							this.stateChanged(C.STATUS_COMPLETED);
-							this.last_response = response;
-							this.J = setTimeout(function() {
-								_this10.timer_J();
-							}, Timers.TIMER_J);
-							if (!this.transport.send(response)) {
-								this.onTransportError();
-								if (onFailure) onFailure();
-							} else if (onSuccess) onSuccess();
-							break;
-						case C.STATUS_COMPLETED: break;
-					}
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
+		stateChanged(state) {
+			this.state = state;
+			this.emit("stateChanged");
+		}
+		send() {
+			this.stateChanged(C.STATUS_CALLING);
+			this.B = setTimeout(() => {
+				this.timer_B();
+			}, Timers.TIMER_B);
+			if (!this.transport.send(this.request)) this.onTransportError();
+		}
+		onTransportError() {
+			clearTimeout(this.B);
+			clearTimeout(this.D);
+			clearTimeout(this.M);
+			if (this.state !== C.STATUS_ACCEPTED) {
+				loggerict.debug(`transport error occurred, deleting transaction ${this.id}`);
+				this.eventHandlers.onTransportError();
 			}
-		]);
-		return NonInviteServerTransaction;
-	}(EventEmitter);
-	var InviteServerTransaction = /* @__PURE__ */ function(_EventEmitter5) {
-		_inherits(InviteServerTransaction, _EventEmitter5);
-		var _super5 = _createSuper(InviteServerTransaction);
-		function InviteServerTransaction(ua, transport, request) {
-			var _this11;
-			_classCallCheck(this, InviteServerTransaction);
-			_this11 = _super5.call(this);
-			_this11.type = C.INVITE_SERVER;
-			_this11.id = request.via_branch;
-			_this11.ua = ua;
-			_this11.transport = transport;
-			_this11.request = request;
-			_this11.last_response = "";
-			request.server_transaction = _assertThisInitialized(_this11);
-			_this11.state = C.STATUS_PROCEEDING;
-			ua.newTransaction(_assertThisInitialized(_this11));
-			_this11.resendProvisionalTimer = null;
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+		}
+		timer_M() {
+			loggerict.debug(`Timer M expired for transaction ${this.id}`);
+			if (this.state === C.STATUS_ACCEPTED) {
+				clearTimeout(this.B);
+				this.stateChanged(C.STATUS_TERMINATED);
+				this.ua.destroyTransaction(this);
+			}
+		}
+		timer_B() {
+			loggerict.debug(`Timer B expired for transaction ${this.id}`);
+			if (this.state === C.STATUS_CALLING) {
+				this.stateChanged(C.STATUS_TERMINATED);
+				this.ua.destroyTransaction(this);
+				this.eventHandlers.onRequestTimeout();
+			}
+		}
+		timer_D() {
+			loggerict.debug(`Timer D expired for transaction ${this.id}`);
+			clearTimeout(this.B);
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+		}
+		sendACK(response) {
+			const ack = new SIPMessage.OutgoingRequest(JsSIP_C.ACK, this.request.ruri, this.ua, {
+				route_set: this.request.getHeaders("route"),
+				call_id: this.request.getHeader("call-id"),
+				cseq: this.request.cseq
+			});
+			ack.setHeader("from", this.request.getHeader("from"));
+			ack.setHeader("via", this.request.getHeader("via"));
+			ack.setHeader("to", response.getHeader("to"));
+			this.D = setTimeout(() => {
+				this.timer_D();
+			}, Timers.TIMER_D);
+			this.transport.send(ack);
+		}
+		cancel(reason) {
+			if (this.state !== C.STATUS_PROCEEDING) return;
+			const cancel = new SIPMessage.OutgoingRequest(JsSIP_C.CANCEL, this.request.ruri, this.ua, {
+				route_set: this.request.getHeaders("route"),
+				call_id: this.request.getHeader("call-id"),
+				cseq: this.request.cseq
+			});
+			cancel.setHeader("from", this.request.getHeader("from"));
+			cancel.setHeader("via", this.request.getHeader("via"));
+			cancel.setHeader("to", this.request.getHeader("to"));
+			if (reason) cancel.setHeader("reason", reason);
+			this.transport.send(cancel);
+		}
+		receiveResponse(response) {
+			const status_code = response.status_code;
+			if (status_code >= 100 && status_code <= 199) switch (this.state) {
+				case C.STATUS_CALLING:
+					this.stateChanged(C.STATUS_PROCEEDING);
+					this.eventHandlers.onReceiveResponse(response);
+					break;
+				case C.STATUS_PROCEEDING:
+					this.eventHandlers.onReceiveResponse(response);
+					break;
+			}
+			else if (status_code >= 200 && status_code <= 299) switch (this.state) {
+				case C.STATUS_CALLING:
+				case C.STATUS_PROCEEDING:
+					this.stateChanged(C.STATUS_ACCEPTED);
+					this.M = setTimeout(() => {
+						this.timer_M();
+					}, Timers.TIMER_M);
+					this.eventHandlers.onReceiveResponse(response);
+					break;
+				case C.STATUS_ACCEPTED:
+					this.eventHandlers.onReceiveResponse(response);
+					break;
+			}
+			else if (status_code >= 300 && status_code <= 699) switch (this.state) {
+				case C.STATUS_CALLING:
+				case C.STATUS_PROCEEDING:
+					this.stateChanged(C.STATUS_COMPLETED);
+					this.sendACK(response);
+					this.eventHandlers.onReceiveResponse(response);
+					break;
+				case C.STATUS_COMPLETED:
+					this.sendACK(response);
+					break;
+			}
+		}
+	};
+	var AckClientTransaction = class extends EventEmitter {
+		constructor(ua, transport, request, eventHandlers) {
+			super();
+			this.id = `z9hG4bK${Math.floor(Math.random() * 1e7)}`;
+			this.transport = transport;
+			this.request = request;
+			this.eventHandlers = eventHandlers;
+			let via = `SIP/2.0/${transport.via_transport}`;
+			via += ` ${ua.configuration.via_host};branch=${this.id}`;
+			this.request.setHeader("via", via);
+		}
+		get C() {
+			return C;
+		}
+		send() {
+			if (!this.transport.send(this.request)) this.onTransportError();
+		}
+		onTransportError() {
+			loggeract.debug(`transport error occurred for transaction ${this.id}`);
+			this.eventHandlers.onTransportError();
+		}
+	};
+	var NonInviteServerTransaction = class extends EventEmitter {
+		constructor(ua, transport, request) {
+			super();
+			this.type = C.NON_INVITE_SERVER;
+			this.id = request.via_branch;
+			this.ua = ua;
+			this.transport = transport;
+			this.request = request;
+			this.last_response = "";
+			request.server_transaction = this;
+			this.state = C.STATUS_TRYING;
+			ua.newTransaction(this);
+		}
+		get C() {
+			return C;
+		}
+		stateChanged(state) {
+			this.state = state;
+			this.emit("stateChanged");
+		}
+		timer_J() {
+			loggernist.debug(`Timer J expired for transaction ${this.id}`);
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+		}
+		onTransportError() {
+			if (!this.transportError) {
+				this.transportError = true;
+				loggernist.debug(`transport error occurred, deleting transaction ${this.id}`);
+				clearTimeout(this.J);
+				this.stateChanged(C.STATUS_TERMINATED);
+				this.ua.destroyTransaction(this);
+			}
+		}
+		receiveResponse(status_code, response, onSuccess, onFailure) {
+			if (status_code === 100) switch (this.state) {
+				case C.STATUS_TRYING:
+					this.stateChanged(C.STATUS_PROCEEDING);
+					if (!this.transport.send(response)) this.onTransportError();
+					break;
+				case C.STATUS_PROCEEDING:
+					this.last_response = response;
+					if (!this.transport.send(response)) {
+						this.onTransportError();
+						if (onFailure) onFailure();
+					} else if (onSuccess) onSuccess();
+					break;
+			}
+			else if (status_code >= 200 && status_code <= 699) switch (this.state) {
+				case C.STATUS_TRYING:
+				case C.STATUS_PROCEEDING:
+					this.stateChanged(C.STATUS_COMPLETED);
+					this.last_response = response;
+					this.J = setTimeout(() => {
+						this.timer_J();
+					}, Timers.TIMER_J);
+					if (!this.transport.send(response)) {
+						this.onTransportError();
+						if (onFailure) onFailure();
+					} else if (onSuccess) onSuccess();
+					break;
+				case C.STATUS_COMPLETED: break;
+			}
+		}
+	};
+	var InviteServerTransaction = class extends EventEmitter {
+		constructor(ua, transport, request) {
+			super();
+			this.type = C.INVITE_SERVER;
+			this.id = request.via_branch;
+			this.ua = ua;
+			this.transport = transport;
+			this.request = request;
+			this.last_response = "";
+			request.server_transaction = this;
+			this.state = C.STATUS_PROCEEDING;
+			ua.newTransaction(this);
+			this.resendProvisionalTimer = null;
 			request.reply(100);
-			return _this11;
 		}
-		_createClass(InviteServerTransaction, [
-			{
-				key: "stateChanged",
-				value: function stateChanged(state) {
-					this.state = state;
-					this.emit("stateChanged");
-				}
-			},
-			{
-				key: "timer_H",
-				value: function timer_H() {
-					loggerist.debug("Timer H expired for transaction ".concat(this.id));
-					if (this.state === C.STATUS_COMPLETED) loggerist.debug("ACK not received, dialog will be terminated");
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-				}
-			},
-			{
-				key: "timer_I",
-				value: function timer_I() {
-					this.stateChanged(C.STATUS_TERMINATED);
-					this.ua.destroyTransaction(this);
-				}
-			},
-			{
-				key: "timer_L",
-				value: function timer_L() {
-					loggerist.debug("Timer L expired for transaction ".concat(this.id));
-					if (this.state === C.STATUS_ACCEPTED) {
-						this.stateChanged(C.STATUS_TERMINATED);
-						this.ua.destroyTransaction(this);
-					}
-				}
-			},
-			{
-				key: "onTransportError",
-				value: function onTransportError() {
-					if (!this.transportError) {
-						this.transportError = true;
-						loggerist.debug("transport error occurred, deleting transaction ".concat(this.id));
-						if (this.resendProvisionalTimer !== null) {
-							clearInterval(this.resendProvisionalTimer);
-							this.resendProvisionalTimer = null;
-						}
-						clearTimeout(this.L);
-						clearTimeout(this.H);
-						clearTimeout(this.I);
-						this.stateChanged(C.STATUS_TERMINATED);
-						this.ua.destroyTransaction(this);
-					}
-				}
-			},
-			{
-				key: "resend_provisional",
-				value: function resend_provisional() {
-					if (!this.transport.send(this.last_response)) this.onTransportError();
-				}
-			},
-			{
-				key: "receiveResponse",
-				value: function receiveResponse(status_code, response, onSuccess, onFailure) {
-					var _this12 = this;
-					if (status_code >= 100 && status_code <= 199) switch (this.state) {
-						case C.STATUS_PROCEEDING:
-							if (!this.transport.send(response)) this.onTransportError();
-							this.last_response = response;
-							break;
-					}
-					if (status_code > 100 && status_code <= 199 && this.state === C.STATUS_PROCEEDING) {
-						if (this.resendProvisionalTimer === null) this.resendProvisionalTimer = setInterval(function() {
-							_this12.resend_provisional();
-						}, Timers.PROVISIONAL_RESPONSE_INTERVAL);
-					} else if (status_code >= 200 && status_code <= 299) switch (this.state) {
-						case C.STATUS_PROCEEDING:
-							this.stateChanged(C.STATUS_ACCEPTED);
-							this.last_response = response;
-							this.L = setTimeout(function() {
-								_this12.timer_L();
-							}, Timers.TIMER_L);
-							if (this.resendProvisionalTimer !== null) {
-								clearInterval(this.resendProvisionalTimer);
-								this.resendProvisionalTimer = null;
-							}
-						case C.STATUS_ACCEPTED:
-							if (!this.transport.send(response)) {
-								this.onTransportError();
-								if (onFailure) onFailure();
-							} else if (onSuccess) onSuccess();
-							break;
-					}
-					else if (status_code >= 300 && status_code <= 699) switch (this.state) {
-						case C.STATUS_PROCEEDING:
-							if (this.resendProvisionalTimer !== null) {
-								clearInterval(this.resendProvisionalTimer);
-								this.resendProvisionalTimer = null;
-							}
-							if (!this.transport.send(response)) {
-								this.onTransportError();
-								if (onFailure) onFailure();
-							} else {
-								this.stateChanged(C.STATUS_COMPLETED);
-								this.H = setTimeout(function() {
-									_this12.timer_H();
-								}, Timers.TIMER_H);
-								if (onSuccess) onSuccess();
-							}
-							break;
-					}
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
+		get C() {
+			return C;
+		}
+		stateChanged(state) {
+			this.state = state;
+			this.emit("stateChanged");
+		}
+		timer_H() {
+			loggerist.debug(`Timer H expired for transaction ${this.id}`);
+			if (this.state === C.STATUS_COMPLETED) loggerist.debug("ACK not received, dialog will be terminated");
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+		}
+		timer_I() {
+			this.stateChanged(C.STATUS_TERMINATED);
+			this.ua.destroyTransaction(this);
+		}
+		timer_L() {
+			loggerist.debug(`Timer L expired for transaction ${this.id}`);
+			if (this.state === C.STATUS_ACCEPTED) {
+				this.stateChanged(C.STATUS_TERMINATED);
+				this.ua.destroyTransaction(this);
 			}
-		]);
-		return InviteServerTransaction;
-	}(EventEmitter);
+		}
+		onTransportError() {
+			if (!this.transportError) {
+				this.transportError = true;
+				loggerist.debug(`transport error occurred, deleting transaction ${this.id}`);
+				if (this.resendProvisionalTimer !== null) {
+					clearInterval(this.resendProvisionalTimer);
+					this.resendProvisionalTimer = null;
+				}
+				clearTimeout(this.L);
+				clearTimeout(this.H);
+				clearTimeout(this.I);
+				this.stateChanged(C.STATUS_TERMINATED);
+				this.ua.destroyTransaction(this);
+			}
+		}
+		resend_provisional() {
+			if (!this.transport.send(this.last_response)) this.onTransportError();
+		}
+		receiveResponse(status_code, response, onSuccess, onFailure) {
+			if (status_code >= 100 && status_code <= 199) switch (this.state) {
+				case C.STATUS_PROCEEDING:
+					if (!this.transport.send(response)) this.onTransportError();
+					this.last_response = response;
+					break;
+			}
+			if (status_code > 100 && status_code <= 199 && this.state === C.STATUS_PROCEEDING) {
+				if (this.resendProvisionalTimer === null) this.resendProvisionalTimer = setInterval(() => {
+					this.resend_provisional();
+				}, Timers.PROVISIONAL_RESPONSE_INTERVAL);
+			} else if (status_code >= 200 && status_code <= 299) switch (this.state) {
+				case C.STATUS_PROCEEDING:
+					this.stateChanged(C.STATUS_ACCEPTED);
+					this.last_response = response;
+					this.L = setTimeout(() => {
+						this.timer_L();
+					}, Timers.TIMER_L);
+					if (this.resendProvisionalTimer !== null) {
+						clearInterval(this.resendProvisionalTimer);
+						this.resendProvisionalTimer = null;
+					}
+				case C.STATUS_ACCEPTED:
+					if (!this.transport.send(response)) {
+						this.onTransportError();
+						if (onFailure) onFailure();
+					} else if (onSuccess) onSuccess();
+					break;
+			}
+			else if (status_code >= 300 && status_code <= 699) switch (this.state) {
+				case C.STATUS_PROCEEDING:
+					if (this.resendProvisionalTimer !== null) {
+						clearInterval(this.resendProvisionalTimer);
+						this.resendProvisionalTimer = null;
+					}
+					if (!this.transport.send(response)) {
+						this.onTransportError();
+						if (onFailure) onFailure();
+					} else {
+						this.stateChanged(C.STATUS_COMPLETED);
+						this.H = setTimeout(() => {
+							this.timer_H();
+						}, Timers.TIMER_H);
+						if (onSuccess) onSuccess();
+					}
+					break;
+			}
+		}
+	};
 	/**
 	* INVITE:
 	*  _true_ if retransmission
@@ -14940,9 +13964,8 @@ var require_Transactions = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	*  _true_  retransmission
 	*  _false_ new request
 	*/
-	function checkTransaction(_ref, request) {
-		var _transactions = _ref._transactions;
-		var tr;
+	function checkTransaction({ _transactions }, request) {
+		let tr;
 		switch (request.method) {
 			case JsSIP_C.INVITE:
 				tr = _transactions.ist[request.via_branch];
@@ -14962,7 +13985,7 @@ var require_Transactions = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 					if (tr.state === C.STATUS_ACCEPTED) return false;
 					else if (tr.state === C.STATUS_COMPLETED) {
 						tr.state = C.STATUS_CONFIRMED;
-						tr.I = setTimeout(function() {
+						tr.I = setTimeout(() => {
 							tr.timer_I();
 						}, Timers.TIMER_I);
 						return true;
@@ -15005,39 +14028,21 @@ var require_Transactions = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/RequestSender.js
+//#region node_modules/jssip/lib/RequestSender.js
 var require_RequestSender$1 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
 	var DigestAuthentication = require_DigestAuthentication();
 	var Transactions = require_Transactions();
 	var logger = new Logger("RequestSender");
 	var EventHandlers = {
-		onRequestTimeout: function onRequestTimeout() {},
-		onTransportError: function onTransportError() {},
-		onReceiveResponse: function onReceiveResponse() {},
-		onAuthenticated: function onAuthenticated() {}
+		onRequestTimeout: () => {},
+		onTransportError: () => {},
+		onReceiveResponse: () => {},
+		onAuthenticated: () => {}
 	};
-	module.exports = /* @__PURE__ */ function() {
-		function RequestSender(ua, request, eventHandlers) {
-			_classCallCheck(this, RequestSender);
+	module.exports = class RequestSender {
+		constructor(ua, request, eventHandlers) {
 			this._ua = ua;
 			this._eventHandlers = eventHandlers;
 			this._method = request.method;
@@ -15045,7 +14050,7 @@ var require_RequestSender$1 = /* @__PURE__ */ __commonJSMin(((exports, module) =
 			this._auth = null;
 			this._challenged = false;
 			this._staled = false;
-			for (var handler in EventHandlers) if (Object.prototype.hasOwnProperty.call(EventHandlers, handler)) {
+			for (const handler in EventHandlers) if (Object.prototype.hasOwnProperty.call(EventHandlers, handler)) {
 				if (!this._eventHandlers[handler]) this._eventHandlers[handler] = EventHandlers[handler];
 			}
 			if (ua.status === ua.C.STATUS_USER_CLOSED && (this._method !== JsSIP_C.BYE || this._method !== JsSIP_C.ACK)) this._eventHandlers.onTransportError();
@@ -15053,100 +14058,80 @@ var require_RequestSender$1 = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		/**
 		* Create the client transaction and send the message.
 		*/
-		_createClass(RequestSender, [{
-			key: "send",
-			value: function send() {
-				var _this = this;
-				var eventHandlers = {
-					onRequestTimeout: function onRequestTimeout() {
-						_this._eventHandlers.onRequestTimeout();
-					},
-					onTransportError: function onTransportError() {
-						_this._eventHandlers.onTransportError();
-					},
-					onReceiveResponse: function onReceiveResponse(response) {
-						_this._receiveResponse(response);
-					}
-				};
-				switch (this._method) {
-					case "INVITE":
-						this.clientTransaction = new Transactions.InviteClientTransaction(this._ua, this._ua.transport, this._request, eventHandlers);
-						break;
-					case "ACK":
-						this.clientTransaction = new Transactions.AckClientTransaction(this._ua, this._ua.transport, this._request, eventHandlers);
-						break;
-					default: this.clientTransaction = new Transactions.NonInviteClientTransaction(this._ua, this._ua.transport, this._request, eventHandlers);
+		send() {
+			const eventHandlers = {
+				onRequestTimeout: () => {
+					this._eventHandlers.onRequestTimeout();
+				},
+				onTransportError: () => {
+					this._eventHandlers.onTransportError();
+				},
+				onReceiveResponse: (response) => {
+					this._receiveResponse(response);
 				}
-				if (this._ua._configuration.authorization_jwt) this._request.setHeader("Authorization", this._ua._configuration.authorization_jwt);
-				this.clientTransaction.send();
+			};
+			switch (this._method) {
+				case "INVITE":
+					this.clientTransaction = new Transactions.InviteClientTransaction(this._ua, this._ua.transport, this._request, eventHandlers);
+					break;
+				case "ACK":
+					this.clientTransaction = new Transactions.AckClientTransaction(this._ua, this._ua.transport, this._request, eventHandlers);
+					break;
+				default: this.clientTransaction = new Transactions.NonInviteClientTransaction(this._ua, this._ua.transport, this._request, eventHandlers);
 			}
-		}, {
-			key: "_receiveResponse",
-			value: function _receiveResponse(response) {
-				var challenge;
-				var authorization_header_name;
-				var status_code = response.status_code;
-				if ((status_code === 401 || status_code === 407) && (this._ua.configuration.password !== null || this._ua.configuration.ha1 !== null)) {
-					if (response.status_code === 401) {
-						challenge = response.parseHeader("www-authenticate");
-						authorization_header_name = "authorization";
-					} else {
-						challenge = response.parseHeader("proxy-authenticate");
-						authorization_header_name = "proxy-authorization";
-					}
-					if (!challenge) {
-						logger.debug("".concat(response.status_code, " with wrong or missing challenge, cannot authenticate"));
+			if (this._ua._configuration.authorization_jwt) this._request.setHeader("Authorization", this._ua._configuration.authorization_jwt);
+			this.clientTransaction.send();
+		}
+		/**
+		* Called from client transaction when receiving a correct response to the request.
+		* Authenticate request if needed or pass the response back to the applicant.
+		*/
+		_receiveResponse(response) {
+			let challenge;
+			let authorization_header_name;
+			const status_code = response.status_code;
+			if ((status_code === 401 || status_code === 407) && (this._ua.configuration.password !== null || this._ua.configuration.ha1 !== null)) {
+				if (response.status_code === 401) {
+					challenge = response.parseHeader("www-authenticate");
+					authorization_header_name = "authorization";
+				} else {
+					challenge = response.parseHeader("proxy-authenticate");
+					authorization_header_name = "proxy-authorization";
+				}
+				if (!challenge) {
+					logger.debug(`${response.status_code} with wrong or missing challenge, cannot authenticate`);
+					this._eventHandlers.onReceiveResponse(response);
+					return;
+				}
+				if (!this._challenged || !this._staled && challenge.stale === true) {
+					if (!this._auth) this._auth = new DigestAuthentication({
+						username: this._ua.configuration.authorization_user,
+						password: this._ua.configuration.password,
+						realm: this._ua.configuration.realm,
+						ha1: this._ua.configuration.ha1
+					});
+					if (!this._auth.authenticate(this._request, challenge)) {
 						this._eventHandlers.onReceiveResponse(response);
 						return;
 					}
-					if (!this._challenged || !this._staled && challenge.stale === true) {
-						if (!this._auth) this._auth = new DigestAuthentication({
-							username: this._ua.configuration.authorization_user,
-							password: this._ua.configuration.password,
-							realm: this._ua.configuration.realm,
-							ha1: this._ua.configuration.ha1
-						});
-						if (!this._auth.authenticate(this._request, challenge)) {
-							this._eventHandlers.onReceiveResponse(response);
-							return;
-						}
-						this._challenged = true;
-						this._ua.set("realm", this._auth.get("realm"));
-						this._ua.set("ha1", this._auth.get("ha1"));
-						if (challenge.stale) this._staled = true;
-						this._request = this._request.clone();
-						this._request.cseq += 1;
-						this._request.setHeader("cseq", "".concat(this._request.cseq, " ").concat(this._method));
-						this._request.setHeader(authorization_header_name, this._auth.toString());
-						this._eventHandlers.onAuthenticated(this._request);
-						this.send();
-					} else this._eventHandlers.onReceiveResponse(response);
+					this._challenged = true;
+					this._ua.set("realm", this._auth.get("realm"));
+					this._ua.set("ha1", this._auth.get("ha1"));
+					if (challenge.stale) this._staled = true;
+					this._request = this._request.clone();
+					this._request.cseq += 1;
+					this._request.setHeader("cseq", `${this._request.cseq} ${this._method}`);
+					this._request.setHeader(authorization_header_name, this._auth.toString());
+					this._eventHandlers.onAuthenticated(this._request);
+					this.send();
 				} else this._eventHandlers.onReceiveResponse(response);
-			}
-		}]);
-		return RequestSender;
-	}();
+			} else this._eventHandlers.onReceiveResponse(response);
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Registrator.js
+//#region node_modules/jssip/lib/Registrator.js
 var require_Registrator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var Utils = require_Utils();
 	var JsSIP_C = require_Constants();
@@ -15154,9 +14139,8 @@ var require_Registrator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var RequestSender = require_RequestSender$1();
 	var logger = new Logger("Registrator");
 	var MIN_REGISTER_EXPIRES = 10;
-	module.exports = /* @__PURE__ */ function() {
-		function Registrator(ua, transport) {
-			_classCallCheck(this, Registrator);
+	module.exports = class Registrator {
+		constructor(ua, transport) {
 			this._reg_id = 1;
 			this._ua = ua;
 			this._transport = transport;
@@ -15172,352 +14156,275 @@ var require_Registrator = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			this._contact += ";+sip.ice";
 			this._extraHeaders = [];
 			this._extraContactParams = "";
-			this._sipInstance = "\"<urn:uuid:".concat(this._ua.configuration.instance_id, ">\"");
-			this._contact += ";reg-id=".concat(this._reg_id);
-			this._contact += ";+sip.instance=".concat(this._sipInstance);
+			this._sipInstance = `"<urn:uuid:${this._ua.configuration.instance_id}>"`;
+			this._contact += `;reg-id=${this._reg_id}`;
+			this._contact += `;+sip.instance=${this._sipInstance}`;
 		}
-		_createClass(Registrator, [
-			{
-				key: "setExtraHeaders",
-				value: function setExtraHeaders(extraHeaders) {
-					if (!Array.isArray(extraHeaders)) extraHeaders = [];
-					this._extraHeaders = extraHeaders.slice();
-				}
-			},
-			{
-				key: "setExtraContactParams",
-				value: function setExtraContactParams(extraContactParams) {
-					if (!(extraContactParams instanceof Object)) extraContactParams = {};
-					this._extraContactParams = "";
-					for (var param_key in extraContactParams) if (Object.prototype.hasOwnProperty.call(extraContactParams, param_key)) {
-						var param_value = extraContactParams[param_key];
-						this._extraContactParams += ";".concat(param_key);
-						if (param_value) this._extraContactParams += "=".concat(param_value);
-					}
-				}
-			},
-			{
-				key: "register",
-				value: function register() {
-					var _this = this;
-					if (this._registering) {
-						logger.debug("Register request in progress...");
-						return;
-					}
-					var extraHeaders = this._extraHeaders.slice();
-					extraHeaders.push("Contact: ".concat(this._contact, ";expires=").concat(this._expires).concat(this._extraContactParams));
-					extraHeaders.push("Expires: ".concat(this._expires));
-					var request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this._registrar, this._ua, {
-						"to_uri": this._to_uri,
-						"call_id": this._call_id,
-						"cseq": this._cseq += 1
-					}, extraHeaders);
-					var request_sender = new RequestSender(this._ua, request, {
-						onRequestTimeout: function onRequestTimeout() {
-							_this._registrationFailure(null, JsSIP_C.causes.REQUEST_TIMEOUT);
-						},
-						onTransportError: function onTransportError() {
-							_this._registrationFailure(null, JsSIP_C.causes.CONNECTION_ERROR);
-						},
-						onAuthenticated: function onAuthenticated() {
-							_this._cseq += 1;
-						},
-						onReceiveResponse: function onReceiveResponse(response) {
-							if (response.cseq !== _this._cseq) return;
-							if (_this._registrationTimer !== null) {
-								clearTimeout(_this._registrationTimer);
-								_this._registrationTimer = null;
-							}
-							switch (true) {
-								case /^1[0-9]{2}$/.test(response.status_code): break;
-								case /^2[0-9]{2}$/.test(response.status_code):
-									_this._registering = false;
-									if (!response.hasHeader("Contact")) {
-										logger.debug("no Contact header in response to REGISTER, response ignored");
-										break;
-									}
-									var contacts = response.headers["Contact"].reduce(function(a, b) {
-										return a.concat(b.parsed);
-									}, []);
-									var contact = contacts.find(function(element) {
-										return _this._sipInstance === element.getParam("+sip.instance") && _this._reg_id === parseInt(element.getParam("reg-id"));
-									});
-									if (!contact) contact = contacts.find(function(element) {
-										return element.uri.user === _this._ua.contact.uri.user;
-									});
-									if (!contact) {
-										logger.debug("no Contact header pointing to us, response ignored");
-										break;
-									}
-									var expires = contact.getParam("expires");
-									if (!expires && response.hasHeader("expires")) expires = response.getHeader("expires");
-									if (!expires) expires = _this._expires;
-									expires = Number(expires);
-									if (expires < MIN_REGISTER_EXPIRES) expires = MIN_REGISTER_EXPIRES;
-									var timeout = expires > 64 ? expires * 1e3 / 2 + Math.floor((expires / 2 - 32) * 1e3 * Math.random()) : expires * 1e3 - 5e3;
-									_this._registrationTimer = setTimeout(function() {
-										_this._registrationTimer = null;
-										if (_this._ua.listeners("registrationExpiring").length === 0) _this.register();
-										else _this._ua.emit("registrationExpiring");
-									}, timeout);
-									if (contact.hasParam("temp-gruu")) _this._ua.contact.temp_gruu = contact.getParam("temp-gruu").replace(/"/g, "");
-									if (contact.hasParam("pub-gruu")) _this._ua.contact.pub_gruu = contact.getParam("pub-gruu").replace(/"/g, "");
-									if (!_this._registered) {
-										_this._registered = true;
-										_this._ua.registered({ response });
-									}
-									break;
-								case /^423$/.test(response.status_code):
-									if (response.hasHeader("min-expires")) {
-										_this._expires = Number(response.getHeader("min-expires"));
-										if (_this._expires < MIN_REGISTER_EXPIRES) _this._expires = MIN_REGISTER_EXPIRES;
-										_this.register();
-									} else {
-										logger.debug("423 response received for REGISTER without Min-Expires");
-										_this._registrationFailure(response, JsSIP_C.causes.SIP_FAILURE_CODE);
-									}
-									break;
-								default:
-									var cause = Utils.sipErrorCause(response.status_code);
-									_this._registrationFailure(response, cause);
-							}
-						}
-					});
-					this._registering = true;
-					request_sender.send();
-				}
-			},
-			{
-				key: "unregister",
-				value: function unregister() {
-					var _this2 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					if (!this._registered) {
-						logger.debug("already unregistered");
-						return;
-					}
-					this._registered = false;
-					if (this._registrationTimer !== null) {
-						clearTimeout(this._registrationTimer);
-						this._registrationTimer = null;
-					}
-					var extraHeaders = this._extraHeaders.slice();
-					if (options.all) extraHeaders.push("Contact: *".concat(this._extraContactParams));
-					else extraHeaders.push("Contact: ".concat(this._contact, ";expires=0").concat(this._extraContactParams));
-					extraHeaders.push("Expires: 0");
-					var request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this._registrar, this._ua, {
-						"to_uri": this._to_uri,
-						"call_id": this._call_id,
-						"cseq": this._cseq += 1
-					}, extraHeaders);
-					new RequestSender(this._ua, request, {
-						onRequestTimeout: function onRequestTimeout() {
-							_this2._unregistered(null, JsSIP_C.causes.REQUEST_TIMEOUT);
-						},
-						onTransportError: function onTransportError() {
-							_this2._unregistered(null, JsSIP_C.causes.CONNECTION_ERROR);
-						},
-						onAuthenticated: function onAuthenticated() {
-							_this2._cseq += 1;
-						},
-						onReceiveResponse: function onReceiveResponse(response) {
-							switch (true) {
-								case /^1[0-9]{2}$/.test(response.status_code): break;
-								case /^2[0-9]{2}$/.test(response.status_code):
-									_this2._unregistered(response);
-									break;
-								default:
-									var cause = Utils.sipErrorCause(response.status_code);
-									_this2._unregistered(response, cause);
-							}
-						}
-					}).send();
-				}
-			},
-			{
-				key: "close",
-				value: function close() {
-					if (this._registered) this.unregister();
-				}
-			},
-			{
-				key: "onTransportClosed",
-				value: function onTransportClosed() {
-					this._registering = false;
-					if (this._registrationTimer !== null) {
-						clearTimeout(this._registrationTimer);
-						this._registrationTimer = null;
-					}
-					if (this._registered) {
-						this._registered = false;
-						this._ua.unregistered({});
-					}
-				}
-			},
-			{
-				key: "_registrationFailure",
-				value: function _registrationFailure(response, cause) {
-					this._registering = false;
-					this._ua.registrationFailed({
-						response: response || null,
-						cause
-					});
-					if (this._registered) {
-						this._registered = false;
-						this._ua.unregistered({
-							response: response || null,
-							cause
-						});
-					}
-				}
-			},
-			{
-				key: "_unregistered",
-				value: function _unregistered(response, cause) {
-					this._registering = false;
-					this._registered = false;
-					this._ua.unregistered({
-						response: response || null,
-						cause: cause || null
-					});
-				}
-			},
-			{
-				key: "registered",
-				get: function get() {
-					return this._registered;
-				}
+		get registered() {
+			return this._registered;
+		}
+		setExtraHeaders(extraHeaders) {
+			if (!Array.isArray(extraHeaders)) extraHeaders = [];
+			this._extraHeaders = extraHeaders.slice();
+		}
+		setExtraContactParams(extraContactParams) {
+			if (!(extraContactParams instanceof Object)) extraContactParams = {};
+			this._extraContactParams = "";
+			for (const param_key in extraContactParams) if (Object.prototype.hasOwnProperty.call(extraContactParams, param_key)) {
+				const param_value = extraContactParams[param_key];
+				this._extraContactParams += `;${param_key}`;
+				if (param_value) this._extraContactParams += `=${param_value}`;
 			}
-		]);
-		return Registrator;
-	}();
+		}
+		register() {
+			if (this._registering) {
+				logger.debug("Register request in progress...");
+				return;
+			}
+			const extraHeaders = Utils.cloneArray(this._extraHeaders);
+			let contactValue;
+			if (this._expires) {
+				contactValue = `${this._contact};expires=${this._expires}${this._extraContactParams}`;
+				extraHeaders.push(`Expires: ${this._expires}`);
+			} else contactValue = `${this._contact}${this._extraContactParams}`;
+			extraHeaders.push(`Contact: ${contactValue}`);
+			let fromTag = Utils.newTag();
+			if (this._ua.configuration.register_from_tag_trail) if (typeof this._ua.configuration.register_from_tag_trail === "function") fromTag += this._ua.configuration.register_from_tag_trail();
+			else fromTag += this._ua.configuration.register_from_tag_trail;
+			const request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this._registrar, this._ua, {
+				to_uri: this._to_uri,
+				call_id: this._call_id,
+				cseq: this._cseq += 1,
+				from_tag: fromTag
+			}, extraHeaders);
+			const request_sender = new RequestSender(this._ua, request, {
+				onRequestTimeout: () => {
+					this._registrationFailure(null, JsSIP_C.causes.REQUEST_TIMEOUT);
+				},
+				onTransportError: () => {
+					this._registrationFailure(null, JsSIP_C.causes.CONNECTION_ERROR);
+				},
+				onAuthenticated: () => {
+					this._cseq += 1;
+				},
+				onReceiveResponse: (response) => {
+					if (response.cseq !== this._cseq) return;
+					if (this._registrationTimer !== null) {
+						clearTimeout(this._registrationTimer);
+						this._registrationTimer = null;
+					}
+					switch (true) {
+						case /^1[0-9]{2}$/.test(response.status_code): break;
+						case /^2[0-9]{2}$/.test(response.status_code): {
+							this._registering = false;
+							if (!response.hasHeader("Contact")) {
+								logger.debug("no Contact header in response to REGISTER, response ignored");
+								break;
+							}
+							const contacts = response.headers["Contact"].reduce((a, b) => a.concat(b.parsed), []);
+							let contact = contacts.find((element) => this._sipInstance === element.getParam("+sip.instance") && this._reg_id === parseInt(element.getParam("reg-id")));
+							if (!contact) contact = contacts.find((element) => element.uri.user === this._ua.contact.uri.user);
+							if (!contact) {
+								logger.debug("no Contact header pointing to us, response ignored");
+								break;
+							}
+							let expires = contact.getParam("expires");
+							if (!expires && response.hasHeader("expires")) expires = response.getHeader("expires");
+							if (!expires) expires = this._expires;
+							expires = Number(expires);
+							if (expires < MIN_REGISTER_EXPIRES) expires = MIN_REGISTER_EXPIRES;
+							const timeout = expires > 64 ? expires * 1e3 / 2 + Math.floor((expires / 2 - 32) * 1e3 * Math.random()) : expires * 1e3 - 5e3;
+							this._registrationTimer = setTimeout(() => {
+								this._registrationTimer = null;
+								if (this._ua.listeners("registrationExpiring").length === 0) this.register();
+								else this._ua.emit("registrationExpiring");
+							}, timeout);
+							if (contact.hasParam("temp-gruu")) this._ua.contact.temp_gruu = contact.getParam("temp-gruu").replace(/"/g, "");
+							if (contact.hasParam("pub-gruu")) this._ua.contact.pub_gruu = contact.getParam("pub-gruu").replace(/"/g, "");
+							if (!this._registered) {
+								this._registered = true;
+								this._ua.registered({ response });
+							}
+							break;
+						}
+						case /^423$/.test(response.status_code):
+							if (response.hasHeader("min-expires")) {
+								this._expires = Number(response.getHeader("min-expires"));
+								if (this._expires < MIN_REGISTER_EXPIRES) this._expires = MIN_REGISTER_EXPIRES;
+								this._registering = false;
+								this.register();
+							} else {
+								logger.debug("423 response received for REGISTER without Min-Expires");
+								this._registrationFailure(response, JsSIP_C.causes.SIP_FAILURE_CODE);
+							}
+							break;
+						default: {
+							const cause = Utils.sipErrorCause(response.status_code);
+							this._registrationFailure(response, cause);
+						}
+					}
+				}
+			});
+			this._registering = true;
+			request_sender.send();
+		}
+		unregister(options = {}) {
+			if (!this._registered) {
+				logger.debug("already unregistered");
+				return;
+			}
+			this._registered = false;
+			if (this._registrationTimer !== null) {
+				clearTimeout(this._registrationTimer);
+				this._registrationTimer = null;
+			}
+			const extraHeaders = Utils.cloneArray(this._extraHeaders);
+			if (options.all) extraHeaders.push(`Contact: *${this._extraContactParams}`);
+			else extraHeaders.push(`Contact: ${this._contact};expires=0${this._extraContactParams}`);
+			extraHeaders.push("Expires: 0");
+			const request = new SIPMessage.OutgoingRequest(JsSIP_C.REGISTER, this._registrar, this._ua, {
+				to_uri: this._to_uri,
+				call_id: this._call_id,
+				cseq: this._cseq += 1
+			}, extraHeaders);
+			new RequestSender(this._ua, request, {
+				onRequestTimeout: () => {
+					this._unregistered(null, JsSIP_C.causes.REQUEST_TIMEOUT);
+				},
+				onTransportError: () => {
+					this._unregistered(null, JsSIP_C.causes.CONNECTION_ERROR);
+				},
+				onAuthenticated: () => {
+					this._cseq += 1;
+				},
+				onReceiveResponse: (response) => {
+					switch (true) {
+						case /^1[0-9]{2}$/.test(response.status_code): break;
+						case /^2[0-9]{2}$/.test(response.status_code):
+							this._unregistered(response);
+							break;
+						default: {
+							const cause = Utils.sipErrorCause(response.status_code);
+							this._unregistered(response, cause);
+						}
+					}
+				}
+			}).send();
+		}
+		close() {
+			if (this._registered) this.unregister();
+		}
+		onTransportClosed() {
+			this._registering = false;
+			if (this._registrationTimer !== null) {
+				clearTimeout(this._registrationTimer);
+				this._registrationTimer = null;
+			}
+			if (this._registered) {
+				this._registered = false;
+				this._ua.unregistered({});
+			}
+		}
+		_registrationFailure(response, cause) {
+			this._registering = false;
+			this._ua.registrationFailed({
+				response: response || null,
+				cause
+			});
+			if (this._registered) {
+				this._registered = false;
+				this._ua.unregistered({
+					response: response || null,
+					cause
+				});
+			}
+		}
+		_unregistered(response, cause) {
+			this._registering = false;
+			this._registered = false;
+			this._ua.unregistered({
+				response: response || null,
+				cause: cause || null
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Dialog/RequestSender.js
+//#region node_modules/jssip/lib/Dialog/RequestSender.js
 var require_RequestSender = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var JsSIP_C = require_Constants();
 	var Transactions = require_Transactions();
 	var RequestSender = require_RequestSender$1();
 	var EventHandlers = {
-		onRequestTimeout: function onRequestTimeout() {},
-		onTransportError: function onTransportError() {},
-		onSuccessResponse: function onSuccessResponse() {},
-		onErrorResponse: function onErrorResponse() {},
-		onAuthenticated: function onAuthenticated() {},
-		onDialogError: function onDialogError() {}
+		onRequestTimeout: () => {},
+		onTransportError: () => {},
+		onSuccessResponse: () => {},
+		onErrorResponse: () => {},
+		onAuthenticated: () => {},
+		onDialogError: () => {}
 	};
-	module.exports = /* @__PURE__ */ function() {
-		function DialogRequestSender(dialog, request, eventHandlers) {
-			_classCallCheck(this, DialogRequestSender);
+	module.exports = class DialogRequestSender {
+		constructor(dialog, request, eventHandlers) {
 			this._dialog = dialog;
 			this._ua = dialog._ua;
 			this._request = request;
 			this._eventHandlers = eventHandlers;
 			this._reattempt = false;
 			this._reattemptTimer = null;
-			for (var handler in EventHandlers) if (Object.prototype.hasOwnProperty.call(EventHandlers, handler)) {
+			for (const handler in EventHandlers) if (Object.prototype.hasOwnProperty.call(EventHandlers, handler)) {
 				if (!this._eventHandlers[handler]) this._eventHandlers[handler] = EventHandlers[handler];
 			}
 		}
-		_createClass(DialogRequestSender, [
-			{
-				key: "send",
-				value: function send() {
-					var _this = this;
-					var request_sender = new RequestSender(this._ua, this._request, {
-						onRequestTimeout: function onRequestTimeout() {
-							_this._eventHandlers.onRequestTimeout();
-						},
-						onTransportError: function onTransportError() {
-							_this._eventHandlers.onTransportError();
-						},
-						onAuthenticated: function onAuthenticated(request) {
-							_this._eventHandlers.onAuthenticated(request);
-						},
-						onReceiveResponse: function onReceiveResponse(response) {
-							_this._receiveResponse(response);
-						}
-					});
-					request_sender.send();
-					if ((this._request.method === JsSIP_C.INVITE || this._request.method === JsSIP_C.UPDATE && this._request.body) && request_sender.clientTransaction.state !== Transactions.C.STATUS_TERMINATED) {
-						this._dialog.uac_pending_reply = true;
-						request_sender.clientTransaction.on("stateChanged", function stateChanged() {
-							if (request_sender.clientTransaction.state === Transactions.C.STATUS_ACCEPTED || request_sender.clientTransaction.state === Transactions.C.STATUS_COMPLETED || request_sender.clientTransaction.state === Transactions.C.STATUS_TERMINATED) {
-								request_sender.clientTransaction.removeListener("stateChanged", stateChanged);
-								_this._dialog.uac_pending_reply = false;
-							}
-						});
+		get request() {
+			return this._request;
+		}
+		send() {
+			const request_sender = new RequestSender(this._ua, this._request, {
+				onRequestTimeout: () => {
+					this._eventHandlers.onRequestTimeout();
+				},
+				onTransportError: () => {
+					this._eventHandlers.onTransportError();
+				},
+				onAuthenticated: (request) => {
+					this._eventHandlers.onAuthenticated(request);
+				},
+				onReceiveResponse: (response) => {
+					this._receiveResponse(response);
+				}
+			});
+			request_sender.send();
+			if ((this._request.method === JsSIP_C.INVITE || this._request.method === JsSIP_C.UPDATE && this._request.body) && request_sender.clientTransaction.state !== Transactions.C.STATUS_TERMINATED) {
+				this._dialog.uac_pending_reply = true;
+				const stateChanged = () => {
+					if (request_sender.clientTransaction.state === Transactions.C.STATUS_ACCEPTED || request_sender.clientTransaction.state === Transactions.C.STATUS_COMPLETED || request_sender.clientTransaction.state === Transactions.C.STATUS_TERMINATED) {
+						request_sender.clientTransaction.removeListener("stateChanged", stateChanged);
+						this._dialog.uac_pending_reply = false;
 					}
-				}
-			},
-			{
-				key: "_receiveResponse",
-				value: function _receiveResponse(response) {
-					var _this2 = this;
-					if (response.status_code === 408 || response.status_code === 481) this._eventHandlers.onDialogError(response);
-					else if (response.method === JsSIP_C.INVITE && response.status_code === 491) if (this._reattempt) {
-						if (response.status_code >= 200 && response.status_code < 300) this._eventHandlers.onSuccessResponse(response);
-						else if (response.status_code >= 300) this._eventHandlers.onErrorResponse(response);
-					} else {
-						this._request.cseq = this._dialog.local_seqnum += 1;
-						this._reattemptTimer = setTimeout(function() {
-							if (!_this2._dialog.isTerminated()) {
-								_this2._reattempt = true;
-								_this2.send();
-							}
-						}, 1e3);
-					}
-					else if (response.status_code >= 200 && response.status_code < 300) this._eventHandlers.onSuccessResponse(response);
-					else if (response.status_code >= 300) this._eventHandlers.onErrorResponse(response);
-				}
-			},
-			{
-				key: "request",
-				get: function get() {
-					return this._request;
-				}
+				};
+				request_sender.clientTransaction.on("stateChanged", stateChanged);
 			}
-		]);
-		return DialogRequestSender;
-	}();
+		}
+		_receiveResponse(response) {
+			if (response.status_code === 408 || response.status_code === 481) this._eventHandlers.onDialogError(response);
+			else if (response.method === JsSIP_C.INVITE && response.status_code === 491) if (this._reattempt) this._eventHandlers.onErrorResponse(response);
+			else {
+				this._request.cseq = this._dialog.local_seqnum += 1;
+				this._reattemptTimer = setTimeout(() => {
+					if (!this._dialog.isTerminated()) {
+						this._reattempt = true;
+						this.send();
+					}
+				}, 1e3);
+			}
+			else if (response.status_code >= 200 && response.status_code < 300) this._eventHandlers.onSuccessResponse(response);
+			else if (response.status_code >= 300) this._eventHandlers.onErrorResponse(response);
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Dialog.js
+//#region node_modules/jssip/lib/Dialog.js
 var require_Dialog = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var SIPMessage = require_SIPMessage();
 	var JsSIP_C = require_Constants();
@@ -15530,29 +14437,24 @@ var require_Dialog = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		STATUS_CONFIRMED: 2,
 		STATUS_TERMINATED: 3
 	};
-	module.exports = /* @__PURE__ */ function() {
-		_createClass(Dialog, null, [{
-			key: "C",
-			get: function get() {
-				return C;
-			}
-		}]);
-		function Dialog(owner, message, type) {
-			var state = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : C.STATUS_CONFIRMED;
-			_classCallCheck(this, Dialog);
+	module.exports = class Dialog {
+		static get C() {
+			return C;
+		}
+		constructor(owner, message, type, state = C.STATUS_CONFIRMED) {
 			this._owner = owner;
 			this._ua = owner._ua;
 			this._uac_pending_reply = false;
 			this._uas_pending_reply = false;
 			if (!message.hasHeader("contact")) return { error: "unable to create a Dialog without Contact header field" };
 			if (message instanceof SIPMessage.IncomingResponse) state = message.status_code < 200 ? C.STATUS_EARLY : C.STATUS_CONFIRMED;
-			var contact = message.parseHeader("contact");
+			const contact = message.parseHeader("contact");
 			if (type === "UAS") {
 				this._id = {
 					call_id: message.call_id,
 					local_tag: message.to_tag,
 					remote_tag: message.from_tag,
-					toString: function toString() {
+					toString() {
 						return this.call_id + this.local_tag + this.remote_tag;
 					}
 				};
@@ -15562,13 +14464,14 @@ var require_Dialog = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 				this._remote_uri = message.parseHeader("from").uri;
 				this._remote_target = contact.uri;
 				this._route_set = message.getHeaders("record-route");
-				this._ack_seqnum = this._remote_seqnum;
+				this._incoming_ack_seqnum = message.cseq;
+				this._outgoing_ack_seqnum = null;
 			} else if (type === "UAC") {
 				this._id = {
 					call_id: message.call_id,
 					local_tag: message.from_tag,
 					remote_tag: message.to_tag,
-					toString: function toString() {
+					toString() {
 						return this.call_id + this.local_tag + this.remote_tag;
 					}
 				};
@@ -15578,236 +14481,121 @@ var require_Dialog = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 				this._remote_uri = message.parseHeader("to").uri;
 				this._remote_target = contact.uri;
 				this._route_set = message.getHeaders("record-route").reverse();
-				this._ack_seqnum = null;
+				this._incoming_ack_seqnum = null;
+				this._outgoing_ack_seqnum = this._local_seqnum;
 			}
 			this._ua.newDialog(this);
-			logger.debug("new ".concat(type, " dialog created with status ").concat(this._state === C.STATUS_EARLY ? "EARLY" : "CONFIRMED"));
+			logger.debug(`new ${type} dialog created with status ${this._state === C.STATUS_EARLY ? "EARLY" : "CONFIRMED"}`);
 		}
-		_createClass(Dialog, [
-			{
-				key: "isTerminated",
-				value: function isTerminated() {
-					return this._status === C.STATUS_TERMINATED;
-				}
-			},
-			{
-				key: "update",
-				value: function update(message, type) {
-					this._state = C.STATUS_CONFIRMED;
-					logger.debug("dialog ".concat(this._id.toString(), "  changed to CONFIRMED state"));
-					if (type === "UAC") this._route_set = message.getHeaders("record-route").reverse();
-				}
-			},
-			{
-				key: "terminate",
-				value: function terminate() {
-					logger.debug("dialog ".concat(this._id.toString(), " deleted"));
-					this._ua.destroyDialog(this);
-					this._state = C.STATUS_TERMINATED;
-				}
-			},
-			{
-				key: "sendRequest",
-				value: function sendRequest(method) {
-					var _this = this;
-					var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					var body = options.body || null;
-					var request = this._createRequest(method, extraHeaders, body);
-					eventHandlers.onAuthenticated = function() {
-						_this._local_seqnum += 1;
-					};
-					new Dialog_RequestSender(this, request, eventHandlers).send();
-					return request;
-				}
-			},
-			{
-				key: "receiveRequest",
-				value: function receiveRequest(request) {
-					if (!this._checkInDialogRequest(request)) return;
-					if (request.method === JsSIP_C.ACK && this._ack_seqnum !== null) this._ack_seqnum = null;
-					else if (request.method === JsSIP_C.INVITE) this._ack_seqnum = request.cseq;
-					this._owner.receiveRequest(request);
-				}
-			},
-			{
-				key: "_createRequest",
-				value: function _createRequest(method, extraHeaders, body) {
-					extraHeaders = Utils.cloneArray(extraHeaders);
-					if (!this._local_seqnum) this._local_seqnum = Math.floor(Math.random() * 1e4);
-					var cseq = method === JsSIP_C.CANCEL || method === JsSIP_C.ACK ? this._local_seqnum : this._local_seqnum += 1;
-					return new SIPMessage.OutgoingRequest(method, this._remote_target, this._ua, {
-						"cseq": cseq,
-						"call_id": this._id.call_id,
-						"from_uri": this._local_uri,
-						"from_tag": this._id.local_tag,
-						"to_uri": this._remote_uri,
-						"to_tag": this._id.remote_tag,
-						"route_set": this._route_set
-					}, extraHeaders, body);
-				}
-			},
-			{
-				key: "_checkInDialogRequest",
-				value: function _checkInDialogRequest(request) {
-					var _this2 = this;
-					if (!this._remote_seqnum) this._remote_seqnum = request.cseq;
-					else if (request.cseq < this._remote_seqnum) if (request.method === JsSIP_C.ACK) {
-						if (this._ack_seqnum === null || request.cseq !== this._ack_seqnum) return false;
-					} else {
-						request.reply(500);
-						return false;
-					}
-					else if (request.cseq > this._remote_seqnum) this._remote_seqnum = request.cseq;
-					if (request.method === JsSIP_C.INVITE || request.method === JsSIP_C.UPDATE && request.body) {
-						if (this._uac_pending_reply === true) request.reply(491);
-						else if (this._uas_pending_reply === true) {
-							var retryAfter = (Math.random() * 10 | 0) + 1;
-							request.reply(500, null, ["Retry-After:".concat(retryAfter)]);
-							return false;
-						} else {
-							this._uas_pending_reply = true;
-							request.server_transaction.on("stateChanged", function stateChanged() {
-								if (request.server_transaction.state === Transactions.C.STATUS_ACCEPTED || request.server_transaction.state === Transactions.C.STATUS_COMPLETED || request.server_transaction.state === Transactions.C.STATUS_TERMINATED) {
-									request.server_transaction.removeListener("stateChanged", stateChanged);
-									_this2._uas_pending_reply = false;
-								}
-							});
-						}
-						if (request.hasHeader("contact")) request.server_transaction.on("stateChanged", function() {
-							if (request.server_transaction.state === Transactions.C.STATUS_ACCEPTED) _this2._remote_target = request.parseHeader("contact").uri;
-						});
-					} else if (request.method === JsSIP_C.NOTIFY) {
-						if (request.hasHeader("contact")) request.server_transaction.on("stateChanged", function() {
-							if (request.server_transaction.state === Transactions.C.STATUS_COMPLETED) _this2._remote_target = request.parseHeader("contact").uri;
-						});
-					}
-					return true;
-				}
-			},
-			{
-				key: "id",
-				get: function get() {
-					return this._id;
-				}
-			},
-			{
-				key: "local_seqnum",
-				get: function get() {
-					return this._local_seqnum;
-				},
-				set: function set(num) {
-					this._local_seqnum = num;
-				}
-			},
-			{
-				key: "owner",
-				get: function get() {
-					return this._owner;
-				}
-			},
-			{
-				key: "uac_pending_reply",
-				get: function get() {
-					return this._uac_pending_reply;
-				},
-				set: function set(pending) {
-					this._uac_pending_reply = pending;
-				}
-			},
-			{
-				key: "uas_pending_reply",
-				get: function get() {
-					return this._uas_pending_reply;
-				}
+		get id() {
+			return this._id;
+		}
+		get local_seqnum() {
+			return this._local_seqnum;
+		}
+		set local_seqnum(num) {
+			this._local_seqnum = num;
+		}
+		get owner() {
+			return this._owner;
+		}
+		get uac_pending_reply() {
+			return this._uac_pending_reply;
+		}
+		set uac_pending_reply(pending) {
+			this._uac_pending_reply = pending;
+		}
+		get uas_pending_reply() {
+			return this._uas_pending_reply;
+		}
+		isTerminated() {
+			return this._status === C.STATUS_TERMINATED;
+		}
+		update(message, type) {
+			this._state = C.STATUS_CONFIRMED;
+			logger.debug(`dialog ${this._id.toString()}  changed to CONFIRMED state`);
+			if (type === "UAC") this._route_set = message.getHeaders("record-route").reverse();
+		}
+		terminate() {
+			logger.debug(`dialog ${this._id.toString()} deleted`);
+			this._ua.destroyDialog(this);
+			this._state = C.STATUS_TERMINATED;
+		}
+		sendRequest(method, options = {}) {
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			const body = options.body || null;
+			const request = this._createRequest(method, extraHeaders, body);
+			const onAuthenticated = eventHandlers.onAuthenticated || (() => {});
+			eventHandlers.onAuthenticated = (_request) => {
+				this._local_seqnum += 1;
+				if (request.method === JsSIP_C.INVITE) this._outgoing_ack_seqnum = this._local_seqnum;
+				onAuthenticated(_request);
+			};
+			new Dialog_RequestSender(this, request, eventHandlers).send();
+			return request;
+		}
+		receiveRequest(request) {
+			if (!this._checkInDialogRequest(request)) return;
+			if (request.method === JsSIP_C.ACK && this._incoming_ack_seqnum !== null) this._incoming_ack_seqnum = null;
+			else if (request.method === JsSIP_C.INVITE) this._incoming_ack_seqnum = request.cseq;
+			this._owner.receiveRequest(request);
+		}
+		_createRequest(method, extraHeaders, body) {
+			extraHeaders = Utils.cloneArray(extraHeaders);
+			if (!this._local_seqnum) this._local_seqnum = Math.floor(Math.random() * 1e4);
+			const cseq = method === JsSIP_C.CANCEL || method === JsSIP_C.ACK ? this._outgoing_ack_seqnum : this._local_seqnum += 1;
+			if (method === JsSIP_C.INVITE) this._outgoing_ack_seqnum = cseq;
+			return new SIPMessage.OutgoingRequest(method, this._remote_target, this._ua, {
+				cseq,
+				call_id: this._id.call_id,
+				from_uri: this._local_uri,
+				from_tag: this._id.local_tag,
+				to_uri: this._remote_uri,
+				to_tag: this._id.remote_tag,
+				route_set: this._route_set
+			}, extraHeaders, body);
+		}
+		_checkInDialogRequest(request) {
+			if (!this._remote_seqnum) this._remote_seqnum = request.cseq;
+			else if (request.cseq < this._remote_seqnum) if (request.method === JsSIP_C.ACK) {
+				if (this._incoming_ack_seqnum === null || request.cseq !== this._incoming_ack_seqnum) return false;
+			} else {
+				request.reply(500);
+				return false;
 			}
-		]);
-		return Dialog;
-	}();
+			else if (request.cseq > this._remote_seqnum) this._remote_seqnum = request.cseq;
+			if (request.method === JsSIP_C.INVITE || request.method === JsSIP_C.UPDATE && request.body) {
+				if (this._uac_pending_reply === true) request.reply(491);
+				else if (this._uas_pending_reply === true) {
+					const retryAfter = (Math.random() * 10 | 0) + 1;
+					request.reply(500, null, [`Retry-After:${retryAfter}`]);
+					return false;
+				} else {
+					this._uas_pending_reply = true;
+					const stateChanged = () => {
+						if (request.server_transaction.state === Transactions.C.STATUS_ACCEPTED || request.server_transaction.state === Transactions.C.STATUS_COMPLETED || request.server_transaction.state === Transactions.C.STATUS_TERMINATED) {
+							request.server_transaction.removeListener("stateChanged", stateChanged);
+							this._uas_pending_reply = false;
+						}
+					};
+					request.server_transaction.on("stateChanged", stateChanged);
+				}
+				if (request.hasHeader("contact")) request.server_transaction.on("stateChanged", () => {
+					if (request.server_transaction.state === Transactions.C.STATUS_ACCEPTED) this._remote_target = request.parseHeader("contact").uri;
+				});
+			} else if (request.method === JsSIP_C.NOTIFY) {
+				if (request.hasHeader("contact")) request.server_transaction.on("stateChanged", () => {
+					if (request.server_transaction.state === Transactions.C.STATUS_COMPLETED) this._remote_target = request.parseHeader("contact").uri;
+				});
+			}
+			return true;
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/RTCSession/DTMF.js
+//#region node_modules/jssip/lib/RTCSession/DTMF.js
 var require_DTMF = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
@@ -15821,318 +14609,178 @@ var require_DTMF = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		MIN_INTER_TONE_GAP: 50,
 		DEFAULT_INTER_TONE_GAP: 500
 	};
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(DTMF, _EventEmitter);
-		var _super = _createSuper(DTMF);
-		function DTMF(session) {
-			var _this;
-			_classCallCheck(this, DTMF);
-			_this = _super.call(this);
-			_this._session = session;
-			_this._direction = null;
-			_this._tone = null;
-			_this._duration = null;
-			_this._request = null;
-			return _this;
+	module.exports = class DTMF extends EventEmitter {
+		constructor(session) {
+			super();
+			this._session = session;
+			this._direction = null;
+			this._tone = null;
+			this._duration = null;
+			this._request = null;
 		}
-		_createClass(DTMF, [
-			{
-				key: "send",
-				value: function send(tone) {
-					var _this2 = this;
-					var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-					if (tone === void 0) throw new TypeError("Not enough arguments");
-					this._direction = "outgoing";
-					if (this._session.status !== this._session.C.STATUS_CONFIRMED && this._session.status !== this._session.C.STATUS_WAITING_FOR_ACK) throw new Exceptions.InvalidStateError(this._session.status);
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					this.eventHandlers = Utils.cloneObject(options.eventHandlers);
-					if (typeof tone === "string") tone = tone.toUpperCase();
-					else if (typeof tone === "number") tone = tone.toString();
-					else throw new TypeError("Invalid tone: ".concat(tone));
-					if (!tone.match(/^[0-9A-DR#*]$/)) throw new TypeError("Invalid tone: ".concat(tone));
-					else this._tone = tone;
-					this._duration = options.duration;
-					extraHeaders.push("Content-Type: application/dtmf-relay");
-					var body = "Signal=".concat(this._tone, "\r\n");
-					body += "Duration=".concat(this._duration);
-					this._session.newDTMF({
-						originator: "local",
-						dtmf: this,
-						request: this._request
-					});
-					this._session.sendRequest(JsSIP_C.INFO, {
-						extraHeaders,
-						eventHandlers: {
-							onSuccessResponse: function onSuccessResponse(response) {
-								_this2.emit("succeeded", {
-									originator: "remote",
-									response
-								});
-							},
-							onErrorResponse: function onErrorResponse(response) {
-								if (_this2.eventHandlers.onFailed) _this2.eventHandlers.onFailed();
-								_this2.emit("failed", {
-									originator: "remote",
-									response
-								});
-							},
-							onRequestTimeout: function onRequestTimeout() {
-								_this2._session.onRequestTimeout();
-							},
-							onTransportError: function onTransportError() {
-								_this2._session.onTransportError();
-							},
-							onDialogError: function onDialogError() {
-								_this2._session.onDialogError();
-							}
-						},
-						body
-					});
-				}
-			},
-			{
-				key: "init_incoming",
-				value: function init_incoming(request) {
-					var reg_tone = /^(Signal\s*?=\s*?)([0-9A-D#*]{1})(\s)?.*/;
-					var reg_duration = /^(Duration\s?=\s?)([0-9]{1,4})(\s)?.*/;
-					this._direction = "incoming";
-					this._request = request;
-					request.reply(200);
-					if (request.body) {
-						var body = request.body.split("\n");
-						if (body.length >= 1) {
-							if (reg_tone.test(body[0])) this._tone = body[0].replace(reg_tone, "$2");
-						}
-						if (body.length >= 2) {
-							if (reg_duration.test(body[1])) this._duration = parseInt(body[1].replace(reg_duration, "$2"), 10);
-						}
+		get tone() {
+			return this._tone;
+		}
+		get duration() {
+			return this._duration;
+		}
+		send(tone, options = {}) {
+			if (tone === void 0) throw new TypeError("Not enough arguments");
+			this._direction = "outgoing";
+			if (this._session.status !== this._session.C.STATUS_CONFIRMED && this._session.status !== this._session.C.STATUS_WAITING_FOR_ACK && this._session.status !== this._session.C.STATUS_1XX_RECEIVED) throw new Exceptions.InvalidStateError(this._session.status);
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			this.eventHandlers = Utils.cloneObject(options.eventHandlers);
+			if (typeof tone === "string") tone = tone.toUpperCase();
+			else if (typeof tone === "number") tone = tone.toString();
+			else throw new TypeError(`Invalid tone: ${tone}`);
+			if (!tone.match(/^[0-9A-DR#*]$/)) throw new TypeError(`Invalid tone: ${tone}`);
+			else this._tone = tone;
+			this._duration = options.duration;
+			extraHeaders.push("Content-Type: application/dtmf-relay");
+			let body = `Signal=${this._tone}\r\n`;
+			body += `Duration=${this._duration}`;
+			this._session.newDTMF({
+				originator: "local",
+				dtmf: this,
+				request: this._request
+			});
+			this._session.sendRequest(JsSIP_C.INFO, {
+				extraHeaders,
+				eventHandlers: {
+					onSuccessResponse: (response) => {
+						this.emit("succeeded", {
+							originator: "remote",
+							response
+						});
+					},
+					onErrorResponse: (response) => {
+						if (this.eventHandlers.onFailed) this.eventHandlers.onFailed();
+						this.emit("failed", {
+							originator: "remote",
+							response
+						});
+					},
+					onRequestTimeout: () => {
+						this._session.onRequestTimeout();
+					},
+					onTransportError: () => {
+						this._session.onTransportError();
+					},
+					onDialogError: () => {
+						this._session.onDialogError();
 					}
-					if (!this._duration) this._duration = C.DEFAULT_DURATION;
-					if (!this._tone) logger.debug("invalid INFO DTMF received, discarded");
-					else this._session.newDTMF({
-						originator: "remote",
-						dtmf: this,
-						request
-					});
+				},
+				body
+			});
+		}
+		init_incoming(request) {
+			const reg_tone = /^(Signal\s*?=\s*?)([0-9A-D#*]{1})(\s)?.*/;
+			const reg_duration = /^(Duration\s?=\s?)([0-9]{1,4})(\s)?.*/;
+			this._direction = "incoming";
+			this._request = request;
+			request.reply(200);
+			if (request.body) {
+				const body = request.body.split("\n");
+				if (body.length >= 1) {
+					if (reg_tone.test(body[0])) this._tone = body[0].replace(reg_tone, "$2");
 				}
-			},
-			{
-				key: "tone",
-				get: function get() {
-					return this._tone;
-				}
-			},
-			{
-				key: "duration",
-				get: function get() {
-					return this._duration;
+				if (body.length >= 2) {
+					if (reg_duration.test(body[1])) this._duration = parseInt(body[1].replace(reg_duration, "$2"), 10);
 				}
 			}
-		]);
-		return DTMF;
-	}(EventEmitter);
+			if (!this._duration) this._duration = C.DEFAULT_DURATION;
+			if (!this._tone) logger.debug("invalid INFO DTMF received, discarded");
+			else this._session.newDTMF({
+				originator: "remote",
+				dtmf: this,
+				request
+			});
+		}
+	};
 	/**
 	* Expose C object.
 	*/
 	module.exports.C = C;
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/RTCSession/Info.js
+//#region node_modules/jssip/lib/RTCSession/Info.js
 var require_Info = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var JsSIP_C = require_Constants();
 	var Exceptions = require_Exceptions();
 	var Utils = require_Utils();
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(Info, _EventEmitter);
-		var _super = _createSuper(Info);
-		function Info(session) {
-			var _this;
-			_classCallCheck(this, Info);
-			_this = _super.call(this);
-			_this._session = session;
-			_this._direction = null;
-			_this._contentType = null;
-			_this._body = null;
-			return _this;
+	module.exports = class Info extends EventEmitter {
+		constructor(session) {
+			super();
+			this._session = session;
+			this._direction = null;
+			this._contentType = null;
+			this._body = null;
 		}
-		_createClass(Info, [
-			{
-				key: "send",
-				value: function send(contentType, body) {
-					var _this2 = this;
-					var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-					this._direction = "outgoing";
-					if (contentType === void 0) throw new TypeError("Not enough arguments");
-					if (this._session.status !== this._session.C.STATUS_CONFIRMED && this._session.status !== this._session.C.STATUS_WAITING_FOR_ACK) throw new Exceptions.InvalidStateError(this._session.status);
-					this._contentType = contentType;
-					this._body = body;
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					extraHeaders.push("Content-Type: ".concat(contentType));
-					this._session.newInfo({
-						originator: "local",
-						info: this,
-						request: this.request
-					});
-					this._session.sendRequest(JsSIP_C.INFO, {
-						extraHeaders,
-						eventHandlers: {
-							onSuccessResponse: function onSuccessResponse(response) {
-								_this2.emit("succeeded", {
-									originator: "remote",
-									response
-								});
-							},
-							onErrorResponse: function onErrorResponse(response) {
-								_this2.emit("failed", {
-									originator: "remote",
-									response
-								});
-							},
-							onTransportError: function onTransportError() {
-								_this2._session.onTransportError();
-							},
-							onRequestTimeout: function onRequestTimeout() {
-								_this2._session.onRequestTimeout();
-							},
-							onDialogError: function onDialogError() {
-								_this2._session.onDialogError();
-							}
-						},
-						body
-					});
-				}
-			},
-			{
-				key: "init_incoming",
-				value: function init_incoming(request) {
-					this._direction = "incoming";
-					this.request = request;
-					request.reply(200);
-					this._contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
-					this._body = request.body;
-					this._session.newInfo({
-						originator: "remote",
-						info: this,
-						request
-					});
-				}
-			},
-			{
-				key: "contentType",
-				get: function get() {
-					return this._contentType;
-				}
-			},
-			{
-				key: "body",
-				get: function get() {
-					return this._body;
-				}
-			}
-		]);
-		return Info;
-	}(EventEmitter);
+		get contentType() {
+			return this._contentType;
+		}
+		get body() {
+			return this._body;
+		}
+		send(contentType, body, options = {}) {
+			this._direction = "outgoing";
+			if (contentType === void 0) throw new TypeError("Not enough arguments");
+			if (this._session.status !== this._session.C.STATUS_CONFIRMED && this._session.status !== this._session.C.STATUS_WAITING_FOR_ACK) throw new Exceptions.InvalidStateError(this._session.status);
+			this._contentType = contentType;
+			this._body = body;
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			extraHeaders.push(`Content-Type: ${contentType}`);
+			this._session.newInfo({
+				originator: "local",
+				info: this,
+				request: this.request
+			});
+			this._session.sendRequest(JsSIP_C.INFO, {
+				extraHeaders,
+				eventHandlers: {
+					onSuccessResponse: (response) => {
+						this.emit("succeeded", {
+							originator: "remote",
+							response
+						});
+					},
+					onErrorResponse: (response) => {
+						this.emit("failed", {
+							originator: "remote",
+							response
+						});
+					},
+					onTransportError: () => {
+						this._session.onTransportError();
+					},
+					onRequestTimeout: () => {
+						this._session.onRequestTimeout();
+					},
+					onDialogError: () => {
+						this._session.onDialogError();
+					}
+				},
+				body
+			});
+		}
+		init_incoming(request) {
+			this._direction = "incoming";
+			this.request = request;
+			request.reply(200);
+			this._contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
+			this._body = request.body;
+			this._session.newInfo({
+				originator: "remote",
+				info: this,
+				request
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/RTCSession/ReferNotifier.js
+//#region node_modules/jssip/lib/RTCSession/ReferNotifier.js
 var require_ReferNotifier = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
 	var logger = new Logger("RTCSession:ReferNotifier");
@@ -16141,397 +14789,151 @@ var require_ReferNotifier = /* @__PURE__ */ __commonJSMin(((exports, module) => 
 		body_type: "message/sipfrag;version=2.0",
 		expires: 300
 	};
-	module.exports = /* @__PURE__ */ function() {
-		function ReferNotifier(session, id, expires) {
-			_classCallCheck(this, ReferNotifier);
+	module.exports = class ReferNotifier {
+		constructor(session, id, expires) {
 			this._session = session;
 			this._id = id;
 			this._expires = expires || C.expires;
 			this._active = true;
 			this.notify(100);
 		}
-		_createClass(ReferNotifier, [{
-			key: "notify",
-			value: function notify(code, reason) {
-				logger.debug("notify()");
-				if (this._active === false) return;
-				reason = reason || JsSIP_C.REASON_PHRASE[code] || "";
-				var state;
-				if (code >= 200) state = "terminated;reason=noresource";
-				else state = "active;expires=".concat(this._expires);
-				this._session.sendRequest(JsSIP_C.NOTIFY, {
-					extraHeaders: [
-						"Event: ".concat(C.event_type, ";id=").concat(this._id),
-						"Subscription-State: ".concat(state),
-						"Content-Type: ".concat(C.body_type)
-					],
-					body: "SIP/2.0 ".concat(code, " ").concat(reason),
-					eventHandlers: { onErrorResponse: function onErrorResponse() {
-						this._active = false;
-					} }
-				});
-			}
-		}]);
-		return ReferNotifier;
-	}();
+		notify(code, reason) {
+			logger.debug("notify()");
+			if (this._active === false) return;
+			reason = reason || JsSIP_C.REASON_PHRASE[code] || "";
+			let state;
+			if (code >= 200) state = "terminated;reason=noresource";
+			else state = `active;expires=${this._expires}`;
+			this._session.sendRequest(JsSIP_C.NOTIFY, {
+				extraHeaders: [
+					`Event: ${C.event_type};id=${this._id}`,
+					`Subscription-State: ${state}`,
+					`Content-Type: ${C.body_type}`
+				],
+				body: `SIP/2.0 ${code} ${reason}`,
+				eventHandlers: { onErrorResponse() {
+					this._active = false;
+				} }
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/RTCSession/ReferSubscriber.js
+//#region node_modules/jssip/lib/RTCSession/ReferSubscriber.js
 var require_ReferSubscriber = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
 	var Grammar = require_Grammar();
 	var Utils = require_Utils();
 	var logger = new Logger("RTCSession:ReferSubscriber");
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(ReferSubscriber, _EventEmitter);
-		var _super = _createSuper(ReferSubscriber);
-		function ReferSubscriber(session) {
-			var _this;
-			_classCallCheck(this, ReferSubscriber);
-			_this = _super.call(this);
-			_this._id = null;
-			_this._session = session;
-			return _this;
+	module.exports = class ReferSubscriber extends EventEmitter {
+		constructor(session) {
+			super();
+			this._id = null;
+			this._session = session;
 		}
-		_createClass(ReferSubscriber, [
-			{
-				key: "sendRefer",
-				value: function sendRefer(target) {
-					var _this2 = this;
-					var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-					logger.debug("sendRefer()");
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					for (var event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
-					var replaces = null;
-					if (options.replaces) {
-						replaces = options.replaces._request.call_id;
-						replaces += ";to-tag=".concat(options.replaces._to_tag);
-						replaces += ";from-tag=".concat(options.replaces._from_tag);
-						replaces = encodeURIComponent(replaces);
-					}
-					var referTo = "Refer-To: <".concat(target).concat(replaces ? "?Replaces=".concat(replaces) : "", ">");
-					extraHeaders.push(referTo);
-					if (!extraHeaders.some(function(header) {
-						return header.toLowerCase().startsWith("referred-by:");
-					})) {
-						var referredBy = "Referred-By: <".concat(this._session._ua._configuration.uri._scheme, ":").concat(this._session._ua._configuration.uri._user, "@").concat(this._session._ua._configuration.uri._host, ">");
-						extraHeaders.push(referredBy);
-					}
-					extraHeaders.push("Contact: ".concat(this._session.contact));
-					var request = this._session.sendRequest(JsSIP_C.REFER, {
-						extraHeaders,
-						eventHandlers: {
-							onSuccessResponse: function onSuccessResponse(response) {
-								_this2._requestSucceeded(response);
-							},
-							onErrorResponse: function onErrorResponse(response) {
-								_this2._requestFailed(response, JsSIP_C.causes.REJECTED);
-							},
-							onTransportError: function onTransportError() {
-								_this2._requestFailed(null, JsSIP_C.causes.CONNECTION_ERROR);
-							},
-							onRequestTimeout: function onRequestTimeout() {
-								_this2._requestFailed(null, JsSIP_C.causes.REQUEST_TIMEOUT);
-							},
-							onDialogError: function onDialogError() {
-								_this2._requestFailed(null, JsSIP_C.causes.DIALOG_ERROR);
-							}
-						}
-					});
-					this._id = request.cseq;
-				}
-			},
-			{
-				key: "receiveNotify",
-				value: function receiveNotify(request) {
-					logger.debug("receiveNotify()");
-					if (!request.body) return;
-					var status_line = Grammar.parse(request.body.trim().split("\r\n", 1)[0], "Status_Line");
-					if (status_line === -1) {
-						logger.debug("receiveNotify() | error parsing NOTIFY body: \"".concat(request.body, "\""));
-						return;
-					}
-					switch (true) {
-						case /^100$/.test(status_line.status_code):
-							this.emit("trying", {
-								request,
-								status_line
-							});
-							break;
-						case /^1[0-9]{2}$/.test(status_line.status_code):
-							this.emit("progress", {
-								request,
-								status_line
-							});
-							break;
-						case /^2[0-9]{2}$/.test(status_line.status_code):
-							this.emit("accepted", {
-								request,
-								status_line
-							});
-							break;
-						default:
-							this.emit("failed", {
-								request,
-								status_line
-							});
-							break;
-					}
-				}
-			},
-			{
-				key: "_requestSucceeded",
-				value: function _requestSucceeded(response) {
-					logger.debug("REFER succeeded");
-					logger.debug("emit \"requestSucceeded\"");
-					this.emit("requestSucceeded", { response });
-				}
-			},
-			{
-				key: "_requestFailed",
-				value: function _requestFailed(response, cause) {
-					logger.debug("REFER failed");
-					logger.debug("emit \"requestFailed\"");
-					this.emit("requestFailed", {
-						response: response || null,
-						cause
-					});
-				}
-			},
-			{
-				key: "id",
-				get: function get() {
-					return this._id;
-				}
+		get id() {
+			return this._id;
+		}
+		sendRefer(target, options = {}) {
+			logger.debug("sendRefer()");
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			for (const event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
+			let replaces = null;
+			if (options.replaces) {
+				replaces = options.replaces._request.call_id;
+				replaces += `;to-tag=${options.replaces._to_tag}`;
+				replaces += `;from-tag=${options.replaces._from_tag}`;
+				replaces = encodeURIComponent(replaces);
 			}
-		]);
-		return ReferSubscriber;
-	}(EventEmitter);
+			const referTo = `Refer-To: <${target}${replaces ? `?Replaces=${replaces}` : ""}>`;
+			extraHeaders.push(referTo);
+			if (!extraHeaders.some((header) => header.toLowerCase().startsWith("referred-by:"))) {
+				const referredBy = `Referred-By: <${this._session._ua._configuration.uri._scheme}:${this._session._ua._configuration.uri._user}@${this._session._ua._configuration.uri._host}>`;
+				extraHeaders.push(referredBy);
+			}
+			extraHeaders.push(`Contact: ${this._session.contact}`);
+			const request = this._session.sendRequest(JsSIP_C.REFER, {
+				extraHeaders,
+				eventHandlers: {
+					onSuccessResponse: (response) => {
+						this._requestSucceeded(response);
+					},
+					onErrorResponse: (response) => {
+						this._requestFailed(response, JsSIP_C.causes.REJECTED);
+					},
+					onTransportError: () => {
+						this._requestFailed(null, JsSIP_C.causes.CONNECTION_ERROR);
+					},
+					onRequestTimeout: () => {
+						this._requestFailed(null, JsSIP_C.causes.REQUEST_TIMEOUT);
+					},
+					onDialogError: () => {
+						this._requestFailed(null, JsSIP_C.causes.DIALOG_ERROR);
+					},
+					onAuthenticated: (_request) => {
+						this._id = _request.cseq;
+						this.emit("authenticated");
+					}
+				}
+			});
+			this._id = request.cseq;
+		}
+		receiveNotify(request) {
+			logger.debug("receiveNotify()");
+			if (!request.body) return;
+			const status_line = Grammar.parse(request.body.trim().split("\r\n", 1)[0], "Status_Line");
+			if (status_line === -1) {
+				logger.debug(`receiveNotify() | error parsing NOTIFY body: "${request.body}"`);
+				return;
+			}
+			switch (true) {
+				case /^100$/.test(status_line.status_code):
+					this.emit("trying", {
+						request,
+						status_line
+					});
+					break;
+				case /^1[0-9]{2}$/.test(status_line.status_code):
+					this.emit("progress", {
+						request,
+						status_line
+					});
+					break;
+				case /^2[0-9]{2}$/.test(status_line.status_code):
+					this.emit("accepted", {
+						request,
+						status_line
+					});
+					break;
+				default:
+					this.emit("failed", {
+						request,
+						status_line
+					});
+					break;
+			}
+		}
+		_requestSucceeded(response) {
+			logger.debug("REFER succeeded");
+			logger.debug("emit \"requestSucceeded\"");
+			this.emit("requestSucceeded", { response });
+		}
+		_requestFailed(response, cause) {
+			logger.debug("REFER failed");
+			logger.debug("emit \"requestFailed\"");
+			this.emit("requestFailed", {
+				response: response || null,
+				cause
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/RTCSession.js
+//#region node_modules/jssip/lib/RTCSession.js
 var require_RTCSession = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e2) {
-						throw _e2;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e3) {
-				didErr = true;
-				err = _e3;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var sdp_transform = require_lib();
 	var Logger = require_Logger();
@@ -16565,2220 +14967,2473 @@ var require_RTCSession = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	* Local variables.
 	*/
 	var holdMediaTypes = ["audio", "video"];
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(RTCSession, _EventEmitter);
-		var _super = _createSuper(RTCSession);
-		_createClass(RTCSession, null, [{
-			key: "C",
-			/**
-			* Expose C object.
-			*/
-			get: function get() {
-				return C;
-			}
-		}]);
-		function RTCSession(ua) {
-			var _this;
-			_classCallCheck(this, RTCSession);
+	module.exports = class RTCSession extends EventEmitter {
+		/**
+		* Expose C object.
+		*/
+		static get C() {
+			return C;
+		}
+		constructor(ua) {
 			logger.debug("new");
-			_this = _super.call(this);
-			_this._id = null;
-			_this._ua = ua;
-			_this._status = C.STATUS_NULL;
-			_this._dialog = null;
-			_this._earlyDialogs = {};
-			_this._contact = null;
-			_this._from_tag = null;
-			_this._to_tag = null;
-			_this._connection = null;
-			_this._connectionPromiseQueue = Promise.resolve();
-			_this._request = null;
-			_this._is_canceled = false;
-			_this._cancel_reason = "";
-			_this._is_confirmed = false;
-			_this._late_sdp = false;
-			_this._rtcOfferConstraints = null;
-			_this._rtcAnswerConstraints = null;
-			_this._localMediaStream = null;
-			_this._localMediaStreamLocallyGenerated = false;
-			_this._rtcReady = true;
-			_this._iceReady = false;
-			_this._timers = {
+			super();
+			this._id = null;
+			this._ua = ua;
+			this._status = C.STATUS_NULL;
+			this._dialog = null;
+			this._earlyDialogs = {};
+			this._contact = null;
+			this._from_tag = null;
+			this._to_tag = null;
+			this._connection = null;
+			this._connectionPromiseQueue = Promise.resolve();
+			this._request = null;
+			this._is_canceled = false;
+			this._cancel_reason = "";
+			this._is_confirmed = false;
+			this._late_sdp = false;
+			this._rtcOfferConstraints = null;
+			this._rtcAnswerConstraints = null;
+			this._localMediaStream = null;
+			this._localMediaStreamLocallyGenerated = false;
+			this._rtcReady = true;
+			this._iceReady = false;
+			this._timers = {
 				ackTimer: null,
 				expiresTimer: null,
 				invite2xxTimer: null,
 				userNoAnswerTimer: null
 			};
-			_this._direction = null;
-			_this._local_identity = null;
-			_this._remote_identity = null;
-			_this._start_time = null;
-			_this._end_time = null;
-			_this._tones = null;
-			_this._audioMuted = false;
-			_this._videoMuted = false;
-			_this._localHold = false;
-			_this._remoteHold = false;
-			_this._sessionTimers = {
-				enabled: _this._ua.configuration.session_timers,
-				refreshMethod: _this._ua.configuration.session_timers_refresh_method,
+			this._direction = null;
+			this._local_identity = null;
+			this._remote_identity = null;
+			this._start_time = null;
+			this._end_time = null;
+			this._tones = null;
+			this._audioMuted = false;
+			this._videoMuted = false;
+			this._localHold = false;
+			this._remoteHold = false;
+			this._sessionTimers = {
+				enabled: this._ua.configuration.session_timers,
+				refreshMethod: this._ua.configuration.session_timers_refresh_method,
 				defaultExpires: JsSIP_C.SESSION_EXPIRES,
 				currentExpires: null,
 				running: false,
 				refresher: false,
 				timer: null
 			};
-			_this._referSubscribers = {};
-			_this._data = {};
-			return _this;
+			this._referSubscribers = {};
+			this._data = {};
 		}
 		/**
 		* User API
 		*/
-		_createClass(RTCSession, [
-			{
-				key: "isInProgress",
-				value: function isInProgress() {
-					switch (this._status) {
-						case C.STATUS_NULL:
-						case C.STATUS_INVITE_SENT:
-						case C.STATUS_1XX_RECEIVED:
-						case C.STATUS_INVITE_RECEIVED:
-						case C.STATUS_WAITING_FOR_ANSWER: return true;
-						default: return false;
-					}
+		get C() {
+			return C;
+		}
+		get causes() {
+			return JsSIP_C.causes;
+		}
+		get id() {
+			return this._id;
+		}
+		get connection() {
+			return this._connection;
+		}
+		get contact() {
+			return this._contact;
+		}
+		get direction() {
+			return this._direction;
+		}
+		get local_identity() {
+			return this._local_identity;
+		}
+		get remote_identity() {
+			return this._remote_identity;
+		}
+		get start_time() {
+			return this._start_time;
+		}
+		get end_time() {
+			return this._end_time;
+		}
+		get data() {
+			return this._data;
+		}
+		set data(_data) {
+			this._data = _data;
+		}
+		get status() {
+			return this._status;
+		}
+		isInProgress() {
+			switch (this._status) {
+				case C.STATUS_NULL:
+				case C.STATUS_INVITE_SENT:
+				case C.STATUS_1XX_RECEIVED:
+				case C.STATUS_INVITE_RECEIVED:
+				case C.STATUS_WAITING_FOR_ANSWER: return true;
+				default: return false;
+			}
+		}
+		isEstablished() {
+			switch (this._status) {
+				case C.STATUS_ANSWERED:
+				case C.STATUS_WAITING_FOR_ACK:
+				case C.STATUS_CONFIRMED: return true;
+				default: return false;
+			}
+		}
+		isEnded() {
+			switch (this._status) {
+				case C.STATUS_CANCELED:
+				case C.STATUS_TERMINATED: return true;
+				default: return false;
+			}
+		}
+		isMuted() {
+			return {
+				audio: this._audioMuted,
+				video: this._videoMuted
+			};
+		}
+		isOnHold() {
+			return {
+				local: this._localHold,
+				remote: this._remoteHold
+			};
+		}
+		connect(target, options = {}, initCallback) {
+			logger.debug("connect()");
+			const originalTarget = target;
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const mediaConstraints = Utils.cloneObject(options.mediaConstraints, {
+				audio: true,
+				video: true
+			});
+			const mediaStream = options.mediaStream || null;
+			const pcConfig = Utils.cloneObject(options.pcConfig, { iceServers: [] });
+			const rtcConstraints = options.rtcConstraints || null;
+			const rtcOfferConstraints = options.rtcOfferConstraints || null;
+			this._rtcOfferConstraints = rtcOfferConstraints;
+			this._rtcAnswerConstraints = options.rtcAnswerConstraints || null;
+			this._data = options.data || this._data;
+			if (target === void 0) throw new TypeError("Not enough arguments");
+			if (this._status !== C.STATUS_NULL) throw new Exceptions.InvalidStateError(this._status);
+			if (!window.RTCPeerConnection) throw new Exceptions.NotSupportedError("WebRTC not supported");
+			target = this._ua.normalizeTarget(target);
+			if (!target) throw new TypeError(`Invalid target: ${originalTarget}`);
+			if (this._sessionTimers.enabled) {
+				if (Utils.isDecimal(options.sessionTimersExpires)) if (options.sessionTimersExpires >= JsSIP_C.MIN_SESSION_EXPIRES) this._sessionTimers.defaultExpires = options.sessionTimersExpires;
+				else this._sessionTimers.defaultExpires = JsSIP_C.SESSION_EXPIRES;
+			}
+			for (const event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
+			this._from_tag = Utils.newTag();
+			const anonymous = options.anonymous || false;
+			const requestParams = { from_tag: this._from_tag };
+			this._contact = this._ua.contact.toString({
+				anonymous,
+				outbound: true
+			});
+			if (anonymous) {
+				requestParams.from_display_name = "Anonymous";
+				requestParams.from_uri = new URI("sip", "anonymous", "anonymous.invalid");
+				extraHeaders.push(`P-Preferred-Identity: ${this._ua.configuration.uri.toString()}`);
+				extraHeaders.push("Privacy: id");
+			} else if (options.fromUserName) {
+				requestParams.from_uri = new URI("sip", options.fromUserName, this._ua.configuration.uri.host);
+				extraHeaders.push(`P-Preferred-Identity: ${this._ua.configuration.uri.toString()}`);
+			}
+			if (options.fromDisplayName) requestParams.from_display_name = options.fromDisplayName;
+			extraHeaders.push(`Contact: ${this._contact}`);
+			extraHeaders.push("Content-Type: application/sdp");
+			if (this._sessionTimers.enabled) extraHeaders.push(`Session-Expires: ${this._sessionTimers.defaultExpires}${this._ua.configuration.session_timers_force_refresher ? ";refresher=uac" : ""}`);
+			this._request = new SIPMessage.InitialOutgoingInviteRequest(target, this._ua, requestParams, extraHeaders);
+			this._id = this._request.call_id + this._from_tag;
+			this._createRTCConnection(pcConfig, rtcConstraints);
+			this._direction = "outgoing";
+			this._local_identity = this._request.from;
+			this._remote_identity = this._request.to;
+			if (initCallback) initCallback(this);
+			this._newRTCSession("local", this._request);
+			this._sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream);
+		}
+		init_incoming(request, initCallback) {
+			logger.debug("init_incoming()");
+			let expires;
+			const contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
+			if (request.body && contentType !== "application/sdp") {
+				request.reply(415);
+				return;
+			}
+			this._status = C.STATUS_INVITE_RECEIVED;
+			this._from_tag = request.from_tag;
+			this._id = request.call_id + this._from_tag;
+			this._request = request;
+			this._contact = this._ua.contact.toString();
+			if (request.hasHeader("expires")) expires = request.getHeader("expires") * 1e3;
+			request.to_tag = Utils.newTag();
+			if (!this._createDialog(request, "UAS", true)) {
+				request.reply(500, "Missing Contact header field");
+				return;
+			}
+			if (request.body) this._late_sdp = false;
+			else this._late_sdp = true;
+			this._status = C.STATUS_WAITING_FOR_ANSWER;
+			this._timers.userNoAnswerTimer = setTimeout(() => {
+				request.reply(408);
+				this._failed("local", null, JsSIP_C.causes.NO_ANSWER);
+			}, this._ua.configuration.no_answer_timeout);
+			if (expires) this._timers.expiresTimer = setTimeout(() => {
+				if (this._status === C.STATUS_WAITING_FOR_ANSWER) {
+					request.reply(487);
+					this._failed("system", null, JsSIP_C.causes.EXPIRES);
 				}
-			},
-			{
-				key: "isEstablished",
-				value: function isEstablished() {
-					switch (this._status) {
-						case C.STATUS_ANSWERED:
-						case C.STATUS_WAITING_FOR_ACK:
-						case C.STATUS_CONFIRMED: return true;
-						default: return false;
-					}
+			}, expires);
+			this._direction = "incoming";
+			this._local_identity = request.to;
+			this._remote_identity = request.from;
+			if (initCallback) initCallback(this);
+			this._newRTCSession("remote", request);
+			if (this._status === C.STATUS_TERMINATED) return;
+			request.reply(180, null, [`Contact: ${this._contact}`]);
+			this._progress("local", null);
+		}
+		/**
+		* Answer the call.
+		*/
+		answer(options = {}) {
+			logger.debug("answer()");
+			const request = this._request;
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const mediaConstraints = Utils.cloneObject(options.mediaConstraints);
+			const mediaStream = options.mediaStream || null;
+			const pcConfig = Utils.cloneObject(options.pcConfig, { iceServers: [] });
+			const rtcConstraints = options.rtcConstraints || null;
+			const rtcAnswerConstraints = options.rtcAnswerConstraints || null;
+			const rtcOfferConstraints = Utils.cloneObject(options.rtcOfferConstraints);
+			let tracks;
+			let peerHasAudioLine = false;
+			let peerHasVideoLine = false;
+			let peerOffersFullAudio = false;
+			let peerOffersFullVideo = false;
+			this._rtcAnswerConstraints = rtcAnswerConstraints;
+			this._rtcOfferConstraints = options.rtcOfferConstraints || null;
+			this._data = options.data || this._data;
+			if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"answer\" not supported for outgoing RTCSession");
+			if (this._status !== C.STATUS_WAITING_FOR_ANSWER) throw new Exceptions.InvalidStateError(this._status);
+			if (this._sessionTimers.enabled) {
+				if (Utils.isDecimal(options.sessionTimersExpires)) if (options.sessionTimersExpires >= JsSIP_C.MIN_SESSION_EXPIRES) this._sessionTimers.defaultExpires = options.sessionTimersExpires;
+				else this._sessionTimers.defaultExpires = JsSIP_C.SESSION_EXPIRES;
+			}
+			this._status = C.STATUS_ANSWERED;
+			if (!this._createDialog(request, "UAS")) {
+				request.reply(500, "Error creating dialog");
+				return;
+			}
+			clearTimeout(this._timers.userNoAnswerTimer);
+			extraHeaders.unshift(`Contact: ${this._contact}`);
+			const sdp = request.parseSDP();
+			if (!Array.isArray(sdp.media)) sdp.media = [sdp.media];
+			for (const m of sdp.media) {
+				if (m.type === "audio") {
+					peerHasAudioLine = true;
+					if (!m.direction || m.direction === "sendrecv") peerOffersFullAudio = true;
 				}
-			},
-			{
-				key: "isEnded",
-				value: function isEnded() {
-					switch (this._status) {
-						case C.STATUS_CANCELED:
-						case C.STATUS_TERMINATED: return true;
-						default: return false;
-					}
+				if (m.type === "video") {
+					peerHasVideoLine = true;
+					if (!m.direction || m.direction === "sendrecv") peerOffersFullVideo = true;
 				}
-			},
-			{
-				key: "isMuted",
-				value: function isMuted() {
-					return {
-						audio: this._audioMuted,
-						video: this._videoMuted
-					};
-				}
-			},
-			{
-				key: "isOnHold",
-				value: function isOnHold() {
-					return {
-						local: this._localHold,
-						remote: this._remoteHold
-					};
-				}
-			},
-			{
-				key: "connect",
-				value: function connect(target) {
-					var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-					var initCallback = arguments.length > 2 ? arguments[2] : void 0;
-					logger.debug("connect()");
-					var originalTarget = target;
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var mediaConstraints = Utils.cloneObject(options.mediaConstraints, {
-						audio: true,
-						video: true
-					});
-					var mediaStream = options.mediaStream || null;
-					var pcConfig = Utils.cloneObject(options.pcConfig, { iceServers: [] });
-					var rtcConstraints = options.rtcConstraints || null;
-					var rtcOfferConstraints = options.rtcOfferConstraints || null;
-					this._rtcOfferConstraints = rtcOfferConstraints;
-					this._rtcAnswerConstraints = options.rtcAnswerConstraints || null;
-					this._data = options.data || this._data;
-					if (target === void 0) throw new TypeError("Not enough arguments");
-					if (this._status !== C.STATUS_NULL) throw new Exceptions.InvalidStateError(this._status);
-					if (!window.RTCPeerConnection) throw new Exceptions.NotSupportedError("WebRTC not supported");
-					target = this._ua.normalizeTarget(target);
-					if (!target) throw new TypeError("Invalid target: ".concat(originalTarget));
-					if (this._sessionTimers.enabled) {
-						if (Utils.isDecimal(options.sessionTimersExpires)) if (options.sessionTimersExpires >= JsSIP_C.MIN_SESSION_EXPIRES) this._sessionTimers.defaultExpires = options.sessionTimersExpires;
-						else this._sessionTimers.defaultExpires = JsSIP_C.SESSION_EXPIRES;
-					}
-					for (var event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
-					this._from_tag = Utils.newTag();
-					var anonymous = options.anonymous || false;
-					var requestParams = { from_tag: this._from_tag };
-					this._contact = this._ua.contact.toString({
-						anonymous,
-						outbound: true
-					});
-					if (anonymous) {
-						requestParams.from_display_name = "Anonymous";
-						requestParams.from_uri = new URI("sip", "anonymous", "anonymous.invalid");
-						extraHeaders.push("P-Preferred-Identity: ".concat(this._ua.configuration.uri.toString()));
-						extraHeaders.push("Privacy: id");
-					} else if (options.fromUserName) {
-						requestParams.from_uri = new URI("sip", options.fromUserName, this._ua.configuration.uri.host);
-						extraHeaders.push("P-Preferred-Identity: ".concat(this._ua.configuration.uri.toString()));
-					}
-					if (options.fromDisplayName) requestParams.from_display_name = options.fromDisplayName;
-					extraHeaders.push("Contact: ".concat(this._contact));
-					extraHeaders.push("Content-Type: application/sdp");
-					if (this._sessionTimers.enabled) extraHeaders.push("Session-Expires: ".concat(this._sessionTimers.defaultExpires).concat(this._ua.configuration.session_timers_force_refresher ? ";refresher=uac" : ""));
-					this._request = new SIPMessage.InitialOutgoingInviteRequest(target, this._ua, requestParams, extraHeaders);
-					this._id = this._request.call_id + this._from_tag;
-					this._createRTCConnection(pcConfig, rtcConstraints);
-					this._direction = "outgoing";
-					this._local_identity = this._request.from;
-					this._remote_identity = this._request.to;
-					if (initCallback) initCallback(this);
-					this._newRTCSession("local", this._request);
-					this._sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream);
-				}
-			},
-			{
-				key: "init_incoming",
-				value: function init_incoming(request, initCallback) {
-					var _this2 = this;
-					logger.debug("init_incoming()");
-					var expires;
-					var contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
-					if (request.body && contentType !== "application/sdp") {
-						request.reply(415);
-						return;
-					}
-					this._status = C.STATUS_INVITE_RECEIVED;
-					this._from_tag = request.from_tag;
-					this._id = request.call_id + this._from_tag;
-					this._request = request;
-					this._contact = this._ua.contact.toString();
-					if (request.hasHeader("expires")) expires = request.getHeader("expires") * 1e3;
-					request.to_tag = Utils.newTag();
-					if (!this._createDialog(request, "UAS", true)) {
-						request.reply(500, "Missing Contact header field");
-						return;
-					}
-					if (request.body) this._late_sdp = false;
-					else this._late_sdp = true;
-					this._status = C.STATUS_WAITING_FOR_ANSWER;
-					this._timers.userNoAnswerTimer = setTimeout(function() {
-						request.reply(408);
-						_this2._failed("local", null, JsSIP_C.causes.NO_ANSWER);
-					}, this._ua.configuration.no_answer_timeout);
-					if (expires) this._timers.expiresTimer = setTimeout(function() {
-						if (_this2._status === C.STATUS_WAITING_FOR_ANSWER) {
-							request.reply(487);
-							_this2._failed("system", null, JsSIP_C.causes.EXPIRES);
-						}
-					}, expires);
-					this._direction = "incoming";
-					this._local_identity = request.to;
-					this._remote_identity = request.from;
-					if (initCallback) initCallback(this);
-					this._newRTCSession("remote", request);
-					if (this._status === C.STATUS_TERMINATED) return;
-					request.reply(180, null, ["Contact: ".concat(this._contact)]);
-					this._progress("local", null);
-				}
-			},
-			{
-				key: "answer",
-				value: function answer() {
-					var _this3 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					logger.debug("answer()");
-					var request = this._request;
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var mediaConstraints = Utils.cloneObject(options.mediaConstraints);
-					var mediaStream = options.mediaStream || null;
-					var pcConfig = Utils.cloneObject(options.pcConfig, { iceServers: [] });
-					var rtcConstraints = options.rtcConstraints || null;
-					var rtcAnswerConstraints = options.rtcAnswerConstraints || null;
-					var rtcOfferConstraints = Utils.cloneObject(options.rtcOfferConstraints);
-					var tracks;
-					var peerHasAudioLine = false;
-					var peerHasVideoLine = false;
-					var peerOffersFullAudio = false;
-					var peerOffersFullVideo = false;
-					this._rtcAnswerConstraints = rtcAnswerConstraints;
-					this._rtcOfferConstraints = options.rtcOfferConstraints || null;
-					this._data = options.data || this._data;
-					if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"answer\" not supported for outgoing RTCSession");
-					if (this._status !== C.STATUS_WAITING_FOR_ANSWER) throw new Exceptions.InvalidStateError(this._status);
-					if (this._sessionTimers.enabled) {
-						if (Utils.isDecimal(options.sessionTimersExpires)) if (options.sessionTimersExpires >= JsSIP_C.MIN_SESSION_EXPIRES) this._sessionTimers.defaultExpires = options.sessionTimersExpires;
-						else this._sessionTimers.defaultExpires = JsSIP_C.SESSION_EXPIRES;
-					}
-					this._status = C.STATUS_ANSWERED;
-					if (!this._createDialog(request, "UAS")) {
-						request.reply(500, "Error creating dialog");
-						return;
-					}
-					clearTimeout(this._timers.userNoAnswerTimer);
-					extraHeaders.unshift("Contact: ".concat(this._contact));
-					var sdp = request.parseSDP();
-					if (!Array.isArray(sdp.media)) sdp.media = [sdp.media];
-					var _iterator = _createForOfIteratorHelper(sdp.media), _step;
-					try {
-						for (_iterator.s(); !(_step = _iterator.n()).done;) {
-							var m = _step.value;
-							if (m.type === "audio") {
-								peerHasAudioLine = true;
-								if (!m.direction || m.direction === "sendrecv") peerOffersFullAudio = true;
-							}
-							if (m.type === "video") {
-								peerHasVideoLine = true;
-								if (!m.direction || m.direction === "sendrecv") peerOffersFullVideo = true;
-							}
-						}
-					} catch (err) {
-						_iterator.e(err);
-					} finally {
-						_iterator.f();
-					}
-					if (mediaStream && mediaConstraints.audio === false) {
-						tracks = mediaStream.getAudioTracks();
-						var _iterator2 = _createForOfIteratorHelper(tracks), _step2;
-						try {
-							for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-								var track = _step2.value;
-								mediaStream.removeTrack(track);
-							}
-						} catch (err) {
-							_iterator2.e(err);
-						} finally {
-							_iterator2.f();
-						}
-					}
-					if (mediaStream && mediaConstraints.video === false) {
-						tracks = mediaStream.getVideoTracks();
-						var _iterator3 = _createForOfIteratorHelper(tracks), _step3;
-						try {
-							for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-								var _track = _step3.value;
-								mediaStream.removeTrack(_track);
-							}
-						} catch (err) {
-							_iterator3.e(err);
-						} finally {
-							_iterator3.f();
-						}
-					}
-					if (!mediaStream && mediaConstraints.audio === void 0) mediaConstraints.audio = peerOffersFullAudio;
-					if (!mediaStream && mediaConstraints.video === void 0) mediaConstraints.video = peerOffersFullVideo;
-					if (!mediaStream && !peerHasAudioLine && !rtcOfferConstraints.offerToReceiveAudio) mediaConstraints.audio = false;
-					if (!mediaStream && !peerHasVideoLine && !rtcOfferConstraints.offerToReceiveVideo) mediaConstraints.video = false;
-					this._createRTCConnection(pcConfig, rtcConstraints);
-					Promise.resolve().then(function() {
-						if (mediaStream) return mediaStream;
-						else if (mediaConstraints.audio || mediaConstraints.video) {
-							_this3._localMediaStreamLocallyGenerated = true;
-							return navigator.mediaDevices.getUserMedia(mediaConstraints)["catch"](function(error) {
-								if (_this3._status === C.STATUS_TERMINATED) throw new Error("terminated");
-								request.reply(480);
-								_this3._failed("local", null, JsSIP_C.causes.USER_DENIED_MEDIA_ACCESS);
-								logger.warn("emit \"getusermediafailed\" [error:%o]", error);
-								_this3.emit("getusermediafailed", error);
-								throw new Error("getUserMedia() failed");
-							});
-						}
-					}).then(function(stream) {
-						if (_this3._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						_this3._localMediaStream = stream;
-						if (stream) stream.getTracks().forEach(function(track) {
-							_this3._connection.addTrack(track, stream);
-						});
-					}).then(function() {
-						if (_this3._late_sdp) return;
-						var e = {
-							originator: "remote",
-							type: "offer",
-							sdp: request.body
-						};
-						logger.debug("emit \"sdp\"");
-						_this3.emit("sdp", e);
-						var offer = new RTCSessionDescription({
-							type: "offer",
-							sdp: e.sdp
-						});
-						_this3._connectionPromiseQueue = _this3._connectionPromiseQueue.then(function() {
-							return _this3._connection.setRemoteDescription(offer);
-						})["catch"](function(error) {
-							request.reply(488);
-							_this3._failed("system", null, JsSIP_C.causes.WEBRTC_ERROR);
-							logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-							_this3.emit("peerconnection:setremotedescriptionfailed", error);
-							throw new Error("peerconnection.setRemoteDescription() failed");
-						});
-						return _this3._connectionPromiseQueue;
-					}).then(function() {
-						if (_this3._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						_this3._connecting(request);
-						if (!_this3._late_sdp) return _this3._createLocalDescription("answer", rtcAnswerConstraints)["catch"](function() {
-							request.reply(500);
-							throw new Error("_createLocalDescription() failed");
-						});
-						else return _this3._createLocalDescription("offer", _this3._rtcOfferConstraints)["catch"](function() {
-							request.reply(500);
-							throw new Error("_createLocalDescription() failed");
-						});
-					}).then(function(desc) {
-						if (_this3._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						_this3._handleSessionTimersInIncomingRequest(request, extraHeaders);
-						request.reply(200, null, extraHeaders, desc, function() {
-							_this3._status = C.STATUS_WAITING_FOR_ACK;
-							_this3._setInvite2xxTimer(request, desc);
-							_this3._setACKTimer();
-							_this3._accepted("local");
-						}, function() {
-							_this3._failed("system", null, JsSIP_C.causes.CONNECTION_ERROR);
-						});
-					})["catch"](function(error) {
-						if (_this3._status === C.STATUS_TERMINATED) return;
-						logger.warn(error);
+			}
+			if (mediaStream && mediaConstraints.audio === false) {
+				tracks = mediaStream.getAudioTracks();
+				for (const track of tracks) mediaStream.removeTrack(track);
+			}
+			if (mediaStream && mediaConstraints.video === false) {
+				tracks = mediaStream.getVideoTracks();
+				for (const track of tracks) mediaStream.removeTrack(track);
+			}
+			if (!mediaStream && mediaConstraints.audio === void 0) mediaConstraints.audio = peerOffersFullAudio;
+			if (!mediaStream && mediaConstraints.video === void 0) mediaConstraints.video = peerOffersFullVideo;
+			if (!mediaStream && !peerHasAudioLine && !rtcOfferConstraints.offerToReceiveAudio) mediaConstraints.audio = false;
+			if (!mediaStream && !peerHasVideoLine && !rtcOfferConstraints.offerToReceiveVideo) mediaConstraints.video = false;
+			this._createRTCConnection(pcConfig, rtcConstraints);
+			Promise.resolve().then(() => {
+				if (mediaStream) return mediaStream;
+				else if (mediaConstraints.audio || mediaConstraints.video) {
+					this._localMediaStreamLocallyGenerated = true;
+					return navigator.mediaDevices.getUserMedia(mediaConstraints).catch((error) => {
+						if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+						request.reply(480);
+						this._failed("local", null, JsSIP_C.causes.USER_DENIED_MEDIA_ACCESS);
+						logger.warn("emit \"getusermediafailed\" [error:%o]", error);
+						this.emit("getusermediafailed", error);
+						throw new Error("getUserMedia() failed");
 					});
 				}
-			},
-			{
-				key: "terminate",
-				value: function terminate() {
-					var _this4 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					logger.debug("terminate()");
-					var cause = options.cause || JsSIP_C.causes.BYE;
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var body = options.body;
-					var cancel_reason;
-					var status_code = options.status_code;
-					var reason_phrase = options.reason_phrase;
-					if (this._status === C.STATUS_TERMINATED) throw new Exceptions.InvalidStateError(this._status);
-					switch (this._status) {
-						case C.STATUS_NULL:
-						case C.STATUS_INVITE_SENT:
-						case C.STATUS_1XX_RECEIVED:
-							logger.debug("canceling session");
-							if (status_code && (status_code < 200 || status_code >= 700)) throw new TypeError("Invalid status_code: ".concat(status_code));
-							else if (status_code) {
-								reason_phrase = reason_phrase || JsSIP_C.REASON_PHRASE[status_code] || "";
-								cancel_reason = "SIP ;cause=".concat(status_code, " ;text=\"").concat(reason_phrase, "\"");
-							}
-							if (this._status === C.STATUS_NULL || this._status === C.STATUS_INVITE_SENT) {
-								this._is_canceled = true;
-								this._cancel_reason = cancel_reason;
-							} else if (this._status === C.STATUS_1XX_RECEIVED) this._request.cancel(cancel_reason);
-							this._status = C.STATUS_CANCELED;
-							this._failed("local", null, JsSIP_C.causes.CANCELED);
-							break;
-						case C.STATUS_WAITING_FOR_ANSWER:
-						case C.STATUS_ANSWERED:
-							logger.debug("rejecting session");
-							status_code = status_code || 480;
-							if (status_code < 300 || status_code >= 700) throw new TypeError("Invalid status_code: ".concat(status_code));
-							this._request.reply(status_code, reason_phrase, extraHeaders, body);
-							this._failed("local", null, JsSIP_C.causes.REJECTED);
-							break;
-						case C.STATUS_WAITING_FOR_ACK:
-						case C.STATUS_CONFIRMED:
-							logger.debug("terminating session");
-							reason_phrase = options.reason_phrase || JsSIP_C.REASON_PHRASE[status_code] || "";
-							if (status_code && (status_code < 200 || status_code >= 700)) throw new TypeError("Invalid status_code: ".concat(status_code));
-							else if (status_code) extraHeaders.push("Reason: SIP ;cause=".concat(status_code, "; text=\"").concat(reason_phrase, "\""));
-							if (this._status === C.STATUS_WAITING_FOR_ACK && this._direction === "incoming" && this._request.server_transaction.state !== Transactions.C.STATUS_TERMINATED) {
-								var dialog = this._dialog;
-								this.receiveRequest = function(_ref) {
-									if (_ref.method === JsSIP_C.ACK) {
-										_this4.sendRequest(JsSIP_C.BYE, {
-											extraHeaders,
-											body
-										});
-										dialog.terminate();
-									}
-								};
-								this._request.server_transaction.on("stateChanged", function() {
-									if (_this4._request.server_transaction.state === Transactions.C.STATUS_TERMINATED) {
-										_this4.sendRequest(JsSIP_C.BYE, {
-											extraHeaders,
-											body
-										});
-										dialog.terminate();
-									}
-								});
-								this._ended("local", null, cause);
-								this._dialog = dialog;
-								this._ua.newDialog(dialog);
-							} else {
+			}).then((stream) => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				this._localMediaStream = stream;
+				if (stream) stream.getTracks().forEach((track) => {
+					this._connection.addTrack(track, stream);
+				});
+			}).then(() => {
+				if (this._late_sdp) return;
+				const e = {
+					originator: "remote",
+					type: "offer",
+					sdp: request.body
+				};
+				logger.debug("emit \"sdp\"");
+				this.emit("sdp", e);
+				const offer = new RTCSessionDescription({
+					type: "offer",
+					sdp: e.sdp
+				});
+				this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._connection.setRemoteDescription(offer)).catch((error) => {
+					request.reply(488);
+					this._failed("system", null, JsSIP_C.causes.WEBRTC_ERROR);
+					logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
+					this.emit("peerconnection:setremotedescriptionfailed", error);
+					throw new Error("peerconnection.setRemoteDescription() failed");
+				});
+				return this._connectionPromiseQueue;
+			}).then(() => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				this._connecting(request);
+				if (!this._late_sdp) return this._createLocalDescription("answer", rtcAnswerConstraints).catch(() => {
+					request.reply(500);
+					throw new Error("_createLocalDescription() failed");
+				});
+				else return this._createLocalDescription("offer", this._rtcOfferConstraints).catch(() => {
+					request.reply(500);
+					throw new Error("_createLocalDescription() failed");
+				});
+			}).then((desc) => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				this._handleSessionTimersInIncomingRequest(request, extraHeaders);
+				request.reply(200, null, extraHeaders, desc, () => {
+					this._status = C.STATUS_WAITING_FOR_ACK;
+					this._setInvite2xxTimer(request, desc);
+					this._setACKTimer();
+					this._accepted("local");
+				}, () => {
+					this._failed("system", null, JsSIP_C.causes.CONNECTION_ERROR);
+				});
+			}).catch((error) => {
+				if (this._status === C.STATUS_TERMINATED) return;
+				logger.warn(`answer() failed: ${error.message}`);
+				this._failed("system", error.message, JsSIP_C.causes.INTERNAL_ERROR);
+			});
+		}
+		/**
+		* Terminate the call.
+		*/
+		terminate(options = {}) {
+			logger.debug("terminate()");
+			const cause = options.cause || JsSIP_C.causes.BYE;
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const body = options.body;
+			let cancel_reason;
+			let status_code = options.status_code;
+			let reason_phrase = options.reason_phrase;
+			if (this._status === C.STATUS_TERMINATED) throw new Exceptions.InvalidStateError(this._status);
+			switch (this._status) {
+				case C.STATUS_NULL:
+				case C.STATUS_INVITE_SENT:
+				case C.STATUS_1XX_RECEIVED:
+					logger.debug("canceling session");
+					if (status_code && (status_code < 200 || status_code >= 700)) throw new TypeError(`Invalid status_code: ${status_code}`);
+					else if (status_code) {
+						reason_phrase = reason_phrase || JsSIP_C.REASON_PHRASE[status_code] || "";
+						cancel_reason = `SIP ;cause=${status_code} ;text="${reason_phrase}"`;
+					}
+					if (this._status === C.STATUS_NULL || this._status === C.STATUS_INVITE_SENT) {
+						this._is_canceled = true;
+						this._cancel_reason = cancel_reason;
+					} else if (this._status === C.STATUS_1XX_RECEIVED) this._request.cancel(cancel_reason);
+					this._status = C.STATUS_CANCELED;
+					this._failed("local", null, JsSIP_C.causes.CANCELED);
+					break;
+				case C.STATUS_WAITING_FOR_ANSWER:
+				case C.STATUS_ANSWERED:
+					logger.debug("rejecting session");
+					status_code = status_code || 480;
+					if (status_code < 300 || status_code >= 700) throw new TypeError(`Invalid status_code: ${status_code}`);
+					this._request.reply(status_code, reason_phrase, extraHeaders, body);
+					this._failed("local", null, JsSIP_C.causes.REJECTED);
+					break;
+				case C.STATUS_WAITING_FOR_ACK:
+				case C.STATUS_CONFIRMED:
+					logger.debug("terminating session");
+					reason_phrase = options.reason_phrase || JsSIP_C.REASON_PHRASE[status_code] || "";
+					if (status_code && (status_code < 200 || status_code >= 700)) throw new TypeError(`Invalid status_code: ${status_code}`);
+					else if (status_code) extraHeaders.push(`Reason: SIP ;cause=${status_code}; text="${reason_phrase}"`);
+					if (this._status === C.STATUS_WAITING_FOR_ACK && this._direction === "incoming" && this._request.server_transaction.state !== Transactions.C.STATUS_TERMINATED) {
+						const dialog = this._dialog;
+						this.receiveRequest = ({ method }) => {
+							if (method === JsSIP_C.ACK) {
 								this.sendRequest(JsSIP_C.BYE, {
 									extraHeaders,
 									body
 								});
-								this._ended("local", null, cause);
+								dialog.terminate();
 							}
-					}
-				}
-			},
-			{
-				key: "sendDTMF",
-				value: function sendDTMF(tones) {
-					var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-					logger.debug("sendDTMF() | tones: %s", tones);
-					var position = 0;
-					var duration = options.duration || null;
-					var interToneGap = options.interToneGap || null;
-					var transportType = options.transportType || JsSIP_C.DTMF_TRANSPORT.INFO;
-					if (tones === void 0) throw new TypeError("Not enough arguments");
-					if (this._status !== C.STATUS_CONFIRMED && this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_1XX_RECEIVED) throw new Exceptions.InvalidStateError(this._status);
-					if (transportType !== JsSIP_C.DTMF_TRANSPORT.INFO && transportType !== JsSIP_C.DTMF_TRANSPORT.RFC2833) throw new TypeError("invalid transportType: ".concat(transportType));
-					if (typeof tones === "number") tones = tones.toString();
-					if (!tones || typeof tones !== "string" || !tones.match(/^[0-9A-DR#*,]+$/i)) throw new TypeError("Invalid tones: ".concat(tones));
-					if (duration && !Utils.isDecimal(duration)) throw new TypeError("Invalid tone duration: ".concat(duration));
-					else if (!duration) duration = RTCSession_DTMF.C.DEFAULT_DURATION;
-					else if (duration < RTCSession_DTMF.C.MIN_DURATION) {
-						logger.debug("\"duration\" value is lower than the minimum allowed, setting it to ".concat(RTCSession_DTMF.C.MIN_DURATION, " milliseconds"));
-						duration = RTCSession_DTMF.C.MIN_DURATION;
-					} else if (duration > RTCSession_DTMF.C.MAX_DURATION) {
-						logger.debug("\"duration\" value is greater than the maximum allowed, setting it to ".concat(RTCSession_DTMF.C.MAX_DURATION, " milliseconds"));
-						duration = RTCSession_DTMF.C.MAX_DURATION;
-					} else duration = Math.abs(duration);
-					options.duration = duration;
-					if (interToneGap && !Utils.isDecimal(interToneGap)) throw new TypeError("Invalid interToneGap: ".concat(interToneGap));
-					else if (!interToneGap) interToneGap = RTCSession_DTMF.C.DEFAULT_INTER_TONE_GAP;
-					else if (interToneGap < RTCSession_DTMF.C.MIN_INTER_TONE_GAP) {
-						logger.debug("\"interToneGap\" value is lower than the minimum allowed, setting it to ".concat(RTCSession_DTMF.C.MIN_INTER_TONE_GAP, " milliseconds"));
-						interToneGap = RTCSession_DTMF.C.MIN_INTER_TONE_GAP;
-					} else interToneGap = Math.abs(interToneGap);
-					if (transportType === JsSIP_C.DTMF_TRANSPORT.RFC2833) {
-						var sender = this._getDTMFRTPSender();
-						if (sender) {
-							tones = sender.toneBuffer + tones;
-							sender.insertDTMF(tones, duration, interToneGap);
-						}
-						return;
-					}
-					if (this._tones) {
-						this._tones += tones;
-						return;
-					}
-					this._tones = tones;
-					_sendDTMF.call(this);
-					function _sendDTMF() {
-						var _this5 = this;
-						var timeout;
-						if (this._status === C.STATUS_TERMINATED || !this._tones || position >= this._tones.length) {
-							this._tones = null;
-							return;
-						}
-						var tone = this._tones[position];
-						position += 1;
-						if (tone === ",") timeout = 2e3;
-						else {
-							var dtmf = new RTCSession_DTMF(this);
-							options.eventHandlers = { onFailed: function onFailed() {
-								_this5._tones = null;
-							} };
-							dtmf.send(tone, options);
-							timeout = duration + interToneGap;
-						}
-						setTimeout(_sendDTMF.bind(this), timeout);
-					}
-				}
-			},
-			{
-				key: "sendInfo",
-				value: function sendInfo(contentType, body) {
-					var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-					logger.debug("sendInfo()");
-					if (this._status !== C.STATUS_CONFIRMED && this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_1XX_RECEIVED) throw new Exceptions.InvalidStateError(this._status);
-					new RTCSession_Info(this).send(contentType, body, options);
-				}
-			},
-			{
-				key: "mute",
-				value: function mute() {
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {
-						audio: true,
-						video: false
-					};
-					logger.debug("mute()");
-					var audioMuted = false, videoMuted = false;
-					if (this._audioMuted === false && options.audio) {
-						audioMuted = true;
-						this._audioMuted = true;
-						this._toggleMuteAudio(true);
-					}
-					if (this._videoMuted === false && options.video) {
-						videoMuted = true;
-						this._videoMuted = true;
-						this._toggleMuteVideo(true);
-					}
-					if (audioMuted === true || videoMuted === true) this._onmute({
-						audio: audioMuted,
-						video: videoMuted
-					});
-				}
-			},
-			{
-				key: "unmute",
-				value: function unmute() {
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {
-						audio: true,
-						video: true
-					};
-					logger.debug("unmute()");
-					var audioUnMuted = false, videoUnMuted = false;
-					if (this._audioMuted === true && options.audio) {
-						audioUnMuted = true;
-						this._audioMuted = false;
-						if (this._localHold === false) this._toggleMuteAudio(false);
-					}
-					if (this._videoMuted === true && options.video) {
-						videoUnMuted = true;
-						this._videoMuted = false;
-						if (this._localHold === false) this._toggleMuteVideo(false);
-					}
-					if (audioUnMuted === true || videoUnMuted === true) this._onunmute({
-						audio: audioUnMuted,
-						video: videoUnMuted
-					});
-				}
-			},
-			{
-				key: "hold",
-				value: function hold() {
-					var _this6 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var done = arguments.length > 1 ? arguments[1] : void 0;
-					logger.debug("hold()");
-					if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
-					if (this._localHold === true) return false;
-					if (!this._isReadyToReOffer()) return false;
-					this._localHold = true;
-					this._onhold("local");
-					var eventHandlers = {
-						succeeded: function succeeded() {
-							if (done) done();
-						},
-						failed: function failed() {
-							_this6.terminate({
-								cause: JsSIP_C.causes.WEBRTC_ERROR,
-								status_code: 500,
-								reason_phrase: "Hold Failed"
-							});
-						}
-					};
-					if (options.useUpdate) this._sendUpdate({
-						sdpOffer: true,
-						eventHandlers,
-						extraHeaders: options.extraHeaders
-					});
-					else this._sendReinvite({
-						eventHandlers,
-						extraHeaders: options.extraHeaders
-					});
-					return true;
-				}
-			},
-			{
-				key: "unhold",
-				value: function unhold() {
-					var _this7 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var done = arguments.length > 1 ? arguments[1] : void 0;
-					logger.debug("unhold()");
-					if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
-					if (this._localHold === false) return false;
-					if (!this._isReadyToReOffer()) return false;
-					this._localHold = false;
-					this._onunhold("local");
-					var eventHandlers = {
-						succeeded: function succeeded() {
-							if (done) done();
-						},
-						failed: function failed() {
-							_this7.terminate({
-								cause: JsSIP_C.causes.WEBRTC_ERROR,
-								status_code: 500,
-								reason_phrase: "Unhold Failed"
-							});
-						}
-					};
-					if (options.useUpdate) this._sendUpdate({
-						sdpOffer: true,
-						eventHandlers,
-						extraHeaders: options.extraHeaders
-					});
-					else this._sendReinvite({
-						eventHandlers,
-						extraHeaders: options.extraHeaders
-					});
-					return true;
-				}
-			},
-			{
-				key: "renegotiate",
-				value: function renegotiate() {
-					var _this8 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var done = arguments.length > 1 ? arguments[1] : void 0;
-					logger.debug("renegotiate()");
-					var rtcOfferConstraints = options.rtcOfferConstraints || null;
-					if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
-					if (!this._isReadyToReOffer()) return false;
-					var eventHandlers = {
-						succeeded: function succeeded() {
-							if (done) done();
-						},
-						failed: function failed() {
-							_this8.terminate({
-								cause: JsSIP_C.causes.WEBRTC_ERROR,
-								status_code: 500,
-								reason_phrase: "Media Renegotiation Failed"
-							});
-						}
-					};
-					this._setLocalMediaStatus();
-					if (options.useUpdate) this._sendUpdate({
-						sdpOffer: true,
-						eventHandlers,
-						rtcOfferConstraints,
-						extraHeaders: options.extraHeaders
-					});
-					else this._sendReinvite({
-						eventHandlers,
-						rtcOfferConstraints,
-						extraHeaders: options.extraHeaders
-					});
-					return true;
-				}
-			},
-			{
-				key: "refer",
-				value: function refer(target, options) {
-					var _this9 = this;
-					logger.debug("refer()");
-					var originalTarget = target;
-					if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
-					target = this._ua.normalizeTarget(target);
-					if (!target) throw new TypeError("Invalid target: ".concat(originalTarget));
-					var referSubscriber = new RTCSession_ReferSubscriber(this);
-					referSubscriber.sendRefer(target, options);
-					var id = referSubscriber.id;
-					this._referSubscribers[id] = referSubscriber;
-					referSubscriber.on("requestFailed", function() {
-						delete _this9._referSubscribers[id];
-					});
-					referSubscriber.on("accepted", function() {
-						delete _this9._referSubscribers[id];
-					});
-					referSubscriber.on("failed", function() {
-						delete _this9._referSubscribers[id];
-					});
-					return referSubscriber;
-				}
-			},
-			{
-				key: "sendRequest",
-				value: function sendRequest(method, options) {
-					logger.debug("sendRequest()");
-					return this._dialog.sendRequest(method, options);
-				}
-			},
-			{
-				key: "receiveRequest",
-				value: function receiveRequest(request) {
-					var _this10 = this;
-					logger.debug("receiveRequest()");
-					if (request.method === JsSIP_C.CANCEL) {
-						if (this._status === C.STATUS_WAITING_FOR_ANSWER || this._status === C.STATUS_ANSWERED) {
-							this._status = C.STATUS_CANCELED;
-							this._request.reply(487);
-							this._failed("remote", request, JsSIP_C.causes.CANCELED);
-						}
-					} else switch (request.method) {
-						case JsSIP_C.ACK:
-							if (this._status !== C.STATUS_WAITING_FOR_ACK) return;
-							this._status = C.STATUS_CONFIRMED;
-							clearTimeout(this._timers.ackTimer);
-							clearTimeout(this._timers.invite2xxTimer);
-							if (this._late_sdp) {
-								if (!request.body) {
-									this.terminate({
-										cause: JsSIP_C.causes.MISSING_SDP,
-										status_code: 400
-									});
-									break;
-								}
-								var e = {
-									originator: "remote",
-									type: "answer",
-									sdp: request.body
-								};
-								logger.debug("emit \"sdp\"");
-								this.emit("sdp", e);
-								var answer = new RTCSessionDescription({
-									type: "answer",
-									sdp: e.sdp
-								});
-								this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-									return _this10._connection.setRemoteDescription(answer);
-								}).then(function() {
-									if (!_this10._is_confirmed) _this10._confirmed("remote", request);
-								})["catch"](function(error) {
-									_this10.terminate({
-										cause: JsSIP_C.causes.BAD_MEDIA_DESCRIPTION,
-										status_code: 488
-									});
-									logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-									_this10.emit("peerconnection:setremotedescriptionfailed", error);
-								});
-							} else if (!this._is_confirmed) this._confirmed("remote", request);
-							break;
-						case JsSIP_C.BYE:
-							if (this._status === C.STATUS_CONFIRMED || this._status === C.STATUS_WAITING_FOR_ACK) {
-								request.reply(200);
-								this._ended("remote", request, JsSIP_C.causes.BYE);
-							} else if (this._status === C.STATUS_INVITE_RECEIVED || this._status === C.STATUS_WAITING_FOR_ANSWER) {
-								request.reply(200);
-								this._request.reply(487, "BYE Received");
-								this._ended("remote", request, JsSIP_C.causes.BYE);
-							} else request.reply(403, "Wrong Status");
-							break;
-						case JsSIP_C.INVITE:
-							if (this._status === C.STATUS_CONFIRMED) if (request.hasHeader("replaces")) this._receiveReplaces(request);
-							else this._receiveReinvite(request);
-							else request.reply(403, "Wrong Status");
-							break;
-						case JsSIP_C.INFO:
-							if (this._status === C.STATUS_1XX_RECEIVED || this._status === C.STATUS_WAITING_FOR_ANSWER || this._status === C.STATUS_ANSWERED || this._status === C.STATUS_WAITING_FOR_ACK || this._status === C.STATUS_CONFIRMED) {
-								var contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
-								if (contentType && contentType.match(/^application\/dtmf-relay/i)) new RTCSession_DTMF(this).init_incoming(request);
-								else if (contentType !== void 0) new RTCSession_Info(this).init_incoming(request);
-								else request.reply(415);
-							} else request.reply(403, "Wrong Status");
-							break;
-						case JsSIP_C.UPDATE:
-							if (this._status === C.STATUS_CONFIRMED) this._receiveUpdate(request);
-							else request.reply(403, "Wrong Status");
-							break;
-						case JsSIP_C.REFER:
-							if (this._status === C.STATUS_CONFIRMED) this._receiveRefer(request);
-							else request.reply(403, "Wrong Status");
-							break;
-						case JsSIP_C.NOTIFY:
-							if (this._status === C.STATUS_CONFIRMED) this._receiveNotify(request);
-							else request.reply(403, "Wrong Status");
-							break;
-						default: request.reply(501);
-					}
-				}
-			},
-			{
-				key: "onTransportError",
-				value: function onTransportError() {
-					logger.warn("onTransportError()");
-					if (this._status !== C.STATUS_TERMINATED) this.terminate({
-						status_code: 500,
-						reason_phrase: JsSIP_C.causes.CONNECTION_ERROR,
-						cause: JsSIP_C.causes.CONNECTION_ERROR
-					});
-				}
-			},
-			{
-				key: "onRequestTimeout",
-				value: function onRequestTimeout() {
-					logger.warn("onRequestTimeout()");
-					if (this._status !== C.STATUS_TERMINATED) this.terminate({
-						status_code: 408,
-						reason_phrase: JsSIP_C.causes.REQUEST_TIMEOUT,
-						cause: JsSIP_C.causes.REQUEST_TIMEOUT
-					});
-				}
-			},
-			{
-				key: "onDialogError",
-				value: function onDialogError() {
-					logger.warn("onDialogError()");
-					if (this._status !== C.STATUS_TERMINATED) this.terminate({
-						status_code: 500,
-						reason_phrase: JsSIP_C.causes.DIALOG_ERROR,
-						cause: JsSIP_C.causes.DIALOG_ERROR
-					});
-				}
-			},
-			{
-				key: "newDTMF",
-				value: function newDTMF(data) {
-					logger.debug("newDTMF()");
-					this.emit("newDTMF", data);
-				}
-			},
-			{
-				key: "newInfo",
-				value: function newInfo(data) {
-					logger.debug("newInfo()");
-					this.emit("newInfo", data);
-				}
-			},
-			{
-				key: "_isReadyToReOffer",
-				value: function _isReadyToReOffer() {
-					if (!this._rtcReady) {
-						logger.debug("_isReadyToReOffer() | internal WebRTC status not ready");
-						return false;
-					}
-					if (!this._dialog) {
-						logger.debug("_isReadyToReOffer() | session not established yet");
-						return false;
-					}
-					if (this._dialog.uac_pending_reply === true || this._dialog.uas_pending_reply === true) {
-						logger.debug("_isReadyToReOffer() | there is another INVITE/UPDATE transaction in progress");
-						return false;
-					}
-					return true;
-				}
-			},
-			{
-				key: "_close",
-				value: function _close() {
-					logger.debug("close()");
-					if (this._localMediaStream && this._localMediaStreamLocallyGenerated) {
-						logger.debug("close() | closing local MediaStream");
-						Utils.closeMediaStream(this._localMediaStream);
-					}
-					if (this._status === C.STATUS_TERMINATED) return;
-					this._status = C.STATUS_TERMINATED;
-					if (this._connection) try {
-						this._connection.close();
-					} catch (error) {
-						logger.warn("close() | error closing the RTCPeerConnection: %o", error);
-					}
-					for (var timer in this._timers) if (Object.prototype.hasOwnProperty.call(this._timers, timer)) clearTimeout(this._timers[timer]);
-					clearTimeout(this._sessionTimers.timer);
-					if (this._dialog) {
-						this._dialog.terminate();
-						delete this._dialog;
-					}
-					for (var dialog in this._earlyDialogs) if (Object.prototype.hasOwnProperty.call(this._earlyDialogs, dialog)) {
-						this._earlyDialogs[dialog].terminate();
-						delete this._earlyDialogs[dialog];
-					}
-					for (var subscriber in this._referSubscribers) if (Object.prototype.hasOwnProperty.call(this._referSubscribers, subscriber)) delete this._referSubscribers[subscriber];
-					this._ua.destroyRTCSession(this);
-				}
-			},
-			{
-				key: "_setInvite2xxTimer",
-				value: function _setInvite2xxTimer(request, body) {
-					var timeout = Timers.T1;
-					function invite2xxRetransmission() {
-						if (this._status !== C.STATUS_WAITING_FOR_ACK) return;
-						request.reply(200, null, ["Contact: ".concat(this._contact)], body);
-						if (timeout < Timers.T2) {
-							timeout = timeout * 2;
-							if (timeout > Timers.T2) timeout = Timers.T2;
-						}
-						this._timers.invite2xxTimer = setTimeout(invite2xxRetransmission.bind(this), timeout);
-					}
-					this._timers.invite2xxTimer = setTimeout(invite2xxRetransmission.bind(this), timeout);
-				}
-			},
-			{
-				key: "_setACKTimer",
-				value: function _setACKTimer() {
-					var _this11 = this;
-					this._timers.ackTimer = setTimeout(function() {
-						if (_this11._status === C.STATUS_WAITING_FOR_ACK) {
-							logger.debug("no ACK received, terminating the session");
-							clearTimeout(_this11._timers.invite2xxTimer);
-							_this11.sendRequest(JsSIP_C.BYE);
-							_this11._ended("remote", null, JsSIP_C.causes.NO_ACK);
-						}
-					}, Timers.TIMER_H);
-				}
-			},
-			{
-				key: "_createRTCConnection",
-				value: function _createRTCConnection(pcConfig, rtcConstraints) {
-					var _this12 = this;
-					this._connection = new RTCPeerConnection(pcConfig, rtcConstraints);
-					this._connection.addEventListener("iceconnectionstatechange", function() {
-						if (_this12._connection.iceConnectionState === "failed") _this12.terminate({
-							cause: JsSIP_C.causes.RTP_TIMEOUT,
-							status_code: 408,
-							reason_phrase: JsSIP_C.causes.RTP_TIMEOUT
-						});
-					});
-					logger.debug("emit \"peerconnection\"");
-					this.emit("peerconnection", { peerconnection: this._connection });
-				}
-			},
-			{
-				key: "_createLocalDescription",
-				value: function _createLocalDescription(type, constraints) {
-					var _this13 = this;
-					logger.debug("createLocalDescription()");
-					if (type !== "offer" && type !== "answer") throw new Error("createLocalDescription() | invalid type \"".concat(type, "\""));
-					var connection = this._connection;
-					this._rtcReady = false;
-					return Promise.resolve().then(function() {
-						if (type === "offer") return connection.createOffer(constraints)["catch"](function(error) {
-							logger.warn("emit \"peerconnection:createofferfailed\" [error:%o]", error);
-							_this13.emit("peerconnection:createofferfailed", error);
-							return Promise.reject(error);
-						});
-						else return connection.createAnswer(constraints)["catch"](function(error) {
-							logger.warn("emit \"peerconnection:createanswerfailed\" [error:%o]", error);
-							_this13.emit("peerconnection:createanswerfailed", error);
-							return Promise.reject(error);
-						});
-					}).then(function(desc) {
-						return connection.setLocalDescription(desc)["catch"](function(error) {
-							_this13._rtcReady = true;
-							logger.warn("emit \"peerconnection:setlocaldescriptionfailed\" [error:%o]", error);
-							_this13.emit("peerconnection:setlocaldescriptionfailed", error);
-							return Promise.reject(error);
-						});
-					}).then(function() {
-						/**
-						* Resolve right away if:
-						* - 'connection.iceGatheringState' is 'complete' and no 'iceRestart' constraint is set.
-						* - 'connection.iceGatheringState' is 'gathering' and 'iceReady' is true.
-						*/
-						var iceRestart = constraints && constraints.iceRestart;
-						if (connection.iceGatheringState === "complete" && !iceRestart || connection.iceGatheringState === "gathering" && _this13._iceReady) {
-							_this13._rtcReady = true;
-							var e = {
-								originator: "local",
-								type,
-								sdp: connection.localDescription.sdp
-							};
-							logger.debug("emit \"sdp\"");
-							_this13.emit("sdp", e);
-							return Promise.resolve(e.sdp);
-						}
-						return new Promise(function(resolve) {
-							var finished = false;
-							var iceCandidateListener;
-							var iceGatheringStateListener;
-							_this13._iceReady = false;
-							var ready = function ready() {
-								if (finished) return;
-								connection.removeEventListener("icecandidate", iceCandidateListener);
-								connection.removeEventListener("icegatheringstatechange", iceGatheringStateListener);
-								finished = true;
-								_this13._rtcReady = true;
-								_this13._iceReady = true;
-								var e = {
-									originator: "local",
-									type,
-									sdp: connection.localDescription.sdp
-								};
-								logger.debug("emit \"sdp\"");
-								_this13.emit("sdp", e);
-								resolve(e.sdp);
-							};
-							connection.addEventListener("icecandidate", iceCandidateListener = function iceCandidateListener(event) {
-								var candidate = event.candidate;
-								if (candidate) _this13.emit("icecandidate", {
-									candidate,
-									ready
-								});
-								else ready();
-							});
-							connection.addEventListener("icegatheringstatechange", iceGatheringStateListener = function iceGatheringStateListener() {
-								if (connection.iceGatheringState === "complete") ready();
-							});
-						});
-					});
-				}
-			},
-			{
-				key: "_createDialog",
-				value: function _createDialog(message, type, early) {
-					var local_tag = type === "UAS" ? message.to_tag : message.from_tag;
-					var remote_tag = type === "UAS" ? message.from_tag : message.to_tag;
-					var id = message.call_id + local_tag + remote_tag;
-					var early_dialog = this._earlyDialogs[id];
-					if (early) if (early_dialog) return true;
-					else {
-						early_dialog = new Dialog(this, message, type, Dialog.C.STATUS_EARLY);
-						if (early_dialog.error) {
-							logger.debug(early_dialog.error);
-							this._failed("remote", message, JsSIP_C.causes.INTERNAL_ERROR);
-							return false;
-						} else {
-							this._earlyDialogs[id] = early_dialog;
-							return true;
-						}
-					}
-					else {
-						this._from_tag = message.from_tag;
-						this._to_tag = message.to_tag;
-						if (early_dialog) {
-							early_dialog.update(message, type);
-							this._dialog = early_dialog;
-							delete this._earlyDialogs[id];
-							return true;
-						}
-						var dialog = new Dialog(this, message, type);
-						if (dialog.error) {
-							logger.debug(dialog.error);
-							this._failed("remote", message, JsSIP_C.causes.INTERNAL_ERROR);
-							return false;
-						} else {
-							this._dialog = dialog;
-							return true;
-						}
-					}
-				}
-			},
-			{
-				key: "_receiveReinvite",
-				value: function _receiveReinvite(request) {
-					var _this14 = this;
-					logger.debug("receiveReinvite()");
-					var contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
-					var data = {
-						request,
-						callback: void 0,
-						reject: reject.bind(this)
-					};
-					var rejected = false;
-					function reject() {
-						var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-						rejected = true;
-						var status_code = options.status_code || 403;
-						var reason_phrase = options.reason_phrase || "";
-						var extraHeaders = Utils.cloneArray(options.extraHeaders);
-						if (this._status !== C.STATUS_CONFIRMED) return false;
-						if (status_code < 300 || status_code >= 700) throw new TypeError("Invalid status_code: ".concat(status_code));
-						request.reply(status_code, reason_phrase, extraHeaders);
-					}
-					this.emit("reinvite", data);
-					if (rejected) return;
-					this._late_sdp = false;
-					if (!request.body) {
-						this._late_sdp = true;
-						if (this._remoteHold) {
-							this._remoteHold = false;
-							this._onunhold("remote");
-						}
-						this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-							return _this14._createLocalDescription("offer", _this14._rtcOfferConstraints);
-						}).then(function(sdp) {
-							sendAnswer.call(_this14, sdp);
-						})["catch"](function() {
-							request.reply(500);
-						});
-						return;
-					}
-					if (contentType !== "application/sdp") {
-						logger.debug("invalid Content-Type");
-						request.reply(415);
-						return;
-					}
-					this._processInDialogSdpOffer(request).then(function(desc) {
-						if (_this14._status === C.STATUS_TERMINATED) return;
-						sendAnswer.call(_this14, desc);
-					})["catch"](function(error) {
-						logger.warn(error);
-					});
-					function sendAnswer(desc) {
-						var _this15 = this;
-						var extraHeaders = ["Contact: ".concat(this._contact)];
-						this._handleSessionTimersInIncomingRequest(request, extraHeaders);
-						if (this._late_sdp) desc = this._mangleOffer(desc);
-						request.reply(200, null, extraHeaders, desc, function() {
-							_this15._status = C.STATUS_WAITING_FOR_ACK;
-							_this15._setInvite2xxTimer(request, desc);
-							_this15._setACKTimer();
-						});
-						if (typeof data.callback === "function") data.callback();
-					}
-				}
-			},
-			{
-				key: "_receiveUpdate",
-				value: function _receiveUpdate(request) {
-					var _this16 = this;
-					logger.debug("receiveUpdate()");
-					var contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
-					var data = {
-						request,
-						callback: void 0,
-						reject: reject.bind(this)
-					};
-					var rejected = false;
-					function reject() {
-						var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-						rejected = true;
-						var status_code = options.status_code || 403;
-						var reason_phrase = options.reason_phrase || "";
-						var extraHeaders = Utils.cloneArray(options.extraHeaders);
-						if (this._status !== C.STATUS_CONFIRMED) return false;
-						if (status_code < 300 || status_code >= 700) throw new TypeError("Invalid status_code: ".concat(status_code));
-						request.reply(status_code, reason_phrase, extraHeaders);
-					}
-					this.emit("update", data);
-					if (rejected) return;
-					if (!request.body) {
-						sendAnswer.call(this, null);
-						return;
-					}
-					if (contentType !== "application/sdp") {
-						logger.debug("invalid Content-Type");
-						request.reply(415);
-						return;
-					}
-					this._processInDialogSdpOffer(request).then(function(desc) {
-						if (_this16._status === C.STATUS_TERMINATED) return;
-						sendAnswer.call(_this16, desc);
-					})["catch"](function(error) {
-						logger.warn(error);
-					});
-					function sendAnswer(desc) {
-						var extraHeaders = ["Contact: ".concat(this._contact)];
-						this._handleSessionTimersInIncomingRequest(request, extraHeaders);
-						request.reply(200, null, extraHeaders, desc);
-						if (typeof data.callback === "function") data.callback();
-					}
-				}
-			},
-			{
-				key: "_processInDialogSdpOffer",
-				value: function _processInDialogSdpOffer(request) {
-					var _this17 = this;
-					logger.debug("_processInDialogSdpOffer()");
-					var sdp = request.parseSDP();
-					var hold = false;
-					var _iterator4 = _createForOfIteratorHelper(sdp.media), _step4;
-					try {
-						for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-							var m = _step4.value;
-							if (holdMediaTypes.indexOf(m.type) === -1) continue;
-							var direction = m.direction || sdp.direction || "sendrecv";
-							if (direction === "sendonly" || direction === "inactive") hold = true;
-							else {
-								hold = false;
-								break;
-							}
-						}
-					} catch (err) {
-						_iterator4.e(err);
-					} finally {
-						_iterator4.f();
-					}
-					var e = {
-						originator: "remote",
-						type: "offer",
-						sdp: request.body
-					};
-					logger.debug("emit \"sdp\"");
-					this.emit("sdp", e);
-					var offer = new RTCSessionDescription({
-						type: "offer",
-						sdp: e.sdp
-					});
-					this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-						if (_this17._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						return _this17._connection.setRemoteDescription(offer)["catch"](function(error) {
-							request.reply(488);
-							logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-							_this17.emit("peerconnection:setremotedescriptionfailed", error);
-							throw error;
-						});
-					}).then(function() {
-						if (_this17._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						if (_this17._remoteHold === true && hold === false) {
-							_this17._remoteHold = false;
-							_this17._onunhold("remote");
-						} else if (_this17._remoteHold === false && hold === true) {
-							_this17._remoteHold = true;
-							_this17._onhold("remote");
-						}
-					}).then(function() {
-						if (_this17._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						return _this17._createLocalDescription("answer", _this17._rtcAnswerConstraints)["catch"](function(error) {
-							request.reply(500);
-							logger.warn("emit \"peerconnection:createtelocaldescriptionfailed\" [error:%o]", error);
-							throw error;
-						});
-					})["catch"](function(error) {
-						logger.warn("_processInDialogSdpOffer() failed [error: %o]", error);
-					});
-					return this._connectionPromiseQueue;
-				}
-			},
-			{
-				key: "_receiveRefer",
-				value: function _receiveRefer(request) {
-					var _this18 = this;
-					logger.debug("receiveRefer()");
-					if (!request.refer_to) {
-						logger.debug("no Refer-To header field present in REFER");
-						request.reply(400);
-						return;
-					}
-					if (request.refer_to.uri.scheme !== JsSIP_C.SIP) {
-						logger.debug("Refer-To header field points to a non-SIP URI scheme");
-						request.reply(416);
-						return;
-					}
-					request.reply(202);
-					var notifier = new RTCSession_ReferNotifier(this, request.cseq);
-					logger.debug("emit \"refer\"");
-					this.emit("refer", {
-						request,
-						accept: function accept(initCallback, options) {
-							_accept.call(_this18, initCallback, options);
-						},
-						reject: function reject() {
-							_reject.call(_this18);
-						}
-					});
-					function _accept(initCallback) {
-						var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-						initCallback = typeof initCallback === "function" ? initCallback : null;
-						if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
-						var session = new RTCSession(this._ua);
-						session.on("progress", function(_ref2) {
-							var response = _ref2.response;
-							notifier.notify(response.status_code, response.reason_phrase);
-						});
-						session.on("accepted", function(_ref3) {
-							var response = _ref3.response;
-							notifier.notify(response.status_code, response.reason_phrase);
-						});
-						session.on("_failed", function(_ref4) {
-							var message = _ref4.message, cause = _ref4.cause;
-							if (message) notifier.notify(message.status_code, message.reason_phrase);
-							else notifier.notify(487, cause);
-						});
-						if (request.refer_to.uri.hasHeader("replaces")) {
-							var replaces = decodeURIComponent(request.refer_to.uri.getHeader("replaces"));
-							options.extraHeaders = Utils.cloneArray(options.extraHeaders);
-							options.extraHeaders.push("Replaces: ".concat(replaces));
-						}
-						session.connect(request.refer_to.uri.toAor(), options, initCallback);
-					}
-					function _reject() {
-						notifier.notify(603);
-					}
-				}
-			},
-			{
-				key: "_receiveNotify",
-				value: function _receiveNotify(request) {
-					logger.debug("receiveNotify()");
-					if (!request.event) request.reply(400);
-					switch (request.event.event) {
-						case "refer":
-							var id;
-							var referSubscriber;
-							if (request.event.params && request.event.params.id) {
-								id = request.event.params.id;
-								referSubscriber = this._referSubscribers[id];
-							} else if (Object.keys(this._referSubscribers).length === 1) referSubscriber = this._referSubscribers[Object.keys(this._referSubscribers)[0]];
-							else {
-								request.reply(400, "Missing event id parameter");
-								return;
-							}
-							if (!referSubscriber) {
-								request.reply(481, "Subscription does not exist");
-								return;
-							}
-							referSubscriber.receiveNotify(request);
-							request.reply(200);
-							break;
-						default: request.reply(489);
-					}
-				}
-			},
-			{
-				key: "_receiveReplaces",
-				value: function _receiveReplaces(request) {
-					var _this20 = this;
-					logger.debug("receiveReplaces()");
-					function _accept2(initCallback) {
-						var _this19 = this;
-						if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
-						var session = new RTCSession(this._ua);
-						session.on("confirmed", function() {
-							_this19.terminate();
-						});
-						session.init_incoming(request, initCallback);
-					}
-					function _reject2() {
-						logger.debug("Replaced INVITE rejected by the user");
-						request.reply(486);
-					}
-					this.emit("replaces", {
-						request,
-						accept: function accept(initCallback) {
-							_accept2.call(_this20, initCallback);
-						},
-						reject: function reject() {
-							_reject2.call(_this20);
-						}
-					});
-				}
-			},
-			{
-				key: "_sendInitialRequest",
-				value: function _sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream) {
-					var _this21 = this;
-					var request_sender = new RequestSender(this._ua, this._request, {
-						onRequestTimeout: function onRequestTimeout() {
-							_this21.onRequestTimeout();
-						},
-						onTransportError: function onTransportError() {
-							_this21.onTransportError();
-						},
-						onAuthenticated: function onAuthenticated(request) {
-							_this21._request = request;
-						},
-						onReceiveResponse: function onReceiveResponse(response) {
-							_this21._receiveInviteResponse(response);
-						}
-					});
-					Promise.resolve().then(function() {
-						if (mediaStream) return mediaStream;
-						else if (mediaConstraints.audio || mediaConstraints.video) {
-							_this21._localMediaStreamLocallyGenerated = true;
-							return navigator.mediaDevices.getUserMedia(mediaConstraints)["catch"](function(error) {
-								if (_this21._status === C.STATUS_TERMINATED) throw new Error("terminated");
-								_this21._failed("local", null, JsSIP_C.causes.USER_DENIED_MEDIA_ACCESS);
-								logger.warn("emit \"getusermediafailed\" [error:%o]", error);
-								_this21.emit("getusermediafailed", error);
-								throw error;
-							});
-						}
-					}).then(function(stream) {
-						if (_this21._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						_this21._localMediaStream = stream;
-						if (stream) stream.getTracks().forEach(function(track) {
-							_this21._connection.addTrack(track, stream);
-						});
-						_this21._connecting(_this21._request);
-						return _this21._createLocalDescription("offer", rtcOfferConstraints)["catch"](function(error) {
-							_this21._failed("local", null, JsSIP_C.causes.WEBRTC_ERROR);
-							throw error;
-						});
-					}).then(function(desc) {
-						if (_this21._is_canceled || _this21._status === C.STATUS_TERMINATED) throw new Error("terminated");
-						_this21._request.body = desc;
-						_this21._status = C.STATUS_INVITE_SENT;
-						logger.debug("emit \"sending\" [request:%o]", _this21._request);
-						_this21.emit("sending", { request: _this21._request });
-						request_sender.send();
-					})["catch"](function(error) {
-						if (_this21._status === C.STATUS_TERMINATED) return;
-						logger.warn(error);
-					});
-				}
-			},
-			{
-				key: "_getDTMFRTPSender",
-				value: function _getDTMFRTPSender() {
-					var sender = this._connection.getSenders().find(function(rtpSender) {
-						return rtpSender.track && rtpSender.track.kind === "audio";
-					});
-					if (!(sender && sender.dtmf)) {
-						logger.warn("sendDTMF() | no local audio track to send DTMF with");
-						return;
-					}
-					return sender.dtmf;
-				}
-			},
-			{
-				key: "_receiveInviteResponse",
-				value: function _receiveInviteResponse(response) {
-					var _this22 = this;
-					logger.debug("receiveInviteResponse()");
-					if (this._dialog && response.status_code >= 200 && response.status_code <= 299) if (this._dialog.id.call_id === response.call_id && this._dialog.id.local_tag === response.from_tag && this._dialog.id.remote_tag === response.to_tag) {
-						this.sendRequest(JsSIP_C.ACK);
-						return;
-					} else {
-						var dialog = new Dialog(this, response, "UAC");
-						if (dialog.error !== void 0) {
-							logger.debug(dialog.error);
-							return;
-						}
-						this.sendRequest(JsSIP_C.ACK);
-						this.sendRequest(JsSIP_C.BYE);
-						return;
-					}
-					if (this._is_canceled) {
-						if (response.status_code >= 100 && response.status_code < 200) this._request.cancel(this._cancel_reason);
-						else if (response.status_code >= 200 && response.status_code < 299) this._acceptAndTerminate(response);
-						return;
-					}
-					if (this._status !== C.STATUS_INVITE_SENT && this._status !== C.STATUS_1XX_RECEIVED) return;
-					switch (true) {
-						case /^100$/.test(response.status_code):
-							this._status = C.STATUS_1XX_RECEIVED;
-							break;
-						case /^1[0-9]{2}$/.test(response.status_code):
-							if (!response.to_tag) {
-								logger.debug("1xx response received without to tag");
-								break;
-							}
-							if (response.hasHeader("contact")) {
-								if (!this._createDialog(response, "UAC", true)) break;
-							}
-							this._status = C.STATUS_1XX_RECEIVED;
-							if (!response.body) {
-								this._progress("remote", response);
-								break;
-							}
-							var e = {
-								originator: "remote",
-								type: "answer",
-								sdp: response.body
-							};
-							logger.debug("emit \"sdp\"");
-							this.emit("sdp", e);
-							var answer = new RTCSessionDescription({
-								type: "answer",
-								sdp: e.sdp
-							});
-							this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-								return _this22._connection.setRemoteDescription(answer);
-							}).then(function() {
-								return _this22._progress("remote", response);
-							})["catch"](function(error) {
-								logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-								_this22.emit("peerconnection:setremotedescriptionfailed", error);
-							});
-							break;
-						case /^2[0-9]{2}$/.test(response.status_code):
-							this._status = C.STATUS_CONFIRMED;
-							if (!response.body) {
-								this._acceptAndTerminate(response, 400, JsSIP_C.causes.MISSING_SDP);
-								this._failed("remote", response, JsSIP_C.causes.BAD_MEDIA_DESCRIPTION);
-								break;
-							}
-							if (!this._createDialog(response, "UAC")) break;
-							var _e = {
-								originator: "remote",
-								type: "answer",
-								sdp: response.body
-							};
-							logger.debug("emit \"sdp\"");
-							this.emit("sdp", _e);
-							var _answer = new RTCSessionDescription({
-								type: "answer",
-								sdp: _e.sdp
-							});
-							this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-								if (_this22._connection.signalingState === "stable") return _this22._connection.createOffer(_this22._rtcOfferConstraints).then(function(offer) {
-									return _this22._connection.setLocalDescription(offer);
-								})["catch"](function(error) {
-									_this22._acceptAndTerminate(response, 500, error.toString());
-									_this22._failed("local", response, JsSIP_C.causes.WEBRTC_ERROR);
-								});
-							}).then(function() {
-								_this22._connection.setRemoteDescription(_answer).then(function() {
-									_this22._handleSessionTimersInIncomingResponse(response);
-									_this22._accepted("remote", response);
-									_this22.sendRequest(JsSIP_C.ACK);
-									_this22._confirmed("local", null);
-								})["catch"](function(error) {
-									_this22._acceptAndTerminate(response, 488, "Not Acceptable Here");
-									_this22._failed("remote", response, JsSIP_C.causes.BAD_MEDIA_DESCRIPTION);
-									logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-									_this22.emit("peerconnection:setremotedescriptionfailed", error);
-								});
-							});
-							break;
-						default:
-							var cause = Utils.sipErrorCause(response.status_code);
-							this._failed("remote", response, cause);
-					}
-				}
-			},
-			{
-				key: "_sendReinvite",
-				value: function _sendReinvite() {
-					var _this23 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					logger.debug("sendReinvite()");
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					var rtcOfferConstraints = options.rtcOfferConstraints || this._rtcOfferConstraints || null;
-					var succeeded = false;
-					extraHeaders.push("Contact: ".concat(this._contact));
-					extraHeaders.push("Content-Type: application/sdp");
-					if (this._sessionTimers.running) extraHeaders.push("Session-Expires: ".concat(this._sessionTimers.currentExpires, ";refresher=").concat(this._sessionTimers.refresher ? "uac" : "uas"));
-					this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-						return _this23._createLocalDescription("offer", rtcOfferConstraints);
-					}).then(function(sdp) {
-						sdp = _this23._mangleOffer(sdp);
-						var e = {
-							originator: "local",
-							type: "offer",
-							sdp
 						};
-						logger.debug("emit \"sdp\"");
-						_this23.emit("sdp", e);
-						_this23.sendRequest(JsSIP_C.INVITE, {
-							extraHeaders,
-							body: sdp,
-							eventHandlers: {
-								onSuccessResponse: function onSuccessResponse(response) {
-									onSucceeded.call(_this23, response);
-									succeeded = true;
-								},
-								onErrorResponse: function onErrorResponse(response) {
-									onFailed.call(_this23, response);
-								},
-								onTransportError: function onTransportError() {
-									_this23.onTransportError();
-								},
-								onRequestTimeout: function onRequestTimeout() {
-									_this23.onRequestTimeout();
-								},
-								onDialogError: function onDialogError() {
-									_this23.onDialogError();
-								}
+						this._request.server_transaction.on("stateChanged", () => {
+							if (this._request.server_transaction.state === Transactions.C.STATUS_TERMINATED) {
+								this.sendRequest(JsSIP_C.BYE, {
+									extraHeaders,
+									body
+								});
+								dialog.terminate();
 							}
 						});
-					})["catch"](function() {
-						onFailed();
+						this._ended("local", null, cause);
+						this._dialog = dialog;
+						this._ua.newDialog(dialog);
+					} else {
+						this.sendRequest(JsSIP_C.BYE, {
+							extraHeaders,
+							body
+						});
+						this._ended("local", null, cause);
+					}
+			}
+		}
+		sendDTMF(tones, options = {}) {
+			logger.debug("sendDTMF() | tones: %s", tones);
+			let duration = options.duration || null;
+			let interToneGap = options.interToneGap || null;
+			const transportType = options.transportType || JsSIP_C.DTMF_TRANSPORT.INFO;
+			if (tones === void 0) throw new TypeError("Not enough arguments");
+			if (this._status !== C.STATUS_CONFIRMED && this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_1XX_RECEIVED) throw new Exceptions.InvalidStateError(this._status);
+			if (transportType !== JsSIP_C.DTMF_TRANSPORT.INFO && transportType !== JsSIP_C.DTMF_TRANSPORT.RFC2833) throw new TypeError(`invalid transportType: ${transportType}`);
+			if (typeof tones === "number") tones = tones.toString();
+			if (!tones || typeof tones !== "string" || !tones.match(/^[0-9A-DR#*,]+$/i)) throw new TypeError(`Invalid tones: ${tones}`);
+			if (duration && !Utils.isDecimal(duration)) throw new TypeError(`Invalid tone duration: ${duration}`);
+			else if (!duration) duration = RTCSession_DTMF.C.DEFAULT_DURATION;
+			else if (duration < RTCSession_DTMF.C.MIN_DURATION) {
+				logger.debug(`"duration" value is lower than the minimum allowed, setting it to ${RTCSession_DTMF.C.MIN_DURATION} milliseconds`);
+				duration = RTCSession_DTMF.C.MIN_DURATION;
+			} else if (duration > RTCSession_DTMF.C.MAX_DURATION) {
+				logger.debug(`"duration" value is greater than the maximum allowed, setting it to ${RTCSession_DTMF.C.MAX_DURATION} milliseconds`);
+				duration = RTCSession_DTMF.C.MAX_DURATION;
+			} else duration = Math.abs(duration);
+			options.duration = duration;
+			if (interToneGap && !Utils.isDecimal(interToneGap)) throw new TypeError(`Invalid interToneGap: ${interToneGap}`);
+			else if (!interToneGap) interToneGap = RTCSession_DTMF.C.DEFAULT_INTER_TONE_GAP;
+			else if (interToneGap < RTCSession_DTMF.C.MIN_INTER_TONE_GAP) {
+				logger.debug(`"interToneGap" value is lower than the minimum allowed, setting it to ${RTCSession_DTMF.C.MIN_INTER_TONE_GAP} milliseconds`);
+				interToneGap = RTCSession_DTMF.C.MIN_INTER_TONE_GAP;
+			} else interToneGap = Math.abs(interToneGap);
+			if (transportType === JsSIP_C.DTMF_TRANSPORT.RFC2833) {
+				const sender = this._getDTMFRTPSender();
+				if (sender) {
+					tones = sender.toneBuffer + tones;
+					sender.insertDTMF(tones, duration, interToneGap);
+				}
+				return;
+			}
+			if (this._tones) {
+				this._tones += tones;
+				return;
+			}
+			this._tones = tones;
+			_sendDTMF.call(this);
+			function _sendDTMF() {
+				let timeout;
+				if (this._status === C.STATUS_TERMINATED || !this._tones) {
+					this._tones = null;
+					return;
+				}
+				const tone = this._tones[0];
+				this._tones = this._tones.substring(1);
+				if (tone === ",") timeout = 2e3;
+				else {
+					const dtmf = new RTCSession_DTMF(this);
+					options.eventHandlers = { onFailed: () => {
+						this._tones = null;
+					} };
+					dtmf.send(tone, options);
+					timeout = duration + interToneGap;
+				}
+				setTimeout(_sendDTMF.bind(this), timeout);
+			}
+		}
+		sendInfo(contentType, body, options = {}) {
+			logger.debug("sendInfo()");
+			if (this._status !== C.STATUS_CONFIRMED && this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_1XX_RECEIVED) throw new Exceptions.InvalidStateError(this._status);
+			new RTCSession_Info(this).send(contentType, body, options);
+		}
+		/**
+		* Mute
+		*/
+		mute(options = {
+			audio: true,
+			video: false
+		}) {
+			logger.debug("mute()");
+			let audioMuted = false, videoMuted = false;
+			if (this._audioMuted === false && options.audio) {
+				audioMuted = true;
+				this._audioMuted = true;
+				this._toggleMuteAudio(true);
+			}
+			if (this._videoMuted === false && options.video) {
+				videoMuted = true;
+				this._videoMuted = true;
+				this._toggleMuteVideo(true);
+			}
+			if (audioMuted === true || videoMuted === true) this._onmute({
+				audio: audioMuted,
+				video: videoMuted
+			});
+		}
+		/**
+		* Unmute
+		*/
+		unmute(options = {
+			audio: true,
+			video: true
+		}) {
+			logger.debug("unmute()");
+			let audioUnMuted = false, videoUnMuted = false;
+			if (this._audioMuted === true && options.audio) {
+				audioUnMuted = true;
+				this._audioMuted = false;
+				if (this._localHold === false) this._toggleMuteAudio(false);
+			}
+			if (this._videoMuted === true && options.video) {
+				videoUnMuted = true;
+				this._videoMuted = false;
+				if (this._localHold === false) this._toggleMuteVideo(false);
+			}
+			if (audioUnMuted === true || videoUnMuted === true) this._onunmute({
+				audio: audioUnMuted,
+				video: videoUnMuted
+			});
+		}
+		/**
+		* Hold
+		*/
+		hold(options = {}, done) {
+			logger.debug("hold()");
+			if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
+			if (this._localHold === true) return false;
+			if (!this.isReadyToReOffer()) return false;
+			this._localHold = true;
+			this._onhold("local");
+			const eventHandlers = {
+				succeeded: () => {
+					if (done) done();
+				},
+				failed: () => {
+					this.terminate({
+						cause: JsSIP_C.causes.WEBRTC_ERROR,
+						status_code: 500,
+						reason_phrase: "Hold Failed"
 					});
-					function onSucceeded(response) {
-						var _this24 = this;
-						if (this._status === C.STATUS_TERMINATED) return;
-						this.sendRequest(JsSIP_C.ACK);
-						if (succeeded) return;
-						this._handleSessionTimersInIncomingResponse(response);
-						if (!response.body) {
-							onFailed.call(this);
-							return;
-						} else if (!response.hasHeader("Content-Type") || response.getHeader("Content-Type").toLowerCase() !== "application/sdp") {
-							onFailed.call(this);
-							return;
+				}
+			};
+			if (options.useUpdate) this._sendUpdate({
+				sdpOffer: true,
+				eventHandlers,
+				extraHeaders: options.extraHeaders
+			});
+			else this._sendReinvite({
+				eventHandlers,
+				extraHeaders: options.extraHeaders
+			});
+			return true;
+		}
+		unhold(options = {}, done) {
+			logger.debug("unhold()");
+			if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
+			if (this._localHold === false) return false;
+			if (!this.isReadyToReOffer()) return false;
+			this._localHold = false;
+			this._onunhold("local");
+			const eventHandlers = {
+				succeeded: () => {
+					if (done) done();
+				},
+				failed: () => {
+					this.terminate({
+						cause: JsSIP_C.causes.WEBRTC_ERROR,
+						status_code: 500,
+						reason_phrase: "Unhold Failed"
+					});
+				}
+			};
+			if (options.useUpdate) this._sendUpdate({
+				sdpOffer: true,
+				eventHandlers,
+				extraHeaders: options.extraHeaders
+			});
+			else this._sendReinvite({
+				eventHandlers,
+				extraHeaders: options.extraHeaders
+			});
+			return true;
+		}
+		renegotiate(options = {}, done) {
+			logger.debug("renegotiate()");
+			const rtcOfferConstraints = options.rtcOfferConstraints || null;
+			if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
+			if (!this.isReadyToReOffer()) return false;
+			const eventHandlers = {
+				succeeded: () => {
+					if (done) done();
+				},
+				failed: () => {
+					this.terminate({
+						cause: JsSIP_C.causes.WEBRTC_ERROR,
+						status_code: 500,
+						reason_phrase: "Media Renegotiation Failed"
+					});
+				}
+			};
+			this._setLocalMediaStatus();
+			if (options.useUpdate) this._sendUpdate({
+				sdpOffer: true,
+				eventHandlers,
+				rtcOfferConstraints,
+				extraHeaders: options.extraHeaders
+			});
+			else this._sendReinvite({
+				eventHandlers,
+				rtcOfferConstraints,
+				extraHeaders: options.extraHeaders
+			});
+			return true;
+		}
+		/**
+		* Refer
+		*/
+		refer(target, options) {
+			logger.debug("refer()");
+			const originalTarget = target;
+			if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
+			target = this._ua.normalizeTarget(target);
+			if (!target) throw new TypeError(`Invalid target: ${originalTarget}`);
+			const referSubscriber = new RTCSession_ReferSubscriber(this);
+			referSubscriber.sendRefer(target, options);
+			let id = referSubscriber.id;
+			this._referSubscribers[id] = referSubscriber;
+			referSubscriber.on("requestFailed", () => {
+				delete this._referSubscribers[id];
+			});
+			referSubscriber.on("accepted", () => {
+				delete this._referSubscribers[id];
+			});
+			referSubscriber.on("failed", () => {
+				delete this._referSubscribers[id];
+			});
+			referSubscriber.on("authenticated", () => {
+				delete this._referSubscribers[id];
+				id = referSubscriber.id;
+				this._referSubscribers[id] = referSubscriber;
+			});
+			return referSubscriber;
+		}
+		/**
+		* Send a generic in-dialog Request
+		*/
+		sendRequest(method, options) {
+			logger.debug("sendRequest()");
+			if (this._dialog) return this._dialog.sendRequest(method, options);
+			else {
+				const dialogsArray = Object.values(this._earlyDialogs);
+				if (dialogsArray.length > 0) return dialogsArray[0].sendRequest(method, options);
+				logger.warn("sendRequest() | no valid early dialog found");
+				return;
+			}
+		}
+		/**
+		* In dialog Request Reception
+		*/
+		receiveRequest(request) {
+			logger.debug("receiveRequest()");
+			if (request.method === JsSIP_C.CANCEL) {
+				if (this._status === C.STATUS_WAITING_FOR_ANSWER || this._status === C.STATUS_ANSWERED) {
+					this._status = C.STATUS_CANCELED;
+					this._request.reply(487);
+					this._failed("remote", request, JsSIP_C.causes.CANCELED);
+				}
+			} else switch (request.method) {
+				case JsSIP_C.ACK:
+					if (this._status !== C.STATUS_WAITING_FOR_ACK) return;
+					this._status = C.STATUS_CONFIRMED;
+					clearTimeout(this._timers.ackTimer);
+					clearTimeout(this._timers.invite2xxTimer);
+					if (this._late_sdp) {
+						if (!request.body) {
+							this.terminate({
+								cause: JsSIP_C.causes.MISSING_SDP,
+								status_code: 400
+							});
+							break;
 						}
-						var e = {
+						const e = {
 							originator: "remote",
 							type: "answer",
-							sdp: response.body
+							sdp: request.body
 						};
 						logger.debug("emit \"sdp\"");
 						this.emit("sdp", e);
-						var answer = new RTCSessionDescription({
+						const answer = new RTCSessionDescription({
 							type: "answer",
 							sdp: e.sdp
 						});
-						this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-							return _this24._connection.setRemoteDescription(answer);
-						}).then(function() {
-							if (eventHandlers.succeeded) eventHandlers.succeeded(response);
-						})["catch"](function(error) {
-							onFailed.call(_this24);
+						this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._connection.setRemoteDescription(answer)).then(() => {
+							if (!this._is_confirmed) this._confirmed("remote", request);
+						}).catch((error) => {
+							this.terminate({
+								cause: JsSIP_C.causes.BAD_MEDIA_DESCRIPTION,
+								status_code: 488
+							});
 							logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-							_this24.emit("peerconnection:setremotedescriptionfailed", error);
+							this.emit("peerconnection:setremotedescriptionfailed", error);
 						});
-					}
-					function onFailed(response) {
-						if (eventHandlers.failed) eventHandlers.failed(response);
-					}
+					} else if (!this._is_confirmed) this._confirmed("remote", request);
+					break;
+				case JsSIP_C.BYE:
+					if (this._status === C.STATUS_CONFIRMED || this._status === C.STATUS_WAITING_FOR_ACK) {
+						request.reply(200);
+						this._ended("remote", request, JsSIP_C.causes.BYE);
+					} else if (this._status === C.STATUS_INVITE_RECEIVED || this._status === C.STATUS_WAITING_FOR_ANSWER) {
+						request.reply(200);
+						this._request.reply(487, "BYE Received");
+						this._ended("remote", request, JsSIP_C.causes.BYE);
+					} else request.reply(403, "Wrong Status");
+					break;
+				case JsSIP_C.INVITE:
+					if (this._status === C.STATUS_CONFIRMED) if (request.hasHeader("replaces")) this._receiveReplaces(request);
+					else this._receiveReinvite(request);
+					else request.reply(403, "Wrong Status");
+					break;
+				case JsSIP_C.INFO:
+					if (this._status === C.STATUS_1XX_RECEIVED || this._status === C.STATUS_WAITING_FOR_ANSWER || this._status === C.STATUS_ANSWERED || this._status === C.STATUS_WAITING_FOR_ACK || this._status === C.STATUS_CONFIRMED) {
+						const contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
+						if (contentType && contentType.match(/^application\/dtmf-relay/i)) new RTCSession_DTMF(this).init_incoming(request);
+						else if (contentType !== void 0) new RTCSession_Info(this).init_incoming(request);
+						else request.reply(415);
+					} else request.reply(403, "Wrong Status");
+					break;
+				case JsSIP_C.UPDATE:
+					if (this._status === C.STATUS_CONFIRMED) this._receiveUpdate(request);
+					else request.reply(403, "Wrong Status");
+					break;
+				case JsSIP_C.REFER:
+					if (this._status === C.STATUS_CONFIRMED) this._receiveRefer(request);
+					else request.reply(403, "Wrong Status");
+					break;
+				case JsSIP_C.NOTIFY:
+					if (this._status === C.STATUS_CONFIRMED) this._receiveNotify(request);
+					else request.reply(403, "Wrong Status");
+					break;
+				default: request.reply(501);
+			}
+		}
+		/**
+		* Session Callbacks
+		*/
+		onTransportError() {
+			logger.warn("onTransportError()");
+			if (this._status !== C.STATUS_TERMINATED) this.terminate({
+				status_code: 500,
+				reason_phrase: JsSIP_C.causes.CONNECTION_ERROR,
+				cause: JsSIP_C.causes.CONNECTION_ERROR
+			});
+		}
+		onRequestTimeout() {
+			logger.warn("onRequestTimeout()");
+			if (this._status !== C.STATUS_TERMINATED) this.terminate({
+				status_code: 408,
+				reason_phrase: JsSIP_C.causes.REQUEST_TIMEOUT,
+				cause: JsSIP_C.causes.REQUEST_TIMEOUT
+			});
+		}
+		onDialogError() {
+			logger.warn("onDialogError()");
+			if (this._status !== C.STATUS_TERMINATED) this.terminate({
+				status_code: 500,
+				reason_phrase: JsSIP_C.causes.DIALOG_ERROR,
+				cause: JsSIP_C.causes.DIALOG_ERROR
+			});
+		}
+		newDTMF(data) {
+			logger.debug("newDTMF()");
+			this.emit("newDTMF", data);
+		}
+		newInfo(data) {
+			logger.debug("newInfo()");
+			this.emit("newInfo", data);
+		}
+		/**
+		* Check if RTCSession is ready for an outgoing re-INVITE or UPDATE with SDP.
+		*/
+		isReadyToReOffer() {
+			if (!this._rtcReady) {
+				logger.debug("isReadyToReOffer() | internal WebRTC status not ready");
+				return false;
+			}
+			if (!this._dialog) {
+				logger.debug("isReadyToReOffer() | session not established yet");
+				return false;
+			}
+			if (this._dialog.uac_pending_reply === true || this._dialog.uas_pending_reply === true) {
+				logger.debug("isReadyToReOffer() | there is another INVITE/UPDATE transaction in progress");
+				return false;
+			}
+			return true;
+		}
+		_close() {
+			logger.debug("close()");
+			if (this._localMediaStream && this._localMediaStreamLocallyGenerated) {
+				logger.debug("close() | closing local MediaStream");
+				Utils.closeMediaStream(this._localMediaStream);
+			}
+			if (this._status === C.STATUS_TERMINATED) return;
+			this._status = C.STATUS_TERMINATED;
+			if (this._connection) try {
+				this._connection.close();
+			} catch (error) {
+				logger.warn("close() | error closing the RTCPeerConnection: %o", error);
+			}
+			for (const timer in this._timers) if (Object.prototype.hasOwnProperty.call(this._timers, timer)) clearTimeout(this._timers[timer]);
+			clearTimeout(this._sessionTimers.timer);
+			if (this._dialog) {
+				this._dialog.terminate();
+				delete this._dialog;
+			}
+			for (const dialog in this._earlyDialogs) if (Object.prototype.hasOwnProperty.call(this._earlyDialogs, dialog)) {
+				this._earlyDialogs[dialog].terminate();
+				delete this._earlyDialogs[dialog];
+			}
+			for (const subscriber in this._referSubscribers) if (Object.prototype.hasOwnProperty.call(this._referSubscribers, subscriber)) delete this._referSubscribers[subscriber];
+			this._ua.destroyRTCSession(this);
+		}
+		/**
+		* Private API.
+		*/
+		/**
+		* RFC3261 13.3.1.4
+		* Response retransmissions cannot be accomplished by transaction layer
+		*  since it is destroyed when receiving the first 2xx answer
+		*/
+		_setInvite2xxTimer(request, body) {
+			let timeout = Timers.T1;
+			function invite2xxRetransmission() {
+				if (this._status !== C.STATUS_WAITING_FOR_ACK) return;
+				request.reply(200, null, [`Contact: ${this._contact}`], body);
+				if (timeout < Timers.T2) {
+					timeout = timeout * 2;
+					if (timeout > Timers.T2) timeout = Timers.T2;
 				}
-			},
-			{
-				key: "_sendUpdate",
-				value: function _sendUpdate() {
-					var _this25 = this;
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					logger.debug("sendUpdate()");
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					var rtcOfferConstraints = options.rtcOfferConstraints || this._rtcOfferConstraints || null;
-					var sdpOffer = options.sdpOffer || false;
-					var succeeded = false;
-					extraHeaders.push("Contact: ".concat(this._contact));
-					if (this._sessionTimers.running) extraHeaders.push("Session-Expires: ".concat(this._sessionTimers.currentExpires, ";refresher=").concat(this._sessionTimers.refresher ? "uac" : "uas"));
-					if (sdpOffer) {
-						extraHeaders.push("Content-Type: application/sdp");
-						this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-							return _this25._createLocalDescription("offer", rtcOfferConstraints);
-						}).then(function(sdp) {
-							sdp = _this25._mangleOffer(sdp);
-							var e = {
-								originator: "local",
-								type: "offer",
-								sdp
-							};
-							logger.debug("emit \"sdp\"");
-							_this25.emit("sdp", e);
-							_this25.sendRequest(JsSIP_C.UPDATE, {
-								extraHeaders,
-								body: sdp,
-								eventHandlers: {
-									onSuccessResponse: function onSuccessResponse(response) {
-										onSucceeded.call(_this25, response);
-										succeeded = true;
-									},
-									onErrorResponse: function onErrorResponse(response) {
-										onFailed.call(_this25, response);
-									},
-									onTransportError: function onTransportError() {
-										_this25.onTransportError();
-									},
-									onRequestTimeout: function onRequestTimeout() {
-										_this25.onRequestTimeout();
-									},
-									onDialogError: function onDialogError() {
-										_this25.onDialogError();
-									}
-								}
-							});
-						})["catch"](function() {
-							onFailed.call(_this25);
+				this._timers.invite2xxTimer = setTimeout(invite2xxRetransmission.bind(this), timeout);
+			}
+			this._timers.invite2xxTimer = setTimeout(invite2xxRetransmission.bind(this), timeout);
+		}
+		/**
+		* RFC3261 14.2
+		* If a UAS generates a 2xx response and never receives an ACK,
+		*  it SHOULD generate a BYE to terminate the dialog.
+		*/
+		_setACKTimer() {
+			this._timers.ackTimer = setTimeout(() => {
+				if (this._status === C.STATUS_WAITING_FOR_ACK) {
+					logger.debug("no ACK received, terminating the session");
+					clearTimeout(this._timers.invite2xxTimer);
+					this.sendRequest(JsSIP_C.BYE);
+					this._ended("remote", null, JsSIP_C.causes.NO_ACK);
+				}
+			}, Timers.TIMER_H);
+		}
+		_createRTCConnection(pcConfig, rtcConstraints) {
+			this._connection = new RTCPeerConnection(pcConfig, rtcConstraints);
+			this._connection.addEventListener("iceconnectionstatechange", () => {
+				if (this._connection.iceConnectionState === "failed") this.terminate({
+					cause: JsSIP_C.causes.RTP_TIMEOUT,
+					status_code: 408,
+					reason_phrase: JsSIP_C.causes.RTP_TIMEOUT
+				});
+			});
+			logger.debug("emit \"peerconnection\"");
+			this.emit("peerconnection", { peerconnection: this._connection });
+		}
+		_createLocalDescription(type, constraints) {
+			logger.debug("createLocalDescription()");
+			if (type !== "offer" && type !== "answer") throw new Error(`createLocalDescription() | invalid type "${type}"`);
+			const connection = this._connection;
+			this._rtcReady = false;
+			return Promise.resolve().then(() => {
+				if (type === "offer") return connection.createOffer(constraints).catch((error) => {
+					logger.warn("emit \"peerconnection:createofferfailed\" [error:%o]", error);
+					this.emit("peerconnection:createofferfailed", error);
+					return Promise.reject(error);
+				});
+				else return connection.createAnswer(constraints).catch((error) => {
+					logger.warn("emit \"peerconnection:createanswerfailed\" [error:%o]", error);
+					this.emit("peerconnection:createanswerfailed", error);
+					return Promise.reject(error);
+				});
+			}).then((desc) => {
+				return connection.setLocalDescription(desc).catch((error) => {
+					this._rtcReady = true;
+					logger.warn("emit \"peerconnection:setlocaldescriptionfailed\" [error:%o]", error);
+					this.emit("peerconnection:setlocaldescriptionfailed", error);
+					return Promise.reject(error);
+				});
+			}).then(() => {
+				/**
+				* Resolve right away if:
+				* - 'connection.iceGatheringState' is 'complete' and no 'iceRestart' constraint is set.
+				* - 'connection.iceGatheringState' is 'gathering' and 'iceReady' is true.
+				*/
+				const iceRestart = constraints && constraints.iceRestart;
+				if (connection.iceGatheringState === "complete" && !iceRestart || connection.iceGatheringState === "gathering" && this._iceReady) {
+					this._rtcReady = true;
+					const e = {
+						originator: "local",
+						type,
+						sdp: connection.localDescription.sdp
+					};
+					logger.debug("emit \"sdp\"");
+					this.emit("sdp", e);
+					return Promise.resolve(e.sdp);
+				}
+				return new Promise((resolve) => {
+					let finished = false;
+					let iceCandidateListener;
+					let iceGatheringStateListener;
+					this._iceReady = false;
+					const ready = () => {
+						if (finished) return;
+						connection.removeEventListener("icecandidate", iceCandidateListener);
+						connection.removeEventListener("icegatheringstatechange", iceGatheringStateListener);
+						finished = true;
+						this._rtcReady = true;
+						this._iceReady = true;
+						const e = {
+							originator: "local",
+							type,
+							sdp: connection.localDescription.sdp
+						};
+						logger.debug("emit \"sdp\"");
+						this.emit("sdp", e);
+						resolve(e.sdp);
+					};
+					connection.addEventListener("icecandidate", iceCandidateListener = (event) => {
+						const candidate = event.candidate;
+						if (candidate) this.emit("icecandidate", {
+							candidate,
+							ready
 						});
-					} else this.sendRequest(JsSIP_C.UPDATE, {
-						extraHeaders,
-						eventHandlers: {
-							onSuccessResponse: function onSuccessResponse(response) {
-								onSucceeded.call(_this25, response);
-							},
-							onErrorResponse: function onErrorResponse(response) {
-								onFailed.call(_this25, response);
-							},
-							onTransportError: function onTransportError() {
-								_this25.onTransportError();
-							},
-							onRequestTimeout: function onRequestTimeout() {
-								_this25.onRequestTimeout();
-							},
-							onDialogError: function onDialogError() {
-								_this25.onDialogError();
-							}
-						}
+						else ready();
 					});
-					function onSucceeded(response) {
-						var _this26 = this;
-						if (this._status === C.STATUS_TERMINATED) return;
-						if (succeeded) return;
-						this._handleSessionTimersInIncomingResponse(response);
-						if (sdpOffer) {
-							if (!response.body) {
-								onFailed.call(this);
-								return;
-							} else if (!response.hasHeader("Content-Type") || response.getHeader("Content-Type").toLowerCase() !== "application/sdp") {
-								onFailed.call(this);
-								return;
-							}
-							var e = {
-								originator: "remote",
-								type: "answer",
-								sdp: response.body
-							};
-							logger.debug("emit \"sdp\"");
-							this.emit("sdp", e);
-							var answer = new RTCSessionDescription({
-								type: "answer",
-								sdp: e.sdp
-							});
-							this._connectionPromiseQueue = this._connectionPromiseQueue.then(function() {
-								return _this26._connection.setRemoteDescription(answer);
-							}).then(function() {
-								if (eventHandlers.succeeded) eventHandlers.succeeded(response);
-							})["catch"](function(error) {
-								onFailed.call(_this26);
-								logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
-								_this26.emit("peerconnection:setremotedescriptionfailed", error);
-							});
-						} else if (eventHandlers.succeeded) eventHandlers.succeeded(response);
-					}
-					function onFailed(response) {
-						if (eventHandlers.failed) eventHandlers.failed(response);
-					}
-				}
-			},
-			{
-				key: "_acceptAndTerminate",
-				value: function _acceptAndTerminate(response, status_code, reason_phrase) {
-					logger.debug("acceptAndTerminate()");
-					var extraHeaders = [];
-					if (status_code) {
-						reason_phrase = reason_phrase || JsSIP_C.REASON_PHRASE[status_code] || "";
-						extraHeaders.push("Reason: SIP ;cause=".concat(status_code, "; text=\"").concat(reason_phrase, "\""));
-					}
-					if (this._dialog || this._createDialog(response, "UAC")) {
-						this.sendRequest(JsSIP_C.ACK);
-						this.sendRequest(JsSIP_C.BYE, { extraHeaders });
-					}
-					this._status = C.STATUS_TERMINATED;
-				}
-			},
-			{
-				key: "_mangleOffer",
-				value: function _mangleOffer(sdp) {
-					if (!this._localHold && !this._remoteHold) return sdp;
-					sdp = sdp_transform.parse(sdp);
-					if (this._localHold && !this._remoteHold) {
-						logger.debug("mangleOffer() | me on hold, mangling offer");
-						var _iterator5 = _createForOfIteratorHelper(sdp.media), _step5;
-						try {
-							for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
-								var m = _step5.value;
-								if (holdMediaTypes.indexOf(m.type) === -1) continue;
-								if (!m.direction) m.direction = "sendonly";
-								else if (m.direction === "sendrecv") m.direction = "sendonly";
-								else if (m.direction === "recvonly") m.direction = "inactive";
-							}
-						} catch (err) {
-							_iterator5.e(err);
-						} finally {
-							_iterator5.f();
-						}
-					} else if (this._localHold && this._remoteHold) {
-						logger.debug("mangleOffer() | both on hold, mangling offer");
-						var _iterator6 = _createForOfIteratorHelper(sdp.media), _step6;
-						try {
-							for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
-								var _m = _step6.value;
-								if (holdMediaTypes.indexOf(_m.type) === -1) continue;
-								_m.direction = "inactive";
-							}
-						} catch (err) {
-							_iterator6.e(err);
-						} finally {
-							_iterator6.f();
-						}
-					} else if (this._remoteHold) {
-						logger.debug("mangleOffer() | remote on hold, mangling offer");
-						var _iterator7 = _createForOfIteratorHelper(sdp.media), _step7;
-						try {
-							for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
-								var _m2 = _step7.value;
-								if (holdMediaTypes.indexOf(_m2.type) === -1) continue;
-								if (!_m2.direction) _m2.direction = "recvonly";
-								else if (_m2.direction === "sendrecv") _m2.direction = "recvonly";
-								else if (_m2.direction === "recvonly") _m2.direction = "inactive";
-							}
-						} catch (err) {
-							_iterator7.e(err);
-						} finally {
-							_iterator7.f();
-						}
-					}
-					return sdp_transform.write(sdp);
-				}
-			},
-			{
-				key: "_setLocalMediaStatus",
-				value: function _setLocalMediaStatus() {
-					var enableAudio = true, enableVideo = true;
-					if (this._localHold || this._remoteHold) {
-						enableAudio = false;
-						enableVideo = false;
-					}
-					if (this._audioMuted) enableAudio = false;
-					if (this._videoMuted) enableVideo = false;
-					this._toggleMuteAudio(!enableAudio);
-					this._toggleMuteVideo(!enableVideo);
-				}
-			},
-			{
-				key: "_handleSessionTimersInIncomingRequest",
-				value: function _handleSessionTimersInIncomingRequest(request, responseExtraHeaders) {
-					if (!this._sessionTimers.enabled) return;
-					var session_expires_refresher;
-					if (request.session_expires && request.session_expires >= JsSIP_C.MIN_SESSION_EXPIRES) {
-						this._sessionTimers.currentExpires = request.session_expires;
-						session_expires_refresher = request.session_expires_refresher || "uas";
-					} else {
-						this._sessionTimers.currentExpires = this._sessionTimers.defaultExpires;
-						session_expires_refresher = "uas";
-					}
-					responseExtraHeaders.push("Session-Expires: ".concat(this._sessionTimers.currentExpires, ";refresher=").concat(session_expires_refresher));
-					this._sessionTimers.refresher = session_expires_refresher === "uas";
-					this._runSessionTimer();
-				}
-			},
-			{
-				key: "_handleSessionTimersInIncomingResponse",
-				value: function _handleSessionTimersInIncomingResponse(response) {
-					if (!this._sessionTimers.enabled) return;
-					var session_expires_refresher;
-					if (response.session_expires && response.session_expires >= JsSIP_C.MIN_SESSION_EXPIRES) {
-						this._sessionTimers.currentExpires = response.session_expires;
-						session_expires_refresher = response.session_expires_refresher || "uac";
-					} else {
-						this._sessionTimers.currentExpires = this._sessionTimers.defaultExpires;
-						session_expires_refresher = "uac";
-					}
-					this._sessionTimers.refresher = session_expires_refresher === "uac";
-					this._runSessionTimer();
-				}
-			},
-			{
-				key: "_runSessionTimer",
-				value: function _runSessionTimer() {
-					var _this27 = this;
-					var expires = this._sessionTimers.currentExpires;
-					this._sessionTimers.running = true;
-					clearTimeout(this._sessionTimers.timer);
-					if (this._sessionTimers.refresher) this._sessionTimers.timer = setTimeout(function() {
-						if (_this27._status === C.STATUS_TERMINATED) return;
-						if (!_this27._isReadyToReOffer()) return;
-						logger.debug("runSessionTimer() | sending session refresh request");
-						if (_this27._sessionTimers.refreshMethod === JsSIP_C.UPDATE) _this27._sendUpdate();
-						else _this27._sendReinvite();
-					}, expires * 500);
-					else this._sessionTimers.timer = setTimeout(function() {
-						if (_this27._status === C.STATUS_TERMINATED) return;
-						logger.warn("runSessionTimer() | timer expired, terminating the session");
-						_this27.terminate({
-							cause: JsSIP_C.causes.REQUEST_TIMEOUT,
-							status_code: 408,
-							reason_phrase: "Session Timer Expired"
-						});
-					}, expires * 1100);
-				}
-			},
-			{
-				key: "_toggleMuteAudio",
-				value: function _toggleMuteAudio(mute) {
-					var _iterator8 = _createForOfIteratorHelper(this._connection.getSenders().filter(function(sender) {
-						return sender.track && sender.track.kind === "audio";
-					})), _step8;
-					try {
-						for (_iterator8.s(); !(_step8 = _iterator8.n()).done;) {
-							var sender = _step8.value;
-							sender.track.enabled = !mute;
-						}
-					} catch (err) {
-						_iterator8.e(err);
-					} finally {
-						_iterator8.f();
-					}
-				}
-			},
-			{
-				key: "_toggleMuteVideo",
-				value: function _toggleMuteVideo(mute) {
-					var _iterator9 = _createForOfIteratorHelper(this._connection.getSenders().filter(function(sender) {
-						return sender.track && sender.track.kind === "video";
-					})), _step9;
-					try {
-						for (_iterator9.s(); !(_step9 = _iterator9.n()).done;) {
-							var sender = _step9.value;
-							sender.track.enabled = !mute;
-						}
-					} catch (err) {
-						_iterator9.e(err);
-					} finally {
-						_iterator9.f();
-					}
-				}
-			},
-			{
-				key: "_newRTCSession",
-				value: function _newRTCSession(originator, request) {
-					logger.debug("newRTCSession()");
-					this._ua.newRTCSession(this, {
-						originator,
-						session: this,
-						request
+					connection.addEventListener("icegatheringstatechange", iceGatheringStateListener = () => {
+						if (connection.iceGatheringState === "complete") ready();
 					});
-				}
-			},
-			{
-				key: "_connecting",
-				value: function _connecting(request) {
-					logger.debug("session connecting");
-					logger.debug("emit \"connecting\"");
-					this.emit("connecting", { request });
-				}
-			},
-			{
-				key: "_progress",
-				value: function _progress(originator, response) {
-					logger.debug("session progress");
-					logger.debug("emit \"progress\"");
-					this.emit("progress", {
-						originator,
-						response: response || null
-					});
-				}
-			},
-			{
-				key: "_accepted",
-				value: function _accepted(originator, message) {
-					logger.debug("session accepted");
-					this._start_time = /* @__PURE__ */ new Date();
-					logger.debug("emit \"accepted\"");
-					this.emit("accepted", {
-						originator,
-						response: message || null
-					});
-				}
-			},
-			{
-				key: "_confirmed",
-				value: function _confirmed(originator, ack) {
-					logger.debug("session confirmed");
-					this._is_confirmed = true;
-					logger.debug("emit \"confirmed\"");
-					this.emit("confirmed", {
-						originator,
-						ack: ack || null
-					});
-				}
-			},
-			{
-				key: "_ended",
-				value: function _ended(originator, message, cause) {
-					logger.debug("session ended");
-					this._end_time = /* @__PURE__ */ new Date();
-					this._close();
-					logger.debug("emit \"ended\"");
-					this.emit("ended", {
-						originator,
-						message: message || null,
-						cause
-					});
-				}
-			},
-			{
-				key: "_failed",
-				value: function _failed(originator, message, cause) {
-					logger.debug("session failed");
-					logger.debug("emit \"_failed\"");
-					this.emit("_failed", {
-						originator,
-						message: message || null,
-						cause
-					});
-					this._close();
-					logger.debug("emit \"failed\"");
-					this.emit("failed", {
-						originator,
-						message: message || null,
-						cause
-					});
-				}
-			},
-			{
-				key: "_onhold",
-				value: function _onhold(originator) {
-					logger.debug("session onhold");
-					this._setLocalMediaStatus();
-					logger.debug("emit \"hold\"");
-					this.emit("hold", { originator });
-				}
-			},
-			{
-				key: "_onunhold",
-				value: function _onunhold(originator) {
-					logger.debug("session onunhold");
-					this._setLocalMediaStatus();
-					logger.debug("emit \"unhold\"");
-					this.emit("unhold", { originator });
-				}
-			},
-			{
-				key: "_onmute",
-				value: function _onmute(_ref5) {
-					var audio = _ref5.audio, video = _ref5.video;
-					logger.debug("session onmute");
-					this._setLocalMediaStatus();
-					logger.debug("emit \"muted\"");
-					this.emit("muted", {
-						audio,
-						video
-					});
-				}
-			},
-			{
-				key: "_onunmute",
-				value: function _onunmute(_ref6) {
-					var audio = _ref6.audio, video = _ref6.video;
-					logger.debug("session onunmute");
-					this._setLocalMediaStatus();
-					logger.debug("emit \"unmuted\"");
-					this.emit("unmuted", {
-						audio,
-						video
-					});
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
-			},
-			{
-				key: "causes",
-				get: function get() {
-					return JsSIP_C.causes;
-				}
-			},
-			{
-				key: "id",
-				get: function get() {
-					return this._id;
-				}
-			},
-			{
-				key: "connection",
-				get: function get() {
-					return this._connection;
-				}
-			},
-			{
-				key: "contact",
-				get: function get() {
-					return this._contact;
-				}
-			},
-			{
-				key: "direction",
-				get: function get() {
-					return this._direction;
-				}
-			},
-			{
-				key: "local_identity",
-				get: function get() {
-					return this._local_identity;
-				}
-			},
-			{
-				key: "remote_identity",
-				get: function get() {
-					return this._remote_identity;
-				}
-			},
-			{
-				key: "start_time",
-				get: function get() {
-					return this._start_time;
-				}
-			},
-			{
-				key: "end_time",
-				get: function get() {
-					return this._end_time;
-				}
-			},
-			{
-				key: "data",
-				get: function get() {
-					return this._data;
-				},
-				set: function set(_data) {
-					this._data = _data;
-				}
-			},
-			{
-				key: "status",
-				get: function get() {
-					return this._status;
+				});
+			});
+		}
+		/**
+		* Dialog Management
+		*/
+		_createDialog(message, type, early) {
+			const local_tag = type === "UAS" ? message.to_tag : message.from_tag;
+			const remote_tag = type === "UAS" ? message.from_tag : message.to_tag;
+			const id = message.call_id + local_tag + remote_tag;
+			let early_dialog = this._earlyDialogs[id];
+			if (early) if (early_dialog) return true;
+			else {
+				early_dialog = new Dialog(this, message, type, Dialog.C.STATUS_EARLY);
+				if (early_dialog.error) {
+					logger.debug(early_dialog.error);
+					this._failed("remote", message, JsSIP_C.causes.INTERNAL_ERROR);
+					return false;
+				} else {
+					this._earlyDialogs[id] = early_dialog;
+					return true;
 				}
 			}
-		]);
-		return RTCSession;
-	}(EventEmitter);
+			else {
+				this._from_tag = message.from_tag;
+				this._to_tag = message.to_tag;
+				if (early_dialog) {
+					early_dialog.update(message, type);
+					this._dialog = early_dialog;
+					delete this._earlyDialogs[id];
+					return true;
+				}
+				const dialog = new Dialog(this, message, type);
+				if (dialog.error) {
+					logger.debug(dialog.error);
+					this._failed("remote", message, JsSIP_C.causes.INTERNAL_ERROR);
+					return false;
+				} else {
+					this._dialog = dialog;
+					return true;
+				}
+			}
+		}
+		/**
+		* In dialog INVITE Reception
+		*/
+		_receiveReinvite(request) {
+			logger.debug("receiveReinvite()");
+			const contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
+			const data = {
+				request,
+				callback: void 0,
+				reject: reject.bind(this)
+			};
+			let rejected = false;
+			function reject(options = {}) {
+				rejected = true;
+				const status_code = options.status_code || 403;
+				const reason_phrase = options.reason_phrase || "";
+				const extraHeaders = Utils.cloneArray(options.extraHeaders);
+				if (this._status !== C.STATUS_CONFIRMED) return false;
+				if (status_code < 300 || status_code >= 700) throw new TypeError(`Invalid status_code: ${status_code}`);
+				request.reply(status_code, reason_phrase, extraHeaders);
+			}
+			this.emit("reinvite", data);
+			if (rejected) return;
+			this._late_sdp = false;
+			if (!request.body) {
+				this._late_sdp = true;
+				if (this._remoteHold) {
+					this._remoteHold = false;
+					this._onunhold("remote");
+				}
+				this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._createLocalDescription("offer", this._rtcOfferConstraints)).then((sdp) => {
+					sendAnswer.call(this, sdp);
+				}).catch(() => {
+					request.reply(500);
+				});
+				return;
+			}
+			if (contentType !== "application/sdp") {
+				logger.debug("invalid Content-Type");
+				request.reply(415);
+				return;
+			}
+			this._processInDialogSdpOffer(request).then((desc) => {
+				if (this._status === C.STATUS_TERMINATED) return;
+				sendAnswer.call(this, desc);
+			}).catch((error) => {
+				logger.warn(error);
+			});
+			function sendAnswer(desc) {
+				const extraHeaders = [`Contact: ${this._contact}`];
+				this._handleSessionTimersInIncomingRequest(request, extraHeaders);
+				if (this._late_sdp) desc = this._mangleOffer(desc);
+				request.reply(200, null, extraHeaders, desc, () => {
+					this._status = C.STATUS_WAITING_FOR_ACK;
+					this._setInvite2xxTimer(request, desc);
+					this._setACKTimer();
+				});
+				if (typeof data.callback === "function") data.callback();
+			}
+		}
+		/**
+		* In dialog UPDATE Reception
+		*/
+		_receiveUpdate(request) {
+			logger.debug("receiveUpdate()");
+			const contentType = request.hasHeader("Content-Type") ? request.getHeader("Content-Type").toLowerCase() : void 0;
+			const data = {
+				request,
+				callback: void 0,
+				reject: reject.bind(this)
+			};
+			let rejected = false;
+			function reject(options = {}) {
+				rejected = true;
+				const status_code = options.status_code || 403;
+				const reason_phrase = options.reason_phrase || "";
+				const extraHeaders = Utils.cloneArray(options.extraHeaders);
+				if (this._status !== C.STATUS_CONFIRMED) return false;
+				if (status_code < 300 || status_code >= 700) throw new TypeError(`Invalid status_code: ${status_code}`);
+				request.reply(status_code, reason_phrase, extraHeaders);
+			}
+			this.emit("update", data);
+			if (rejected) return;
+			if (!request.body) {
+				sendAnswer.call(this, null);
+				return;
+			}
+			if (contentType !== "application/sdp") {
+				logger.debug("invalid Content-Type");
+				request.reply(415);
+				return;
+			}
+			this._processInDialogSdpOffer(request).then((desc) => {
+				if (this._status === C.STATUS_TERMINATED) return;
+				sendAnswer.call(this, desc);
+			}).catch((error) => {
+				logger.warn(error);
+			});
+			function sendAnswer(desc) {
+				const extraHeaders = [`Contact: ${this._contact}`];
+				this._handleSessionTimersInIncomingRequest(request, extraHeaders);
+				request.reply(200, null, extraHeaders, desc);
+				if (typeof data.callback === "function") data.callback();
+			}
+		}
+		_processInDialogSdpOffer(request) {
+			logger.debug("_processInDialogSdpOffer()");
+			const sdp = request.parseSDP();
+			let hold = false;
+			for (const m of sdp.media) {
+				if (holdMediaTypes.indexOf(m.type) === -1) continue;
+				const direction = m.direction || sdp.direction || "sendrecv";
+				if (direction === "sendonly" || direction === "inactive") hold = true;
+				else {
+					hold = false;
+					break;
+				}
+			}
+			const e = {
+				originator: "remote",
+				type: "offer",
+				sdp: request.body
+			};
+			logger.debug("emit \"sdp\"");
+			this.emit("sdp", e);
+			const offer = new RTCSessionDescription({
+				type: "offer",
+				sdp: e.sdp
+			});
+			this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				return this._connection.setRemoteDescription(offer).catch((error) => {
+					request.reply(488);
+					logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
+					this.emit("peerconnection:setremotedescriptionfailed", error);
+					throw error;
+				});
+			}).then(() => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				if (this._remoteHold === true && hold === false) {
+					this._remoteHold = false;
+					this._onunhold("remote");
+				} else if (this._remoteHold === false && hold === true) {
+					this._remoteHold = true;
+					this._onhold("remote");
+				}
+			}).then(() => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				return this._createLocalDescription("answer", this._rtcAnswerConstraints).catch((error) => {
+					request.reply(500);
+					logger.warn("emit \"peerconnection:createtelocaldescriptionfailed\" [error:%o]", error);
+					throw error;
+				});
+			}).catch((error) => {
+				logger.warn("_processInDialogSdpOffer() failed [error: %o]", error);
+			});
+			return this._connectionPromiseQueue;
+		}
+		/**
+		* In dialog Refer Reception
+		*/
+		_receiveRefer(request) {
+			logger.debug("receiveRefer()");
+			if (!request.refer_to) {
+				logger.debug("no Refer-To header field present in REFER");
+				request.reply(400);
+				return;
+			}
+			if (request.refer_to.uri.scheme !== JsSIP_C.SIP) {
+				logger.debug("Refer-To header field points to a non-SIP URI scheme");
+				request.reply(416);
+				return;
+			}
+			request.reply(202);
+			const notifier = new RTCSession_ReferNotifier(this, request.cseq);
+			logger.debug("emit \"refer\"");
+			this.emit("refer", {
+				request,
+				accept: (initCallback, options) => {
+					accept.call(this, initCallback, options);
+				},
+				reject: () => {
+					reject.call(this);
+				}
+			});
+			function accept(initCallback, options = {}) {
+				initCallback = typeof initCallback === "function" ? initCallback : null;
+				if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
+				const session = new RTCSession(this._ua);
+				session.on("progress", ({ response }) => {
+					notifier.notify(response.status_code, response.reason_phrase);
+				});
+				session.on("accepted", ({ response }) => {
+					notifier.notify(response.status_code, response.reason_phrase);
+				});
+				session.on("_failed", ({ message, cause }) => {
+					if (message) notifier.notify(message.status_code, message.reason_phrase);
+					else notifier.notify(487, cause);
+				});
+				if (request.refer_to.uri.hasHeader("replaces")) {
+					const replaces = decodeURIComponent(request.refer_to.uri.getHeader("replaces"));
+					options.extraHeaders = Utils.cloneArray(options.extraHeaders);
+					options.extraHeaders.push(`Replaces: ${replaces}`);
+				}
+				const target_uri = request.refer_to.uri.clone();
+				target_uri.clearHeaders();
+				session.connect(target_uri, options, initCallback);
+			}
+			function reject() {
+				notifier.notify(603);
+			}
+		}
+		/**
+		* In dialog Notify Reception
+		*/
+		_receiveNotify(request) {
+			logger.debug("receiveNotify()");
+			if (!request.event) request.reply(400);
+			switch (request.event.event) {
+				case "refer": {
+					let id;
+					let referSubscriber;
+					if (request.event.params && request.event.params.id) {
+						id = request.event.params.id;
+						referSubscriber = this._referSubscribers[id];
+					} else if (Object.keys(this._referSubscribers).length === 1) referSubscriber = this._referSubscribers[Object.keys(this._referSubscribers)[0]];
+					else {
+						request.reply(400, "Missing event id parameter");
+						return;
+					}
+					if (!referSubscriber) {
+						request.reply(481, "Subscription does not exist");
+						return;
+					}
+					referSubscriber.receiveNotify(request);
+					request.reply(200);
+					break;
+				}
+				default: request.reply(489);
+			}
+		}
+		/**
+		* INVITE with Replaces Reception
+		*/
+		_receiveReplaces(request) {
+			logger.debug("receiveReplaces()");
+			function accept(initCallback) {
+				if (this._status !== C.STATUS_WAITING_FOR_ACK && this._status !== C.STATUS_CONFIRMED) return false;
+				const session = new RTCSession(this._ua);
+				session.on("confirmed", () => {
+					this.terminate();
+				});
+				session.init_incoming(request, initCallback);
+			}
+			function reject() {
+				logger.debug("Replaced INVITE rejected by the user");
+				request.reply(486);
+			}
+			this.emit("replaces", {
+				request,
+				accept: (initCallback) => {
+					accept.call(this, initCallback);
+				},
+				reject: () => {
+					reject.call(this);
+				}
+			});
+		}
+		/**
+		* Initial Request Sender
+		*/
+		_sendInitialRequest(mediaConstraints, rtcOfferConstraints, mediaStream) {
+			const request_sender = new RequestSender(this._ua, this._request, {
+				onRequestTimeout: () => {
+					this.onRequestTimeout();
+				},
+				onTransportError: () => {
+					this.onTransportError();
+				},
+				onAuthenticated: (request) => {
+					this._request = request;
+				},
+				onReceiveResponse: (response) => {
+					this._receiveInviteResponse(response);
+				}
+			});
+			Promise.resolve().then(() => {
+				if (mediaStream) return mediaStream;
+				else if (mediaConstraints.audio || mediaConstraints.video) {
+					this._localMediaStreamLocallyGenerated = true;
+					return navigator.mediaDevices.getUserMedia(mediaConstraints).catch((error) => {
+						if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+						this._failed("local", null, JsSIP_C.causes.USER_DENIED_MEDIA_ACCESS);
+						logger.warn("emit \"getusermediafailed\" [error:%o]", error);
+						this.emit("getusermediafailed", error);
+						throw error;
+					});
+				}
+			}).then((stream) => {
+				if (this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				this._localMediaStream = stream;
+				if (stream) stream.getTracks().forEach((track) => {
+					this._connection.addTrack(track, stream);
+				});
+				this._connecting(this._request);
+				return this._createLocalDescription("offer", rtcOfferConstraints).catch((error) => {
+					this._failed("local", null, JsSIP_C.causes.WEBRTC_ERROR);
+					throw error;
+				});
+			}).then((desc) => {
+				if (this._is_canceled || this._status === C.STATUS_TERMINATED) throw new Error("terminated");
+				this._request.body = desc;
+				this._status = C.STATUS_INVITE_SENT;
+				logger.debug("emit \"sending\" [request:%o]", this._request);
+				this.emit("sending", { request: this._request });
+				request_sender.send();
+			}).catch((error) => {
+				if (this._status === C.STATUS_TERMINATED) return;
+				logger.warn(error);
+			});
+		}
+		/**
+		* Get DTMF RTCRtpSender.
+		*/
+		_getDTMFRTPSender() {
+			const sender = this._connection.getSenders().find((rtpSender) => {
+				return rtpSender.track && rtpSender.track.kind === "audio";
+			});
+			if (!(sender && sender.dtmf)) {
+				logger.warn("sendDTMF() | no local audio track to send DTMF with");
+				return;
+			}
+			return sender.dtmf;
+		}
+		/**
+		* Reception of Response for Initial INVITE
+		*/
+		_receiveInviteResponse(response) {
+			logger.debug("receiveInviteResponse()");
+			if (this._dialog && response.status_code >= 200 && response.status_code <= 299) if (this._dialog.id.call_id === response.call_id && this._dialog.id.local_tag === response.from_tag && this._dialog.id.remote_tag === response.to_tag) {
+				this.sendRequest(JsSIP_C.ACK);
+				return;
+			} else {
+				const dialog = new Dialog(this, response, "UAC");
+				if (dialog.error !== void 0) {
+					logger.debug(dialog.error);
+					return;
+				}
+				this.sendRequest(JsSIP_C.ACK);
+				this.sendRequest(JsSIP_C.BYE);
+				return;
+			}
+			if (this._is_canceled) {
+				if (response.status_code >= 100 && response.status_code < 200) this._request.cancel(this._cancel_reason);
+				else if (response.status_code >= 200 && response.status_code < 299) this._acceptAndTerminate(response);
+				return;
+			}
+			if (this._status !== C.STATUS_INVITE_SENT && this._status !== C.STATUS_1XX_RECEIVED) return;
+			switch (true) {
+				case /^100$/.test(response.status_code):
+					this._status = C.STATUS_1XX_RECEIVED;
+					break;
+				case /^1[0-9]{2}$/.test(response.status_code): {
+					if (!response.to_tag) {
+						logger.debug("1xx response received without to tag");
+						break;
+					}
+					if (response.hasHeader("contact")) {
+						if (!this._createDialog(response, "UAC", true)) break;
+					}
+					this._status = C.STATUS_1XX_RECEIVED;
+					if (!response.body) {
+						this._progress("remote", response);
+						break;
+					}
+					const e = {
+						originator: "remote",
+						type: "answer",
+						sdp: response.body
+					};
+					logger.debug("emit \"sdp\"");
+					this.emit("sdp", e);
+					const answer = new RTCSessionDescription({
+						type: "answer",
+						sdp: e.sdp
+					});
+					this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._connection.setRemoteDescription(answer)).then(() => this._progress("remote", response)).catch((error) => {
+						logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
+						this.emit("peerconnection:setremotedescriptionfailed", error);
+					});
+					break;
+				}
+				case /^2[0-9]{2}$/.test(response.status_code): {
+					this._status = C.STATUS_CONFIRMED;
+					if (!response.body) {
+						this._acceptAndTerminate(response, 400, JsSIP_C.causes.MISSING_SDP);
+						this._failed("remote", response, JsSIP_C.causes.BAD_MEDIA_DESCRIPTION);
+						break;
+					}
+					if (!this._createDialog(response, "UAC")) break;
+					const e = {
+						originator: "remote",
+						type: "answer",
+						sdp: response.body
+					};
+					logger.debug("emit \"sdp\"");
+					this.emit("sdp", e);
+					const answer = new RTCSessionDescription({
+						type: "answer",
+						sdp: e.sdp
+					});
+					this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => {
+						if (this._connection.signalingState === "stable") return this._connection.createOffer(this._rtcOfferConstraints).then((offer) => this._connection.setLocalDescription(offer)).catch((error) => {
+							this._acceptAndTerminate(response, 500, error.toString());
+							this._failed("local", response, JsSIP_C.causes.WEBRTC_ERROR);
+						});
+					}).then(() => {
+						this._connection.setRemoteDescription(answer).then(() => {
+							this._handleSessionTimersInIncomingResponse(response);
+							this._accepted("remote", response);
+							this.sendRequest(JsSIP_C.ACK);
+							this._confirmed("local", null);
+						}).catch((error) => {
+							this._acceptAndTerminate(response, 488, "Not Acceptable Here");
+							this._failed("remote", response, JsSIP_C.causes.BAD_MEDIA_DESCRIPTION);
+							logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
+							this.emit("peerconnection:setremotedescriptionfailed", error);
+						});
+					});
+					break;
+				}
+				default: {
+					const cause = Utils.sipErrorCause(response.status_code);
+					this._failed("remote", response, cause);
+				}
+			}
+		}
+		/**
+		* Send Re-INVITE
+		*/
+		_sendReinvite(options = {}) {
+			logger.debug("sendReinvite()");
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			const rtcOfferConstraints = options.rtcOfferConstraints || this._rtcOfferConstraints || null;
+			let succeeded = false;
+			extraHeaders.push(`Contact: ${this._contact}`);
+			extraHeaders.push("Content-Type: application/sdp");
+			if (this._sessionTimers.running) extraHeaders.push(`Session-Expires: ${this._sessionTimers.currentExpires};refresher=${this._sessionTimers.refresher ? "uac" : "uas"}`);
+			this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._createLocalDescription("offer", rtcOfferConstraints)).then((sdp) => {
+				sdp = this._mangleOffer(sdp);
+				const e = {
+					originator: "local",
+					type: "offer",
+					sdp
+				};
+				logger.debug("emit \"sdp\"");
+				this.emit("sdp", e);
+				this.sendRequest(JsSIP_C.INVITE, {
+					extraHeaders,
+					body: sdp,
+					eventHandlers: {
+						onSuccessResponse: (response) => {
+							onSucceeded.call(this, response);
+							succeeded = true;
+						},
+						onErrorResponse: (response) => {
+							onFailed.call(this, response);
+						},
+						onTransportError: () => {
+							this.onTransportError();
+						},
+						onRequestTimeout: () => {
+							this.onRequestTimeout();
+						},
+						onDialogError: () => {
+							this.onDialogError();
+						}
+					}
+				});
+			}).catch(() => {
+				onFailed();
+			});
+			function onSucceeded(response) {
+				if (this._status === C.STATUS_TERMINATED) return;
+				this.sendRequest(JsSIP_C.ACK);
+				if (succeeded) return;
+				this._handleSessionTimersInIncomingResponse(response);
+				if (!response.body) {
+					onFailed.call(this);
+					return;
+				} else if (!response.hasHeader("Content-Type") || response.getHeader("Content-Type").toLowerCase() !== "application/sdp") {
+					onFailed.call(this);
+					return;
+				}
+				const e = {
+					originator: "remote",
+					type: "answer",
+					sdp: response.body
+				};
+				logger.debug("emit \"sdp\"");
+				this.emit("sdp", e);
+				const answer = new RTCSessionDescription({
+					type: "answer",
+					sdp: e.sdp
+				});
+				this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._connection.setRemoteDescription(answer)).then(() => {
+					if (eventHandlers.succeeded) eventHandlers.succeeded(response);
+				}).catch((error) => {
+					onFailed.call(this);
+					logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
+					this.emit("peerconnection:setremotedescriptionfailed", error);
+				});
+			}
+			function onFailed(response) {
+				if (eventHandlers.failed) eventHandlers.failed(response);
+			}
+		}
+		/**
+		* Send UPDATE
+		*/
+		_sendUpdate(options = {}) {
+			logger.debug("sendUpdate()");
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			const rtcOfferConstraints = options.rtcOfferConstraints || this._rtcOfferConstraints || null;
+			const sdpOffer = options.sdpOffer || false;
+			let succeeded = false;
+			extraHeaders.push(`Contact: ${this._contact}`);
+			if (this._sessionTimers.running) extraHeaders.push(`Session-Expires: ${this._sessionTimers.currentExpires};refresher=${this._sessionTimers.refresher ? "uac" : "uas"}`);
+			if (sdpOffer) {
+				extraHeaders.push("Content-Type: application/sdp");
+				this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._createLocalDescription("offer", rtcOfferConstraints)).then((sdp) => {
+					sdp = this._mangleOffer(sdp);
+					const e = {
+						originator: "local",
+						type: "offer",
+						sdp
+					};
+					logger.debug("emit \"sdp\"");
+					this.emit("sdp", e);
+					this.sendRequest(JsSIP_C.UPDATE, {
+						extraHeaders,
+						body: sdp,
+						eventHandlers: {
+							onSuccessResponse: (response) => {
+								onSucceeded.call(this, response);
+								succeeded = true;
+							},
+							onErrorResponse: (response) => {
+								onFailed.call(this, response);
+							},
+							onTransportError: () => {
+								this.onTransportError();
+							},
+							onRequestTimeout: () => {
+								this.onRequestTimeout();
+							},
+							onDialogError: () => {
+								this.onDialogError();
+							}
+						}
+					});
+				}).catch(() => {
+					onFailed.call(this);
+				});
+			} else this.sendRequest(JsSIP_C.UPDATE, {
+				extraHeaders,
+				eventHandlers: {
+					onSuccessResponse: (response) => {
+						onSucceeded.call(this, response);
+					},
+					onErrorResponse: (response) => {
+						onFailed.call(this, response);
+					},
+					onTransportError: () => {
+						this.onTransportError();
+					},
+					onRequestTimeout: () => {
+						this.onRequestTimeout();
+					},
+					onDialogError: () => {
+						this.onDialogError();
+					}
+				}
+			});
+			function onSucceeded(response) {
+				if (this._status === C.STATUS_TERMINATED) return;
+				if (succeeded) return;
+				this._handleSessionTimersInIncomingResponse(response);
+				if (sdpOffer) {
+					if (!response.body) {
+						onFailed.call(this);
+						return;
+					} else if (!response.hasHeader("Content-Type") || response.getHeader("Content-Type").toLowerCase() !== "application/sdp") {
+						onFailed.call(this);
+						return;
+					}
+					const e = {
+						originator: "remote",
+						type: "answer",
+						sdp: response.body
+					};
+					logger.debug("emit \"sdp\"");
+					this.emit("sdp", e);
+					const answer = new RTCSessionDescription({
+						type: "answer",
+						sdp: e.sdp
+					});
+					this._connectionPromiseQueue = this._connectionPromiseQueue.then(() => this._connection.setRemoteDescription(answer)).then(() => {
+						if (eventHandlers.succeeded) eventHandlers.succeeded(response);
+					}).catch((error) => {
+						onFailed.call(this);
+						logger.warn("emit \"peerconnection:setremotedescriptionfailed\" [error:%o]", error);
+						this.emit("peerconnection:setremotedescriptionfailed", error);
+					});
+				} else if (eventHandlers.succeeded) eventHandlers.succeeded(response);
+			}
+			function onFailed(response) {
+				if (eventHandlers.failed) eventHandlers.failed(response);
+			}
+		}
+		_acceptAndTerminate(response, status_code, reason_phrase) {
+			logger.debug("acceptAndTerminate()");
+			const extraHeaders = [];
+			if (status_code) {
+				reason_phrase = reason_phrase || JsSIP_C.REASON_PHRASE[status_code] || "";
+				extraHeaders.push(`Reason: SIP ;cause=${status_code}; text="${reason_phrase}"`);
+			}
+			if (this._dialog || this._createDialog(response, "UAC")) {
+				this.sendRequest(JsSIP_C.ACK);
+				this.sendRequest(JsSIP_C.BYE, { extraHeaders });
+			}
+			this._status = C.STATUS_TERMINATED;
+		}
+		/**
+		* Correctly set the SDP direction attributes if the call is on local hold
+		*/
+		_mangleOffer(sdp) {
+			if (!this._localHold && !this._remoteHold) return sdp;
+			sdp = sdp_transform.parse(sdp);
+			if (this._localHold && !this._remoteHold) {
+				logger.debug("mangleOffer() | me on hold, mangling offer");
+				for (const m of sdp.media) {
+					if (holdMediaTypes.indexOf(m.type) === -1) continue;
+					if (!m.direction) m.direction = "sendonly";
+					else if (m.direction === "sendrecv") m.direction = "sendonly";
+					else if (m.direction === "recvonly") m.direction = "inactive";
+				}
+			} else if (this._localHold && this._remoteHold) {
+				logger.debug("mangleOffer() | both on hold, mangling offer");
+				for (const m of sdp.media) {
+					if (holdMediaTypes.indexOf(m.type) === -1) continue;
+					m.direction = "inactive";
+				}
+			} else if (this._remoteHold) {
+				logger.debug("mangleOffer() | remote on hold, mangling offer");
+				for (const m of sdp.media) {
+					if (holdMediaTypes.indexOf(m.type) === -1) continue;
+					if (!m.direction) m.direction = "recvonly";
+					else if (m.direction === "sendrecv") m.direction = "recvonly";
+					else if (m.direction === "recvonly") m.direction = "inactive";
+				}
+			}
+			return sdp_transform.write(sdp);
+		}
+		_setLocalMediaStatus() {
+			let enableAudio = true, enableVideo = true;
+			if (this._localHold || this._remoteHold) {
+				enableAudio = false;
+				enableVideo = false;
+			}
+			if (this._audioMuted) enableAudio = false;
+			if (this._videoMuted) enableVideo = false;
+			this._toggleMuteAudio(!enableAudio);
+			this._toggleMuteVideo(!enableVideo);
+		}
+		/**
+		* Handle SessionTimers for an incoming INVITE or UPDATE.
+		* @param  {IncomingRequest} request
+		* @param  {Array} responseExtraHeaders  Extra headers for the 200 response.
+		*/
+		_handleSessionTimersInIncomingRequest(request, responseExtraHeaders) {
+			if (!this._sessionTimers.enabled) return;
+			let session_expires_refresher;
+			if (request.session_expires && request.session_expires >= JsSIP_C.MIN_SESSION_EXPIRES) {
+				this._sessionTimers.currentExpires = request.session_expires;
+				session_expires_refresher = request.session_expires_refresher || "uas";
+			} else {
+				this._sessionTimers.currentExpires = this._sessionTimers.defaultExpires;
+				session_expires_refresher = "uas";
+			}
+			responseExtraHeaders.push(`Session-Expires: ${this._sessionTimers.currentExpires};refresher=${session_expires_refresher}`);
+			this._sessionTimers.refresher = session_expires_refresher === "uas";
+			this._runSessionTimer();
+		}
+		/**
+		* Handle SessionTimers for an incoming response to INVITE or UPDATE.
+		* @param  {IncomingResponse} response
+		*/
+		_handleSessionTimersInIncomingResponse(response) {
+			if (!this._sessionTimers.enabled) return;
+			let session_expires_refresher;
+			if (response.session_expires && response.session_expires >= JsSIP_C.MIN_SESSION_EXPIRES) {
+				this._sessionTimers.currentExpires = response.session_expires;
+				session_expires_refresher = response.session_expires_refresher || "uac";
+			} else {
+				this._sessionTimers.currentExpires = this._sessionTimers.defaultExpires;
+				session_expires_refresher = "uac";
+			}
+			this._sessionTimers.refresher = session_expires_refresher === "uac";
+			this._runSessionTimer();
+		}
+		_runSessionTimer() {
+			const expires = this._sessionTimers.currentExpires;
+			this._sessionTimers.running = true;
+			clearTimeout(this._sessionTimers.timer);
+			if (this._sessionTimers.refresher) this._sessionTimers.timer = setTimeout(() => {
+				if (this._status === C.STATUS_TERMINATED) return;
+				if (!this.isReadyToReOffer()) return;
+				logger.debug("runSessionTimer() | sending session refresh request");
+				if (this._sessionTimers.refreshMethod === JsSIP_C.UPDATE) this._sendUpdate();
+				else this._sendReinvite();
+			}, expires * 500);
+			else this._sessionTimers.timer = setTimeout(() => {
+				if (this._status === C.STATUS_TERMINATED) return;
+				logger.warn("runSessionTimer() | timer expired, terminating the session");
+				this.terminate({
+					cause: JsSIP_C.causes.REQUEST_TIMEOUT,
+					status_code: 408,
+					reason_phrase: "Session Timer Expired"
+				});
+			}, expires * 1100);
+		}
+		_toggleMuteAudio(mute) {
+			const senders = this._connection.getSenders().filter((sender) => {
+				return sender.track && sender.track.kind === "audio";
+			});
+			for (const sender of senders) sender.track.enabled = !mute;
+		}
+		_toggleMuteVideo(mute) {
+			const senders = this._connection.getSenders().filter((sender) => {
+				return sender.track && sender.track.kind === "video";
+			});
+			for (const sender of senders) sender.track.enabled = !mute;
+		}
+		_newRTCSession(originator, request) {
+			logger.debug("newRTCSession()");
+			this._ua.newRTCSession(this, {
+				originator,
+				session: this,
+				request
+			});
+		}
+		_connecting(request) {
+			logger.debug("session connecting");
+			logger.debug("emit \"connecting\"");
+			this.emit("connecting", { request });
+		}
+		_progress(originator, response) {
+			logger.debug("session progress");
+			logger.debug("emit \"progress\"");
+			this.emit("progress", {
+				originator,
+				response: response || null
+			});
+		}
+		_accepted(originator, message) {
+			logger.debug("session accepted");
+			this._start_time = /* @__PURE__ */ new Date();
+			logger.debug("emit \"accepted\"");
+			this.emit("accepted", {
+				originator,
+				response: message || null
+			});
+		}
+		_confirmed(originator, ack) {
+			logger.debug("session confirmed");
+			this._is_confirmed = true;
+			logger.debug("emit \"confirmed\"");
+			this.emit("confirmed", {
+				originator,
+				ack: ack || null
+			});
+		}
+		_ended(originator, message, cause) {
+			logger.debug("session ended");
+			this._end_time = /* @__PURE__ */ new Date();
+			this._close();
+			logger.debug("emit \"ended\"");
+			this.emit("ended", {
+				originator,
+				message: message || null,
+				cause
+			});
+		}
+		_failed(originator, message, cause) {
+			logger.debug("session failed");
+			logger.debug("emit \"_failed\"");
+			this.emit("_failed", {
+				originator,
+				message: message || null,
+				cause
+			});
+			this._close();
+			logger.debug("emit \"failed\"");
+			this.emit("failed", {
+				originator,
+				message: message || null,
+				cause
+			});
+		}
+		_onhold(originator) {
+			logger.debug("session onhold");
+			this._setLocalMediaStatus();
+			logger.debug("emit \"hold\"");
+			this.emit("hold", { originator });
+		}
+		_onunhold(originator) {
+			logger.debug("session onunhold");
+			this._setLocalMediaStatus();
+			logger.debug("emit \"unhold\"");
+			this.emit("unhold", { originator });
+		}
+		_onmute({ audio, video }) {
+			logger.debug("session onmute");
+			this._setLocalMediaStatus();
+			logger.debug("emit \"muted\"");
+			this.emit("muted", {
+				audio,
+				video
+			});
+		}
+		_onunmute({ audio, video }) {
+			logger.debug("session onunmute");
+			this._setLocalMediaStatus();
+			logger.debug("emit \"unmuted\"");
+			this.emit("unmuted", {
+				audio,
+				video
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Message.js
+//#region node_modules/jssip/lib/Subscriber.js
+var require_Subscriber = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var EventEmitter = require_events().EventEmitter;
+	var Exceptions = require_Exceptions();
+	var Logger = require_Logger();
+	var JsSIP_C = require_Constants();
+	var Utils = require_Utils();
+	var Grammar = require_Grammar();
+	var SIPMessage = require_SIPMessage();
+	var RequestSender = require_RequestSender$1();
+	var Dialog = require_Dialog();
+	var logger = new Logger("Subscriber");
+	/**
+	* Termination codes.
+	*/
+	var C = {
+		SUBSCRIBE_RESPONSE_TIMEOUT: 0,
+		SUBSCRIBE_TRANSPORT_ERROR: 1,
+		SUBSCRIBE_NON_OK_RESPONSE: 2,
+		SUBSCRIBE_WRONG_OK_RESPONSE: 3,
+		SUBSCRIBE_AUTHENTICATION_FAILED: 4,
+		UNSUBSCRIBE_TIMEOUT: 5,
+		FINAL_NOTIFY_RECEIVED: 6,
+		WRONG_NOTIFY_RECEIVED: 7,
+		STATE_PENDING: 0,
+		STATE_ACTIVE: 1,
+		STATE_TERMINATED: 2,
+		STATE_INIT: 3,
+		STATE_WAITING_NOTIFY: 4,
+		DEFAULT_EXPIRES_SEC: 900
+	};
+	/**
+	* RFC 6665 Subscriber implementation.
+	*/
+	module.exports = class Subscriber extends EventEmitter {
+		/**
+		* Expose C object.
+		*/
+		static get C() {
+			return C;
+		}
+		/**
+		* @param {UA} ua - reference to JsSIP.UA
+		* @param {string} target
+		* @param {string} eventName - Event header value. May end with optional ;id=xxx
+		* @param {string} accept - Accept header value.
+		*
+		* @param {SubscriberOption} options - optional parameters.
+		*   @param {number} expires - Expires header value. Default is 900.
+		*   @param {string} contentType - Content-Type header value. Used for SUBSCRIBE with body
+		*   @param {string} allowEvents - Allow-Events header value.
+		*   @param {RequestParams} params - Will have priority over ua.configuration.
+		*      If set please define: to_uri, to_display_name, from_uri, from_display_name
+		*   @param {Array<string>} extraHeaders - Additional SIP headers.
+		*/
+		constructor(ua, target, eventName, accept, { expires, contentType, allowEvents, params, extraHeaders }) {
+			logger.debug("new");
+			super();
+			if (!target) throw new TypeError("Not enough arguments: Missing target");
+			if (!eventName) throw new TypeError("Not enough arguments: Missing eventName");
+			if (!accept) throw new TypeError("Not enough arguments: Missing accept");
+			const event_header = Grammar.parse(eventName, "Event");
+			if (event_header === -1) throw new TypeError("Missing Event header field");
+			this._ua = ua;
+			this._target = target;
+			if (!Utils.isDecimal(expires) || expires <= 0) expires = C.DEFAULT_EXPIRES_SEC;
+			this._expires = expires;
+			this._content_type = contentType;
+			this._params = Utils.cloneObject(params);
+			if (!this._params.from_uri) this._params.from_uri = this._ua.configuration.uri;
+			this._params.from_tag = Utils.newTag();
+			this._params.to_tag = null;
+			this._params.call_id = Utils.createRandomToken(20);
+			if (this._params.cseq === void 0) this._params.cseq = Math.floor(Math.random() * 1e4 + 1);
+			this._state = C.STATE_INIT;
+			this._dialog = null;
+			this._expires_timer = null;
+			this._expires_timestamp = null;
+			this._terminated = false;
+			this._event_name = event_header.event;
+			this._event_id = event_header.params && event_header.params.id;
+			let eventValue = this._event_name;
+			if (this._event_id) eventValue += `;id=${this._event_id}`;
+			this._headers = Utils.cloneArray(extraHeaders);
+			this._headers = this._headers.concat([
+				`Event: ${eventValue}`,
+				`Expires: ${this._expires}`,
+				`Accept: ${accept}`
+			]);
+			if (!this._headers.find((header) => header.startsWith("Contact"))) {
+				const contact = `Contact: ${this._ua._contact.toString()}`;
+				this._headers.push(contact);
+			}
+			if (allowEvents) this._headers.push(`Allow-Events: ${allowEvents}`);
+			this._queue = [];
+			this._data = {};
+		}
+		get C() {
+			return C;
+		}
+		/**
+		* Get dialog state.
+		*/
+		get state() {
+			return this._state;
+		}
+		/**
+		* Get dialog id.
+		*/
+		get id() {
+			return this._dialog ? this._dialog.id : null;
+		}
+		get data() {
+			return this._data;
+		}
+		set data(_data) {
+			this._data = _data;
+		}
+		onRequestTimeout() {
+			this._terminateDialog(C.SUBSCRIBE_RESPONSE_TIMEOUT);
+		}
+		onTransportError() {
+			this._terminateDialog(C.SUBSCRIBE_TRANSPORT_ERROR);
+		}
+		/**
+		* Dialog callback.
+		*/
+		receiveRequest(request) {
+			if (request.method !== JsSIP_C.NOTIFY) {
+				logger.warn("received non-NOTIFY request");
+				request.reply(405);
+				return;
+			}
+			const event_header = request.parseHeader("Event");
+			if (!event_header) {
+				logger.warn("missing Event header");
+				request.reply(400);
+				this._terminateDialog(C.WRONG_NOTIFY_RECEIVED);
+				return;
+			}
+			const event_name = event_header.event;
+			const event_id = event_header.params && event_header.params.id;
+			if (event_name !== this._event_name || event_id !== this._event_id) {
+				logger.warn("Event header does not match the one in SUBSCRIBE request");
+				request.reply(489);
+				this._terminateDialog(C.WRONG_NOTIFY_RECEIVED);
+				return;
+			}
+			const subs_state = request.parseHeader("subscription-state");
+			if (!subs_state) {
+				logger.warn("missing Subscription-State header");
+				request.reply(400);
+				this._terminateDialog(C.WRONG_NOTIFY_RECEIVED);
+				return;
+			}
+			const new_state = this._parseSubscriptionState(subs_state.state);
+			if (new_state === void 0) {
+				logger.warn(`Invalid Subscription-State header value: ${subs_state.state}`);
+				request.reply(400);
+				this._terminateDialog(C.WRONG_NOTIFY_RECEIVED);
+				return;
+			}
+			request.reply(200);
+			const prev_state = this._state;
+			if (prev_state !== C.STATE_TERMINATED && new_state !== C.STATE_TERMINATED) {
+				this._state = new_state;
+				if (subs_state.expires !== void 0) {
+					const expires = subs_state.expires;
+					const expires_timestamp = (/* @__PURE__ */ new Date()).getTime() + expires * 1e3;
+					if (this._expires_timestamp - expires_timestamp > 2e3) {
+						logger.debug("update sending re-SUBSCRIBE time");
+						this._scheduleSubscribe(expires);
+					}
+				}
+			}
+			if (prev_state !== C.STATE_PENDING && new_state === C.STATE_PENDING) {
+				logger.debug("emit \"pending\"");
+				this.emit("pending");
+			} else if (prev_state !== C.STATE_ACTIVE && new_state === C.STATE_ACTIVE) {
+				logger.debug("emit \"active\"");
+				this.emit("active");
+			}
+			const body = request.body;
+			const is_final = new_state === C.STATE_TERMINATED;
+			if (body) {
+				const content_type = request.getHeader("content-type");
+				logger.debug("emit \"notify\"");
+				this.emit("notify", is_final, request, body, content_type);
+			}
+			if (is_final) {
+				const reason = subs_state.reason;
+				let retry_after = void 0;
+				if (subs_state.params && subs_state.params["retry-after"] !== void 0) retry_after = parseInt(subs_state.params["retry-after"]);
+				this._terminateDialog(C.FINAL_NOTIFY_RECEIVED, reason, retry_after);
+			}
+		}
+		/**
+		* User API
+		*/
+		/**
+		* Send the initial (non-fetch)  and subsequent subscribe.
+		* @param {string} body - subscribe request body.
+		*/
+		subscribe(body = null) {
+			logger.debug("subscribe()");
+			if (this._state === C.STATE_INIT) this._sendInitialSubscribe(body, this._headers);
+			else this._sendSubsequentSubscribe(body, this._headers);
+		}
+		/**
+		* terminate.
+		* Send un-subscribe or fetch-subscribe (with Expires: 0).
+		* @param {string} body - un-subscribe request body
+		*/
+		terminate(body = null) {
+			logger.debug("terminate()");
+			if (this._state === C.STATE_INIT) throw new Exceptions.InvalidStateError(this._state);
+			if (this._terminated) return;
+			this._terminated = true;
+			const headers = this._headers.map((header) => {
+				return header.startsWith("Expires") ? "Expires: 0" : header;
+			});
+			this._sendSubsequentSubscribe(body, headers);
+		}
+		/**
+		* Private API.
+		*/
+		_terminateDialog(terminationCode, reason = void 0, retryAfter = void 0) {
+			if (this._state === C.STATE_TERMINATED) return;
+			this._state = C.STATE_TERMINATED;
+			clearTimeout(this._expires_timer);
+			if (this._dialog) {
+				this._dialog.terminate();
+				this._dialog = null;
+			}
+			logger.debug(`emit "terminated" code=${terminationCode}`);
+			this.emit("terminated", terminationCode, reason, retryAfter);
+		}
+		_sendInitialSubscribe(body, headers) {
+			if (body) {
+				if (!this._content_type) throw new TypeError("content_type is undefined");
+				headers = Utils.cloneArray(headers);
+				headers.push(`Content-Type: ${this._content_type}`);
+			}
+			this._state = C.STATE_WAITING_NOTIFY;
+			const request = new SIPMessage.OutgoingRequest(JsSIP_C.SUBSCRIBE, this._ua.normalizeTarget(this._target), this._ua, this._params, headers, body);
+			new RequestSender(this._ua, request, {
+				onRequestTimeout: () => {
+					this.onRequestTimeout();
+				},
+				onTransportError: () => {
+					this.onTransportError();
+				},
+				onReceiveResponse: (response) => {
+					this._receiveSubscribeResponse(response);
+				}
+			}).send();
+		}
+		_sendSubsequentSubscribe(body, headers) {
+			if (this._state === C.STATE_TERMINATED) return;
+			if (!this._dialog) {
+				logger.debug("enqueue subscribe");
+				this._queue.push({
+					body,
+					headers: Utils.cloneArray(headers)
+				});
+				return;
+			}
+			if (body) {
+				if (!this._content_type) throw new TypeError("content_type is undefined");
+				headers = Utils.cloneArray(headers);
+				headers.push(`Content-Type: ${this._content_type}`);
+			}
+			this._dialog.sendRequest(JsSIP_C.SUBSCRIBE, {
+				body,
+				extraHeaders: headers,
+				eventHandlers: {
+					onRequestTimeout: () => {
+						this.onRequestTimeout();
+					},
+					onTransportError: () => {
+						this.onTransportError();
+					},
+					onSuccessResponse: (response) => {
+						this._receiveSubscribeResponse(response);
+					},
+					onErrorResponse: (response) => {
+						this._receiveSubscribeResponse(response);
+					},
+					onDialogError: (response) => {
+						this._receiveSubscribeResponse(response);
+					}
+				}
+			});
+		}
+		_receiveSubscribeResponse(response) {
+			if (this._state === C.STATE_TERMINATED) return;
+			if (response.status_code >= 200 && response.status_code < 300) {
+				if (this._dialog === null) {
+					const dialog = new Dialog(this, response, "UAC");
+					if (dialog.error) {
+						logger.warn(dialog.error);
+						this._terminateDialog(C.SUBSCRIBE_WRONG_OK_RESPONSE);
+						return;
+					}
+					this._dialog = dialog;
+					logger.debug("emit \"accepted\"");
+					this.emit("accepted");
+					for (const subscribe of this._queue) {
+						logger.debug("dequeue subscribe");
+						this._sendSubsequentSubscribe(subscribe.body, subscribe.headers);
+					}
+				}
+				const expires_value = response.getHeader("expires");
+				let expires = parseInt(expires_value);
+				if (!Utils.isDecimal(expires) || expires <= 0) {
+					logger.warn(`response without Expires header, setting a default value of ${C.DEFAULT_EXPIRES_SEC}`);
+					expires = C.DEFAULT_EXPIRES_SEC;
+				}
+				if (expires > 0) this._scheduleSubscribe(expires);
+			} else if (response.status_code === 401 || response.status_code === 407) this._terminateDialog(C.SUBSCRIBE_AUTHENTICATION_FAILED);
+			else if (response.status_code >= 300) this._terminateDialog(C.SUBSCRIBE_NON_OK_RESPONSE);
+		}
+		_scheduleSubscribe(expires) {
+			const timeout = expires >= 140 ? expires * 1e3 / 2 + Math.floor((expires / 2 - 70) * 1e3 * Math.random()) : expires * 1e3 - 5e3;
+			this._expires_timestamp = (/* @__PURE__ */ new Date()).getTime() + expires * 1e3;
+			logger.debug(`next SUBSCRIBE will be sent in ${Math.floor(timeout / 1e3)} sec`);
+			clearTimeout(this._expires_timer);
+			this._expires_timer = setTimeout(() => {
+				this._expires_timer = null;
+				this._sendSubsequentSubscribe(null, this._headers);
+			}, timeout);
+		}
+		_parseSubscriptionState(strState) {
+			switch (strState) {
+				case "pending": return C.STATE_PENDING;
+				case "active": return C.STATE_ACTIVE;
+				case "terminated": return C.STATE_TERMINATED;
+				case "init": return C.STATE_INIT;
+				case "notify_wait": return C.STATE_WAITING_NOTIFY;
+				default: return;
+			}
+		}
+	};
+}));
+//#endregion
+//#region node_modules/jssip/lib/Notifier.js
+var require_Notifier = /* @__PURE__ */ __commonJSMin(((exports, module) => {
+	var EventEmitter = require_events().EventEmitter;
+	var Exceptions = require_Exceptions();
+	var Logger = require_Logger();
+	var JsSIP_C = require_Constants();
+	var Utils = require_Utils();
+	var Dialog = require_Dialog();
+	var logger = new Logger("Notifier");
+	/**
+	* Termination codes.
+	*/
+	var C = {
+		NOTIFY_RESPONSE_TIMEOUT: 0,
+		NOTIFY_TRANSPORT_ERROR: 1,
+		NOTIFY_NON_OK_RESPONSE: 2,
+		NOTIFY_AUTHENTICATION_FAILED: 3,
+		FINAL_NOTIFY_SENT: 4,
+		UNSUBSCRIBE_RECEIVED: 5,
+		SUBSCRIPTION_EXPIRED: 6,
+		STATE_PENDING: 0,
+		STATE_ACTIVE: 1,
+		STATE_TERMINATED: 2,
+		DEFAULT_EXPIRES_SEC: 900
+	};
+	/**
+	* RFC 6665 Notifier implementation.
+	*/
+	module.exports = class Notifier extends EventEmitter {
+		/**
+		* Expose C object.
+		*/
+		static get C() {
+			return C;
+		}
+		static init_incoming(request, callback) {
+			try {
+				Notifier.checkSubscribe(request);
+			} catch (error) {
+				logger.warn("Notifier.init_incoming: invalid request. Error: ", error.message);
+				request.reply(405);
+				return;
+			}
+			callback();
+		}
+		static checkSubscribe(subscribe) {
+			if (!subscribe) throw new TypeError("Not enough arguments. Missing subscribe request");
+			if (subscribe.method !== JsSIP_C.SUBSCRIBE) throw new TypeError("Invalid method for Subscribe request");
+			if (!subscribe.hasHeader("contact")) throw new TypeError("Missing Contact header in subscribe request");
+			if (!subscribe.hasHeader("event")) throw new TypeError("Missing Event header in subscribe request");
+			const expires = subscribe.getHeader("expires");
+			if (expires) {
+				const parsed_expires = parseInt(expires);
+				if (!Utils.isDecimal(parsed_expires) || parsed_expires < 0) throw new TypeError("Invalid Expires header field in subscribe request");
+			}
+		}
+		/**
+		* @param {UA} ua - JsSIP User Agent instance.
+		* @param {IncomingRequest} subscribe - Subscribe request.
+		* @param {string} contentType - Content-Type header value.
+		* @param {NotifierOptions} options - Optional parameters.
+		*   @param {Array<string>}  extraHeaders - Additional SIP headers.
+		*   @param {string} allowEvents - Allow-Events header value.
+		*   @param {boolean} pending - Set initial dialog state as "pending".
+		*   @param {number} defaultExpires - Default expires value (seconds).
+		*/
+		constructor(ua, subscribe, contentType, { extraHeaders, allowEvents, pending, defaultExpires }) {
+			logger.debug("new");
+			super();
+			if (!contentType) throw new TypeError("Not enough arguments. Missing contentType");
+			Notifier.checkSubscribe(subscribe);
+			const eventName = subscribe.getHeader("event");
+			this._ua = ua;
+			this._initial_subscribe = subscribe;
+			this._expires_timestamp = null;
+			this._expires_timer = null;
+			this._defaultExpires = defaultExpires || C.DEFAULT_EXPIRES_SEC;
+			this._state = pending ? C.STATE_PENDING : C.STATE_ACTIVE;
+			this._content_type = contentType;
+			this._headers = Utils.cloneArray(extraHeaders);
+			this._headers.push(`Event: ${eventName}`);
+			this._contact = this._headers.find((header) => header.startsWith("Contact"));
+			if (!this._contact) {
+				this._contact = `Contact: ${this._ua._contact.toString()}`;
+				this._headers.push(this._contact);
+			}
+			if (allowEvents) this._headers.push(`Allow-Events: ${allowEvents}`);
+			this._target = subscribe.from.uri.user;
+			subscribe.to_tag = Utils.newTag();
+			this._data = {};
+		}
+		get C() {
+			return C;
+		}
+		/**
+		* Get dialog state.
+		*/
+		get state() {
+			return this._state;
+		}
+		/**
+		* Get dialog id.
+		*/
+		get id() {
+			return this._dialog ? this._dialog.id : null;
+		}
+		get data() {
+			return this._data;
+		}
+		set data(_data) {
+			this._data = _data;
+		}
+		/**
+		* Dialog callback.
+		* Called also for initial subscribe.
+		* Supported RFC 6665 4.4.3: initial fetch subscribe (with expires: 0).
+		*/
+		receiveRequest(request) {
+			if (request.method !== JsSIP_C.SUBSCRIBE) {
+				request.reply(405);
+				return;
+			}
+			this._setExpires(request);
+			if (!this._dialog) this._dialog = new Dialog(this, request, "UAS");
+			request.reply(200, null, [`Expires: ${this._expires}`, `${this._contact}`]);
+			const body = request.body;
+			const content_type = request.getHeader("content-type");
+			const is_unsubscribe = this._expires === 0;
+			if (!is_unsubscribe) this._setExpiresTimer();
+			logger.debug("emit \"subscribe\"");
+			this.emit("subscribe", is_unsubscribe, request, body, content_type);
+			if (is_unsubscribe) this._terminateDialog(C.UNSUBSCRIBE_RECEIVED);
+		}
+		/**
+		* User API
+		*/
+		/**
+		* Call this method after creating the Notifier instance and setting the event handlers.
+		*/
+		start() {
+			logger.debug("start()");
+			if (this._state === C.STATE_TERMINATED) throw new Exceptions.InvalidStateError(this._state);
+			this.receiveRequest(this._initial_subscribe);
+		}
+		/**
+		* Switch pending dialog state to active.
+		*/
+		setActiveState() {
+			logger.debug("setActiveState()");
+			if (this._state === C.STATE_TERMINATED) throw new Exceptions.InvalidStateError(this._state);
+			if (this._state === C.STATE_PENDING) this._state = C.STATE_ACTIVE;
+		}
+		/**
+		*  Send the initial and subsequent notify request.
+		*  @param {string} body - notify request body.
+		*/
+		notify(body = null) {
+			logger.debug("notify()");
+			if (this._state === C.STATE_TERMINATED) throw new Exceptions.InvalidStateError(this._state);
+			const expires = Math.floor((this._expires_timestamp - (/* @__PURE__ */ new Date()).getTime()) / 1e3);
+			if (expires <= 0) {
+				if (!this._expires_timer) logger.error("expires timer is not set");
+				clearTimeout(this._expires_timer);
+				this.terminate(body, "timeout");
+			} else this._sendNotify([`;expires=${expires}`], body);
+		}
+		/**
+		*  Terminate. (Send the final NOTIFY request).
+		*
+		* @param {string} body - Notify message body.
+		* @param {string} reason - Set Subscription-State reason parameter.
+		* @param {number} retryAfter - Set Subscription-State retry-after parameter.
+		*/
+		terminate(body = null, reason = null, retryAfter = null) {
+			logger.debug("terminate()");
+			if (this._state === C.STATE_TERMINATED) return;
+			const subsStateParameters = [];
+			if (reason) subsStateParameters.push(`;reason=${reason}`);
+			if (retryAfter !== null) subsStateParameters.push(`;retry-after=${retryAfter}`);
+			this._sendNotify(subsStateParameters, body, null, "terminated");
+			this._terminateDialog(reason === "timeout" ? C.SUBSCRIPTION_EXPIRED : C.FINAL_NOTIFY_SENT);
+		}
+		/**
+		* Private API
+		*/
+		_terminateDialog(termination_code) {
+			if (this._state === C.STATE_TERMINATED) return;
+			this._state = C.STATE_TERMINATED;
+			clearTimeout(this._expires_timer);
+			if (this._dialog) {
+				this._dialog.terminate();
+				this._dialog = null;
+			}
+			logger.debug(`emit "terminated" code=${termination_code}`);
+			this.emit("terminated", termination_code);
+		}
+		_setExpires(request) {
+			if (request.hasHeader("expires")) this._expires = parseInt(request.getHeader("expires"));
+			else {
+				this._expires = this._defaultExpires;
+				logger.debug(`missing Expires header field, default value set: ${this._expires}`);
+			}
+		}
+		/**
+		* @param {Array<string>} subsStateParams subscription state parameters.
+		* @param {String} body Notify body
+		* @param {Array<string>} extraHeaders
+		*/
+		_sendNotify(subsStateParameters, body = null, extraHeaders = null, state = null) {
+			if (this._state === C.STATE_TERMINATED) {
+				logger.warn("final notify already sent");
+				return;
+			}
+			let subsState = `Subscription-State: ${state || this._parseState()}`;
+			for (const param of subsStateParameters) subsState += param;
+			let headers = Utils.cloneArray(this._headers);
+			headers.push(subsState);
+			if (extraHeaders) headers = headers.concat(extraHeaders);
+			if (body) headers.push(`Content-Type: ${this._content_type}`);
+			this._dialog.sendRequest(JsSIP_C.NOTIFY, {
+				body,
+				extraHeaders: headers,
+				eventHandlers: {
+					onRequestTimeout: () => {
+						this._terminateDialog(C.NOTIFY_RESPONSE_TIMEOUT);
+					},
+					onTransportError: () => {
+						this._terminateDialog(C.NOTIFY_TRANSPORT_ERROR);
+					},
+					onErrorResponse: (response) => {
+						if (response.status_code === 401 || response.status_code === 407) this._terminateDialog(C.NOTIFY_AUTHENTICATION_FAILED);
+						else this._terminateDialog(C.NOTIFY_NON_OK_RESPONSE);
+					},
+					onDialogError: () => {
+						this._terminateDialog(C.NOTIFY_NON_OK_RESPONSE);
+					}
+				}
+			});
+		}
+		_setExpiresTimer() {
+			this._expires_timestamp = (/* @__PURE__ */ new Date()).getTime() + this._expires * 1e3;
+			clearTimeout(this._expires_timer);
+			this._expires_timer = setTimeout(() => {
+				if (this._state === C.STATE_TERMINATED) return;
+				logger.debug("emit \"expired\"");
+				this.emit("expired");
+				this.terminate(null, "timeout");
+			}, this._expires * 1e3);
+		}
+		_parseState() {
+			switch (this._state) {
+				case C.STATE_PENDING: return "pending";
+				case C.STATE_ACTIVE: return "active";
+				case C.STATE_TERMINATED: return "terminated";
+				default: throw new TypeError("wrong state value");
+			}
+		}
+	};
+}));
+//#endregion
+//#region node_modules/jssip/lib/Message.js
 var require_Message = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
@@ -18788,285 +17443,164 @@ var require_Message = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var Exceptions = require_Exceptions();
 	var URI = require_URI();
 	var logger = new Logger("Message");
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(Message, _EventEmitter);
-		var _super = _createSuper(Message);
-		function Message(ua) {
-			var _this;
-			_classCallCheck(this, Message);
-			_this = _super.call(this);
-			_this._ua = ua;
-			_this._request = null;
-			_this._closed = false;
-			_this._direction = null;
-			_this._local_identity = null;
-			_this._remote_identity = null;
-			_this._is_replied = false;
-			_this._data = {};
-			return _this;
+	module.exports = class Message extends EventEmitter {
+		constructor(ua) {
+			super();
+			this._ua = ua;
+			this._request = null;
+			this._closed = false;
+			this._direction = null;
+			this._local_identity = null;
+			this._remote_identity = null;
+			this._is_replied = false;
+			this._data = {};
 		}
-		_createClass(Message, [
-			{
-				key: "send",
-				value: function send(target, body) {
-					var _this2 = this;
-					var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-					var originalTarget = target;
-					if (target === void 0 || body === void 0) throw new TypeError("Not enough arguments");
-					target = this._ua.normalizeTarget(target);
-					if (!target) throw new TypeError("Invalid target: ".concat(originalTarget));
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					var contentType = options.contentType || "text/plain";
-					var requestParams = {};
-					if (options.fromUserName) {
-						requestParams.from_uri = new URI("sip", options.fromUserName, this._ua.configuration.uri.host);
-						extraHeaders.push("P-Preferred-Identity: ".concat(this._ua.configuration.uri.toString()));
-					}
-					if (options.fromDisplayName) requestParams.from_display_name = options.fromDisplayName;
-					for (var event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
-					extraHeaders.push("Content-Type: ".concat(contentType));
-					this._request = new SIPMessage.OutgoingRequest(JsSIP_C.MESSAGE, target, this._ua, requestParams, extraHeaders);
-					if (body) this._request.body = body;
-					var request_sender = new RequestSender(this._ua, this._request, {
-						onRequestTimeout: function onRequestTimeout() {
-							_this2._onRequestTimeout();
-						},
-						onTransportError: function onTransportError() {
-							_this2._onTransportError();
-						},
-						onReceiveResponse: function onReceiveResponse(response) {
-							_this2._receiveResponse(response);
-						}
-					});
-					this._newMessage("local", this._request);
-					request_sender.send();
+		get direction() {
+			return this._direction;
+		}
+		get local_identity() {
+			return this._local_identity;
+		}
+		get remote_identity() {
+			return this._remote_identity;
+		}
+		send(target, body, options = {}) {
+			const originalTarget = target;
+			if (target === void 0 || body === void 0) throw new TypeError("Not enough arguments");
+			target = this._ua.normalizeTarget(target);
+			if (!target) throw new TypeError(`Invalid target: ${originalTarget}`);
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			const contentType = options.contentType || "text/plain";
+			const requestParams = {};
+			if (options.fromUserName) {
+				requestParams.from_uri = new URI("sip", options.fromUserName, this._ua.configuration.uri.host);
+				extraHeaders.push(`P-Preferred-Identity: ${this._ua.configuration.uri.toString()}`);
+			}
+			if (options.fromDisplayName) requestParams.from_display_name = options.fromDisplayName;
+			for (const event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
+			extraHeaders.push(`Content-Type: ${contentType}`);
+			this._request = new SIPMessage.OutgoingRequest(JsSIP_C.MESSAGE, target, this._ua, requestParams, extraHeaders);
+			if (body) this._request.body = body;
+			const request_sender = new RequestSender(this._ua, this._request, {
+				onRequestTimeout: () => {
+					this._onRequestTimeout();
+				},
+				onTransportError: () => {
+					this._onTransportError();
+				},
+				onReceiveResponse: (response) => {
+					this._receiveResponse(response);
 				}
-			},
-			{
-				key: "init_incoming",
-				value: function init_incoming(request) {
-					this._request = request;
-					this._newMessage("remote", request);
-					if (!this._is_replied) {
-						this._is_replied = true;
-						request.reply(200);
-					}
-					this._close();
-				}
-			},
-			{
-				key: "accept",
-				value: function accept() {
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var body = options.body;
-					if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"accept\" not supported for outgoing Message");
-					if (this._is_replied) throw new Error("incoming Message already replied");
-					this._is_replied = true;
-					this._request.reply(200, null, extraHeaders, body);
-				}
-			},
-			{
-				key: "reject",
-				value: function reject() {
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var status_code = options.status_code || 480;
-					var reason_phrase = options.reason_phrase;
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var body = options.body;
-					if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"reject\" not supported for outgoing Message");
-					if (this._is_replied) throw new Error("incoming Message already replied");
-					if (status_code < 300 || status_code >= 700) throw new TypeError("Invalid status_code: ".concat(status_code));
-					this._is_replied = true;
-					this._request.reply(status_code, reason_phrase, extraHeaders, body);
-				}
-			},
-			{
-				key: "_receiveResponse",
-				value: function _receiveResponse(response) {
-					if (this._closed) return;
-					switch (true) {
-						case /^1[0-9]{2}$/.test(response.status_code): break;
-						case /^2[0-9]{2}$/.test(response.status_code):
-							this._succeeded("remote", response);
-							break;
-						default:
-							var cause = Utils.sipErrorCause(response.status_code);
-							this._failed("remote", response, cause);
-							break;
-					}
-				}
-			},
-			{
-				key: "_onRequestTimeout",
-				value: function _onRequestTimeout() {
-					if (this._closed) return;
-					this._failed("system", null, JsSIP_C.causes.REQUEST_TIMEOUT);
-				}
-			},
-			{
-				key: "_onTransportError",
-				value: function _onTransportError() {
-					if (this._closed) return;
-					this._failed("system", null, JsSIP_C.causes.CONNECTION_ERROR);
-				}
-			},
-			{
-				key: "_close",
-				value: function _close() {
-					this._closed = true;
-					this._ua.destroyMessage(this);
-				}
-			},
-			{
-				key: "_newMessage",
-				value: function _newMessage(originator, request) {
-					if (originator === "remote") {
-						this._direction = "incoming";
-						this._local_identity = request.to;
-						this._remote_identity = request.from;
-					} else if (originator === "local") {
-						this._direction = "outgoing";
-						this._local_identity = request.from;
-						this._remote_identity = request.to;
-					}
-					this._ua.newMessage(this, {
-						originator,
-						message: this,
-						request
-					});
-				}
-			},
-			{
-				key: "_failed",
-				value: function _failed(originator, response, cause) {
-					logger.debug("MESSAGE failed");
-					this._close();
-					logger.debug("emit \"failed\"");
-					this.emit("failed", {
-						originator,
-						response: response || null,
-						cause
-					});
-				}
-			},
-			{
-				key: "_succeeded",
-				value: function _succeeded(originator, response) {
-					logger.debug("MESSAGE succeeded");
-					this._close();
-					logger.debug("emit \"succeeded\"");
-					this.emit("succeeded", {
-						originator,
-						response
-					});
-				}
-			},
-			{
-				key: "direction",
-				get: function get() {
-					return this._direction;
-				}
-			},
-			{
-				key: "local_identity",
-				get: function get() {
-					return this._local_identity;
-				}
-			},
-			{
-				key: "remote_identity",
-				get: function get() {
-					return this._remote_identity;
+			});
+			this._newMessage("local", this._request);
+			request_sender.send();
+		}
+		init_incoming(request) {
+			this._request = request;
+			this._newMessage("remote", request);
+			if (!this._is_replied) {
+				this._is_replied = true;
+				request.reply(200);
+			}
+			this._close();
+		}
+		/**
+		* Accept the incoming Message
+		* Only valid for incoming Messages
+		*/
+		accept(options = {}) {
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const body = options.body;
+			if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"accept\" not supported for outgoing Message");
+			if (this._is_replied) throw new Error("incoming Message already replied");
+			this._is_replied = true;
+			this._request.reply(200, null, extraHeaders, body);
+		}
+		/**
+		* Reject the incoming Message
+		* Only valid for incoming Messages
+		*/
+		reject(options = {}) {
+			const status_code = options.status_code || 480;
+			const reason_phrase = options.reason_phrase;
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const body = options.body;
+			if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"reject\" not supported for outgoing Message");
+			if (this._is_replied) throw new Error("incoming Message already replied");
+			if (status_code < 300 || status_code >= 700) throw new TypeError(`Invalid status_code: ${status_code}`);
+			this._is_replied = true;
+			this._request.reply(status_code, reason_phrase, extraHeaders, body);
+		}
+		_receiveResponse(response) {
+			if (this._closed) return;
+			switch (true) {
+				case /^1[0-9]{2}$/.test(response.status_code): break;
+				case /^2[0-9]{2}$/.test(response.status_code):
+					this._succeeded("remote", response);
+					break;
+				default: {
+					const cause = Utils.sipErrorCause(response.status_code);
+					this._failed("remote", response, cause);
+					break;
 				}
 			}
-		]);
-		return Message;
-	}(EventEmitter);
+		}
+		_onRequestTimeout() {
+			if (this._closed) return;
+			this._failed("system", null, JsSIP_C.causes.REQUEST_TIMEOUT);
+		}
+		_onTransportError() {
+			if (this._closed) return;
+			this._failed("system", null, JsSIP_C.causes.CONNECTION_ERROR);
+		}
+		_close() {
+			this._closed = true;
+			this._ua.destroyMessage(this);
+		}
+		/**
+		* Internal Callbacks
+		*/
+		_newMessage(originator, request) {
+			if (originator === "remote") {
+				this._direction = "incoming";
+				this._local_identity = request.to;
+				this._remote_identity = request.from;
+			} else if (originator === "local") {
+				this._direction = "outgoing";
+				this._local_identity = request.from;
+				this._remote_identity = request.to;
+			}
+			this._ua.newMessage(this, {
+				originator,
+				message: this,
+				request
+			});
+		}
+		_failed(originator, response, cause) {
+			logger.debug("MESSAGE failed");
+			this._close();
+			logger.debug("emit \"failed\"");
+			this.emit("failed", {
+				originator,
+				response: response || null,
+				cause
+			});
+		}
+		_succeeded(originator, response) {
+			logger.debug("MESSAGE succeeded");
+			this._close();
+			logger.debug("emit \"succeeded\"");
+			this.emit("succeeded", {
+				originator,
+				response
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Options.js
+//#region node_modules/jssip/lib/Options.js
 var require_Options = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
@@ -19075,199 +17609,157 @@ var require_Options = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var RequestSender = require_RequestSender$1();
 	var Exceptions = require_Exceptions();
 	var logger = new Logger("Options");
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(Options, _EventEmitter);
-		var _super = _createSuper(Options);
-		function Options(ua) {
-			var _this;
-			_classCallCheck(this, Options);
-			_this = _super.call(this);
-			_this._ua = ua;
-			_this._request = null;
-			_this._closed = false;
-			_this._direction = null;
-			_this._local_identity = null;
-			_this._remote_identity = null;
-			_this._is_replied = false;
-			_this._data = {};
-			return _this;
+	module.exports = class Options extends EventEmitter {
+		constructor(ua) {
+			super();
+			this._ua = ua;
+			this._request = null;
+			this._closed = false;
+			this._direction = null;
+			this._local_identity = null;
+			this._remote_identity = null;
+			this._is_replied = false;
+			this._data = {};
 		}
-		_createClass(Options, [
-			{
-				key: "send",
-				value: function send(target, body) {
-					var _this2 = this;
-					var options = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
-					var originalTarget = target;
-					if (target === void 0) throw new TypeError("A target is required for OPTIONS");
-					target = this._ua.normalizeTarget(target);
-					if (!target) throw new TypeError("Invalid target: ".concat(originalTarget));
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var eventHandlers = Utils.cloneObject(options.eventHandlers);
-					var contentType = options.contentType || "application/sdp";
-					for (var event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
-					extraHeaders.push("Content-Type: ".concat(contentType));
-					this._request = new SIPMessage.OutgoingRequest(JsSIP_C.OPTIONS, target, this._ua, null, extraHeaders);
-					if (body) this._request.body = body;
-					var request_sender = new RequestSender(this._ua, this._request, {
-						onRequestTimeout: function onRequestTimeout() {
-							_this2._onRequestTimeout();
-						},
-						onTransportError: function onTransportError() {
-							_this2._onTransportError();
-						},
-						onReceiveResponse: function onReceiveResponse(response) {
-							_this2._receiveResponse(response);
-						}
-					});
-					this._newOptions("local", this._request);
-					request_sender.send();
+		get direction() {
+			return this._direction;
+		}
+		get local_identity() {
+			return this._local_identity;
+		}
+		get remote_identity() {
+			return this._remote_identity;
+		}
+		send(target, body, options = {}) {
+			const originalTarget = target;
+			if (target === void 0) throw new TypeError("A target is required for OPTIONS");
+			target = this._ua.normalizeTarget(target);
+			if (!target) throw new TypeError(`Invalid target: ${originalTarget}`);
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const eventHandlers = Utils.cloneObject(options.eventHandlers);
+			const contentType = options.contentType || "application/sdp";
+			for (const event in eventHandlers) if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) this.on(event, eventHandlers[event]);
+			extraHeaders.push(`Content-Type: ${contentType}`);
+			this._request = new SIPMessage.OutgoingRequest(JsSIP_C.OPTIONS, target, this._ua, null, extraHeaders);
+			if (body) this._request.body = body;
+			const request_sender = new RequestSender(this._ua, this._request, {
+				onRequestTimeout: () => {
+					this._onRequestTimeout();
+				},
+				onTransportError: () => {
+					this._onTransportError();
+				},
+				onReceiveResponse: (response) => {
+					this._receiveResponse(response);
 				}
-			},
-			{
-				key: "init_incoming",
-				value: function init_incoming(request) {
-					this._request = request;
-					this._newOptions("remote", request);
-					if (!this._is_replied) {
-						this._is_replied = true;
-						request.reply(200);
-					}
-					this._close();
-				}
-			},
-			{
-				key: "accept",
-				value: function accept() {
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var body = options.body;
-					if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"accept\" not supported for outgoing Options");
-					if (this._is_replied) throw new Error("incoming Options already replied");
-					this._is_replied = true;
-					this._request.reply(200, null, extraHeaders, body);
-				}
-			},
-			{
-				key: "reject",
-				value: function reject() {
-					var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-					var status_code = options.status_code || 480;
-					var reason_phrase = options.reason_phrase;
-					var extraHeaders = Utils.cloneArray(options.extraHeaders);
-					var body = options.body;
-					if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"reject\" not supported for outgoing Options");
-					if (this._is_replied) throw new Error("incoming Options already replied");
-					if (status_code < 300 || status_code >= 700) throw new TypeError("Invalid status_code: ".concat(status_code));
-					this._is_replied = true;
-					this._request.reply(status_code, reason_phrase, extraHeaders, body);
-				}
-			},
-			{
-				key: "_receiveResponse",
-				value: function _receiveResponse(response) {
-					if (this._closed) return;
-					switch (true) {
-						case /^1[0-9]{2}$/.test(response.status_code): break;
-						case /^2[0-9]{2}$/.test(response.status_code):
-							this._succeeded("remote", response);
-							break;
-						default:
-							var cause = Utils.sipErrorCause(response.status_code);
-							this._failed("remote", response, cause);
-							break;
-					}
-				}
-			},
-			{
-				key: "_onRequestTimeout",
-				value: function _onRequestTimeout() {
-					if (this._closed) return;
-					this._failed("system", null, JsSIP_C.causes.REQUEST_TIMEOUT);
-				}
-			},
-			{
-				key: "_onTransportError",
-				value: function _onTransportError() {
-					if (this._closed) return;
-					this._failed("system", null, JsSIP_C.causes.CONNECTION_ERROR);
-				}
-			},
-			{
-				key: "_close",
-				value: function _close() {
-					this._closed = true;
-					this._ua.destroyMessage(this);
-				}
-			},
-			{
-				key: "_newOptions",
-				value: function _newOptions(originator, request) {
-					if (originator === "remote") {
-						this._direction = "incoming";
-						this._local_identity = request.to;
-						this._remote_identity = request.from;
-					} else if (originator === "local") {
-						this._direction = "outgoing";
-						this._local_identity = request.from;
-						this._remote_identity = request.to;
-					}
-					this._ua.newOptions(this, {
-						originator,
-						message: this,
-						request
-					});
-				}
-			},
-			{
-				key: "_failed",
-				value: function _failed(originator, response, cause) {
-					logger.debug("OPTIONS failed");
-					this._close();
-					logger.debug("emit \"failed\"");
-					this.emit("failed", {
-						originator,
-						response: response || null,
-						cause
-					});
-				}
-			},
-			{
-				key: "_succeeded",
-				value: function _succeeded(originator, response) {
-					logger.debug("OPTIONS succeeded");
-					this._close();
-					logger.debug("emit \"succeeded\"");
-					this.emit("succeeded", {
-						originator,
-						response
-					});
-				}
-			},
-			{
-				key: "direction",
-				get: function get() {
-					return this._direction;
-				}
-			},
-			{
-				key: "local_identity",
-				get: function get() {
-					return this._local_identity;
-				}
-			},
-			{
-				key: "remote_identity",
-				get: function get() {
-					return this._remote_identity;
+			});
+			this._newOptions("local", this._request);
+			request_sender.send();
+		}
+		init_incoming(request) {
+			this._request = request;
+			this._newOptions("remote", request);
+			if (!this._is_replied) {
+				this._is_replied = true;
+				request.reply(200);
+			}
+			this._close();
+		}
+		/**
+		* Accept the incoming Options
+		* Only valid for incoming Options
+		*/
+		accept(options = {}) {
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const body = options.body;
+			if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"accept\" not supported for outgoing Options");
+			if (this._is_replied) throw new Error("incoming Options already replied");
+			this._is_replied = true;
+			this._request.reply(200, null, extraHeaders, body);
+		}
+		/**
+		* Reject the incoming Options
+		* Only valid for incoming Options
+		*/
+		reject(options = {}) {
+			const status_code = options.status_code || 480;
+			const reason_phrase = options.reason_phrase;
+			const extraHeaders = Utils.cloneArray(options.extraHeaders);
+			const body = options.body;
+			if (this._direction !== "incoming") throw new Exceptions.NotSupportedError("\"reject\" not supported for outgoing Options");
+			if (this._is_replied) throw new Error("incoming Options already replied");
+			if (status_code < 300 || status_code >= 700) throw new TypeError(`Invalid status_code: ${status_code}`);
+			this._is_replied = true;
+			this._request.reply(status_code, reason_phrase, extraHeaders, body);
+		}
+		_receiveResponse(response) {
+			if (this._closed) return;
+			switch (true) {
+				case /^1[0-9]{2}$/.test(response.status_code): break;
+				case /^2[0-9]{2}$/.test(response.status_code):
+					this._succeeded("remote", response);
+					break;
+				default: {
+					const cause = Utils.sipErrorCause(response.status_code);
+					this._failed("remote", response, cause);
+					break;
 				}
 			}
-		]);
-		return Options;
-	}(EventEmitter);
+		}
+		_onRequestTimeout() {
+			if (this._closed) return;
+			this._failed("system", null, JsSIP_C.causes.REQUEST_TIMEOUT);
+		}
+		_onTransportError() {
+			if (this._closed) return;
+			this._failed("system", null, JsSIP_C.causes.CONNECTION_ERROR);
+		}
+		_close() {
+			this._closed = true;
+			this._ua.destroyMessage(this);
+		}
+		/**
+		* Internal Callbacks
+		*/
+		_newOptions(originator, request) {
+			if (originator === "remote") {
+				this._direction = "incoming";
+				this._local_identity = request.to;
+				this._remote_identity = request.from;
+			} else if (originator === "local") {
+				this._direction = "outgoing";
+				this._local_identity = request.from;
+				this._remote_identity = request.to;
+			}
+			this._ua.newOptions(this, {
+				originator,
+				message: this,
+				request
+			});
+		}
+		_failed(originator, response, cause) {
+			logger.debug("OPTIONS failed");
+			this._close();
+			logger.debug("emit \"failed\"");
+			this.emit("failed", {
+				originator,
+				response: response || null,
+				cause
+			});
+		}
+		_succeeded(originator, response) {
+			logger.debug("OPTIONS succeeded");
+			this._close();
+			logger.debug("emit \"succeeded\"");
+			this.emit("succeeded", {
+				originator,
+				response
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Socket.js
+//#region node_modules/jssip/lib/Socket.js
 var require_Socket = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var Logger = require_Logger();
 	var Utils = require_Utils();
@@ -19291,7 +17783,7 @@ var require_Socket = /* @__PURE__ */ __commonJSMin(((exports) => {
 	* }
 	*
 	*/
-	exports.isSocket = function(socket) {
+	exports.isSocket = (socket) => {
 		if (Array.isArray(socket)) return false;
 		if (typeof socket === "undefined") {
 			logger.warn("undefined JsSIP.Socket instance");
@@ -19310,7 +17802,7 @@ var require_Socket = /* @__PURE__ */ __commonJSMin(((exports) => {
 				logger.warn("missing or invalid JsSIP.Socket sip_uri property");
 				throw new Error("missing or invalid JsSIP.Socket sip_uri property");
 			}
-		} catch (e) {
+		} catch (error) {
 			return false;
 		}
 		try {
@@ -19318,38 +17810,21 @@ var require_Socket = /* @__PURE__ */ __commonJSMin(((exports) => {
 				"connect",
 				"disconnect",
 				"send"
-			].forEach(function(method) {
+			].forEach((method) => {
 				if (!Utils.isFunction(socket[method])) {
-					logger.warn("missing or invalid JsSIP.Socket method: ".concat(method));
-					throw new Error("Missing or invalid JsSIP.Socket method: ".concat(method));
+					logger.warn(`missing or invalid JsSIP.Socket method: ${method}`);
+					throw new Error(`Missing or invalid JsSIP.Socket method: ${method}`);
 				}
 			});
-		} catch (e) {
+		} catch (error) {
 			return false;
 		}
 		return true;
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Transport.js
+//#region node_modules/jssip/lib/Transport.js
 var require_Transport = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var Socket = require_Socket();
 	var JsSIP_C = require_Constants();
@@ -19368,10 +17843,8 @@ var require_Transport = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			max_interval: JsSIP_C.CONNECTION_RECOVERY_MAX_INTERVAL
 		}
 	};
-	module.exports = /* @__PURE__ */ function() {
-		function Transport(sockets) {
-			var recovery_options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : C.recovery_options;
-			_classCallCheck(this, Transport);
+	module.exports = class Transport {
+		constructor(sockets, recovery_options = C.recovery_options) {
 			logger.debug("new()");
 			this.status = C.STATUS_DISCONNECTED;
 			this.socket = null;
@@ -19383,7 +17856,7 @@ var require_Transport = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			try {
 				this.textDecoder = new TextDecoder("utf8");
 			} catch (error) {
-				logger.warn("cannot use TextDecoder: ".concat(error));
+				logger.warn(`cannot use TextDecoder: ${error}`);
 			}
 			if (typeof sockets === "undefined") throw new TypeError("Invalid argument. undefined 'sockets' argument");
 			if (!(sockets instanceof Array)) sockets = [sockets];
@@ -19401,261 +17874,167 @@ var require_Transport = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		/**
 		* Instance Methods
 		*/
-		_createClass(Transport, [
-			{
-				key: "connect",
-				value: function connect() {
-					logger.debug("connect()");
-					if (this.isConnected()) {
-						logger.debug("Transport is already connected");
-						return;
-					} else if (this.isConnecting()) {
-						logger.debug("Transport is connecting");
-						return;
-					}
-					this.close_requested = false;
-					this.status = C.STATUS_CONNECTING;
-					this.onconnecting({
-						socket: this.socket,
-						attempts: this.recover_attempts
-					});
-					if (!this.close_requested) {
-						this.socket.onconnect = this._onConnect.bind(this);
-						this.socket.ondisconnect = this._onDisconnect.bind(this);
-						this.socket.ondata = this._onData.bind(this);
-						this.socket.connect();
-					}
-				}
-			},
-			{
-				key: "disconnect",
-				value: function disconnect() {
-					logger.debug("close()");
-					this.close_requested = true;
-					this.recover_attempts = 0;
-					this.status = C.STATUS_DISCONNECTED;
-					if (this.recovery_timer !== null) {
-						clearTimeout(this.recovery_timer);
-						this.recovery_timer = null;
-					}
-					this.socket.onconnect = function() {};
-					this.socket.ondisconnect = function() {};
-					this.socket.ondata = function() {};
-					this.socket.disconnect();
-					this.ondisconnect({
-						socket: this.socket,
-						error: false
-					});
-				}
-			},
-			{
-				key: "send",
-				value: function send(data) {
-					logger.debug("send()");
-					if (!this.isConnected()) {
-						logger.warn("unable to send message, transport is not connected");
-						return false;
-					}
-					var message = data.toString();
-					logger.debug("sending message:\n\n".concat(message, "\n"));
-					return this.socket.send(message);
-				}
-			},
-			{
-				key: "isConnected",
-				value: function isConnected() {
-					return this.status === C.STATUS_CONNECTED;
-				}
-			},
-			{
-				key: "isConnecting",
-				value: function isConnecting() {
-					return this.status === C.STATUS_CONNECTING;
-				}
-			},
-			{
-				key: "_reconnect",
-				value: function _reconnect() {
-					var _this = this;
-					this.recover_attempts += 1;
-					var k = Math.floor(Math.random() * Math.pow(2, this.recover_attempts) + 1);
-					if (k < this.recovery_options.min_interval) k = this.recovery_options.min_interval;
-					else if (k > this.recovery_options.max_interval) k = this.recovery_options.max_interval;
-					logger.debug("reconnection attempt: ".concat(this.recover_attempts, ". next connection attempt in ").concat(k, " seconds"));
-					this.recovery_timer = setTimeout(function() {
-						if (!_this.close_requested && !(_this.isConnected() || _this.isConnecting())) {
-							_this._getSocket();
-							_this.connect();
-						}
-					}, k * 1e3);
-				}
-			},
-			{
-				key: "_getSocket",
-				value: function _getSocket() {
-					var candidates = [];
-					this.sockets.forEach(function(socket) {
-						if (socket.status === C.SOCKET_STATUS_ERROR) return;
-						else if (candidates.length === 0) candidates.push(socket);
-						else if (socket.weight > candidates[0].weight) candidates = [socket];
-						else if (socket.weight === candidates[0].weight) candidates.push(socket);
-					});
-					if (candidates.length === 0) {
-						this.sockets.forEach(function(socket) {
-							socket.status = C.SOCKET_STATUS_READY;
-						});
-						this._getSocket();
-						return;
-					}
-					var idx = Math.floor(Math.random() * candidates.length);
-					this.socket = candidates[idx].socket;
-				}
-			},
-			{
-				key: "_onConnect",
-				value: function _onConnect() {
-					this.recover_attempts = 0;
-					this.status = C.STATUS_CONNECTED;
-					if (this.recovery_timer !== null) {
-						clearTimeout(this.recovery_timer);
-						this.recovery_timer = null;
-					}
-					this.onconnect({ socket: this });
-				}
-			},
-			{
-				key: "_onDisconnect",
-				value: function _onDisconnect(error, code, reason) {
-					this.status = C.STATUS_DISCONNECTED;
-					this.ondisconnect({
-						socket: this.socket,
-						error,
-						code,
-						reason
-					});
-					if (this.close_requested) return;
-					else this.sockets.forEach(function(socket) {
-						if (this.socket === socket.socket) socket.status = C.SOCKET_STATUS_ERROR;
-					}, this);
-					this._reconnect(error);
-				}
-			},
-			{
-				key: "_onData",
-				value: function _onData(data) {
-					if (data === "\r\n\r\n") {
-						logger.debug("received message with double-CRLF Keep Alive request");
-						try {
-							this.socket.send("\r\n");
-						} catch (error) {
-							logger.warn("error sending Keep Alive response: ".concat(error));
-						}
-						return;
-					}
-					if (data === "\r\n") {
-						logger.debug("received message with CRLF Keep Alive response");
-						return;
-					} else if (typeof data !== "string") {
-						try {
-							if (this.textDecoder) data = this.textDecoder.decode(data);
-							else data = String.fromCharCode.apply(null, new Uint8Array(data));
-						} catch (evt) {
-							logger.debug("received binary message failed to be converted into string, message discarded");
-							return;
-						}
-						logger.debug("received binary message:\n\n".concat(data, "\n"));
-					} else logger.debug("received text message:\n\n".concat(data, "\n"));
-					this.ondata({
-						transport: this,
-						message: data
-					});
-				}
-			},
-			{
-				key: "via_transport",
-				get: function get() {
-					return this.socket.via_transport;
-				}
-			},
-			{
-				key: "url",
-				get: function get() {
-					return this.socket.url;
-				}
-			},
-			{
-				key: "sip_uri",
-				get: function get() {
-					return this.socket.sip_uri;
-				}
+		get via_transport() {
+			return this.socket.via_transport;
+		}
+		get url() {
+			return this.socket.url;
+		}
+		get sip_uri() {
+			return this.socket.sip_uri;
+		}
+		connect() {
+			logger.debug("connect()");
+			if (this.isConnected()) {
+				logger.debug("Transport is already connected");
+				return;
+			} else if (this.isConnecting()) {
+				logger.debug("Transport is connecting");
+				return;
 			}
-		]);
-		return Transport;
-	}();
+			this.close_requested = false;
+			this.status = C.STATUS_CONNECTING;
+			this.onconnecting({
+				socket: this.socket,
+				attempts: this.recover_attempts
+			});
+			if (!this.close_requested) {
+				this.socket.onconnect = this._onConnect.bind(this);
+				this.socket.ondisconnect = this._onDisconnect.bind(this);
+				this.socket.ondata = this._onData.bind(this);
+				this.socket.connect();
+			}
+		}
+		disconnect() {
+			logger.debug("close()");
+			this.close_requested = true;
+			this.recover_attempts = 0;
+			this.status = C.STATUS_DISCONNECTED;
+			if (this.recovery_timer !== null) {
+				clearTimeout(this.recovery_timer);
+				this.recovery_timer = null;
+			}
+			this.socket.onconnect = () => {};
+			this.socket.ondisconnect = () => {};
+			this.socket.ondata = () => {};
+			this.socket.disconnect();
+			this.ondisconnect({
+				socket: this.socket,
+				error: false
+			});
+		}
+		send(data) {
+			logger.debug("send()");
+			if (!this.isConnected()) {
+				logger.warn("unable to send message, transport is not connected");
+				return false;
+			}
+			const message = data.toString();
+			logger.debug(`sending message:\n\n${message}\n`);
+			return this.socket.send(message);
+		}
+		isConnected() {
+			return this.status === C.STATUS_CONNECTED;
+		}
+		isConnecting() {
+			return this.status === C.STATUS_CONNECTING;
+		}
+		/**
+		* Private API.
+		*/
+		_reconnect() {
+			this.recover_attempts += 1;
+			let k = Math.floor(Math.random() * Math.pow(2, this.recover_attempts) + 1);
+			if (k < this.recovery_options.min_interval) k = this.recovery_options.min_interval;
+			else if (k > this.recovery_options.max_interval) k = this.recovery_options.max_interval;
+			logger.debug(`reconnection attempt: ${this.recover_attempts}. next connection attempt in ${k} seconds`);
+			this.recovery_timer = setTimeout(() => {
+				if (!this.close_requested && !(this.isConnected() || this.isConnecting())) {
+					this._getSocket();
+					this.connect();
+				}
+			}, k * 1e3);
+		}
+		/**
+		* get the next available socket with higher weight
+		*/
+		_getSocket() {
+			let candidates = [];
+			this.sockets.forEach((socket) => {
+				if (socket.status === C.SOCKET_STATUS_ERROR) return;
+				else if (candidates.length === 0) candidates.push(socket);
+				else if (socket.weight > candidates[0].weight) candidates = [socket];
+				else if (socket.weight === candidates[0].weight) candidates.push(socket);
+			});
+			if (candidates.length === 0) {
+				this.sockets.forEach((socket) => {
+					socket.status = C.SOCKET_STATUS_READY;
+				});
+				this._getSocket();
+				return;
+			}
+			const idx = Math.floor(Math.random() * candidates.length);
+			this.socket = candidates[idx].socket;
+		}
+		/**
+		* Socket Event Handlers
+		*/
+		_onConnect() {
+			this.recover_attempts = 0;
+			this.status = C.STATUS_CONNECTED;
+			if (this.recovery_timer !== null) {
+				clearTimeout(this.recovery_timer);
+				this.recovery_timer = null;
+			}
+			this.onconnect({ socket: this });
+		}
+		_onDisconnect(error, code, reason) {
+			this.status = C.STATUS_DISCONNECTED;
+			this.ondisconnect({
+				socket: this.socket,
+				error,
+				code,
+				reason
+			});
+			if (this.close_requested) return;
+			else this.sockets.forEach(function(socket) {
+				if (this.socket === socket.socket) socket.status = C.SOCKET_STATUS_ERROR;
+			}, this);
+			this._reconnect(error);
+		}
+		_onData(data) {
+			if (data === "\r\n\r\n") {
+				logger.debug("received message with double-CRLF Keep Alive request");
+				try {
+					this.socket.send("\r\n");
+				} catch (error) {
+					logger.warn(`error sending Keep Alive response: ${error}`);
+				}
+				return;
+			}
+			if (data === "\r\n") {
+				logger.debug("received message with CRLF Keep Alive response");
+				return;
+			} else if (typeof data !== "string") {
+				try {
+					if (this.textDecoder) data = this.textDecoder.decode(data);
+					else data = String.fromCharCode.apply(null, new Uint8Array(data));
+				} catch (error) {
+					logger.debug(`received binary message failed to be converted into string: ${error}`);
+					return;
+				}
+				logger.debug(`received binary message:\n\n${data}\n`);
+			} else logger.debug(`received text message:\n\n${data}\n`);
+			this.ondata({
+				transport: this,
+				message: data
+			});
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Parser.js
+//#region node_modules/jssip/lib/Parser.js
 var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e) {
-						throw _e;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e2) {
-				didErr = true;
-				err = _e2;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
 	var Logger = require_Logger();
 	var Grammar = require_Grammar();
 	var SIPMessage = require_SIPMessage();
@@ -19663,18 +18042,18 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 	/**
 	* Parse SIP Message
 	*/
-	exports.parseMessage = function(data, ua) {
-		var message;
-		var bodyStart;
-		var headerEnd = data.indexOf("\r\n");
+	exports.parseMessage = (data, ua) => {
+		let message;
+		let bodyStart;
+		let headerEnd = data.indexOf("\r\n");
 		if (headerEnd === -1) {
 			logger.warn("parseMessage() | no CRLF found, not a SIP message");
 			return;
 		}
-		var firstLine = data.substring(0, headerEnd);
-		var parsed = Grammar.parse(firstLine, "Request_Response");
+		const firstLine = data.substring(0, headerEnd);
+		let parsed = Grammar.parse(firstLine, "Request_Response");
 		if (parsed === -1) {
-			logger.warn("parseMessage() | error parsing first line of SIP message: \"".concat(firstLine, "\""));
+			logger.warn(`parseMessage() | error parsing first line of SIP message: "${firstLine}"`);
 			return;
 		} else if (!parsed.status_code) {
 			message = new SIPMessage.IncomingRequest(ua);
@@ -19686,7 +18065,7 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 			message.reason_phrase = parsed.reason_phrase;
 		}
 		message.data = data;
-		var headerStart = headerEnd + 2;
+		let headerStart = headerEnd + 2;
 		while (true) {
 			headerEnd = getHeader(data, headerStart);
 			if (headerEnd === -2) {
@@ -19704,7 +18083,7 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 			headerStart = headerEnd + 2;
 		}
 		if (message.hasHeader("content-length")) {
-			var contentLength = message.getHeader("content-length");
+			const contentLength = message.getHeader("content-length");
 			message.body = data.substr(bodyStart, contentLength);
 		} else message.body = data.substring(bodyStart);
 		return message;
@@ -19713,9 +18092,9 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 	* Extract and parse every header of a SIP message.
 	*/
 	function getHeader(data, headerStart) {
-		var start = headerStart;
-		var end = 0;
-		var partialEnd = 0;
+		let start = headerStart;
+		let end = 0;
+		let partialEnd = 0;
 		if (data.substring(start, start + 2).match(/(^\r\n)/)) return -2;
 		while (end === 0) {
 			partialEnd = data.indexOf("\r\n", start);
@@ -19726,10 +18105,10 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 		return end;
 	}
 	function parseHeader(message, data, headerStart, headerEnd) {
-		var parsed;
-		var hcolonIndex = data.indexOf(":", headerStart);
-		var headerName = data.substring(headerStart, hcolonIndex).trim();
-		var headerValue = data.substring(hcolonIndex + 1, headerEnd).trim();
+		let parsed;
+		const hcolonIndex = data.indexOf(":", headerStart);
+		const headerName = data.substring(headerStart, hcolonIndex).trim();
+		const headerValue = data.substring(hcolonIndex + 1, headerEnd).trim();
 		switch (headerName.toLowerCase()) {
 			case "via":
 			case "v":
@@ -19763,19 +18142,9 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 			case "record-route":
 				parsed = Grammar.parse(headerValue, "Record_Route");
 				if (parsed === -1) parsed = void 0;
-				else {
-					var _iterator = _createForOfIteratorHelper(parsed), _step;
-					try {
-						for (_iterator.s(); !(_step = _iterator.n()).done;) {
-							var header = _step.value;
-							message.addHeader("record-route", headerValue.substring(header.possition, header.offset));
-							message.headers["Record-Route"][message.getHeaders("record-route").length - 1].parsed = header.parsed;
-						}
-					} catch (err) {
-						_iterator.e(err);
-					} finally {
-						_iterator.f();
-					}
+				else for (const header of parsed) {
+					message.addHeader("record-route", headerValue.substring(header.possition, header.offset));
+					message.headers["Record-Route"][message.getHeaders("record-route").length - 1].parsed = header.parsed;
 				}
 				break;
 			case "call-id":
@@ -19788,19 +18157,9 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 			case "m":
 				parsed = Grammar.parse(headerValue, "Contact");
 				if (parsed === -1) parsed = void 0;
-				else {
-					var _iterator2 = _createForOfIteratorHelper(parsed), _step2;
-					try {
-						for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-							var _header = _step2.value;
-							message.addHeader("contact", headerValue.substring(_header.possition, _header.offset));
-							message.headers.Contact[message.getHeaders("contact").length - 1].parsed = _header.parsed;
-						}
-					} catch (err) {
-						_iterator2.e(err);
-					} finally {
-						_iterator2.f();
-					}
+				else for (const header of parsed) {
+					message.addHeader("contact", headerValue.substring(header.possition, header.offset));
+					message.headers.Contact[message.getHeaders("contact").length - 1].parsed = header.parsed;
 				}
 				break;
 			case "content-length":
@@ -19861,73 +18220,13 @@ var require_Parser = /* @__PURE__ */ __commonJSMin(((exports) => {
 				message.addHeader(headerName, headerValue);
 				parsed = 0;
 		}
-		if (parsed === void 0) return { error: "error parsing header \"".concat(headerName, "\"") };
+		if (parsed === void 0) return { error: `error parsing header "${headerName}"` };
 		else return true;
 	}
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/sanityCheck.js
+//#region node_modules/jssip/lib/sanityCheck.js
 var require_sanityCheck = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e) {
-						throw _e;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e2) {
-				didErr = true;
-				err = _e2;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
 	var SIPMessage = require_SIPMessage();
@@ -19944,45 +18243,15 @@ var require_sanityCheck = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var message;
 	var ua;
 	var transport;
-	module.exports = function(m, u, t) {
+	module.exports = (m, u, t) => {
 		message = m;
 		ua = u;
 		transport = t;
-		var _iterator = _createForOfIteratorHelper(all), _step;
-		try {
-			for (_iterator.s(); !(_step = _iterator.n()).done;) {
-				var _check2 = _step.value;
-				if (_check2() === false) return false;
-			}
-		} catch (err) {
-			_iterator.e(err);
-		} finally {
-			_iterator.f();
-		}
+		for (const check of all) if (check() === false) return false;
 		if (message instanceof SIPMessage.IncomingRequest) {
-			var _iterator2 = _createForOfIteratorHelper(requests), _step2;
-			try {
-				for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-					var check = _step2.value;
-					if (check() === false) return false;
-				}
-			} catch (err) {
-				_iterator2.e(err);
-			} finally {
-				_iterator2.f();
-			}
+			for (const check of requests) if (check() === false) return false;
 		} else if (message instanceof SIPMessage.IncomingResponse) {
-			var _iterator3 = _createForOfIteratorHelper(responses), _step3;
-			try {
-				for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-					var _check = _step3.value;
-					if (_check() === false) return false;
-				}
-			} catch (err) {
-				_iterator3.e(err);
-			} finally {
-				_iterator3.f();
-			}
+			for (const check of responses) if (check() === false) return false;
 		}
 		return true;
 	};
@@ -20007,14 +18276,14 @@ var require_sanityCheck = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	}
 	function rfc3261_8_2_2_2() {
-		var fromTag = message.from_tag;
-		var call_id = message.call_id;
-		var cseq = message.cseq;
-		var tr;
+		const fromTag = message.from_tag;
+		const call_id = message.call_id;
+		const cseq = message.cseq;
+		let tr;
 		if (message.to_tag) return;
 		if (message.method === JsSIP_C.INVITE) {
 			if (ua._transactions.ist[message.via_branch]) return false;
-			else for (var transaction in ua._transactions.ist) if (Object.prototype.hasOwnProperty.call(ua._transactions.ist, transaction)) {
+			else for (const transaction in ua._transactions.ist) if (Object.prototype.hasOwnProperty.call(ua._transactions.ist, transaction)) {
 				tr = ua._transactions.ist[transaction];
 				if (tr.request.from_tag === fromTag && tr.request.call_id === call_id && tr.request.cseq === cseq) {
 					reply(482);
@@ -20022,8 +18291,8 @@ var require_sanityCheck = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 				}
 			}
 		} else if (ua._transactions.nist[message.via_branch]) return false;
-		else for (var _transaction in ua._transactions.nist) if (Object.prototype.hasOwnProperty.call(ua._transactions.nist, _transaction)) {
-			tr = ua._transactions.nist[_transaction];
+		else for (const transaction in ua._transactions.nist) if (Object.prototype.hasOwnProperty.call(ua._transactions.nist, transaction)) {
+			tr = ua._transactions.nist[transaction];
 			if (tr.request.from_tag === fromTag && tr.request.call_id === call_id && tr.request.cseq === cseq) {
 				reply(482);
 				return false;
@@ -20043,109 +18312,35 @@ var require_sanityCheck = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	}
 	function minimumHeaders() {
-		var mandatoryHeaders = [
+		for (const header of [
 			"from",
 			"to",
 			"call_id",
 			"cseq",
 			"via"
-		];
-		for (var _i = 0, _mandatoryHeaders = mandatoryHeaders; _i < _mandatoryHeaders.length; _i++) {
-			var header = _mandatoryHeaders[_i];
-			if (!message.hasHeader(header)) {
-				logger.debug("missing mandatory header field : ".concat(header, ", dropping the response"));
-				return false;
-			}
+		]) if (!message.hasHeader(header)) {
+			logger.debug(`missing mandatory header field : ${header}, dropping the response`);
+			return false;
 		}
 	}
 	function reply(status_code) {
-		var vias = message.getHeaders("via");
-		var to;
-		var response = "SIP/2.0 ".concat(status_code, " ").concat(JsSIP_C.REASON_PHRASE[status_code], "\r\n");
-		var _iterator4 = _createForOfIteratorHelper(vias), _step4;
-		try {
-			for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-				var via = _step4.value;
-				response += "Via: ".concat(via, "\r\n");
-			}
-		} catch (err) {
-			_iterator4.e(err);
-		} finally {
-			_iterator4.f();
-		}
+		const vias = message.getHeaders("via");
+		let to;
+		let response = `SIP/2.0 ${status_code} ${JsSIP_C.REASON_PHRASE[status_code]}\r\n`;
+		for (const via of vias) response += `Via: ${via}\r\n`;
 		to = message.getHeader("To");
-		if (!message.to_tag) to += ";tag=".concat(Utils.newTag());
-		response += "To: ".concat(to, "\r\n");
-		response += "From: ".concat(message.getHeader("From"), "\r\n");
-		response += "Call-ID: ".concat(message.call_id, "\r\n");
-		response += "CSeq: ".concat(message.cseq, " ").concat(message.method, "\r\n");
+		if (!message.to_tag) to += `;tag=${Utils.newTag()}`;
+		response += `To: ${to}\r\n`;
+		response += `From: ${message.getHeader("From")}\r\n`;
+		response += `Call-ID: ${message.call_id}\r\n`;
+		response += `CSeq: ${message.cseq} ${message.method}\r\n`;
 		response += "\r\n";
 		transport.send(response);
 	}
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/Config.js
+//#region node_modules/jssip/lib/Config.js
 var require_Config = /* @__PURE__ */ __commonJSMin(((exports) => {
-	function _createForOfIteratorHelper(o, allowArrayLike) {
-		var it;
-		if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-			if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-				if (it) o = it;
-				var i = 0;
-				var F = function F() {};
-				return {
-					s: F,
-					n: function n() {
-						if (i >= o.length) return { done: true };
-						return {
-							done: false,
-							value: o[i++]
-						};
-					},
-					e: function e(_e) {
-						throw _e;
-					},
-					f: F
-				};
-			}
-			throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-		}
-		var normalCompletion = true, didErr = false, err;
-		return {
-			s: function s() {
-				it = o[Symbol.iterator]();
-			},
-			n: function n() {
-				var step = it.next();
-				normalCompletion = step.done;
-				return step;
-			},
-			e: function e(_e2) {
-				didErr = true;
-				err = _e2;
-			},
-			f: function f() {
-				try {
-					if (!normalCompletion && it["return"] != null) it["return"]();
-				} finally {
-					if (didErr) throw err;
-				}
-			}
-		};
-	}
-	function _unsupportedIterableToArray(o, minLen) {
-		if (!o) return;
-		if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-		var n = Object.prototype.toString.call(o).slice(8, -1);
-		if (n === "Object" && o.constructor) n = o.constructor.name;
-		if (n === "Map" || n === "Set") return Array.from(o);
-		if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-	}
-	function _arrayLikeToArray(arr, len) {
-		if (len == null || len > arr.length) len = arr.length;
-		for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-		return arr2;
-	}
 	var Utils = require_Utils();
 	var JsSIP_C = require_Constants();
 	var Grammar = require_Grammar();
@@ -20169,248 +18364,156 @@ var require_Config = /* @__PURE__ */ __commonJSMin(((exports) => {
 		no_answer_timeout: 60,
 		register: true,
 		register_expires: 600,
+		register_from_tag_trail: "",
 		registrar_server: null,
 		sockets: null,
 		connection_recovery_max_interval: JsSIP_C.CONNECTION_RECOVERY_MAX_INTERVAL,
 		connection_recovery_min_interval: JsSIP_C.CONNECTION_RECOVERY_MIN_INTERVAL,
 		extra_headers: null,
-		via_host: "".concat(Utils.createRandomToken(12), ".invalid")
+		via_host: `${Utils.createRandomToken(12)}.invalid`
 	};
 	var checks = {
 		mandatory: {
-			sockets: function sockets(_sockets2) {
-				var _sockets = [];
-				if (Socket.isSocket(_sockets2)) _sockets.push({ socket: _sockets2 });
-				else if (Array.isArray(_sockets2) && _sockets2.length) {
-					var _iterator = _createForOfIteratorHelper(_sockets2), _step;
-					try {
-						for (_iterator.s(); !(_step = _iterator.n()).done;) {
-							var socket = _step.value;
-							if (Object.prototype.hasOwnProperty.call(socket, "socket") && Socket.isSocket(socket.socket)) _sockets.push(socket);
-							else if (Socket.isSocket(socket)) _sockets.push({ socket });
-						}
-					} catch (err) {
-						_iterator.e(err);
-					} finally {
-						_iterator.f();
-					}
+			sockets(sockets) {
+				const _sockets = [];
+				if (Socket.isSocket(sockets)) _sockets.push({ socket: sockets });
+				else if (Array.isArray(sockets) && sockets.length) {
+					for (const socket of sockets) if (Object.prototype.hasOwnProperty.call(socket, "socket") && Socket.isSocket(socket.socket)) _sockets.push(socket);
+					else if (Socket.isSocket(socket)) _sockets.push({ socket });
 				} else return;
 				return _sockets;
 			},
-			uri: function uri(_uri) {
-				if (!/^sip:/i.test(_uri)) _uri = "".concat(JsSIP_C.SIP, ":").concat(_uri);
-				var parsed = URI.parse(_uri);
+			uri(uri) {
+				if (!/^sip:/i.test(uri)) uri = `${JsSIP_C.SIP}:${uri}`;
+				const parsed = URI.parse(uri);
 				if (!parsed) return;
 				else if (!parsed.user) return;
 				else return parsed;
 			}
 		},
 		optional: {
-			authorization_user: function authorization_user(_authorization_user) {
-				if (Grammar.parse("\"".concat(_authorization_user, "\""), "quoted_string") === -1) return;
-				else return _authorization_user;
+			authorization_user(authorization_user) {
+				if (Grammar.parse(`"${authorization_user}"`, "quoted_string") === -1) return;
+				else return authorization_user;
 			},
-			authorization_jwt: function authorization_jwt(_authorization_jwt) {
-				if (typeof _authorization_jwt === "string") return _authorization_jwt;
+			authorization_jwt(authorization_jwt) {
+				if (typeof authorization_jwt === "string") return authorization_jwt;
 			},
-			user_agent: function user_agent(_user_agent) {
-				if (typeof _user_agent === "string") return _user_agent;
+			user_agent(user_agent) {
+				if (typeof user_agent === "string") return user_agent;
 			},
-			connection_recovery_max_interval: function connection_recovery_max_interval(_connection_recovery_max_interval) {
-				if (Utils.isDecimal(_connection_recovery_max_interval)) {
-					var value = Number(_connection_recovery_max_interval);
+			connection_recovery_max_interval(connection_recovery_max_interval) {
+				if (Utils.isDecimal(connection_recovery_max_interval)) {
+					const value = Number(connection_recovery_max_interval);
 					if (value > 0) return value;
 				}
 			},
-			connection_recovery_min_interval: function connection_recovery_min_interval(_connection_recovery_min_interval) {
-				if (Utils.isDecimal(_connection_recovery_min_interval)) {
-					var value = Number(_connection_recovery_min_interval);
+			connection_recovery_min_interval(connection_recovery_min_interval) {
+				if (Utils.isDecimal(connection_recovery_min_interval)) {
+					const value = Number(connection_recovery_min_interval);
 					if (value > 0) return value;
 				}
 			},
-			contact_uri: function contact_uri(_contact_uri) {
-				if (typeof _contact_uri === "string") {
-					var uri = Grammar.parse(_contact_uri, "SIP_URI");
+			contact_uri(contact_uri) {
+				if (typeof contact_uri === "string") {
+					const uri = Grammar.parse(contact_uri, "SIP_URI");
 					if (uri !== -1) return uri;
 				}
 			},
-			display_name: function display_name(_display_name) {
-				return _display_name;
+			display_name(display_name) {
+				return display_name;
 			},
-			instance_id: function instance_id(_instance_id) {
-				if (/^uuid:/i.test(_instance_id)) _instance_id = _instance_id.substr(5);
-				if (Grammar.parse(_instance_id, "uuid") === -1) return;
-				else return _instance_id;
+			instance_id(instance_id) {
+				if (/^uuid:/i.test(instance_id)) instance_id = instance_id.substr(5);
+				if (Grammar.parse(instance_id, "uuid") === -1) return;
+				else return instance_id;
 			},
-			no_answer_timeout: function no_answer_timeout(_no_answer_timeout) {
-				if (Utils.isDecimal(_no_answer_timeout)) {
-					var value = Number(_no_answer_timeout);
+			no_answer_timeout(no_answer_timeout) {
+				if (Utils.isDecimal(no_answer_timeout)) {
+					const value = Number(no_answer_timeout);
 					if (value > 0) return value;
 				}
 			},
-			session_timers: function session_timers(_session_timers) {
-				if (typeof _session_timers === "boolean") return _session_timers;
+			session_timers(session_timers) {
+				if (typeof session_timers === "boolean") return session_timers;
 			},
-			session_timers_refresh_method: function session_timers_refresh_method(method) {
+			session_timers_refresh_method(method) {
 				if (typeof method === "string") {
 					method = method.toUpperCase();
 					if (method === JsSIP_C.INVITE || method === JsSIP_C.UPDATE) return method;
 				}
 			},
-			session_timers_force_refresher: function session_timers_force_refresher(_session_timers_force_refresher) {
-				if (typeof _session_timers_force_refresher === "boolean") return _session_timers_force_refresher;
+			session_timers_force_refresher(session_timers_force_refresher) {
+				if (typeof session_timers_force_refresher === "boolean") return session_timers_force_refresher;
 			},
-			password: function password(_password) {
-				return String(_password);
+			password(password) {
+				return String(password);
 			},
-			realm: function realm(_realm) {
-				return String(_realm);
+			realm(realm) {
+				return String(realm);
 			},
-			ha1: function ha1(_ha) {
-				return String(_ha);
+			ha1(ha1) {
+				return String(ha1);
 			},
-			register: function register(_register) {
-				if (typeof _register === "boolean") return _register;
+			register(register) {
+				if (typeof register === "boolean") return register;
 			},
-			register_expires: function register_expires(_register_expires) {
-				if (Utils.isDecimal(_register_expires)) {
-					var value = Number(_register_expires);
-					if (value > 0) return value;
+			register_expires(register_expires) {
+				if (Utils.isDecimal(register_expires)) {
+					const value = Number(register_expires);
+					if (value >= 0) return value;
 				}
 			},
-			registrar_server: function registrar_server(_registrar_server) {
-				if (!/^sip:/i.test(_registrar_server)) _registrar_server = "".concat(JsSIP_C.SIP, ":").concat(_registrar_server);
-				var parsed = URI.parse(_registrar_server);
+			register_from_tag_trail(register_from_tag_trail) {
+				if (typeof register_from_tag_trail === "function") return register_from_tag_trail;
+				return String(register_from_tag_trail);
+			},
+			registrar_server(registrar_server) {
+				if (!/^sip:/i.test(registrar_server)) registrar_server = `${JsSIP_C.SIP}:${registrar_server}`;
+				const parsed = URI.parse(registrar_server);
 				if (!parsed) return;
 				else if (parsed.user) return;
 				else return parsed;
 			},
-			use_preloaded_route: function use_preloaded_route(_use_preloaded_route) {
-				if (typeof _use_preloaded_route === "boolean") return _use_preloaded_route;
+			use_preloaded_route(use_preloaded_route) {
+				if (typeof use_preloaded_route === "boolean") return use_preloaded_route;
 			},
-			extra_headers: function extra_headers(_extra_headers) {
-				var _extraHeaders = [];
-				if (Array.isArray(_extra_headers) && _extra_headers.length) {
-					var _iterator2 = _createForOfIteratorHelper(_extra_headers), _step2;
-					try {
-						for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-							var header = _step2.value;
-							if (typeof header === "string") _extraHeaders.push(header);
-						}
-					} catch (err) {
-						_iterator2.e(err);
-					} finally {
-						_iterator2.f();
-					}
+			extra_headers(extra_headers) {
+				const _extraHeaders = [];
+				if (Array.isArray(extra_headers) && extra_headers.length) {
+					for (const header of extra_headers) if (typeof header === "string") _extraHeaders.push(header);
 				} else return;
 				return _extraHeaders;
 			}
 		}
 	};
-	exports.load = function(dst, src) {
-		for (var parameter in checks.mandatory) if (!src.hasOwnProperty(parameter)) throw new Exceptions.ConfigurationError(parameter);
+	exports.load = (dst, src) => {
+		for (const parameter in checks.mandatory) if (!src.hasOwnProperty(parameter)) throw new Exceptions.ConfigurationError(parameter);
 		else {
-			var value = src[parameter];
-			var checked_value = checks.mandatory[parameter](value);
+			const value = src[parameter];
+			const checked_value = checks.mandatory[parameter](value);
 			if (checked_value !== void 0) dst[parameter] = checked_value;
 			else throw new Exceptions.ConfigurationError(parameter, value);
 		}
-		for (var _parameter in checks.optional) if (src.hasOwnProperty(_parameter)) {
-			var _value = src[_parameter];
-			if (Utils.isEmpty(_value)) continue;
-			var _checked_value = checks.optional[_parameter](_value);
-			if (_checked_value !== void 0) dst[_parameter] = _checked_value;
-			else throw new Exceptions.ConfigurationError(_parameter, _value);
+		for (const parameter in checks.optional) if (src.hasOwnProperty(parameter)) {
+			const value = src[parameter];
+			if (Utils.isEmpty(value)) continue;
+			const checked_value = checks.optional[parameter](value);
+			if (checked_value !== void 0) dst[parameter] = checked_value;
+			else throw new Exceptions.ConfigurationError(parameter, value);
 		}
 	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/UA.js
+//#region node_modules/jssip/lib/UA.js
 var require_UA = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _typeof(obj) {
-		"@babel/helpers - typeof";
-		if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") _typeof = function _typeof(obj) {
-			return typeof obj;
-		};
-		else _typeof = function _typeof(obj) {
-			return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-		};
-		return _typeof(obj);
-	}
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
-	function _inherits(subClass, superClass) {
-		if (typeof superClass !== "function" && superClass !== null) throw new TypeError("Super expression must either be null or a function");
-		subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: {
-			value: subClass,
-			writable: true,
-			configurable: true
-		} });
-		if (superClass) _setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	function _createSuper(Derived) {
-		var hasNativeReflectConstruct = _isNativeReflectConstruct();
-		return function _createSuperInternal() {
-			var Super = _getPrototypeOf(Derived), result;
-			if (hasNativeReflectConstruct) {
-				var NewTarget = _getPrototypeOf(this).constructor;
-				result = Reflect.construct(Super, arguments, NewTarget);
-			} else result = Super.apply(this, arguments);
-			return _possibleConstructorReturn(this, result);
-		};
-	}
-	function _possibleConstructorReturn(self, call) {
-		if (call && (_typeof(call) === "object" || typeof call === "function")) return call;
-		return _assertThisInitialized(self);
-	}
-	function _assertThisInitialized(self) {
-		if (self === void 0) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-		return self;
-	}
-	function _isNativeReflectConstruct() {
-		if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-		if (Reflect.construct.sham) return false;
-		if (typeof Proxy === "function") return true;
-		try {
-			Date.prototype.toString.call(Reflect.construct(Date, [], function() {}));
-			return true;
-		} catch (e) {
-			return false;
-		}
-	}
-	function _getPrototypeOf(o) {
-		_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-			return o.__proto__ || Object.getPrototypeOf(o);
-		};
-		return _getPrototypeOf(o);
-	}
 	var EventEmitter = require_events().EventEmitter;
 	var Logger = require_Logger();
 	var JsSIP_C = require_Constants();
 	var Registrator = require_Registrator();
 	var RTCSession = require_RTCSession();
+	var Subscriber = require_Subscriber();
+	var Notifier = require_Notifier();
 	var Message = require_Message();
 	var Options = require_Options();
 	var Transactions = require_Transactions();
@@ -20438,537 +18541,554 @@ var require_UA = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	* @throws {JsSIP.Exceptions.ConfigurationError} If a configuration parameter is invalid.
 	* @throws {TypeError} If no configuration is given.
 	*/
-	module.exports = /* @__PURE__ */ function(_EventEmitter) {
-		_inherits(UA, _EventEmitter);
-		var _super = _createSuper(UA);
-		_createClass(UA, null, [{
-			key: "C",
-			get: function get() {
-				return C;
-			}
-		}]);
-		function UA(configuration) {
-			var _this;
-			_classCallCheck(this, UA);
-			logger.debug("new() [configuration:%o]", configuration);
-			_this = _super.call(this);
-			_this._cache = { credentials: {} };
-			_this._configuration = Object.assign({}, config.settings);
-			_this._dynConfiguration = {};
-			_this._dialogs = {};
-			_this._applicants = {};
-			_this._sessions = {};
-			_this._transport = null;
-			_this._contact = null;
-			_this._status = C.STATUS_INIT;
-			_this._error = null;
-			_this._transactions = {
+	module.exports = class UA extends EventEmitter {
+		static get C() {
+			return C;
+		}
+		constructor(configuration) {
+			if (!configuration) throw new TypeError("Not enough arguments");
+			const sensitiveKeys = [
+				"password",
+				"ha1",
+				"authorization_jwt"
+			];
+			logger.debug("new() [configuration:%o]", Object.entries(configuration).filter(([key]) => !sensitiveKeys.includes(key)));
+			super();
+			this._cache = { credentials: {} };
+			this._configuration = Object.assign({}, config.settings);
+			this._dynConfiguration = {};
+			this._dialogs = {};
+			this._applicants = {};
+			this._sessions = {};
+			this._transport = null;
+			this._contact = null;
+			this._status = C.STATUS_INIT;
+			this._error = null;
+			this._transactions = {
 				nist: {},
 				nict: {},
 				ist: {},
 				ict: {}
 			};
-			_this._data = {};
-			_this._closeTimer = null;
-			if (configuration === void 0) throw new TypeError("Not enough arguments");
+			this._data = {};
+			this._closeTimer = null;
 			try {
-				_this._loadConfig(configuration);
-			} catch (e) {
-				_this._status = C.STATUS_NOT_READY;
-				_this._error = C.CONFIGURATION_ERROR;
-				throw e;
+				this._loadConfig(configuration);
+			} catch (error) {
+				this._status = C.STATUS_NOT_READY;
+				this._error = C.CONFIGURATION_ERROR;
+				throw error;
 			}
-			_this._registrator = new Registrator(_assertThisInitialized(_this));
-			return _this;
+			this._registrator = new Registrator(this);
 		}
-		_createClass(UA, [
-			{
-				key: "start",
-				/**
-				* Connect to the server if status = STATUS_INIT.
-				* Resume UA after being closed.
-				*/
-				value: function start() {
-					logger.debug("start()");
-					if (this._status === C.STATUS_INIT) this._transport.connect();
-					else if (this._status === C.STATUS_USER_CLOSED) {
-						logger.debug("restarting UA");
-						if (this._closeTimer !== null) {
-							clearTimeout(this._closeTimer);
-							this._closeTimer = null;
-							this._transport.disconnect();
-						}
-						this._status = C.STATUS_INIT;
-						this._transport.connect();
-					} else if (this._status === C.STATUS_READY) logger.debug("UA is in READY status, not restarted");
-					else logger.debug("ERROR: connection is down, Auto-Recovery system is trying to reconnect");
-					this._dynConfiguration.register = this._configuration.register;
+		get C() {
+			return C;
+		}
+		get status() {
+			return this._status;
+		}
+		get contact() {
+			return this._contact;
+		}
+		get configuration() {
+			return this._configuration;
+		}
+		get transport() {
+			return this._transport;
+		}
+		/**
+		* Connect to the server if status = STATUS_INIT.
+		* Resume UA after being closed.
+		*/
+		start() {
+			logger.debug("start()");
+			if (this._status === C.STATUS_INIT) this._transport.connect();
+			else if (this._status === C.STATUS_USER_CLOSED) {
+				logger.debug("restarting UA");
+				if (this._closeTimer !== null) {
+					clearTimeout(this._closeTimer);
+					this._closeTimer = null;
+					this._transport.disconnect();
 				}
-			},
-			{
-				key: "register",
-				value: function register() {
-					logger.debug("register()");
-					this._dynConfiguration.register = true;
-					this._registrator.register();
+				this._status = C.STATUS_INIT;
+				this._transport.connect();
+			} else if (this._status === C.STATUS_READY) logger.debug("UA is in READY status, not restarted");
+			else logger.debug("ERROR: connection is down, Auto-Recovery system is trying to reconnect");
+			this._dynConfiguration.register = this._configuration.register;
+		}
+		/**
+		* Register.
+		*/
+		register() {
+			logger.debug("register()");
+			this._dynConfiguration.register = true;
+			this._registrator.register();
+		}
+		/**
+		* Unregister.
+		*/
+		unregister(options) {
+			logger.debug("unregister()");
+			this._dynConfiguration.register = false;
+			this._registrator.unregister(options);
+		}
+		/**
+		* Get the Registrator instance.
+		*/
+		registrator() {
+			return this._registrator;
+		}
+		/**
+		* Registration state.
+		*/
+		isRegistered() {
+			return this._registrator.registered;
+		}
+		/**
+		* Connection state.
+		*/
+		isConnected() {
+			return this._transport.isConnected();
+		}
+		/**
+		* Make an outgoing call.
+		*
+		* -param {String} target
+		* -param {Object} [options]
+		*
+		* -throws {TypeError}
+		*
+		*/
+		call(target, options) {
+			logger.debug("call()");
+			const session = new RTCSession(this);
+			session.connect(target, options);
+			return session;
+		}
+		/**
+		* Send a message.
+		*
+		* -param {String} target
+		* -param {String} body
+		* -param {Object} [options]
+		*
+		* -throws {TypeError}
+		*
+		*/
+		sendMessage(target, body, options) {
+			logger.debug("sendMessage()");
+			const message = new Message(this);
+			message.send(target, body, options);
+			return message;
+		}
+		/**
+		* Create subscriber instance
+		*/
+		subscribe(target, eventName, accept, options) {
+			logger.debug("subscribe()");
+			return new Subscriber(this, target, eventName, accept, options);
+		}
+		/**
+		* Create notifier instance
+		*/
+		notify(subscribe, contentType, options) {
+			logger.debug("notify()");
+			return new Notifier(this, subscribe, contentType, options);
+		}
+		/**
+		* Send a SIP OPTIONS.
+		*
+		* -param {String} target
+		* -param {String} [body]
+		* -param {Object} [options]
+		*
+		* -throws {TypeError}
+		*
+		*/
+		sendOptions(target, body, options) {
+			logger.debug("sendOptions()");
+			const message = new Options(this);
+			message.send(target, body, options);
+			return message;
+		}
+		/**
+		* Terminate ongoing sessions.
+		*/
+		terminateSessions(options) {
+			logger.debug("terminateSessions()");
+			for (const idx in this._sessions) if (!this._sessions[idx].isEnded()) this._sessions[idx].terminate(options);
+		}
+		/**
+		* Gracefully close.
+		*
+		*/
+		stop() {
+			logger.debug("stop()");
+			this._dynConfiguration = {};
+			if (this._status === C.STATUS_USER_CLOSED) {
+				logger.debug("UA already closed");
+				return;
+			}
+			this._registrator.close();
+			const num_sessions = Object.keys(this._sessions).length;
+			for (const session in this._sessions) if (Object.prototype.hasOwnProperty.call(this._sessions, session)) {
+				logger.debug(`closing session ${session}`);
+				try {
+					this._sessions[session].terminate();
+				} catch (error) {}
+			}
+			for (const applicant in this._applicants) if (Object.prototype.hasOwnProperty.call(this._applicants, applicant)) try {
+				this._applicants[applicant].close();
+			} catch (error) {}
+			this._status = C.STATUS_USER_CLOSED;
+			if (Object.keys(this._transactions.nict).length + Object.keys(this._transactions.nist).length + Object.keys(this._transactions.ict).length + Object.keys(this._transactions.ist).length === 0 && num_sessions === 0) this._transport.disconnect();
+			else this._closeTimer = setTimeout(() => {
+				this._closeTimer = null;
+				this._transport.disconnect();
+			}, 2e3);
+		}
+		/**
+		* Normalice a string into a valid SIP request URI
+		* -param {String} target
+		* -returns {JsSIP.URI|undefined}
+		*/
+		normalizeTarget(target) {
+			return Utils.normalizeTarget(target, this._configuration.hostport_params);
+		}
+		/**
+		* Allow retrieving configuration and autogenerated fields in runtime.
+		*/
+		get(parameter) {
+			switch (parameter) {
+				case "authorization_user": return this._configuration.authorization_user;
+				case "realm": return this._configuration.realm;
+				case "ha1": return this._configuration.ha1;
+				case "authorization_jwt": return this._configuration.authorization_jwt;
+				default:
+					logger.warn("get() | cannot get \"%s\" parameter in runtime", parameter);
+					return;
+			}
+		}
+		/**
+		* Allow configuration changes in runtime.
+		* Returns true if the parameter could be set.
+		*/
+		set(parameter, value) {
+			switch (parameter) {
+				case "authorization_user":
+					this._configuration.authorization_user = String(value);
+					break;
+				case "password":
+					this._configuration.password = String(value);
+					break;
+				case "realm":
+					this._configuration.realm = String(value);
+					break;
+				case "ha1":
+					this._configuration.ha1 = String(value);
+					this._configuration.password = null;
+					break;
+				case "authorization_jwt":
+					this._configuration.authorization_jwt = String(value);
+					break;
+				case "display_name":
+					this._configuration.display_name = value;
+					break;
+				case "extra_headers":
+					this._configuration.extra_headers = value;
+					break;
+				default:
+					logger.warn("set() | cannot set \"%s\" parameter in runtime", parameter);
+					return false;
+			}
+			return true;
+		}
+		/**
+		* new Transaction
+		*/
+		newTransaction(transaction) {
+			this._transactions[transaction.type][transaction.id] = transaction;
+			this.emit("newTransaction", { transaction });
+		}
+		/**
+		* Transaction destroyed.
+		*/
+		destroyTransaction(transaction) {
+			delete this._transactions[transaction.type][transaction.id];
+			this.emit("transactionDestroyed", { transaction });
+		}
+		/**
+		* new Dialog
+		*/
+		newDialog(dialog) {
+			this._dialogs[dialog.id] = dialog;
+		}
+		/**
+		* Dialog destroyed.
+		*/
+		destroyDialog(dialog) {
+			delete this._dialogs[dialog.id];
+		}
+		/**
+		*  new Message
+		*/
+		newMessage(message, data) {
+			this._applicants[message] = message;
+			this.emit("newMessage", data);
+		}
+		/**
+		*  new Options
+		*/
+		newOptions(message, data) {
+			this._applicants[message] = message;
+			this.emit("newOptions", data);
+		}
+		/**
+		*  Message destroyed.
+		*/
+		destroyMessage(message) {
+			delete this._applicants[message];
+		}
+		/**
+		* new RTCSession
+		*/
+		newRTCSession(session, data) {
+			this._sessions[session.id] = session;
+			this.emit("newRTCSession", data);
+		}
+		/**
+		* RTCSession destroyed.
+		*/
+		destroyRTCSession(session) {
+			delete this._sessions[session.id];
+		}
+		/**
+		* Registered
+		*/
+		registered(data) {
+			this.emit("registered", data);
+		}
+		/**
+		* Unregistered
+		*/
+		unregistered(data) {
+			this.emit("unregistered", data);
+		}
+		/**
+		* Registration Failed
+		*/
+		registrationFailed(data) {
+			this.emit("registrationFailed", data);
+		}
+		/**
+		* Request reception
+		*/
+		receiveRequest(request) {
+			const method = request.method;
+			if (request.ruri.user !== this._configuration.uri.user && request.ruri.user !== this._contact.uri.user) {
+				logger.debug("Request-URI does not point to us");
+				if (request.method !== JsSIP_C.ACK) request.reply_sl(404);
+				return;
+			}
+			if (request.ruri.scheme === JsSIP_C.SIPS) {
+				request.reply_sl(416);
+				return;
+			}
+			if (Transactions.checkTransaction(this, request)) return;
+			if (method === JsSIP_C.INVITE) new Transactions.InviteServerTransaction(this, this._transport, request);
+			else if (method !== JsSIP_C.ACK && method !== JsSIP_C.CANCEL) new Transactions.NonInviteServerTransaction(this, this._transport, request);
+			if (method === JsSIP_C.OPTIONS) {
+				if (this.listeners("newOptions").length === 0) {
+					request.reply(200);
+					return;
 				}
-			},
-			{
-				key: "unregister",
-				value: function unregister(options) {
-					logger.debug("unregister()");
-					this._dynConfiguration.register = false;
-					this._registrator.unregister(options);
+				new Options(this).init_incoming(request);
+			} else if (method === JsSIP_C.MESSAGE) {
+				if (this.listeners("newMessage").length === 0) {
+					request.reply(405);
+					return;
 				}
-			},
-			{
-				key: "registrator",
-				value: function registrator() {
-					return this._registrator;
+				new Message(this).init_incoming(request);
+			} else if (method === JsSIP_C.SUBSCRIBE) {
+				if (this.listeners("newSubscribe").length === 0) {
+					request.reply(405);
+					return;
 				}
-			},
-			{
-				key: "isRegistered",
-				value: function isRegistered() {
-					return this._registrator.registered;
-				}
-			},
-			{
-				key: "isConnected",
-				value: function isConnected() {
-					return this._transport.isConnected();
-				}
-			},
-			{
-				key: "call",
-				value: function call(target, options) {
-					logger.debug("call()");
-					var session = new RTCSession(this);
-					session.connect(target, options);
-					return session;
-				}
-			},
-			{
-				key: "sendMessage",
-				value: function sendMessage(target, body, options) {
-					logger.debug("sendMessage()");
-					var message = new Message(this);
-					message.send(target, body, options);
-					return message;
-				}
-			},
-			{
-				key: "sendOptions",
-				value: function sendOptions(target, body, options) {
-					logger.debug("sendOptions()");
-					var message = new Options(this);
-					message.send(target, body, options);
-					return message;
-				}
-			},
-			{
-				key: "terminateSessions",
-				value: function terminateSessions(options) {
-					logger.debug("terminateSessions()");
-					for (var idx in this._sessions) if (!this._sessions[idx].isEnded()) this._sessions[idx].terminate(options);
-				}
-			},
-			{
-				key: "stop",
-				value: function stop() {
-					var _this2 = this;
-					logger.debug("stop()");
-					this._dynConfiguration = {};
-					if (this._status === C.STATUS_USER_CLOSED) {
-						logger.debug("UA already closed");
-						return;
-					}
-					this._registrator.close();
-					var num_sessions = Object.keys(this._sessions).length;
-					for (var session in this._sessions) if (Object.prototype.hasOwnProperty.call(this._sessions, session)) {
-						logger.debug("closing session ".concat(session));
-						try {
-							this._sessions[session].terminate();
-						} catch (error) {}
-					}
-					for (var applicant in this._applicants) if (Object.prototype.hasOwnProperty.call(this._applicants, applicant)) try {
-						this._applicants[applicant].close();
-					} catch (error) {}
-					this._status = C.STATUS_USER_CLOSED;
-					if (Object.keys(this._transactions.nict).length + Object.keys(this._transactions.nist).length + Object.keys(this._transactions.ict).length + Object.keys(this._transactions.ist).length === 0 && num_sessions === 0) this._transport.disconnect();
-					else this._closeTimer = setTimeout(function() {
-						_this2._closeTimer = null;
-						_this2._transport.disconnect();
-					}, 2e3);
-				}
-			},
-			{
-				key: "normalizeTarget",
-				value: function normalizeTarget(target) {
-					return Utils.normalizeTarget(target, this._configuration.hostport_params);
-				}
-			},
-			{
-				key: "get",
-				value: function get(parameter) {
-					switch (parameter) {
-						case "authorization_user": return this._configuration.authorization_user;
-						case "realm": return this._configuration.realm;
-						case "ha1": return this._configuration.ha1;
-						case "authorization_jwt": return this._configuration.authorization_jwt;
-						default:
-							logger.warn("get() | cannot get \"%s\" parameter in runtime", parameter);
-							return;
-					}
-				}
-			},
-			{
-				key: "set",
-				value: function set(parameter, value) {
-					switch (parameter) {
-						case "authorization_user":
-							this._configuration.authorization_user = String(value);
-							break;
-						case "password":
-							this._configuration.password = String(value);
-							break;
-						case "realm":
-							this._configuration.realm = String(value);
-							break;
-						case "ha1":
-							this._configuration.ha1 = String(value);
-							this._configuration.password = null;
-							break;
-						case "authorization_jwt":
-							this._configuration.authorization_jwt = String(value);
-							break;
-						case "display_name":
-							this._configuration.display_name = value;
-							break;
-						case "extra_headers":
-							this._configuration.extra_headers = value;
-							break;
-						default:
-							logger.warn("set() | cannot set \"%s\" parameter in runtime", parameter);
-							return false;
-					}
-					return true;
-				}
-			},
-			{
-				key: "newTransaction",
-				value: function newTransaction(transaction) {
-					this._transactions[transaction.type][transaction.id] = transaction;
-					this.emit("newTransaction", { transaction });
-				}
-			},
-			{
-				key: "destroyTransaction",
-				value: function destroyTransaction(transaction) {
-					delete this._transactions[transaction.type][transaction.id];
-					this.emit("transactionDestroyed", { transaction });
-				}
-			},
-			{
-				key: "newDialog",
-				value: function newDialog(dialog) {
-					this._dialogs[dialog.id] = dialog;
-				}
-			},
-			{
-				key: "destroyDialog",
-				value: function destroyDialog(dialog) {
-					delete this._dialogs[dialog.id];
-				}
-			},
-			{
-				key: "newMessage",
-				value: function newMessage(message, data) {
-					this._applicants[message] = message;
-					this.emit("newMessage", data);
-				}
-			},
-			{
-				key: "newOptions",
-				value: function newOptions(message, data) {
-					this._applicants[message] = message;
-					this.emit("newOptions", data);
-				}
-			},
-			{
-				key: "destroyMessage",
-				value: function destroyMessage(message) {
-					delete this._applicants[message];
-				}
-			},
-			{
-				key: "newRTCSession",
-				value: function newRTCSession(session, data) {
-					this._sessions[session.id] = session;
-					this.emit("newRTCSession", data);
-				}
-			},
-			{
-				key: "destroyRTCSession",
-				value: function destroyRTCSession(session) {
-					delete this._sessions[session.id];
-				}
-			},
-			{
-				key: "registered",
-				value: function registered(data) {
-					this.emit("registered", data);
-				}
-			},
-			{
-				key: "unregistered",
-				value: function unregistered(data) {
-					this.emit("unregistered", data);
-				}
-			},
-			{
-				key: "registrationFailed",
-				value: function registrationFailed(data) {
-					this.emit("registrationFailed", data);
-				}
-			},
-			{
-				key: "receiveRequest",
-				value: function receiveRequest(request) {
-					var method = request.method;
-					if (request.ruri.user !== this._configuration.uri.user && request.ruri.user !== this._contact.uri.user) {
-						logger.debug("Request-URI does not point to us");
-						if (request.method !== JsSIP_C.ACK) request.reply_sl(404);
-						return;
-					}
-					if (request.ruri.scheme === JsSIP_C.SIPS) {
-						request.reply_sl(416);
-						return;
-					}
-					if (Transactions.checkTransaction(this, request)) return;
-					if (method === JsSIP_C.INVITE) new Transactions.InviteServerTransaction(this, this._transport, request);
-					else if (method !== JsSIP_C.ACK && method !== JsSIP_C.CANCEL) new Transactions.NonInviteServerTransaction(this, this._transport, request);
-					if (method === JsSIP_C.OPTIONS) {
-						if (this.listeners("newOptions").length === 0) {
-							request.reply(200);
-							return;
-						}
-						new Options(this).init_incoming(request);
-					} else if (method === JsSIP_C.MESSAGE) {
-						if (this.listeners("newMessage").length === 0) {
-							request.reply(405);
-							return;
-						}
-						new Message(this).init_incoming(request);
-					} else if (method === JsSIP_C.INVITE) {
-						if (!request.to_tag && this.listeners("newRTCSession").length === 0) {
-							request.reply(405);
-							return;
-						}
-					}
-					var dialog;
-					var session;
-					if (!request.to_tag) switch (method) {
-						case JsSIP_C.INVITE:
-							if (window.RTCPeerConnection) if (request.hasHeader("replaces")) {
-								var replaces = request.replaces;
-								dialog = this._findDialog(replaces.call_id, replaces.from_tag, replaces.to_tag);
-								if (dialog) {
-									session = dialog.owner;
-									if (!session.isEnded()) session.receiveRequest(request);
-									else request.reply(603);
-								} else request.reply(481);
-							} else {
-								session = new RTCSession(this);
-								session.init_incoming(request);
-							}
-							else {
-								logger.warn("INVITE received but WebRTC is not supported");
-								request.reply(488);
-							}
-							break;
-						case JsSIP_C.BYE:
-							request.reply(481);
-							break;
-						case JsSIP_C.CANCEL:
-							session = this._findSession(request);
-							if (session) session.receiveRequest(request);
-							else logger.debug("received CANCEL request for a non existent session");
-							break;
-						case JsSIP_C.ACK: break;
-						case JsSIP_C.NOTIFY:
-							this.emit("sipEvent", {
-								event: request.event,
-								request
-							});
-							request.reply(200);
-							break;
-						default:
-							request.reply(405);
-							break;
-					}
-					else {
-						dialog = this._findDialog(request.call_id, request.from_tag, request.to_tag);
-						if (dialog) dialog.receiveRequest(request);
-						else if (method === JsSIP_C.NOTIFY) {
-							session = this._findSession(request);
-							if (session) session.receiveRequest(request);
-							else {
-								logger.debug("received NOTIFY request for a non existent subscription");
-								request.reply(481, "Subscription does not exist");
-							}
-						} else if (method !== JsSIP_C.ACK) request.reply(481);
-					}
-				}
-			},
-			{
-				key: "_findSession",
-				value: function _findSession(_ref) {
-					var call_id = _ref.call_id, from_tag = _ref.from_tag, to_tag = _ref.to_tag;
-					var sessionIDa = call_id + from_tag;
-					var sessionA = this._sessions[sessionIDa];
-					var sessionIDb = call_id + to_tag;
-					var sessionB = this._sessions[sessionIDb];
-					if (sessionA) return sessionA;
-					else if (sessionB) return sessionB;
-					else return null;
-				}
-			},
-			{
-				key: "_findDialog",
-				value: function _findDialog(call_id, from_tag, to_tag) {
-					var id = call_id + from_tag + to_tag;
-					var dialog = this._dialogs[id];
-					if (dialog) return dialog;
-					else {
-						id = call_id + to_tag + from_tag;
-						dialog = this._dialogs[id];
-						if (dialog) return dialog;
-						else return null;
-					}
-				}
-			},
-			{
-				key: "_loadConfig",
-				value: function _loadConfig(configuration) {
-					try {
-						config.load(this._configuration, configuration);
-					} catch (e) {
-						throw e;
-					}
-					if (this._configuration.display_name === 0) this._configuration.display_name = "0";
-					if (!this._configuration.instance_id) this._configuration.instance_id = Utils.newUUID();
-					this._configuration.jssip_id = Utils.createRandomToken(5);
-					var hostport_params = this._configuration.uri.clone();
-					hostport_params.user = null;
-					this._configuration.hostport_params = hostport_params.toString().replace(/^sip:/i, "");
-					try {
-						this._transport = new Transport(this._configuration.sockets, {
-							max_interval: this._configuration.connection_recovery_max_interval,
-							min_interval: this._configuration.connection_recovery_min_interval
-						});
-						this._transport.onconnecting = onTransportConnecting.bind(this);
-						this._transport.onconnect = onTransportConnect.bind(this);
-						this._transport.ondisconnect = onTransportDisconnect.bind(this);
-						this._transport.ondata = onTransportData.bind(this);
-					} catch (e) {
-						logger.warn(e);
-						throw new Exceptions.ConfigurationError("sockets", this._configuration.sockets);
-					}
-					delete this._configuration.sockets;
-					if (!this._configuration.authorization_user) this._configuration.authorization_user = this._configuration.uri.user;
-					if (!this._configuration.registrar_server) {
-						var registrar_server = this._configuration.uri.clone();
-						registrar_server.user = null;
-						registrar_server.clearParams();
-						registrar_server.clearHeaders();
-						this._configuration.registrar_server = registrar_server;
-					}
-					this._configuration.no_answer_timeout *= 1e3;
-					if (this._configuration.contact_uri) this._configuration.via_host = this._configuration.contact_uri.host;
-					else this._configuration.contact_uri = new URI("sip", Utils.createRandomToken(8), this._configuration.via_host, null, { transport: "ws" });
-					this._contact = {
-						pub_gruu: null,
-						temp_gruu: null,
-						uri: this._configuration.contact_uri,
-						toString: function toString() {
-							var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-							var anonymous = options.anonymous || null;
-							var outbound = options.outbound || null;
-							var contact = "<";
-							if (anonymous) contact += this.temp_gruu || "sip:anonymous@anonymous.invalid;transport=ws";
-							else contact += this.pub_gruu || this.uri.toString();
-							if (outbound && (anonymous ? !this.temp_gruu : !this.pub_gruu)) contact += ";ob";
-							contact += ">";
-							return contact;
-						}
-					};
-					var writable_parameters = [
-						"authorization_user",
-						"password",
-						"realm",
-						"ha1",
-						"authorization_jwt",
-						"display_name",
-						"register",
-						"extra_headers"
-					];
-					for (var parameter in this._configuration) if (Object.prototype.hasOwnProperty.call(this._configuration, parameter)) if (writable_parameters.indexOf(parameter) !== -1) Object.defineProperty(this._configuration, parameter, {
-						writable: true,
-						configurable: false
-					});
-					else Object.defineProperty(this._configuration, parameter, {
-						writable: false,
-						configurable: false
-					});
-					logger.debug("configuration parameters after validation:");
-					for (var _parameter in this._configuration) if (Object.prototype.hasOwnProperty.call(config.settings, _parameter)) switch (_parameter) {
-						case "uri":
-						case "registrar_server":
-							logger.debug("- ".concat(_parameter, ": ").concat(this._configuration[_parameter]));
-							break;
-						case "password":
-						case "ha1":
-						case "authorization_jwt":
-							logger.debug("- ".concat(_parameter, ": NOT SHOWN"));
-							break;
-						default: logger.debug("- ".concat(_parameter, ": ").concat(JSON.stringify(this._configuration[_parameter])));
-					}
-				}
-			},
-			{
-				key: "C",
-				get: function get() {
-					return C;
-				}
-			},
-			{
-				key: "status",
-				get: function get() {
-					return this._status;
-				}
-			},
-			{
-				key: "contact",
-				get: function get() {
-					return this._contact;
-				}
-			},
-			{
-				key: "configuration",
-				get: function get() {
-					return this._configuration;
-				}
-			},
-			{
-				key: "transport",
-				get: function get() {
-					return this._transport;
+			} else if (method === JsSIP_C.INVITE) {
+				if (!request.to_tag && this.listeners("newRTCSession").length === 0) {
+					request.reply(405);
+					return;
 				}
 			}
-		]);
-		return UA;
-	}(EventEmitter);
+			let dialog;
+			let session;
+			if (!request.to_tag) switch (method) {
+				case JsSIP_C.INVITE:
+					if (window.RTCPeerConnection) if (request.hasHeader("replaces")) {
+						const replaces = request.replaces;
+						dialog = this._findDialog(replaces.call_id, replaces.from_tag, replaces.to_tag);
+						if (dialog) {
+							session = dialog.owner;
+							if (!session.isEnded()) session.receiveRequest(request);
+							else request.reply(603);
+						} else request.reply(481);
+					} else {
+						session = new RTCSession(this);
+						session.init_incoming(request);
+					}
+					else {
+						logger.warn("INVITE received but WebRTC is not supported");
+						request.reply(488);
+					}
+					break;
+				case JsSIP_C.BYE:
+					request.reply(481);
+					break;
+				case JsSIP_C.CANCEL:
+					session = this._findSession(request);
+					if (session) session.receiveRequest(request);
+					else logger.debug("received CANCEL request for a non existent session");
+					break;
+				case JsSIP_C.ACK: break;
+				case JsSIP_C.NOTIFY:
+					this.emit("sipEvent", {
+						event: request.event,
+						request
+					});
+					request.reply(200);
+					break;
+				case JsSIP_C.SUBSCRIBE:
+					Notifier.init_incoming(request, () => {
+						this.emit("newSubscribe", {
+							event: request.event,
+							request
+						});
+					});
+					break;
+				default:
+					request.reply(405);
+					break;
+			}
+			else {
+				dialog = this._findDialog(request.call_id, request.from_tag, request.to_tag);
+				if (dialog) dialog.receiveRequest(request);
+				else if (method === JsSIP_C.NOTIFY) {
+					session = this._findSession(request);
+					if (session) session.receiveRequest(request);
+					else {
+						logger.debug("received NOTIFY request for a non existent subscription");
+						request.reply(481, "Subscription does not exist");
+					}
+				} else if (method !== JsSIP_C.ACK) request.reply(481);
+			}
+		}
+		/**
+		* Get the session to which the request belongs to, if any.
+		*/
+		_findSession({ call_id, from_tag, to_tag }) {
+			const sessionIDa = call_id + from_tag;
+			const sessionA = this._sessions[sessionIDa];
+			const sessionIDb = call_id + to_tag;
+			const sessionB = this._sessions[sessionIDb];
+			if (sessionA) return sessionA;
+			else if (sessionB) return sessionB;
+			else return null;
+		}
+		/**
+		* Get the dialog to which the request belongs to, if any.
+		*/
+		_findDialog(call_id, from_tag, to_tag) {
+			let id = call_id + from_tag + to_tag;
+			let dialog = this._dialogs[id];
+			if (dialog) return dialog;
+			else {
+				id = call_id + to_tag + from_tag;
+				dialog = this._dialogs[id];
+				if (dialog) return dialog;
+				else return null;
+			}
+		}
+		_loadConfig(configuration) {
+			config.load(this._configuration, configuration);
+			if (this._configuration.display_name === 0) this._configuration.display_name = "0";
+			if (!this._configuration.instance_id) this._configuration.instance_id = Utils.newUUID();
+			this._configuration.jssip_id = Utils.createRandomToken(5);
+			const hostport_params = this._configuration.uri.clone();
+			hostport_params.user = null;
+			this._configuration.hostport_params = hostport_params.toString().replace(/^sip:/i, "");
+			try {
+				this._transport = new Transport(this._configuration.sockets, {
+					max_interval: this._configuration.connection_recovery_max_interval,
+					min_interval: this._configuration.connection_recovery_min_interval
+				});
+				this._transport.onconnecting = onTransportConnecting.bind(this);
+				this._transport.onconnect = onTransportConnect.bind(this);
+				this._transport.ondisconnect = onTransportDisconnect.bind(this);
+				this._transport.ondata = onTransportData.bind(this);
+			} catch (error) {
+				logger.warn(error);
+				throw new Exceptions.ConfigurationError("sockets", this._configuration.sockets);
+			}
+			delete this._configuration.sockets;
+			if (!this._configuration.authorization_user) this._configuration.authorization_user = this._configuration.uri.user;
+			if (!this._configuration.registrar_server) {
+				const registrar_server = this._configuration.uri.clone();
+				registrar_server.user = null;
+				registrar_server.clearParams();
+				registrar_server.clearHeaders();
+				this._configuration.registrar_server = registrar_server;
+			}
+			this._configuration.no_answer_timeout *= 1e3;
+			if (this._configuration.contact_uri) this._configuration.via_host = this._configuration.contact_uri.host;
+			else this._configuration.contact_uri = new URI("sip", Utils.createRandomToken(8), this._configuration.via_host, null, { transport: "ws" });
+			this._contact = {
+				pub_gruu: null,
+				temp_gruu: null,
+				uri: this._configuration.contact_uri,
+				toString(options = {}) {
+					const anonymous = options.anonymous || null;
+					const outbound = options.outbound || null;
+					let contact = "<";
+					if (anonymous) contact += this.temp_gruu || "sip:anonymous@anonymous.invalid;transport=ws";
+					else contact += this.pub_gruu || this.uri.toString();
+					if (outbound && (anonymous ? !this.temp_gruu : !this.pub_gruu)) contact += ";ob";
+					contact += ">";
+					return contact;
+				}
+			};
+			const writable_parameters = [
+				"authorization_user",
+				"password",
+				"realm",
+				"ha1",
+				"authorization_jwt",
+				"display_name",
+				"register",
+				"extra_headers"
+			];
+			for (const parameter in this._configuration) if (Object.prototype.hasOwnProperty.call(this._configuration, parameter)) if (writable_parameters.indexOf(parameter) !== -1) Object.defineProperty(this._configuration, parameter, {
+				writable: true,
+				configurable: false
+			});
+			else Object.defineProperty(this._configuration, parameter, {
+				writable: false,
+				configurable: false
+			});
+			logger.debug("configuration parameters after validation:");
+			for (const parameter in this._configuration) if (Object.prototype.hasOwnProperty.call(config.settings, parameter)) switch (parameter) {
+				case "uri":
+				case "registrar_server":
+					logger.debug(`- ${parameter}: ${this._configuration[parameter]}`);
+					break;
+				case "password":
+				case "ha1":
+				case "authorization_jwt":
+					logger.debug(`- ${parameter}: NOT SHOWN`);
+					break;
+				default: logger.debug(`- ${parameter}: ${JSON.stringify(this._configuration[parameter])}`);
+			}
+		}
+	};
 	/**
 	* Transport event handlers
 	*/
@@ -20983,16 +19103,12 @@ var require_UA = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		if (this._dynConfiguration.register) this._registrator.register();
 	}
 	function onTransportDisconnect(data) {
-		var client_transactions = [
+		for (const type of [
 			"nict",
 			"ict",
 			"nist",
 			"ist"
-		];
-		for (var _i = 0, _client_transactions = client_transactions; _i < _client_transactions.length; _i++) {
-			var type = _client_transactions[_i];
-			for (var id in this._transactions[type]) if (Object.prototype.hasOwnProperty.call(this._transactions[type], id)) this._transactions[type][id].onTransportError();
-		}
+		]) for (const id in this._transactions[type]) if (Object.prototype.hasOwnProperty.call(this._transactions[type], id)) this._transactions[type][id].onTransportError();
 		this.emit("disconnected", data);
 		this._registrator.onTransportClosed();
 		if (this._status !== C.STATUS_USER_CLOSED) {
@@ -21001,8 +19117,8 @@ var require_UA = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		}
 	}
 	function onTransportData(data) {
-		var transport = data.transport;
-		var message = data.message;
+		const transport = data.transport;
+		let message = data.message;
 		message = Parser.parseMessage(message, this);
 		if (!message) return;
 		if (this._status === C.STATUS_USER_CLOSED && message instanceof SIPMessage.IncomingRequest) return;
@@ -21011,7 +19127,7 @@ var require_UA = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			message.transport = transport;
 			this.receiveRequest(message);
 		} else if (message instanceof SIPMessage.IncomingResponse) {
-			var transaction;
+			let transaction;
 			switch (message.method) {
 				case JsSIP_C.INVITE:
 					transaction = this._transactions.ict[message.via_branch];
@@ -21027,170 +19143,114 @@ var require_UA = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	}
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/WebSocketInterface.js
+//#region node_modules/jssip/lib/WebSocketInterface.js
 var require_WebSocketInterface = /* @__PURE__ */ __commonJSMin(((exports, module) => {
-	function _classCallCheck(instance, Constructor) {
-		if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
-	}
-	function _defineProperties(target, props) {
-		for (var i = 0; i < props.length; i++) {
-			var descriptor = props[i];
-			descriptor.enumerable = descriptor.enumerable || false;
-			descriptor.configurable = true;
-			if ("value" in descriptor) descriptor.writable = true;
-			Object.defineProperty(target, descriptor.key, descriptor);
-		}
-	}
-	function _createClass(Constructor, protoProps, staticProps) {
-		if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-		if (staticProps) _defineProperties(Constructor, staticProps);
-		return Constructor;
-	}
 	var Logger = require_Logger();
 	var Grammar = require_Grammar();
 	var logger = new Logger("WebSocketInterface");
-	module.exports = /* @__PURE__ */ function() {
-		function WebSocketInterface(url) {
-			_classCallCheck(this, WebSocketInterface);
+	module.exports = class WebSocketInterface {
+		constructor(url) {
 			logger.debug("new() [url:\"%s\"]", url);
 			this._url = url;
 			this._sip_uri = null;
 			this._via_transport = null;
 			this._ws = null;
-			var parsed_url = Grammar.parse(url, "absoluteURI");
+			const parsed_url = Grammar.parse(url, "absoluteURI");
 			if (parsed_url === -1) {
-				logger.warn("invalid WebSocket URI: ".concat(url));
-				throw new TypeError("Invalid argument: ".concat(url));
+				logger.warn(`invalid WebSocket URI: ${url}`);
+				throw new TypeError(`Invalid argument: ${url}`);
 			} else if (parsed_url.scheme !== "wss" && parsed_url.scheme !== "ws") {
-				logger.warn("invalid WebSocket URI scheme: ".concat(parsed_url.scheme));
-				throw new TypeError("Invalid argument: ".concat(url));
+				logger.warn(`invalid WebSocket URI scheme: ${parsed_url.scheme}`);
+				throw new TypeError(`Invalid argument: ${url}`);
 			} else {
-				this._sip_uri = "sip:".concat(parsed_url.host).concat(parsed_url.port ? ":".concat(parsed_url.port) : "", ";transport=ws");
+				this._sip_uri = `sip:${parsed_url.host}${parsed_url.port ? `:${parsed_url.port}` : ""};transport=ws`;
 				this._via_transport = parsed_url.scheme.toUpperCase();
 			}
 		}
-		_createClass(WebSocketInterface, [
-			{
-				key: "connect",
-				value: function connect() {
-					logger.debug("connect()");
-					if (this.isConnected()) {
-						logger.debug("WebSocket ".concat(this._url, " is already connected"));
-						return;
-					} else if (this.isConnecting()) {
-						logger.debug("WebSocket ".concat(this._url, " is connecting"));
-						return;
-					}
-					if (this._ws) this.disconnect();
-					logger.debug("connecting to WebSocket ".concat(this._url));
-					try {
-						this._ws = new WebSocket(this._url, "sip");
-						this._ws.binaryType = "arraybuffer";
-						this._ws.onopen = this._onOpen.bind(this);
-						this._ws.onclose = this._onClose.bind(this);
-						this._ws.onmessage = this._onMessage.bind(this);
-						this._ws.onerror = this._onError.bind(this);
-					} catch (e) {
-						this._onError(e);
-					}
-				}
-			},
-			{
-				key: "disconnect",
-				value: function disconnect() {
-					logger.debug("disconnect()");
-					if (this._ws) {
-						this._ws.onopen = function() {};
-						this._ws.onclose = function() {};
-						this._ws.onmessage = function() {};
-						this._ws.onerror = function() {};
-						this._ws.close();
-						this._ws = null;
-					}
-				}
-			},
-			{
-				key: "send",
-				value: function send(message) {
-					logger.debug("send()");
-					if (this.isConnected()) {
-						this._ws.send(message);
-						return true;
-					} else {
-						logger.warn("unable to send message, WebSocket is not open");
-						return false;
-					}
-				}
-			},
-			{
-				key: "isConnected",
-				value: function isConnected() {
-					return this._ws && this._ws.readyState === this._ws.OPEN;
-				}
-			},
-			{
-				key: "isConnecting",
-				value: function isConnecting() {
-					return this._ws && this._ws.readyState === this._ws.CONNECTING;
-				}
-			},
-			{
-				key: "_onOpen",
-				value: function _onOpen() {
-					logger.debug("WebSocket ".concat(this._url, " connected"));
-					this.onconnect();
-				}
-			},
-			{
-				key: "_onClose",
-				value: function _onClose(_ref) {
-					var wasClean = _ref.wasClean, code = _ref.code, reason = _ref.reason;
-					logger.debug("WebSocket ".concat(this._url, " closed"));
-					if (wasClean === false) logger.debug("WebSocket abrupt disconnection");
-					this.ondisconnect(!wasClean, code, reason);
-				}
-			},
-			{
-				key: "_onMessage",
-				value: function _onMessage(_ref2) {
-					var data = _ref2.data;
-					logger.debug("received WebSocket message");
-					this.ondata(data);
-				}
-			},
-			{
-				key: "_onError",
-				value: function _onError(e) {
-					logger.warn("WebSocket ".concat(this._url, " error: "), e);
-				}
-			},
-			{
-				key: "via_transport",
-				get: function get() {
-					return this._via_transport;
-				},
-				set: function set(value) {
-					this._via_transport = value.toUpperCase();
-				}
-			},
-			{
-				key: "sip_uri",
-				get: function get() {
-					return this._sip_uri;
-				}
-			},
-			{
-				key: "url",
-				get: function get() {
-					return this._url;
-				}
+		get via_transport() {
+			return this._via_transport;
+		}
+		set via_transport(value) {
+			this._via_transport = value.toUpperCase();
+		}
+		get sip_uri() {
+			return this._sip_uri;
+		}
+		get url() {
+			return this._url;
+		}
+		connect() {
+			logger.debug("connect()");
+			if (this.isConnected()) {
+				logger.debug(`WebSocket ${this._url} is already connected`);
+				return;
+			} else if (this.isConnecting()) {
+				logger.debug(`WebSocket ${this._url} is connecting`);
+				return;
 			}
-		]);
-		return WebSocketInterface;
-	}();
+			if (this._ws) this.disconnect();
+			logger.debug(`connecting to WebSocket ${this._url}`);
+			try {
+				this._ws = new WebSocket(this._url, "sip");
+				this._ws.binaryType = "arraybuffer";
+				this._ws.onopen = this._onOpen.bind(this);
+				this._ws.onclose = this._onClose.bind(this);
+				this._ws.onmessage = this._onMessage.bind(this);
+				this._ws.onerror = this._onError.bind(this);
+			} catch (error) {
+				this._onError(error);
+			}
+		}
+		disconnect() {
+			logger.debug("disconnect()");
+			if (this._ws) {
+				this._ws.onopen = () => {};
+				this._ws.onclose = () => {};
+				this._ws.onmessage = () => {};
+				this._ws.onerror = () => {};
+				this._ws.close();
+				this._ws = null;
+			}
+		}
+		send(message) {
+			logger.debug("send()");
+			if (this.isConnected()) {
+				this._ws.send(message);
+				return true;
+			} else {
+				logger.warn("unable to send message, WebSocket is not open");
+				return false;
+			}
+		}
+		isConnected() {
+			return this._ws && this._ws.readyState === this._ws.OPEN;
+		}
+		isConnecting() {
+			return this._ws && this._ws.readyState === this._ws.CONNECTING;
+		}
+		/**
+		* WebSocket Event Handlers
+		*/
+		_onOpen() {
+			logger.debug(`WebSocket ${this._url} connected`);
+			this.onconnect();
+		}
+		_onClose({ wasClean, code, reason }) {
+			logger.debug(`WebSocket ${this._url} closed`);
+			if (wasClean === false) logger.debug("WebSocket abrupt disconnection");
+			this.ondisconnect(!wasClean, code, reason);
+		}
+		_onMessage({ data }) {
+			logger.debug("received WebSocket message");
+			this.ondata(data);
+		}
+		_onError(e) {
+			logger.warn(`WebSocket ${this._url} error: `, e);
+		}
+	};
 }));
 //#endregion
-//#region node_modules/jssip/lib-es5/JsSIP.js
+//#region node_modules/jssip/lib/JsSIP.js
 var require_JsSIP = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var pkg = require_package();
 	var C = require_Constants();
@@ -21201,7 +19261,9 @@ var require_JsSIP = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	var NameAddrHeader = require_NameAddrHeader();
 	var Grammar = require_Grammar();
 	var WebSocketInterface = require_WebSocketInterface();
-	require_browser()("JsSIP")("version %s", pkg.version);
+	var debug = require_browser()("JsSIP");
+	var RTCSession = require_RTCSession();
+	debug("version %s", pkg.version);
 	/**
 	* Expose the JsSIP module.
 	*/
@@ -21214,6 +19276,7 @@ var require_JsSIP = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		NameAddrHeader,
 		WebSocketInterface,
 		Grammar,
+		RTCSession,
 		debug: require_browser(),
 		get name() {
 			return pkg.title;

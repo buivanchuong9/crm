@@ -5,7 +5,7 @@ import KpiTemplateList from "./partials/KpiTemplateList/KpiTemplateList";
 import KpiGoalList from "./partials/KpiGoalList/KpiGoalList";
 import "./SettingKPIList.scss";
 
-export default function SettingBasisList() {
+export default function ClinicInfoList() {
   const { t } = useTranslation();
 
   document.title = t(`pageSettingKPI.title`);

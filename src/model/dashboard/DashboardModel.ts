@@ -16,12 +16,6 @@ export interface IShortcut {
   target?: string;
 }
 
-export interface IVideoHelp {
-  title: string;
-  image: string;
-  url: string;
-}
-
 export interface IEventTransaction {
   type: "sale" | "warehousing" | "order" | "customer_return" | "return_supplier";
   created_at: string;

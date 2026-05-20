@@ -1,7 +1,5 @@
-import { assign, filter, find, forEach, has, isArray, isDefined, isFunction, isNumber, isObject, isUndefined, map, matchPattern, omit, reduce, sortBy } from "./min-dash.js";
-import { d as query, l as event, o as closest } from "./index.esm-E5VQvuu4.js";
-import { A as attr, B as stopPropagation, C as getBBox, I as remove, M as clone, N as create, S as eachElement, V as toPoint, _ as install, a as getDi, b as selection_default, d as isConnection, f as isLabel, g as delta, h as getVisual, i as getBusinessObject, j as classes, k as append, o as is$1, p as IdGenerator, u as translate, v as set, w as getParents, y as unset, z as getOriginal } from "./LabelUtil-ClWHG_I1.js";
-import { i as isKey } from "./KeyboardUtil-BgsbI_dl.js";
+import { C as map, D as sortBy, I as event, N as closest, R as query, T as omit, _ as isArray, b as isNumber, h as forEach, i as isKey, l as assign, m as find, p as filter, w as matchPattern } from "./KeyboardUtil-ClONEu6g.js";
+import { $ as remove, A as IdGenerator, B as getBBox, D as translate, F as set, I as unset, J as classes, K as append, L as selection_default, M as getVisual, N as delta, O as isConnection, P as install, S as reduce, V as getParents, X as create, Y as clone, _ as isObject, a as getDi, b as matchPattern$1, d as forEach$1, f as has, h as isFunction, i as getBusinessObject, it as toPoint, k as isLabel, m as isDefined, nt as getOriginal, o as is$1, p as isArray$1, q as attr, rt as stopPropagation, u as find$1, v as isUndefined, w as sortBy$1, x as omit$1, z as eachElement } from "./LabelUtil-8G_9Eg79.js";
 //#region node_modules/diagram-js/lib/features/clipboard/Clipboard.js
 /**
 * A clip board stub
@@ -1460,8 +1458,8 @@ var copy_paste_default$1 = {
 * @typedef {import('./ModdleCopy').default} ModdleCopy
 */
 function copyProperties(source, target, properties) {
-	if (!isArray(properties)) properties = [properties];
-	forEach(properties, function(property) {
+	if (!isArray$1(properties)) properties = [properties];
+	forEach$1(properties, function(property) {
 		if (!isUndefined(source[property])) target[property] = source[property];
 	});
 }
@@ -1502,7 +1500,7 @@ function BpmnCopyPaste(bpmnFactory, eventBus, moddleCopy) {
 			property: "default"
 		};
 		if (descriptor.host) getBusinessObject(descriptor).attachedToRef = getBusinessObject(cache[descriptor.host]);
-		return omit(references, reduce(references, function(array, reference, key) {
+		return omit$1(references, reduce(references, function(array, reference, key) {
 			var element = reference.element, property = reference.property;
 			if (key === descriptor.id) {
 				element.set(property, businessObject);
@@ -1578,14 +1576,14 @@ function ModdleCopy(eventBus, bpmnFactory, moddle) {
 	eventBus.on("moddleCopy.canCopyProperties", function(context) {
 		var propertyNames = context.propertyNames;
 		if (!propertyNames || !propertyNames.length) return;
-		return sortBy(propertyNames, function(propertyName) {
+		return sortBy$1(propertyNames, function(propertyName) {
 			return propertyName === "extensionElements";
 		});
 	});
 	eventBus.on("moddleCopy.canCopyProperty", function(context) {
 		var parent = context.parent, parentDescriptor = isObject(parent) && parent.$descriptor, propertyName = context.propertyName;
 		if (propertyName && DISALLOWED_PROPERTIES.indexOf(propertyName) !== -1) return false;
-		if (propertyName && parentDescriptor && !find(parentDescriptor.properties, matchPattern({ name: propertyName }))) return false;
+		if (propertyName && parentDescriptor && !find$1(parentDescriptor.properties, matchPattern$1({ name: propertyName }))) return false;
 	});
 	eventBus.on("moddleCopy.canSetCopiedProperty", function(context) {
 		var property = context.property;
@@ -1609,7 +1607,7 @@ ModdleCopy.$inject = [
 */
 ModdleCopy.prototype.copyElement = function(sourceElement, targetElement, propertyNames, clone = false) {
 	var self = this;
-	if (propertyNames && !isArray(propertyNames)) propertyNames = [propertyNames];
+	if (propertyNames && !isArray$1(propertyNames)) propertyNames = [propertyNames];
 	propertyNames = propertyNames || getPropertyNames(sourceElement.$descriptor);
 	var canCopyProperties = this._eventBus.fire("moddleCopy.canCopyProperties", {
 		propertyNames,
@@ -1618,8 +1616,8 @@ ModdleCopy.prototype.copyElement = function(sourceElement, targetElement, proper
 		clone
 	});
 	if (canCopyProperties === false) return targetElement;
-	if (isArray(canCopyProperties)) propertyNames = canCopyProperties;
-	forEach(propertyNames, function(propertyName) {
+	if (isArray$1(canCopyProperties)) propertyNames = canCopyProperties;
+	forEach$1(propertyNames, function(propertyName) {
 		var sourceProperty;
 		if (has(sourceElement, propertyName)) sourceProperty = sourceElement.get(propertyName);
 		var copiedProperty = self.copyProperty(sourceProperty, targetElement, propertyName, clone);
@@ -1659,7 +1657,7 @@ ModdleCopy.prototype.copyProperty = function(property, parent, propertyName, clo
 	var propertyDescriptor = this._moddle.getPropertyDescriptor(parent, propertyName);
 	if (propertyDescriptor.isReference) return;
 	if (propertyDescriptor.isId) return property && this._copyId(property, parent, clone);
-	if (isArray(property)) return reduce(property, function(childProperties, childProperty) {
+	if (isArray$1(property)) return reduce(property, function(childProperties, childProperty) {
 		copiedProperty = self.copyProperty(childProperty, parent, propertyName, clone);
 		if (copiedProperty) return childProperties.concat(copiedProperty);
 		return childProperties;

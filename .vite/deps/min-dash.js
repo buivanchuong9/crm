@@ -1,4 +1,4 @@
-//#region node_modules/min-dash/dist/index.esm.js
+//#region node_modules/min-dash/dist/index.js
 /**
 * Flatten array, one level deep.
 *

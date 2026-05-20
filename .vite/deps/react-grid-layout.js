@@ -1,7 +1,7 @@
 import { a as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { t as require_react_dom } from "./react-dom-J2wNTDgO.js";
-import { t as require_prop_types } from "./prop-types-CgEKHkd_.js";
+import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
+import { t as require_prop_types } from "./prop-types-DWpwruwU.js";
 //#region node_modules/fast-equals/dist/fast-equals.js
 var require_fast_equals = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	(function(global, factory) {
@@ -366,6 +366,49 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function _interopRequireDefault(e) {
 		return e && e.__esModule ? e : { default: e };
 	}
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
+		if (Object.getOwnPropertySymbols) {
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
+		}
+		return t;
+	}
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+			});
+		}
+		return e;
+	}
+	function _defineProperty(e, r, t) {
+		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+			value: t,
+			enumerable: !0,
+			configurable: !0,
+			writable: !0
+		}) : e[r] = t, e;
+	}
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : i + "";
+	}
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
+			throw new TypeError("@@toPrimitive must return a primitive value.");
+		}
+		return ("string" === r ? String : Number)(t);
+	}
 	/**
 	* Return the bottom coordinate of the layout.
 	*
@@ -422,7 +465,7 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	* This will catch differences in keys, order, and length.
 	*/
 	function childrenEqual(a, b) {
-		return (0, _fastEquals.deepEqual)(_react.default.Children.map(a, (c) => c?.key), _react.default.Children.map(b, (c) => c?.key)) && (0, _fastEquals.deepEqual)(_react.default.Children.map(a, (c) => c?.props["data-grid"]), _react.default.Children.map(b, (c) => c?.props["data-grid"]));
+		return (0, _fastEquals.deepEqual)(_react.default.Children.map(a, (c) => c === null || c === void 0 ? void 0 : c.key), _react.default.Children.map(b, (c) => c === null || c === void 0 ? void 0 : c.key)) && (0, _fastEquals.deepEqual)(_react.default.Children.map(a, (c) => c === null || c === void 0 ? void 0 : c.props["data-grid"]), _react.default.Children.map(b, (c) => c === null || c === void 0 ? void 0 : c.props["data-grid"]));
 	}
 	exports.fastRGLPropsEqual = require_fastRGLPropsEqual();
 	function fastPositionEqual(a, b) {
@@ -453,12 +496,14 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	*/
 	function compact(layout, compactType, cols, allowOverlap) {
 		const compareWith = getStatics(layout);
+		let b = bottom(compareWith);
 		const sorted = sortLayoutItems(layout, compactType);
 		const out = Array(layout.length);
 		for (let i = 0, len = sorted.length; i < len; i++) {
 			let l = cloneLayoutItem(sorted[i]);
 			if (!l.static) {
-				l = compactItem(compareWith, l, compactType, cols, sorted, allowOverlap);
+				l = compactItem(compareWith, l, compactType, cols, sorted, allowOverlap, b);
+				b = Math.max(b, l.y + l.h);
 				compareWith.push(l);
 			}
 			out[layout.indexOf(sorted[i])] = l;
@@ -493,11 +538,12 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	* Modifies item.
 	*
 	*/
-	function compactItem(compareWith, l, compactType, cols, fullLayout, allowOverlap) {
+	function compactItem(compareWith, l, compactType, cols, fullLayout, allowOverlap, b) {
 		const compactV = compactType === "vertical";
 		const compactH = compactType === "horizontal";
 		if (compactV) {
-			l.y = Math.min(bottom(compareWith), l.y);
+			if (typeof b === "number") l.y = Math.min(b, l.y);
+			else l.y = Math.min(bottom(compareWith), l.y);
 			while (l.y > 0 && !getFirstCollision(compareWith, l)) l.y--;
 		} else if (compactH) while (l.x > 0 && !getFirstCollision(compareWith, l)) l.x--;
 		let collides;
@@ -581,7 +627,7 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function moveElement(layout, l, x, y, isUserAction, preventCollision, compactType, cols, allowOverlap) {
 		if (l.static && l.isDraggable !== true) return layout;
 		if (l.y === y && l.x === x) return layout;
-		log(`Moving element ${l.i} to [${String(x)},${String(y)}] from [${l.x},${l.y}]`);
+		"Moving element ".concat(l.i, " to [").concat(String(x), ",").concat(String(y), "] from [").concat(l.x, ",").concat(l.y, "]");
 		const oldX = l.x;
 		const oldY = l.y;
 		if (typeof x === "number") l.x = x;
@@ -593,7 +639,7 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		const hasCollisions = collisions.length > 0;
 		if (hasCollisions && allowOverlap) return cloneLayout(layout);
 		else if (hasCollisions && preventCollision) {
-			log(`Collision prevented on ${l.i}, reverting.`);
+			"Collision prevented on ".concat(l.i, ", reverting.");
 			l.x = oldX;
 			l.y = oldY;
 			l.moved = false;
@@ -601,7 +647,7 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		}
 		for (let i = 0, len = collisions.length; i < len; i++) {
 			const collision = collisions[i];
-			log(`Resolving collision between ${l.i} at [${l.x},${l.y}] and ${collision.i} at [${collision.x},${collision.y}]`);
+			"Resolving collision between ".concat(l.i, " at [").concat(l.x, ",").concat(l.y, "] and ").concat(collision.i, " at [").concat(collision.x, ",").concat(collision.y, "]");
 			if (collision.moved) continue;
 			if (collision.static) layout = moveElementAwayFromCollision(layout, collision, l, isUserAction, compactType, cols);
 			else layout = moveElementAwayFromCollision(layout, l, collision, isUserAction, compactType, cols);
@@ -633,9 +679,9 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 			const collisionNorth = firstCollision && firstCollision.y + firstCollision.h > collidesWith.y;
 			const collisionWest = firstCollision && collidesWith.x + collidesWith.w > firstCollision.x;
 			if (!firstCollision) {
-				log(`Doing reverse collision on ${itemToMove.i} up to [${fakeItem.x},${fakeItem.y}].`);
+				"Doing reverse collision on ".concat(itemToMove.i, " up to [").concat(fakeItem.x, ",").concat(fakeItem.y, "].");
 				return moveElement(layout, itemToMove, compactH ? fakeItem.x : void 0, compactV ? fakeItem.y : void 0, isUserAction, preventCollision, compactType, cols);
-			} else if (collisionNorth && compactV) return moveElement(layout, itemToMove, void 0, collidesWith.y + 1, isUserAction, preventCollision, compactType, cols);
+			} else if (collisionNorth && compactV) return moveElement(layout, itemToMove, void 0, itemToMove.y + 1, isUserAction, preventCollision, compactType, cols);
 			else if (collisionNorth && compactType == null) {
 				collidesWith.y = itemToMove.y;
 				itemToMove.y = itemToMove.y + itemToMove.h;
@@ -733,32 +779,29 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 	function resizeItemInDirection(direction, currentSize, newSize, containerWidth) {
 		const ordinalHandler = ordinalResizeHandlerMap[direction];
 		if (!ordinalHandler) return newSize;
-		return ordinalHandler(currentSize, {
-			...currentSize,
-			...newSize
-		}, containerWidth);
+		return ordinalHandler(currentSize, _objectSpread(_objectSpread({}, currentSize), newSize), containerWidth);
 	}
 	function setTransform(_ref5) {
 		let { top, left, width, height } = _ref5;
-		const translate = `translate(${left}px,${top}px)`;
+		const translate = "translate(".concat(left, "px,").concat(top, "px)");
 		return {
 			transform: translate,
 			WebkitTransform: translate,
 			MozTransform: translate,
 			msTransform: translate,
 			OTransform: translate,
-			width: `${width}px`,
-			height: `${height}px`,
+			width: "".concat(width, "px"),
+			height: "".concat(height, "px"),
 			position: "absolute"
 		};
 	}
 	function setTopLeft(_ref6) {
 		let { top, left, width, height } = _ref6;
 		return {
-			top: `${top}px`,
-			left: `${left}px`,
-			width: `${width}px`,
-			height: `${height}px`,
+			top: "".concat(top, "px"),
+			left: "".concat(left, "px"),
+			width: "".concat(width, "px"),
+			height: "".concat(height, "px"),
 			position: "absolute"
 		};
 	}
@@ -811,16 +854,13 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 		initialLayout = initialLayout || [];
 		const layout = [];
 		_react.default.Children.forEach(children, (child) => {
-			if (child?.key == null) return;
+			if ((child === null || child === void 0 ? void 0 : child.key) == null) return;
 			const exists = getLayoutItem(initialLayout, String(child.key));
 			const g = child.props["data-grid"];
 			if (exists && g == null) layout.push(cloneLayoutItem(exists));
 			else if (g) {
 				validateLayout([g], "ReactGridLayout.children");
-				layout.push(cloneLayoutItem({
-					...g,
-					i: child.key
-				}));
+				layout.push(cloneLayoutItem(_objectSpread(_objectSpread({}, g), {}, { i: child.key })));
 			} else layout.push(cloneLayoutItem({
 				w: 1,
 				h: 1,
@@ -853,16 +893,15 @@ var require_utils$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
 			for (let j = 0; j < subProps.length; j++) {
 				const key = subProps[j];
 				const value = item[key];
-				if (typeof value !== "number" || Number.isNaN(value)) throw new Error(`ReactGridLayout: ${contextName}[${i}].${key} must be a number! Received: ${value} (${typeof value})`);
+				if (typeof value !== "number" || Number.isNaN(value)) throw new Error("ReactGridLayout: ".concat(contextName, "[").concat(i, "].").concat(key, " must be a number! Received: ").concat(value, " (").concat(typeof value, ")"));
 			}
-			if (typeof item.i !== "undefined" && typeof item.i !== "string") throw new Error(`ReactGridLayout: ${contextName}[${i}].i must be a string! Received: ${item.i} (${typeof item.i})`);
+			if (typeof item.i !== "undefined" && typeof item.i !== "string") throw new Error("ReactGridLayout: ".concat(contextName, "[").concat(i, "].i must be a string! Received: ").concat(item.i, " (").concat(typeof item.i, ")"));
 		}
 	}
 	function compactType(props) {
 		const { verticalCompact, compactType } = props || {};
 		return verticalCompact === false ? null : compactType;
 	}
-	function log() {}
 	var noop = () => {};
 	exports.noop = noop;
 }));
@@ -1999,54 +2038,51 @@ var require_utils = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.__esModule = true;
 	exports.cloneElement = cloneElement;
 	var _react = _interopRequireDefault(require_react());
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : { default: obj };
+	function _interopRequireDefault(e) {
+		return e && e.__esModule ? e : { default: e };
 	}
-	function ownKeys(object, enumerableOnly) {
-		var keys = Object.keys(object);
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
 		if (Object.getOwnPropertySymbols) {
-			var symbols = Object.getOwnPropertySymbols(object);
-			enumerableOnly && (symbols = symbols.filter(function(sym) {
-				return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-			})), keys.push.apply(keys, symbols);
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
 		}
-		return keys;
+		return t;
 	}
-	function _objectSpread(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = null != arguments[i] ? arguments[i] : {};
-			i % 2 ? ownKeys(Object(source), !0).forEach(function(key) {
-				_defineProperty(target, key, source[key]);
-			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
-				Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 			});
 		}
-		return target;
+		return e;
 	}
-	function _defineProperty(obj, key, value) {
-		key = _toPropertyKey(key);
-		if (key in obj) Object.defineProperty(obj, key, {
-			value,
-			enumerable: true,
-			configurable: true,
-			writable: true
-		});
-		else obj[key] = value;
-		return obj;
+	function _defineProperty(e, r, t) {
+		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+			value: t,
+			enumerable: !0,
+			configurable: !0,
+			writable: !0
+		}) : e[r] = t, e;
 	}
-	function _toPropertyKey(arg) {
-		var key = _toPrimitive(arg, "string");
-		return typeof key === "symbol" ? key : String(key);
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : i + "";
 	}
-	function _toPrimitive(input, hint) {
-		if (typeof input !== "object" || input === null) return input;
-		var prim = input[Symbol.toPrimitive];
-		if (prim !== void 0) {
-			var res = prim.call(input, hint || "default");
-			if (typeof res !== "object") return res;
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
 			throw new TypeError("@@toPrimitive must return a primitive value.");
 		}
-		return (hint === "string" ? String : Number)(input);
+		return ("string" === r ? String : Number)(t);
 	}
 	function cloneElement(element, props) {
 		if (props.style && element.props.style) props.style = _objectSpread(_objectSpread({}, element.props.style), props.style);
@@ -2061,8 +2097,8 @@ var require_propTypes = /* @__PURE__ */ __commonJSMin(((exports) => {
 	exports.resizableProps = void 0;
 	var _propTypes = _interopRequireDefault(require_prop_types());
 	require_cjs();
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : { default: obj };
+	function _interopRequireDefault(e) {
+		return e && e.__esModule ? e : { default: e };
 	}
 	exports.resizableProps = {
 		axis: _propTypes.default.oneOf([
@@ -2079,7 +2115,7 @@ var require_propTypes = /* @__PURE__ */ __commonJSMin(((exports) => {
 			children: _propTypes.default.node,
 			disabled: _propTypes.default.bool,
 			enableUserSelectHack: _propTypes.default.bool,
-			offsetParent: _propTypes.default.node,
+			offsetParent: typeof Element !== "undefined" ? _propTypes.default.instanceOf(Element) : _propTypes.default.any,
 			grid: _propTypes.default.arrayOf(_propTypes.default.number),
 			handle: _propTypes.default.string,
 			nodeRef: _propTypes.default.object,
@@ -2089,14 +2125,11 @@ var require_propTypes = /* @__PURE__ */ __commonJSMin(((exports) => {
 			onMouseDown: _propTypes.default.func,
 			scale: _propTypes.default.number
 		}),
-		height: function height() {
+		height: function() {
 			for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-			var props = args[0];
-			if (props.axis === "both" || props.axis === "y") {
-				var _PropTypes$number;
-				return (_PropTypes$number = _propTypes.default.number).isRequired.apply(_PropTypes$number, args);
-			}
-			return _propTypes.default.number.apply(_propTypes.default, args);
+			const props = args[0];
+			if (props.axis === "both" || props.axis === "y") return _propTypes.default.number.isRequired(...args);
+			return _propTypes.default.number(...args);
 		},
 		handle: _propTypes.default.oneOfType([_propTypes.default.node, _propTypes.default.func]),
 		handleSize: _propTypes.default.arrayOf(_propTypes.default.number),
@@ -2117,14 +2150,11 @@ var require_propTypes = /* @__PURE__ */ __commonJSMin(((exports) => {
 			"ne"
 		])),
 		transformScale: _propTypes.default.number,
-		width: function width() {
+		width: function() {
 			for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) args[_key2] = arguments[_key2];
-			var props = args[0];
-			if (props.axis === "both" || props.axis === "x") {
-				var _PropTypes$number2;
-				return (_PropTypes$number2 = _propTypes.default.number).isRequired.apply(_PropTypes$number2, args);
-			}
-			return _propTypes.default.number.apply(_propTypes.default, args);
+			const props = args[0];
+			if (props.axis === "both" || props.axis === "x") return _propTypes.default.number.isRequired(...args);
+			return _propTypes.default.number(...args);
 		}
 	};
 }));
@@ -2155,140 +2185,110 @@ var require_Resizable = /* @__PURE__ */ __commonJSMin(((exports) => {
 		"resizeHandles",
 		"transformScale"
 	];
-	function _getRequireWildcardCache(nodeInterop) {
-		if (typeof WeakMap !== "function") return null;
-		var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
-		var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
-		return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) {
-			return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
-		})(nodeInterop);
-	}
-	function _interopRequireWildcard(obj, nodeInterop) {
-		if (!nodeInterop && obj && obj.__esModule) return obj;
-		if (obj === null || typeof obj !== "object" && typeof obj !== "function") return { default: obj };
-		var cache = _getRequireWildcardCache(nodeInterop);
-		if (cache && cache.has(obj)) return cache.get(obj);
-		var newObj = {};
-		var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-		for (var key in obj) if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
-			var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-			if (desc && (desc.get || desc.set)) Object.defineProperty(newObj, key, desc);
-			else newObj[key] = obj[key];
-		}
-		newObj.default = obj;
-		if (cache) cache.set(obj, newObj);
-		return newObj;
+	function _interopRequireWildcard(e, t) {
+		if ("function" == typeof WeakMap) var r = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap();
+		return (_interopRequireWildcard = function(e, t) {
+			if (!t && e && e.__esModule) return e;
+			var o, i, f = {
+				__proto__: null,
+				default: e
+			};
+			if (null === e || "object" != typeof e && "function" != typeof e) return f;
+			if (o = t ? n : r) {
+				if (o.has(e)) return o.get(e);
+				o.set(e, f);
+			}
+			for (const t in e) "default" !== t && {}.hasOwnProperty.call(e, t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, t)) && (i.get || i.set) ? o(f, t, i) : f[t] = e[t]);
+			return f;
+		})(e, t);
 	}
 	function _extends() {
-		_extends = Object.assign ? Object.assign.bind() : function(target) {
-			for (var i = 1; i < arguments.length; i++) {
-				var source = arguments[i];
-				for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		return _extends = Object.assign ? Object.assign.bind() : function(n) {
+			for (var e = 1; e < arguments.length; e++) {
+				var t = arguments[e];
+				for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
 			}
-			return target;
-		};
-		return _extends.apply(this, arguments);
+			return n;
+		}, _extends.apply(null, arguments);
 	}
-	function _objectWithoutPropertiesLoose(source, excluded) {
-		if (source == null) return {};
-		var target = {};
-		var sourceKeys = Object.keys(source);
-		var key, i;
-		for (i = 0; i < sourceKeys.length; i++) {
-			key = sourceKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			target[key] = source[key];
+	function _objectWithoutPropertiesLoose(r, e) {
+		if (null == r) return {};
+		var t = {};
+		for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+			if (-1 !== e.indexOf(n)) continue;
+			t[n] = r[n];
 		}
-		return target;
+		return t;
 	}
-	function ownKeys(object, enumerableOnly) {
-		var keys = Object.keys(object);
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
 		if (Object.getOwnPropertySymbols) {
-			var symbols = Object.getOwnPropertySymbols(object);
-			enumerableOnly && (symbols = symbols.filter(function(sym) {
-				return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-			})), keys.push.apply(keys, symbols);
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
 		}
-		return keys;
+		return t;
 	}
-	function _objectSpread(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = null != arguments[i] ? arguments[i] : {};
-			i % 2 ? ownKeys(Object(source), !0).forEach(function(key) {
-				_defineProperty(target, key, source[key]);
-			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
-				Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 			});
 		}
-		return target;
+		return e;
 	}
-	function _defineProperty(obj, key, value) {
-		key = _toPropertyKey(key);
-		if (key in obj) Object.defineProperty(obj, key, {
-			value,
-			enumerable: true,
-			configurable: true,
-			writable: true
-		});
-		else obj[key] = value;
-		return obj;
+	function _defineProperty(e, r, t) {
+		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+			value: t,
+			enumerable: !0,
+			configurable: !0,
+			writable: !0
+		}) : e[r] = t, e;
 	}
-	function _toPropertyKey(arg) {
-		var key = _toPrimitive(arg, "string");
-		return typeof key === "symbol" ? key : String(key);
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : i + "";
 	}
-	function _toPrimitive(input, hint) {
-		if (typeof input !== "object" || input === null) return input;
-		var prim = input[Symbol.toPrimitive];
-		if (prim !== void 0) {
-			var res = prim.call(input, hint || "default");
-			if (typeof res !== "object") return res;
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
 			throw new TypeError("@@toPrimitive must return a primitive value.");
 		}
-		return (hint === "string" ? String : Number)(input);
+		return ("string" === r ? String : Number)(t);
 	}
-	function _inheritsLoose(subClass, superClass) {
-		subClass.prototype = Object.create(superClass.prototype);
-		subClass.prototype.constructor = subClass;
-		_setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	var Resizable = /* @__PURE__ */ function(_React$Component) {
-		_inheritsLoose(Resizable, _React$Component);
-		function Resizable() {
-			var _this;
-			for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-			_this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-			_this.handleRefs = {};
-			_this.lastHandleRect = null;
-			_this.slack = null;
-			return _this;
+	var Resizable = class extends React.Component {
+		constructor() {
+			super(...arguments);
+			this.handleRefs = {};
+			this.lastHandleRect = null;
+			this.slack = null;
+			this.lastSize = null;
 		}
-		var _proto = Resizable.prototype;
-		_proto.componentWillUnmount = function componentWillUnmount() {
+		componentWillUnmount() {
 			this.resetData();
-		};
-		_proto.resetData = function resetData() {
-			this.lastHandleRect = this.slack = null;
-		};
-		_proto.runConstraints = function runConstraints(width, height) {
-			var _this$props = this.props, minConstraints = _this$props.minConstraints, maxConstraints = _this$props.maxConstraints, lockAspectRatio = _this$props.lockAspectRatio;
+		}
+		resetData() {
+			this.lastHandleRect = this.slack = this.lastSize = null;
+		}
+		runConstraints(width, height) {
+			const _this$props = this.props, minConstraints = _this$props.minConstraints, maxConstraints = _this$props.maxConstraints, lockAspectRatio = _this$props.lockAspectRatio;
 			if (!minConstraints && !maxConstraints && !lockAspectRatio) return [width, height];
 			if (lockAspectRatio) {
-				var ratio = this.props.width / this.props.height;
-				var deltaW = width - this.props.width;
-				var deltaH = height - this.props.height;
+				const ratio = this.props.width / this.props.height;
+				const deltaW = width - this.props.width;
+				const deltaH = height - this.props.height;
 				if (Math.abs(deltaW) > Math.abs(deltaH * ratio)) height = width / ratio;
 				else width = height * ratio;
 			}
-			var oldW = width, oldH = height;
-			var _ref = this.slack || [0, 0], slackW = _ref[0], slackH = _ref[1];
+			const oldW = width, oldH = height;
+			let _ref = this.slack || [0, 0], slackW = _ref[0], slackH = _ref[1];
 			width += slackW;
 			height += slackH;
 			if (minConstraints) {
@@ -2301,38 +2301,55 @@ var require_Resizable = /* @__PURE__ */ __commonJSMin(((exports) => {
 			}
 			this.slack = [slackW + (oldW - width), slackH + (oldH - height)];
 			return [width, height];
-		};
-		_proto.resizeHandler = function resizeHandler(handlerName, axis) {
-			var _this2 = this;
-			return function(e, _ref2) {
-				var node = _ref2.node, deltaX = _ref2.deltaX, deltaY = _ref2.deltaY;
-				if (handlerName === "onResizeStart") _this2.resetData();
-				var canDragX = (_this2.props.axis === "both" || _this2.props.axis === "x") && axis !== "n" && axis !== "s";
-				var canDragY = (_this2.props.axis === "both" || _this2.props.axis === "y") && axis !== "e" && axis !== "w";
+		}
+		/**
+		* Wrapper around drag events to provide more useful data.
+		*
+		* @param  {String} handlerName Handler name to wrap.
+		* @return {Function}           Handler function.
+		*/
+		resizeHandler(handlerName, axis) {
+			return (e, _ref2) => {
+				var _this$lastSize$width, _this$lastSize, _this$lastSize$height, _this$lastSize2;
+				let node = _ref2.node, deltaX = _ref2.deltaX, deltaY = _ref2.deltaY;
+				if (handlerName === "onResizeStart") this.resetData();
+				const canDragX = (this.props.axis === "both" || this.props.axis === "x") && axis !== "n" && axis !== "s";
+				const canDragY = (this.props.axis === "both" || this.props.axis === "y") && axis !== "e" && axis !== "w";
 				if (!canDragX && !canDragY) return;
-				var axisV = axis[0];
-				var axisH = axis[axis.length - 1];
-				var handleRect = node.getBoundingClientRect();
-				if (_this2.lastHandleRect != null) {
+				const axisV = axis[0];
+				const axisH = axis[axis.length - 1];
+				const handleRect = node.getBoundingClientRect();
+				if (this.lastHandleRect != null) {
 					if (axisH === "w") {
-						var deltaLeftSinceLast = handleRect.left - _this2.lastHandleRect.left;
+						const deltaLeftSinceLast = handleRect.left - this.lastHandleRect.left;
 						deltaX += deltaLeftSinceLast;
 					}
 					if (axisV === "n") {
-						var deltaTopSinceLast = handleRect.top - _this2.lastHandleRect.top;
+						const deltaTopSinceLast = handleRect.top - this.lastHandleRect.top;
 						deltaY += deltaTopSinceLast;
 					}
 				}
-				_this2.lastHandleRect = handleRect;
+				this.lastHandleRect = handleRect;
 				if (axisH === "w") deltaX = -deltaX;
 				if (axisV === "n") deltaY = -deltaY;
-				var width = _this2.props.width + (canDragX ? deltaX / _this2.props.transformScale : 0);
-				var height = _this2.props.height + (canDragY ? deltaY / _this2.props.transformScale : 0);
-				var _this2$runConstraints = _this2.runConstraints(width, height);
-				width = _this2$runConstraints[0];
-				height = _this2$runConstraints[1];
-				var dimensionsChanged = width !== _this2.props.width || height !== _this2.props.height;
-				var cb = typeof _this2.props[handlerName] === "function" ? _this2.props[handlerName] : null;
+				const baseWidth = (_this$lastSize$width = (_this$lastSize = this.lastSize) == null ? void 0 : _this$lastSize.width) != null ? _this$lastSize$width : this.props.width;
+				const baseHeight = (_this$lastSize$height = (_this$lastSize2 = this.lastSize) == null ? void 0 : _this$lastSize2.height) != null ? _this$lastSize$height : this.props.height;
+				let width = baseWidth + (canDragX ? deltaX / this.props.transformScale : 0);
+				let height = baseHeight + (canDragY ? deltaY / this.props.transformScale : 0);
+				var _this$runConstraints = this.runConstraints(width, height);
+				width = _this$runConstraints[0];
+				height = _this$runConstraints[1];
+				if (handlerName === "onResizeStop" && this.lastSize) {
+					var _this$lastSize3 = this.lastSize;
+					width = _this$lastSize3.width;
+					height = _this$lastSize3.height;
+				}
+				const dimensionsChanged = width !== baseWidth || height !== baseHeight;
+				if (handlerName !== "onResizeStop") this.lastSize = {
+					width,
+					height
+				};
+				const cb = typeof this.props[handlerName] === "function" ? this.props[handlerName] : null;
 				if (cb && !(handlerName === "onResize" && !dimensionsChanged)) {
 					e.persist == null || e.persist();
 					cb(e, {
@@ -2344,22 +2361,22 @@ var require_Resizable = /* @__PURE__ */ __commonJSMin(((exports) => {
 						handle: axis
 					});
 				}
-				if (handlerName === "onResizeStop") _this2.resetData();
+				if (handlerName === "onResizeStop") this.resetData();
 			};
-		};
-		_proto.renderResizeHandle = function renderResizeHandle(handleAxis, ref) {
-			var handle = this.props.handle;
+		}
+		renderResizeHandle(handleAxis, ref) {
+			const handle = this.props.handle;
 			if (!handle) return /* @__PURE__ */ React.createElement("span", {
 				className: "react-resizable-handle react-resizable-handle-" + handleAxis,
 				ref
 			});
 			if (typeof handle === "function") return handle(handleAxis, ref);
-			var isDOMElement = typeof handle.type === "string";
-			var props = _objectSpread({ ref }, isDOMElement ? {} : { handleAxis });
+			const isDOMElement = typeof handle.type === "string";
+			const props = _objectSpread({ ref }, isDOMElement ? {} : { handleAxis });
 			return /* @__PURE__ */ React.cloneElement(handle, props);
-		};
-		_proto.render = function render() {
-			var _this3 = this, _this$props2 = this.props, children = _this$props2.children, className = _this$props2.className, draggableOpts = _this$props2.draggableOpts;
+		}
+		render() {
+			const _this$props2 = this.props, children = _this$props2.children, className = _this$props2.className, draggableOpts = _this$props2.draggableOpts;
 			_this$props2.width;
 			_this$props2.height;
 			_this$props2.handle;
@@ -2371,26 +2388,25 @@ var require_Resizable = /* @__PURE__ */ __commonJSMin(((exports) => {
 			_this$props2.onResize;
 			_this$props2.onResizeStop;
 			_this$props2.onResizeStart;
-			var resizeHandles = _this$props2.resizeHandles;
+			const resizeHandles = _this$props2.resizeHandles;
 			_this$props2.transformScale;
-			var p = _objectWithoutPropertiesLoose(_this$props2, _excluded);
+			const p = _objectWithoutPropertiesLoose(_this$props2, _excluded);
 			return (0, _utils.cloneElement)(children, _objectSpread(_objectSpread({}, p), {}, {
 				className: (className ? className + " " : "") + "react-resizable",
-				children: [].concat(children.props.children, resizeHandles.map(function(handleAxis) {
-					var _this3$handleRefs$han;
-					var ref = (_this3$handleRefs$han = _this3.handleRefs[handleAxis]) != null ? _this3$handleRefs$han : _this3.handleRefs[handleAxis] = /* @__PURE__ */ React.createRef();
+				children: [...React.Children.toArray(children.props.children), ...resizeHandles.map((handleAxis) => {
+					var _this$handleRefs$hand;
+					const ref = (_this$handleRefs$hand = this.handleRefs[handleAxis]) != null ? _this$handleRefs$hand : this.handleRefs[handleAxis] = /* @__PURE__ */ React.createRef();
 					return /* @__PURE__ */ React.createElement(_reactDraggable.DraggableCore, _extends({}, draggableOpts, {
 						nodeRef: ref,
 						key: "resizableHandle-" + handleAxis,
-						onStop: _this3.resizeHandler("onResizeStop", handleAxis),
-						onStart: _this3.resizeHandler("onResizeStart", handleAxis),
-						onDrag: _this3.resizeHandler("onResize", handleAxis)
-					}), _this3.renderResizeHandle(handleAxis, ref));
-				}))
+						onStop: this.resizeHandler("onResizeStop", handleAxis),
+						onStart: this.resizeHandler("onResizeStart", handleAxis),
+						onDrag: this.resizeHandler("onResize", handleAxis)
+					}), this.renderResizeHandle(handleAxis, ref));
+				})]
 			}));
-		};
-		return Resizable;
-	}(React.Component);
+		}
+	};
 	exports.default = Resizable;
 	Resizable.propTypes = _propTypes.resizableProps;
 	Resizable.defaultProps = {
@@ -2429,137 +2445,105 @@ var require_ResizableBox = /* @__PURE__ */ __commonJSMin(((exports) => {
 		"style",
 		"transformScale"
 	];
-	function _interopRequireDefault(obj) {
-		return obj && obj.__esModule ? obj : { default: obj };
+	function _interopRequireDefault(e) {
+		return e && e.__esModule ? e : { default: e };
 	}
-	function _getRequireWildcardCache(nodeInterop) {
-		if (typeof WeakMap !== "function") return null;
-		var cacheBabelInterop = /* @__PURE__ */ new WeakMap();
-		var cacheNodeInterop = /* @__PURE__ */ new WeakMap();
-		return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) {
-			return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
-		})(nodeInterop);
-	}
-	function _interopRequireWildcard(obj, nodeInterop) {
-		if (!nodeInterop && obj && obj.__esModule) return obj;
-		if (obj === null || typeof obj !== "object" && typeof obj !== "function") return { default: obj };
-		var cache = _getRequireWildcardCache(nodeInterop);
-		if (cache && cache.has(obj)) return cache.get(obj);
-		var newObj = {};
-		var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
-		for (var key in obj) if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
-			var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
-			if (desc && (desc.get || desc.set)) Object.defineProperty(newObj, key, desc);
-			else newObj[key] = obj[key];
-		}
-		newObj.default = obj;
-		if (cache) cache.set(obj, newObj);
-		return newObj;
+	function _interopRequireWildcard(e, t) {
+		if ("function" == typeof WeakMap) var r = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap();
+		return (_interopRequireWildcard = function(e, t) {
+			if (!t && e && e.__esModule) return e;
+			var o, i, f = {
+				__proto__: null,
+				default: e
+			};
+			if (null === e || "object" != typeof e && "function" != typeof e) return f;
+			if (o = t ? n : r) {
+				if (o.has(e)) return o.get(e);
+				o.set(e, f);
+			}
+			for (const t in e) "default" !== t && {}.hasOwnProperty.call(e, t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, t)) && (i.get || i.set) ? o(f, t, i) : f[t] = e[t]);
+			return f;
+		})(e, t);
 	}
 	function _extends() {
-		_extends = Object.assign ? Object.assign.bind() : function(target) {
-			for (var i = 1; i < arguments.length; i++) {
-				var source = arguments[i];
-				for (var key in source) if (Object.prototype.hasOwnProperty.call(source, key)) target[key] = source[key];
+		return _extends = Object.assign ? Object.assign.bind() : function(n) {
+			for (var e = 1; e < arguments.length; e++) {
+				var t = arguments[e];
+				for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
 			}
-			return target;
-		};
-		return _extends.apply(this, arguments);
+			return n;
+		}, _extends.apply(null, arguments);
 	}
-	function ownKeys(object, enumerableOnly) {
-		var keys = Object.keys(object);
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
 		if (Object.getOwnPropertySymbols) {
-			var symbols = Object.getOwnPropertySymbols(object);
-			enumerableOnly && (symbols = symbols.filter(function(sym) {
-				return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-			})), keys.push.apply(keys, symbols);
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
 		}
-		return keys;
+		return t;
 	}
-	function _objectSpread(target) {
-		for (var i = 1; i < arguments.length; i++) {
-			var source = null != arguments[i] ? arguments[i] : {};
-			i % 2 ? ownKeys(Object(source), !0).forEach(function(key) {
-				_defineProperty(target, key, source[key]);
-			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function(key) {
-				Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
 			});
 		}
-		return target;
+		return e;
 	}
-	function _defineProperty(obj, key, value) {
-		key = _toPropertyKey(key);
-		if (key in obj) Object.defineProperty(obj, key, {
-			value,
-			enumerable: true,
-			configurable: true,
-			writable: true
-		});
-		else obj[key] = value;
-		return obj;
+	function _defineProperty(e, r, t) {
+		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+			value: t,
+			enumerable: !0,
+			configurable: !0,
+			writable: !0
+		}) : e[r] = t, e;
 	}
-	function _toPropertyKey(arg) {
-		var key = _toPrimitive(arg, "string");
-		return typeof key === "symbol" ? key : String(key);
+	function _toPropertyKey(t) {
+		var i = _toPrimitive(t, "string");
+		return "symbol" == typeof i ? i : i + "";
 	}
-	function _toPrimitive(input, hint) {
-		if (typeof input !== "object" || input === null) return input;
-		var prim = input[Symbol.toPrimitive];
-		if (prim !== void 0) {
-			var res = prim.call(input, hint || "default");
-			if (typeof res !== "object") return res;
+	function _toPrimitive(t, r) {
+		if ("object" != typeof t || !t) return t;
+		var e = t[Symbol.toPrimitive];
+		if (void 0 !== e) {
+			var i = e.call(t, r || "default");
+			if ("object" != typeof i) return i;
 			throw new TypeError("@@toPrimitive must return a primitive value.");
 		}
-		return (hint === "string" ? String : Number)(input);
+		return ("string" === r ? String : Number)(t);
 	}
-	function _objectWithoutPropertiesLoose(source, excluded) {
-		if (source == null) return {};
-		var target = {};
-		var sourceKeys = Object.keys(source);
-		var key, i;
-		for (i = 0; i < sourceKeys.length; i++) {
-			key = sourceKeys[i];
-			if (excluded.indexOf(key) >= 0) continue;
-			target[key] = source[key];
+	function _objectWithoutPropertiesLoose(r, e) {
+		if (null == r) return {};
+		var t = {};
+		for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+			if (-1 !== e.indexOf(n)) continue;
+			t[n] = r[n];
 		}
-		return target;
+		return t;
 	}
-	function _inheritsLoose(subClass, superClass) {
-		subClass.prototype = Object.create(superClass.prototype);
-		subClass.prototype.constructor = subClass;
-		_setPrototypeOf(subClass, superClass);
-	}
-	function _setPrototypeOf(o, p) {
-		_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-			o.__proto__ = p;
-			return o;
-		};
-		return _setPrototypeOf(o, p);
-	}
-	var ResizableBox = /* @__PURE__ */ function(_React$Component) {
-		_inheritsLoose(ResizableBox, _React$Component);
-		function ResizableBox() {
-			var _this;
-			for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) args[_key] = arguments[_key];
-			_this = _React$Component.call.apply(_React$Component, [this].concat(args)) || this;
-			_this.state = {
-				width: _this.props.width,
-				height: _this.props.height,
-				propsWidth: _this.props.width,
-				propsHeight: _this.props.height
+	var ResizableBox = class extends React.Component {
+		constructor() {
+			super(...arguments);
+			this.state = {
+				width: this.props.width,
+				height: this.props.height,
+				propsWidth: this.props.width,
+				propsHeight: this.props.height
 			};
-			_this.onResize = function(e, data) {
-				var size = data.size;
-				if (_this.props.onResize) {
+			this.onResize = (e, data) => {
+				const size = data.size;
+				if (this.props.onResize) {
 					e.persist == null || e.persist();
-					_this.setState(size, function() {
-						return _this.props.onResize && _this.props.onResize(e, data);
-					});
-				} else _this.setState(size);
+					this.setState(size, () => this.props.onResize && this.props.onResize(e, data));
+				} else this.setState(size);
 			};
-			return _this;
 		}
-		ResizableBox.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {
+		static getDerivedStateFromProps(props, state) {
 			if (state.propsWidth !== props.width || state.propsHeight !== props.height) return {
 				width: props.width,
 				height: props.height,
@@ -2567,15 +2551,14 @@ var require_ResizableBox = /* @__PURE__ */ __commonJSMin(((exports) => {
 				propsHeight: props.height
 			};
 			return null;
-		};
-		var _proto = ResizableBox.prototype;
-		_proto.render = function render() {
-			var _this$props = this.props, handle = _this$props.handle, handleSize = _this$props.handleSize;
+		}
+		render() {
+			const _this$props = this.props, handle = _this$props.handle, handleSize = _this$props.handleSize;
 			_this$props.onResize;
-			var onResizeStart = _this$props.onResizeStart, onResizeStop = _this$props.onResizeStop, draggableOpts = _this$props.draggableOpts, minConstraints = _this$props.minConstraints, maxConstraints = _this$props.maxConstraints, lockAspectRatio = _this$props.lockAspectRatio, axis = _this$props.axis;
+			const onResizeStart = _this$props.onResizeStart, onResizeStop = _this$props.onResizeStop, draggableOpts = _this$props.draggableOpts, minConstraints = _this$props.minConstraints, maxConstraints = _this$props.maxConstraints, lockAspectRatio = _this$props.lockAspectRatio, axis = _this$props.axis;
 			_this$props.width;
 			_this$props.height;
-			var resizeHandles = _this$props.resizeHandles, style = _this$props.style, transformScale = _this$props.transformScale, props = _objectWithoutPropertiesLoose(_this$props, _excluded);
+			const resizeHandles = _this$props.resizeHandles, style = _this$props.style, transformScale = _this$props.transformScale, props = _objectWithoutPropertiesLoose(_this$props, _excluded);
 			return /* @__PURE__ */ React.createElement(_Resizable.default, {
 				axis,
 				draggableOpts,
@@ -2595,9 +2578,8 @@ var require_ResizableBox = /* @__PURE__ */ __commonJSMin(((exports) => {
 				width: this.state.width + "px",
 				height: this.state.height + "px"
 			}) })));
-		};
-		return ResizableBox;
-	}(React.Component);
+		}
+	};
 	exports.default = ResizableBox;
 	ResizableBox.propTypes = _objectSpread(_objectSpread({}, _propTypes2.resizableProps), {}, { children: _propTypes.default.element });
 }));
@@ -2679,7 +2661,7 @@ var require_ReactGridLayoutPropTypes = /* @__PURE__ */ __commonJSMin(((exports) 
 			const children = props[propName];
 			const keys = {};
 			_react.default.Children.forEach(children, function(child) {
-				if (child?.key == null) return;
+				if ((child === null || child === void 0 ? void 0 : child.key) == null) return;
 				if (keys[child.key]) throw new Error("Duplicate child key \"" + child.key + "\" found! This will cause problems in ReactGridLayout.");
 				keys[child.key] = true;
 			});
@@ -2703,6 +2685,27 @@ var require_GridItem = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var _clsx = _interopRequireDefault(require_clsx());
 	function _interopRequireDefault(e) {
 		return e && e.__esModule ? e : { default: e };
+	}
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
+		if (Object.getOwnPropertySymbols) {
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
+		}
+		return t;
+	}
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+			});
+		}
+		return e;
 	}
 	function _defineProperty(e, r, t) {
 		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
@@ -3009,11 +3012,7 @@ var require_GridItem = /* @__PURE__ */ __commonJSMin(((exports) => {
 					dropping: Boolean(droppingPosition),
 					cssTransforms: useCSSTransforms
 				}),
-				style: {
-					...this.props.style,
-					...child.props.style,
-					...this.createStyle(pos)
-				}
+				style: _objectSpread(_objectSpread(_objectSpread({}, this.props.style), child.props.style), this.createStyle(pos))
 			});
 			newChild = this.mixinResizable(newChild, pos, isResizable);
 			newChild = this.mixinDraggable(newChild, isDraggable);
@@ -3119,6 +3118,27 @@ var require_ReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports) => {
 			for (const t in e) "default" !== t && {}.hasOwnProperty.call(e, t) && ((i = (o = Object.defineProperty) && Object.getOwnPropertyDescriptor(e, t)) && (i.get || i.set) ? o(f, t, i) : f[t] = e[t]);
 			return f;
 		})(e, t);
+	}
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
+		if (Object.getOwnPropertySymbols) {
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
+		}
+		return t;
+	}
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+			});
+		}
+		return e;
 	}
 	function _defineProperty(e, r, t) {
 		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
@@ -3304,13 +3324,12 @@ var require_ReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports) => {
 						shouldMoveItem = true;
 					}
 					if (preventCollision && !allowOverlap) {
-						hasCollisions = (0, _utils.getAllCollisions)(layout, {
-							...l,
+						hasCollisions = (0, _utils.getAllCollisions)(layout, _objectSpread(_objectSpread({}, l), {}, {
 							w,
 							h,
 							x,
 							y
-						}).filter((layoutItem) => layoutItem.i !== l.i).length > 0;
+						})).filter((layoutItem) => layoutItem.i !== l.i).length > 0;
 						if (hasCollisions) {
 							y = l.y;
 							h = l.h;
@@ -3358,19 +3377,17 @@ var require_ReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports) => {
 				this.onLayoutMaybeChanged(newLayout, oldLayout);
 			});
 			_defineProperty(this, "onDragOver", (e) => {
+				var _e$nativeEvent$target;
 				e.preventDefault();
 				e.stopPropagation();
-				if (isFirefox && !e.nativeEvent.target?.classList.contains(layoutClassName)) return false;
+				if (isFirefox && !((_e$nativeEvent$target = e.nativeEvent.target) !== null && _e$nativeEvent$target !== void 0 && _e$nativeEvent$target.classList.contains(layoutClassName))) return false;
 				const { droppingItem, onDropDragOver, margin, cols, rowHeight, maxRows, width, containerPadding, transformScale } = this.props;
-				const onDragOverResult = onDropDragOver?.(e);
+				const onDragOverResult = onDropDragOver === null || onDropDragOver === void 0 ? void 0 : onDropDragOver(e);
 				if (onDragOverResult === false) {
 					if (this.state.droppingDOMNode) this.removeDroppingPlaceholder();
 					return false;
 				}
-				const finalDroppingItem = {
-					...droppingItem,
-					...onDragOverResult
-				};
+				const finalDroppingItem = _objectSpread(_objectSpread({}, droppingItem), onDragOverResult);
 				const { layout } = this.state;
 				const gridRect = e.currentTarget.getBoundingClientRect();
 				const layerX = e.clientX - gridRect.left;
@@ -3393,13 +3410,12 @@ var require_ReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports) => {
 					this.setState({
 						droppingDOMNode: /* @__PURE__ */ React.createElement("div", { key: finalDroppingItem.i }),
 						droppingPosition,
-						layout: [...layout, {
-							...finalDroppingItem,
+						layout: [...layout, _objectSpread(_objectSpread({}, finalDroppingItem), {}, {
 							x: calculatedPosition.x,
 							y: calculatedPosition.y,
 							static: false,
 							isDraggable: true
-						}]
+						})]
 					});
 				} else if (this.state.droppingPosition) {
 					const { left, top } = this.state.droppingPosition;
@@ -3494,7 +3510,7 @@ var require_ReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports) => {
 				x: activeDrag.x,
 				y: activeDrag.y,
 				i: activeDrag.i,
-				className: `react-grid-placeholder ${this.state.resizing ? "placeholder-resizing" : ""}`,
+				className: "react-grid-placeholder ".concat(this.state.resizing ? "placeholder-resizing" : ""),
 				containerWidth: width,
 				cols,
 				margin,
@@ -3562,10 +3578,7 @@ var require_ReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports) => {
 		render() {
 			const { className, style, isDroppable, innerRef } = this.props;
 			const mergedClassName = (0, _clsx.default)(layoutClassName, className);
-			const mergedStyle = {
-				height: this.containerHeight(),
-				...style
-			};
+			const mergedStyle = _objectSpread({ height: this.containerHeight() }, style);
 			return /* @__PURE__ */ React.createElement("div", {
 				ref: innerRef,
 				className: mergedClassName,
@@ -3707,6 +3720,17 @@ var require_ResponsiveReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports)
 	var _utils = require_utils$1();
 	var _responsiveUtils = require_responsiveUtils();
 	var _ReactGridLayout = _interopRequireDefault(require_ReactGridLayout());
+	var _excluded = [
+		"breakpoint",
+		"breakpoints",
+		"cols",
+		"layouts",
+		"margin",
+		"containerPadding",
+		"onBreakpointChange",
+		"onLayoutChange",
+		"onWidthChange"
+	];
 	function _interopRequireDefault(e) {
 		return e && e.__esModule ? e : { default: e };
 	}
@@ -3735,6 +3759,45 @@ var require_ResponsiveReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports)
 			}
 			return n;
 		}, _extends.apply(null, arguments);
+	}
+	function _objectWithoutProperties(e, t) {
+		if (null == e) return {};
+		var o, r, i = _objectWithoutPropertiesLoose(e, t);
+		if (Object.getOwnPropertySymbols) {
+			var n = Object.getOwnPropertySymbols(e);
+			for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+		}
+		return i;
+	}
+	function _objectWithoutPropertiesLoose(r, e) {
+		if (null == r) return {};
+		var t = {};
+		for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+			if (-1 !== e.indexOf(n)) continue;
+			t[n] = r[n];
+		}
+		return t;
+	}
+	function ownKeys(e, r) {
+		var t = Object.keys(e);
+		if (Object.getOwnPropertySymbols) {
+			var o = Object.getOwnPropertySymbols(e);
+			r && (o = o.filter(function(r) {
+				return Object.getOwnPropertyDescriptor(e, r).enumerable;
+			})), t.push.apply(t, o);
+		}
+		return t;
+	}
+	function _objectSpread(e) {
+		for (var r = 1; r < arguments.length; r++) {
+			var t = null != arguments[r] ? arguments[r] : {};
+			r % 2 ? ownKeys(Object(t), !0).forEach(function(r) {
+				_defineProperty(e, r, t[r]);
+			}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r) {
+				Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r));
+			});
+		}
+		return e;
 	}
 	function _defineProperty(e, r, t) {
 		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
@@ -3775,10 +3838,7 @@ var require_ResponsiveReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports)
 			super(...arguments);
 			_defineProperty(this, "state", this.generateInitialState());
 			_defineProperty(this, "onLayoutChange", (layout) => {
-				this.props.onLayoutChange(layout, {
-					...this.props.layouts,
-					[this.state.breakpoint]: layout
-				});
+				this.props.onLayoutChange(layout, _objectSpread(_objectSpread({}, this.props.layouts), {}, { [this.state.breakpoint]: layout }));
 			});
 		}
 		generateInitialState() {
@@ -3814,7 +3874,7 @@ var require_ResponsiveReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports)
 			const newBreakpoint = this.props.breakpoint || (0, _responsiveUtils.getBreakpointFromWidth)(this.props.breakpoints, this.props.width);
 			const lastBreakpoint = this.state.breakpoint;
 			const newCols = (0, _responsiveUtils.getColsFromBreakpoint)(newBreakpoint, cols);
-			const newLayouts = { ...layouts };
+			const newLayouts = _objectSpread({}, layouts);
 			if (lastBreakpoint !== newBreakpoint || prevProps.breakpoints !== breakpoints || prevProps.cols !== cols) {
 				if (!(lastBreakpoint in newLayouts)) newLayouts[lastBreakpoint] = (0, _utils.cloneLayout)(this.state.layout);
 				let layout = (0, _responsiveUtils.findOrGenerateResponsiveLayout)(newLayouts, breakpoints, newBreakpoint, lastBreakpoint, newCols, compactType);
@@ -3833,7 +3893,7 @@ var require_ResponsiveReactGridLayout = /* @__PURE__ */ __commonJSMin(((exports)
 			this.props.onWidthChange(this.props.width, margin, newCols, containerPadding);
 		}
 		render() {
-			const { breakpoint, breakpoints, cols, layouts, margin, containerPadding, onBreakpointChange, onLayoutChange, onWidthChange, ...other } = this.props;
+			const _this$props = this.props, { breakpoint, breakpoints, cols, layouts, margin, containerPadding, onBreakpointChange, onLayoutChange, onWidthChange } = _this$props, other = _objectWithoutProperties(_this$props, _excluded);
 			return /* @__PURE__ */ React.createElement(_ReactGridLayout.default, _extends({}, other, {
 				margin: getIndentationValue(margin, this.state.breakpoint),
 				containerPadding: getIndentationValue(containerPadding, this.state.breakpoint),
@@ -4611,6 +4671,7 @@ var require_WidthProvider = /* @__PURE__ */ __commonJSMin(((exports) => {
 	var _propTypes = _interopRequireDefault(require_prop_types());
 	var _resizeObserverPolyfill = _interopRequireDefault((init_ResizeObserver_es(), __toCommonJS(ResizeObserver_es_exports)));
 	var _clsx = _interopRequireDefault(require_clsx());
+	var _excluded = ["measureBeforeMount"];
 	function _interopRequireDefault(e) {
 		return e && e.__esModule ? e : { default: e };
 	}
@@ -4639,6 +4700,24 @@ var require_WidthProvider = /* @__PURE__ */ __commonJSMin(((exports) => {
 			}
 			return n;
 		}, _extends.apply(null, arguments);
+	}
+	function _objectWithoutProperties(e, t) {
+		if (null == e) return {};
+		var o, r, i = _objectWithoutPropertiesLoose(e, t);
+		if (Object.getOwnPropertySymbols) {
+			var n = Object.getOwnPropertySymbols(e);
+			for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+		}
+		return i;
+	}
+	function _objectWithoutPropertiesLoose(r, e) {
+		if (null == r) return {};
+		var t = {};
+		for (var n in r) if ({}.hasOwnProperty.call(r, n)) {
+			if (-1 !== e.indexOf(n)) continue;
+			t[n] = r[n];
+		}
+		return t;
 	}
 	function _defineProperty(e, r, t) {
 		return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
@@ -4691,7 +4770,7 @@ var require_WidthProvider = /* @__PURE__ */ __commonJSMin(((exports) => {
 				this.resizeObserver.disconnect();
 			}
 			render() {
-				const { measureBeforeMount, ...rest } = this.props;
+				const _this$props = this.props, { measureBeforeMount } = _this$props, rest = _objectWithoutProperties(_this$props, _excluded);
 				if (measureBeforeMount && !this.mounted) return /* @__PURE__ */ React.createElement("div", {
 					className: (0, _clsx.default)(this.props.className, layoutClassName),
 					style: this.props.style,

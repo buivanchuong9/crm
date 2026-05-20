@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import React, { Fragment, ReactElement, useRef, useState } from "react";
-import vi from "date-fns/locale/vi";
+import { vi } from "date-fns/locale";
 import { Portal } from "react-overlays";
 import DatePicker from "react-datepicker";
 import moment from "moment";

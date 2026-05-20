@@ -18,10 +18,32 @@ import "./index.scss";
 export default function Index() {
   const [cookies, setCookie] = useCookies();
   const navigate = useNavigate();
+  const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
 
   const locationPathname = useLocation();
 
   useEffect(() => {
+    if (isMockEnabled) {
+      const sourceDomain = getDomain(decodeURIComponent(document.location.href));
+      const rootDomain = getRootDomain(sourceDomain);
+      const dateExpires = moment().add(7, "days").toDate();
+      const mockUser = {
+        id: 1,
+        name: "Mock User",
+        phone: "0369062042",
+        avatar: "",
+        gender: 0,
+        role: "mock",
+      } as IUser;
+
+      setCookie("token", "mock-token", { path: "/", domain: rootDomain, expires: dateExpires });
+      setCookie("user", JSON.stringify(mockUser), { path: "/", domain: rootDomain, expires: dateExpires });
+      localStorage.setItem("permissions", "{}");
+      localStorage.setItem("user.root", "1");
+      navigate("/customer");
+      return;
+    }
+
     if (locationPathname.pathname !== "/link_survey") {
       if (!cookies.token) {
         //1. Yêu cầu đăng nhập qua sso
@@ -39,7 +61,7 @@ export default function Index() {
       //2. Nếu có token rồi thì thực hiện lấy thông tin và chuyển hướng
       getUserMe();
     }
-  }, [locationPathname]);
+  }, [locationPathname, isMockEnabled, navigate, setCookie]);
 
   //Lấy thông tin người dùng sau khi đăng nhập thành công
   const getUserMe = async () => {

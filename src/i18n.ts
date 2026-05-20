@@ -39,7 +39,7 @@ i18n.use(initReactI18next).init({
           contactProfile: "Contact Profile",
           parentProfile: "Parent profile",
           treatmentHistory: "Treatment history",
-          customerSegments: "Customer Segmentation",
+          PatientGroups: "Customer Segmentation",
 
           quote: "Quote",
           listQuotationsNew: "Danh sách báo giá mới",
@@ -197,7 +197,7 @@ i18n.use(initReactI18next).init({
         },
 
         // đoạn là page setting basic
-        pageSettingBasis: {
+        pageClinicInfo: {
           title: "Setting basis",
           listBranches: "List branches",
           listDepartments: "List departments",
@@ -247,34 +247,35 @@ i18n.use(initReactI18next).init({
         sidebar: {
           dashboard: "Trang chủ",
 
-          personal: "Cá nhân",
+          personal: "Hồ sơ Bác sĩ",
           // đoạn này là children của cá nhân
           internalMail: "Thư nội bộ",
           document: "Tài liệu",
           createKPIFramework: "Tạo bộ KPI",
           createKPITask: "Tạo phiếu giao KPI",
           kpiManagement: "Quản lý KPI",
-          project: "Dự án",
+          project: "Ca bệnh đang theo dõi",
+          projectListChild: "Danh sách ca bệnh",
           //Quản lý công việc BPM
           userTaskList: "Xử lý hồ sơ",
-          workManagement: "Quản lý công việc",
-          job: "Công việc",
+          workManagement: "Lịch khám & Nhắc nhở",
+          job: "Nhật ký tiến triển",
           jobReport: "Báo cáo công việc",
-          calendar: "Lịch",
+          calendar: "Lịch trực / Lịch khám",
 
-          customer: "Khách hàng",
+          customer: "Quản lý Bệnh nhân",
           student: "Quản lý hồ sơ học sinh",
           partner: "Đối tác",
           teacher: "Giáo viên",
           // đoạn này là children của khách hàng
-          customerProfile: "Hồ sơ khách hàng",
+          customerProfile: "Hồ sơ Bệnh án",
           studentProfile: "Hồ sơ học sinh",
           partnerProfile: "Hồ sơ đối tác",
           teacherProfile: "Hồ sơ giáo viên",
           contactProfile: "Hồ sơ người liên hệ",
           parentProfile: "Hồ sơ phụ huynh",
           treatmentHistory: "Thực hiện dịch vụ",
-          customerSegments: "Phân khúc khách hàng",
+          PatientGroups: "Nhóm bệnh nhân",
 
           quote: "Báo giá",
           // đoạn này là children của báo giá
@@ -322,17 +323,17 @@ i18n.use(initReactI18next).init({
           salesFlow: "Quy trình bán hàng",
           invoicesManagement: "Quản lý bán hàng",
 
-          customerCare: "Chăm sóc khách hàng",
+          customerCare: "Tư vấn trực tuyến",
           // đoạn này là children của chăm sóc khách hàng
-          customerServiceHotline: "Tổng đài CSKH",
+          customerServiceHotline: "Nhắn tin / Hỏi đáp với bác sĩ",
           receiveWarranty: "Tiếp nhận bảo hành",
           receiveWarrantyProcess: "Tiếp nhận bảo hành theo quy trình",
           receiveTicket: "Tiếp nhận hỗ trợ",
           receiveTicketProcess: "Tiếp nhận hỗ trợ theo quy trình",
-          customerCareEmail: "Email CSKH",
+          customerCareEmail: "Nhắn tin / Hỏi đáp với bác sĩ",
           medicalRecord: "Nhật ký điều trị",
           feedbackEnhancement: "Góp ý cải tiến",
-          customerSurvey: "Khảo sát khách hàng",
+          customerSurvey: "Khảo sát sau khám",
 
           // đoạn này là children của đặt hàng
           order: "Mua hàng",
@@ -358,12 +359,12 @@ i18n.use(initReactI18next).init({
           stockAdjustmentVoucher: "Phiếu điều chỉnh kho",
 
           cashbook: "Tài chính",
-          bpm: "Quản lý quy trình",
-          manageProcesses: "Quản lý quy trình",
+          bpm: "Phân tích hình ảnh AI",
+          manageProcesses: "Phân tích hình ảnh AI",
           manageDefaultProcesses: "Cài đặt quy trình mặc định",
           business_rule: "Luật nghiệp vụ",
           processSimulation: "Mô phỏng quy trình",
-          objectManage: "Quản lý hồ sơ",
+          objectManage: "Kho ảnh Da liễu",
           manage_data_sharing: "Chia sẻ dữ liệu",
           cxmSurvey: "Chiến dịch khảo sát",
 
@@ -378,16 +379,16 @@ i18n.use(initReactI18next).init({
           vehicle: "Đăng kí phương tiện",
           ortherFee: "Chi phí khác",
 
-          report: "Báo cáo",
+          report: "Thống kê Y tế & AI",
           // đoạn này là children của báo cáo
-          reportRevenue: "Doanh thu",
-          reportCustomer: "Khách hàng",
+          reportRevenue: "Báo cáo số lượng ca bệnh",
+          reportCustomer: "Báo cáo hiệu quả điều trị",
           reportLogin: "Đăng nhập",
 
-          settings: "Cài đặt",
+          settings: "Cài đặt Hệ thống",
           // đoạn này là children của cài đặt
           // pricePackageManagement: "Quản lý gói giá",
-          settingBasis: "Cài đặt cơ sở",
+          settingBasis: "Thông tin Phòng khám",
           settingOperate: "Cài đặt vận hành",
           settingPersonal: "Cài đặt cá nhân",
           settingKPI: "Cài đặt KPI",
@@ -397,7 +398,7 @@ i18n.use(initReactI18next).init({
           settingSales: "Cài đặt bán hàng",
           settingMarketing: "Cài đặt truyền thông",
           settingContract: "Cài đặt hợp đồng",
-          settingEform: "Cài đặt biểu mẫu",
+          settingEform: "Biểu mẫu đơn thuốc, phiếu khám",
           settingProcess: "Cài đặt quy trình",
           settingQuoteForm: "Cài đặt mẫu báo giá",
           settingCashbook: "Cài đặt tài chính",
@@ -410,7 +411,7 @@ i18n.use(initReactI18next).init({
           settingZalo: "Cài đặt Zalo",
           settingJob: "Cài đặt công việc",
           settingProject: "Cài đặt dự án",
-          managerWork: "Quản lý công việc",
+          managerWork: "Lịch khám & Nhắc nhở",
           settingReport: "Cài đặt báo cáo",
           integratedMonitoring: "Giám sát tích hợp",
           settingCode: "Cài đặt mã",
@@ -441,8 +442,8 @@ i18n.use(initReactI18next).init({
         },
 
         // đoạn là page cài đặt cơ sở
-        pageSettingBasis: {
-          title: "Cài đặt cơ sở",
+        pageClinicInfo: {
+          title: "Thông tin Phòng khám",
           listBranches: "Danh sách chi nhánh",
           listDepartments: "Danh sách phòng ban",
           listRole: "Danh sách nhóm quyền",

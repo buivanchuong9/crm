@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Cashbook from "./partials/Cashbook/Index";
 import "./SettingReportList.scss";
 
-export default function SettingBasisList() {
+export default function ClinicInfoList() {
   document.title = "Mẫu báo cáo Tài chính";
 
   const [tab, setTab] = useState<string>("");

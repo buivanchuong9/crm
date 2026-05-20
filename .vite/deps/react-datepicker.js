@@ -1,10 +1,11 @@
 import { o as __toESM } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { t as require_react_dom } from "./react-dom-J2wNTDgO.js";
+import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
 import { t as require_jsx_runtime } from "./react_jsx-runtime.js";
-import "./index.esm-CyuVsgC3.js";
-import { $r as isSameDay$1, A as setMonth, Ai as addMonths, C as setMinutes, Ci as addHours, Fn as getDay, Fr as endOfMonth, Gr as differenceInCalendarQuarters, Hr as differenceInDays, In as getDate, Ir as endOfDay, Kr as getQuarter, Lt as isSameQuarter$1, Mi as toDate, Pt as isSameYear$1, Qr as isDate, Rt as isSameMonth$1, S as setQuarter, Si as startOfWeek, Sn as getSeconds, T as setHours, Tn as getMinutes, Ur as differenceInCalendarYears, Yn as format, Yt as parse, Zr as isValid$1, _r as startOfYear, a as subYears, br as startOfMonth, bt as isWithinInterval, c as subQuarters, ci as max, cn as isAfter, di as addWeeks, fi as addSeconds, fr as endOfWeek, gn as getYear, ji as addDays, kn as getHours, m as subMonths, mi as addMinutes, nr as getISOWeek, o as subWeeks, on as isEqual$1, pi as addQuarters, q as parseISO, qr as differenceInCalendarMonths, si as min, sn as isBefore, ui as addYears, vi as differenceInCalendarDays, vr as endOfYear, wn as getMonth, wr as startOfQuarter, x as setSeconds, xn as getTime, y as setYear, yi as startOfDay, yt as subDays } from "./date-fns-Bh6Ae_Lf.js";
-import { a as offset$1, i as flip$1, n as autoUpdate, o as getComputedStyle, r as computePosition, s as isElement, t as arrow$2 } from "./floating-ui.dom-C8pToqdN.js";
+import "./index.esm-Be-FLYTC.js";
+import { f as startOfWeek, h as toDate } from "./isSameWeek-DvxHxBv_.js";
+import { A as setMonth, C as setMinutes, Cn as getMonth, Cr as startOfQuarter, Fn as getDate, Fr as endOfDay, Gr as getQuarter, Hr as differenceInCalendarYears, Jn as format, Jt as parse, Kr as differenceInCalendarMonths, Lt as isSameQuarter$1, Oi as addMonths, On as getHours, Pn as getDay, Pr as endOfMonth, Pt as isSameYear$1, Qr as isSameDay$1, Rt as isSameMonth$1, S as setQuarter, T as setHours, Vr as differenceInDays, Wr as differenceInCalendarQuarters, Xr as isValid$1, Zr as isDate, _i as differenceInCalendarDays, _r as endOfYear, a as subYears, an as isEqual$1, bn as getTime, bt as isWithinInterval, c as subQuarters, di as addSeconds, dr as endOfWeek, fi as addQuarters, gr as startOfYear, hn as getYear, ki as addDays, li as addYears, m as subMonths, o as subWeeks, oi as min, on as isBefore, pi as addMinutes, q as parseISO, si as max, sn as isAfter, tr as getISOWeek, ui as addWeeks, vi as startOfDay, wn as getMinutes, x as setSeconds, xi as addHours, xn as getSeconds, y as setYear, yr as startOfMonth, yt as subDays } from "./date-fns-59qcLiu2.js";
+import { a as offset$1, i as flip$1, n as autoUpdate, o as getComputedStyle, r as computePosition, s as isElement, t as arrow$2 } from "./floating-ui.dom-CNYzeZG-.js";
 //#region node_modules/clsx/dist/clsx.mjs
 function r(e) {
 	var t, f, n = "";
@@ -267,30 +268,42 @@ var arrow$1 = (options) => {
 * object may be passed.
 * @see https://floating-ui.com/docs/offset
 */
-var offset = (options, deps) => ({
-	...offset$1(options),
-	options: [options, deps]
-});
+var offset = (options, deps) => {
+	const result = offset$1(options);
+	return {
+		name: result.name,
+		fn: result.fn,
+		options: [options, deps]
+	};
+};
 /**
 * Optimizes the visibility of the floating element by flipping the `placement`
 * in order to keep it in view when the preferred placement(s) will overflow the
 * clipping boundary. Alternative to `autoPlacement`.
 * @see https://floating-ui.com/docs/flip
 */
-var flip = (options, deps) => ({
-	...flip$1(options),
-	options: [options, deps]
-});
+var flip = (options, deps) => {
+	const result = flip$1(options);
+	return {
+		name: result.name,
+		fn: result.fn,
+		options: [options, deps]
+	};
+};
 /**
 * Provides data to position an inner element of the floating element so that it
 * appears centered to the reference element.
 * This wraps the core `arrow` middleware to allow React refs as the element.
 * @see https://floating-ui.com/docs/arrow
 */
-var arrow = (options, deps) => ({
-	...arrow$1(options),
-	options: [options, deps]
-});
+var arrow = (options, deps) => {
+	const result = arrow$1(options);
+	return {
+		name: result.name,
+		fn: result.fn,
+		options: [options, deps]
+	};
+};
 //#endregion
 //#region node_modules/@floating-ui/react/dist/floating-ui.react.mjs
 var ARROW_LEFT = "ArrowLeft";

@@ -15,7 +15,7 @@ import { getPageOffset } from "reborn-util";
 import { getPermissions } from "utils/common";
 import "./ListWork.scss";
 import WorkOrderService from "services/WorkOrderService";
-import HandleTask from "pages/MiddleWork/partials/ListWork/partials/HandleTask/HandleTask";
+import HandleTask from "pages/DailyProgressLog/partials/ListWork/partials/HandleTask/HandleTask";
 import Button from "components/button/button";
 
 export default function ListWork(props: any) {

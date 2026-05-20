@@ -80,7 +80,7 @@ import IconComment from "assets/icons/icon-comment.svg";
 import IconCopy from "assets/icons/icon-copy.svg";
 import IconCustomer from "assets/icons/icon-customer.svg";
 import IconCloudUpload from "assets/icons/icon-cloud-upload.svg";
-import IconCustomerCare from "assets/icons/icon-customer-care.svg";
+import IconOnlineConsultation from "assets/icons/icon-customer-care.svg";
 import IconCustomerSupport from "assets/icons/icon-customer-support.svg";
 import IconChoose from "assets/icons/icon-choose.svg";
 import IconCreateWork from "assets/icons/icon-create-work.svg";
@@ -459,7 +459,7 @@ const iconTypes = {
   Customer: IconCustomer,
   CallPhone: IconCallPhone,
   CloudUpload: IconCloudUpload,
-  CustomerCare: IconCustomerCare,
+  OnlineConsultation: IconOnlineConsultation,
   CustomerSupport: IconCustomerSupport,
   Choose: IconChoose,
   CreateWork: IconCreateWork,

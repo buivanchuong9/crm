@@ -1,9 +1,9 @@
 import { o as __toESM, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { t as require_react_dom } from "./react-dom-J2wNTDgO.js";
-import { a as require__root, n as require_isObject } from "./isObjectLike-CHLKHQZY.js";
-import { t as require_toNumber } from "./toNumber-Dfbs3tUw.js";
-import { c as Point, f as Scrubber, h as Transforms, i as Node, m as Text$1, n as Element$2, o as Path, t as Editor, u as Range } from "./index.es-BHxbN-un.js";
+import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
+import { a as require__root, n as require_isObject } from "./isObjectLike-DAJMDwN8.js";
+import { t as require_toNumber } from "./toNumber-DO21XOZs.js";
+import { c as Point, f as Scrubber, h as Transforms, i as Node, m as Text$1, n as Element$2, o as Path, t as Editor, u as Range } from "./index.es-EC4XYGKV.js";
 //#region node_modules/direction/index.js
 var require_direction = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	module.exports = direction;
@@ -2586,7 +2586,6 @@ function _objectSpread$3(target) {
 }
 var RESOLVE_DELAY = 25;
 var FLUSH_DELAY = 200;
-var debug = function debug() {};
 var isDataTransfer = (value) => (value === null || value === void 0 ? void 0 : value.constructor.name) === "DataTransfer";
 function createAndroidInputManager(_ref) {
 	var { editor, scheduleOnDOMSelectionChange, onDOMSelectionChange } = _ref;
@@ -2637,7 +2636,7 @@ function createAndroidInputManager(_ref) {
 		if (hasPendingAction()) flushing = "action";
 		var selectionRef = editor.selection && Editor.rangeRef(editor, editor.selection, { affinity: "forward" });
 		EDITOR_TO_USER_MARKS.set(editor, editor.marks);
-		debug("flush", EDITOR_TO_PENDING_ACTION.get(editor), EDITOR_TO_PENDING_DIFFS.get(editor));
+		EDITOR_TO_PENDING_ACTION.get(editor), EDITOR_TO_PENDING_DIFFS.get(editor);
 		var scheduleSelectionChange = hasPendingDiffs();
 		var diff;
 		while (diff = (_EDITOR_TO_PENDING_DI = EDITOR_TO_PENDING_DIFFS.get(editor)) === null || _EDITOR_TO_PENDING_DI === void 0 ? void 0 : _EDITOR_TO_PENDING_DI[0]) {

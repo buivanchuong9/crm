@@ -258,7 +258,7 @@ export default function ChatBot() {
                 <div className="chat__bot--header">
                     <div className="header__left" ref={refContainerStatus} onClick={() => setIsChangeStatus(!isChangeStatus)}>
                         <div className="title__bot">
-                            <span className="name">Trợ lý ảo Reborn</span>
+                            <span className="name">Trợ lý ảo</span>
                             {/* <span className="status">
                                 {lstStatus.find((item) => item.value === activeStatus).label} <Icon name="ChevronDown" />
                             </span> */}
@@ -463,7 +463,7 @@ export default function ChatBot() {
                   setIsShowChatBot(true)
                 }}
               >
-                <Tippy content='Trợ lý ảo Reborn'>
+                <Tippy content='Trợ lý ảo'>
                   <div className="image-chatbot-icon">
                       <img src={NoImageChatBot} alt="" />
                   </div>

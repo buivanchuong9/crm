@@ -187,11 +187,25 @@ export const getTextFromReactElement = (elem: React.ReactElement | string) => {
 export const getPermissions = () => {
   let permissions = localStorage.getItem("permissions");
   if (!permissions) {
-    return {};
+    permissions = "{}";
   }
 
-  permissions = JSON.parse(permissions);
-  return permissions;
+  try {
+    const parsed = JSON.parse(permissions);
+    if (import.meta.env.VITE_USE_MOCKS === "true") {
+      return new Proxy(parsed, {
+        get: (target, prop) => {
+          if (typeof prop === "string") {
+            return 1;
+          }
+          return Reflect.get(target, prop);
+        }
+      });
+    }
+    return parsed;
+  } catch (e) {
+    return {};
+  }
 };
 
 /**
@@ -253,6 +267,11 @@ export const logout = () => {
   localStorage.removeItem("permissions");
   localStorage.removeItem("user.root");
   localStorage.removeItem("SelectedRole");
+
+  if (import.meta.env.VITE_USE_MOCKS === "true") {
+    location.href = "/crm/login";
+    return;
+  }
 
   let sourceDomain = getDomain(decodeURIComponent(document.location.href));
   let rootDomain = getRootDomain(sourceDomain);

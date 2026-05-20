@@ -6,8 +6,8 @@ import Dialog, { IContentDialog } from "components/dialog/dialog";
 import { isDifferenceObj, convertToId } from "reborn-util";
 
 import "./index.scss";
-import FormEditorComponent from "pages/BPM/BpmForm/FormEditor";
-import FormViewerComponent from "pages/BPM/BpmForm/FormViewer";
+import FormEditorComponent from "pages/AIImageAnalysis/BpmForm/FormEditor";
+import FormViewerComponent from "pages/AIImageAnalysis/BpmForm/FormViewer";
 import ModalMapping from "./partials/ModalMapping";
 import ModalSetting from "./partials/ModalSetting";
 import BusinessProcessService from "services/BusinessProcessService";
@@ -17,7 +17,7 @@ import ModalSelectForm from "./partials/ModalSelectForm";
 import ModalBpmParticipant from "./partials/ModalBpmParticipant";
 import ModalSelectNodeOther from "../ModalSelectNodeOther";
 import ModalOLA from "./partials/ModalOLA";
-import FormEditorComponentDisable from "pages/BPM/BpmForm/FormEditorDisable";
+import FormEditorComponentDisable from "pages/AIImageAnalysis/BpmForm/FormEditorDisable";
 import ModalDebug from "./partials/ModalDebug";
 
 export default function ModalUserTask({ onShow, onHide, dataNode, processId, disable }) {

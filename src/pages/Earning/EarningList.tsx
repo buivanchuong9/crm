@@ -58,7 +58,7 @@ export default function EarningList() {
         list: [
           {
             value: "1",
-            label: "Phan Đức Dũng",
+            label: "Bùi Văn Chương",
           },
         ],
         value: searchParams.get("checkDebt") ?? "",

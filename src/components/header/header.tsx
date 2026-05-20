@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperCore } from "swiper";
-import { Autoplay } from "swiper";
+import { Autoplay } from "swiper/modules";
 import Button from "components/button/button";
 import Icon from "components/icon";
 import Popover from "components/popover/popover";
@@ -527,7 +527,7 @@ export default function Header(props: any) {
                   <span>Tài khoản</span>
                 </li>
                 <li onClick={() => setShowPopoverUser(false)}>
-                  <Icon name="CustomerCare" />
+                  <Icon name="OnlineConsultation" />
                   <span>{phone}</span>
                 </li>
                 <li

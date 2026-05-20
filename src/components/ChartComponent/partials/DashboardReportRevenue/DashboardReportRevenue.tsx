@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { IBeautyBranchResponse } from "model/beautyBranch/BeautyBranchResponseModel";
-import { IReportCommonFilterRequest } from "model/report/ReportRequest";
+import { IMedicalAIStatisticsFilterRequest } from "model/report/ReportRequest";
 import { IBeautyBranchFilterRequest } from "model/beautyBranch/BeautyBranchRequestModel";
 import { IReportRevenueResponse } from "model/report/ReportResponse";
 import Icon from "components/icon";
@@ -16,11 +16,12 @@ import BeautyBranchService from "services/BeautyBranchService";
 import { showToast } from "utils/common";
 import { ContextType, UserContext } from "contexts/userContext";
 import "./DashboardReportRevenue.scss";
-import ReportOpportunity from "pages/OpportunityList/partials/ReportOpportunity";
-import ReportCustomer from "pages/CustomerPerson/partials/ReportCustomer";
-import ReportPartner from "pages/PartnerList/partials/ReportPartner";
-import ReportGuarantee from "pages/Contract/GuaranteeContract/ReportGuarantee";
-import ReportWaranty from "pages/Contract/WarrantyContract/ReportWaranty";
+import ReportCustomer from "pages/PatientRecord/partials/ReportCustomer";
+
+const ReportPartner = () => null;
+const ReportOpportunity = () => null;
+const ReportGuarantee = () => null;
+const ReportWaranty = () => null;
 import { stringify } from "uuid";
 
 interface ReportRevenueProps {
@@ -41,7 +42,7 @@ export default function DashboardReportRevenue(props: ReportRevenueProps) {
 
   const [valueBranch, setValueBranch] = useState(null);
 
-  const [params, setParams] = useState<IReportCommonFilterRequest>({
+  const [params, setParams] = useState<IMedicalAIStatisticsFilterRequest>({
     fromTime: "",
     toTime: "",
   });
@@ -91,7 +92,7 @@ export default function DashboardReportRevenue(props: ReportRevenueProps) {
   //   }
   // }, [dataBranch]);
 
-  const getRevenue = async (paramsSearch: IReportCommonFilterRequest, dataBranch) => {
+  const getRevenue = async (paramsSearch: IMedicalAIStatisticsFilterRequest, dataBranch) => {
     const params = {
       ...paramsSearch,
       branchId: dataBranch.value,

@@ -1,5 +1,5 @@
-import { Component as x, Fragment as k, cloneElement as K, createContext as Q, createElement as _, createRef as b, hydrate as J, isValidElement as t, options as l, render as G, toChildArray as H } from "./preact.js";
-import { useCallback as q, useContext as x$1, useDebugValue as P, useEffect as y, useErrorBoundary as b$1, useId as g, useImperativeHandle as F, useLayoutEffect as _$1, useMemo as T, useReducer as h, useRef as A, useState as d } from "./preact_hooks.js";
+import { Component as b, Fragment as k, cloneElement as F, createContext as G, createElement as y, createRef as _, hydrate as E, isValidElement as i, options as l, render as D, toChildArray as S } from "./preact.js";
+import { useCallback as T, useContext as q, useDebugValue as x, useEffect as p, useErrorBoundary as P, useId as V, useImperativeHandle as A, useLayoutEffect as y$1, useMemo as F$1, useReducer as s, useRef as _$1, useState as h } from "./preact_hooks.js";
 //#region node_modules/htm/dist/htm.module.js
 var n = function(t, s, r, e) {
 	var u;
@@ -9,10 +9,10 @@ var n = function(t, s, r, e) {
 		3 === p ? e[0] = a : 4 === p ? e[1] = Object.assign(e[1] || {}, a) : 5 === p ? (e[1] = e[1] || {})[s[++h]] = a : 6 === p ? e[1][s[++h]] += a + "" : p ? (u = t.apply(a, n(t, a, r, ["", null])), e.push(u), a[0] ? s[0] |= 2 : (s[h - 2] = 0, s[h] = u)) : e.push(a);
 	}
 	return e;
-}, t$1 = /* @__PURE__ */ new Map();
+}, t = /* @__PURE__ */ new Map();
 function htm_module_default(s) {
-	var r = t$1.get(this);
-	return r || (r = /* @__PURE__ */ new Map(), t$1.set(this, r)), (r = n(this, r.get(s) || (r.set(s, r = function(n) {
+	var r = t.get(this);
+	return r || (r = /* @__PURE__ */ new Map(), t.set(this, r)), (r = n(this, r.get(s) || (r.set(s, r = function(n) {
 		for (var t, s, r = 1, e = "", u = "", h = [0], p = function(n) {
 			1 === r && (n || (e = e.replace(/^\s*\n\s*|\s*\n\s*$/g, ""))) ? h.push(0, n, e) : 3 === r && (n || e) ? (h.push(3, n, e), r = 2) : 2 === r && "..." === e && n ? h.push(4, n, 0) : 2 === r && e && !n ? h.push(5, 0, !0, e) : r >= 5 && ((e || !n && 5 === r) && (h.push(r, 0, e, s), r = 6), n && (h.push(r, n, 0, s), r = 6)), e = "";
 		}, a = 0; a < n.length; a++) {
@@ -24,8 +24,8 @@ function htm_module_default(s) {
 }
 //#endregion
 //#region node_modules/htm/preact/index.module.js
-var m = htm_module_default.bind(_);
+var m = htm_module_default.bind(y);
 //#endregion
-export { x as Component, k as Fragment, K as cloneElement, Q as createContext, _ as createElement, _ as h, b as createRef, m as html, J as hydrate, t as isValidElement, l as options, G as render, H as toChildArray, q as useCallback, x$1 as useContext, P as useDebugValue, y as useEffect, b$1 as useErrorBoundary, g as useId, F as useImperativeHandle, _$1 as useLayoutEffect, T as useMemo, h as useReducer, A as useRef, d as useState };
+export { b as Component, k as Fragment, F as cloneElement, G as createContext, y as createElement, y as h, _ as createRef, m as html, E as hydrate, i as isValidElement, l as options, D as render, S as toChildArray, T as useCallback, q as useContext, x as useDebugValue, p as useEffect, P as useErrorBoundary, V as useId, A as useImperativeHandle, y$1 as useLayoutEffect, F$1 as useMemo, s as useReducer, _$1 as useRef, h as useState };
 
 //# sourceMappingURL=diagram-js_lib_ui.js.map

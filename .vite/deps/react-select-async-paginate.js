@@ -1,7 +1,7 @@
 import { o as __toESM, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
 import { t as require_jsx_runtime } from "./react_jsx-runtime.js";
-import { a as components, s as index } from "./Select-ef7c0426.esm-D_70pgXc.js";
+import { a as components, s as index } from "./Select-ef7c0426.esm-DHfi5gly.js";
 import StateManagedSelect$1 from "./react-select.js";
 //#region node_modules/@seznam/compose-react-refs/composeRefs.js
 var require_composeRefs = /* @__PURE__ */ __commonJSMin(((exports) => {

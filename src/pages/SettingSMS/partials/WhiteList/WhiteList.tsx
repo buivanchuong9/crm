@@ -90,12 +90,12 @@ export default function WhiteList(props: any) {
     // }
     setListPhoneNumber([
         {
-            phone:'0963829333',
-            // status: 1
+          phone:'0369062042',
+          // status: 1
         },
         {
-            phone:'0973090393',
-            // status: 0
+          phone:'0369062042',
+          // status: 0
         }
     ])
     setIsLoading(false);

@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "./contexts/userContext";
@@ -24,7 +24,7 @@ import { ToastContainer } from "react-toastify";
 import LayoutPage from "pages/layout";
 import moment from "moment";
 // import { fetchToken, onMessageListener } from "configs/firebaseConfig";
-import { getAppSSOLink, showToast } from "utils/common";
+import { getAppSSOLink, showToast, getPermissions } from "utils/common";
 import EmployeeService from "services/EmployeeService";
 import { getDomain } from "reborn-util";
 import { getRootDomain } from "utils/common";
@@ -33,17 +33,15 @@ import LinkSurvey from "pages/LinkSurvey";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./configs/authConfig";
-import UploadDocument from "pages/BPM/UploadDocument/UploadDocument";
-import EmailConfirm from "pages/Contract/EmailComfirm/EmailConfirm";
-import VoucherForm from "pages/Contract/EmailComfirm/VoucherForm";
+import UploadDocument from "pages/AIImageAnalysis/UploadDocument/UploadDocument";
 import CollectTicket from "pages/Ticket/partials/CollectTicket";
 import CollectWarranty from "pages/Warranty/partials/CollectWarranty";
-import GridFormNew from "pages/BPM/GridForm";
+import GridFormNew from "pages/AIImageAnalysis/GridForm";
 import { onMessage } from "firebase/messaging";
 import { messaging, requestPermission } from "firebase-config";
 import NotificationService from "services/NotificationService";
 import { useSTWebRTC } from "webrtc/useSTWebRTC";
-import WebRtcCallIncomeModal from "pages/CallCenter/partials/WebRtcCallIncomeModal";
+import WebRtcCallIncomeModal from "pages/DoctorQnA/partials/WebRtcCallIncomeModal";
 import ringtone from "assets/sounds/call_in_sound.wav";
 
 const msalInstance = new PublicClientApplication(msalConfig);
@@ -53,6 +51,7 @@ export default function App() {
   const location = useLocation();
   const returnUrl = new URLSearchParams(location.search).get("returnUrl");
   const [cookies, setCookie, removeCookie] = useCookies();
+  const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [user, setUser] = useState<IUser>(null);
   const [isRunRefresh, setIsRunRefresh] = useState<boolean>(false);
@@ -95,6 +94,10 @@ export default function App() {
   };
 
   useEffect(() => {
+    if (isMockEnabled) {
+      return;
+    }
+
     const checkEmployeeStatus = async () => {
       if (cookies.token && location.pathname !== "/link_survey") {
         // Chờ lấy thông tin nhân viên
@@ -147,7 +150,46 @@ export default function App() {
       // )
       checkEmployeeStatus();
     }
-  }, [cookies.user, location]);
+  }, [cookies.user, location, isMockEnabled]);
+
+  useEffect(() => {
+    if (!isMockEnabled) {
+      return;
+    }
+
+    const sourceDomain = getDomain(decodeURIComponent(document.location.href));
+    const rootDomain = getRootDomain(sourceDomain);
+    const dateExpires = moment().add(7, "days").toDate();
+    const mockUser = {
+      id: 1,
+      name: "Mock User",
+      phone: "0369062042",
+      avatar: "",
+      gender: 0,
+      role: "mock",
+    };
+
+    setCookie("token", "mock-token", { path: "/", domain: rootDomain, expires: dateExpires });
+    setCookie("user", JSON.stringify(mockUser), { path: "/", domain: rootDomain, expires: dateExpires });
+    localStorage.setItem("permissions", "{}");
+    localStorage.setItem("user.root", "1");
+    setDataExpired({
+      numDay: 9999,
+      name: "Gói Vĩnh Viễn (Mock)",
+      endDate: "2030-12-31T23:59:59Z",
+    });
+    setDataInfoEmployee({
+      id: 1,
+      name: "Bùi Văn Chương",
+      branchId: 1,
+      branchName: "Chi nhánh Hà Nội - Trụ sở chính",
+      lstOrgApp: [{
+        endDate: "2030-12-31T23:59:59Z",
+        packageName: "Gói Vĩnh Viễn"
+      }]
+    });
+    setIsLogin(true);
+  }, [isMockEnabled, setCookie]);
 
   // useEffect(() => {
   //   fetchToken().then((token) => {
@@ -183,6 +225,10 @@ export default function App() {
    * @returns
    */
   const getDetailEmployeeInfo = async () => {
+    if (isMockEnabled) {
+      return true;
+    }
+
     if (isChecking) {
       return false;
     }
@@ -293,11 +339,11 @@ export default function App() {
   // Khởi tạo tổng đài
   const [showModalCallIncome, setShowModalCallIncome] = useState<boolean>(false);
   const pbxCustomerCode = "d9cf985baac44238b3d930ae569d9f0912";
-  const employeeSip470 = "470"; // Test với tài khoản Nguyễn Ngọc Trung trên rebornjsc sdt 0962829352 có id là 81
-  const employeeSip471 = "471"; // Test với tài khoản Hoàng Văn Lợi trên rebornjsc sdt 0862999272 có id là 703
+  const employeeSip470 = "470";
+  const employeeSip471 = "471";
 
   const { callState, incomingNumber, makeCall, answer, hangup, transfer } = useSTWebRTC({
-    extension: parseInt(dataInfoEmployee?.id) == 81 ? employeeSip470 : parseInt(dataInfoEmployee?.id) == 703 ? employeeSip471 : null, //test tạm thời, sau này lấy theo dataInfoEmployee?.sip
+    extension: parseInt(dataInfoEmployee?.id) == 81 ? employeeSip470 : parseInt(dataInfoEmployee?.id) == 703 ? employeeSip471 : null,
     pbxCustomerCode: pbxCustomerCode,
   });
 
@@ -374,10 +420,26 @@ export default function App() {
     }
   }, [callState]);
 
+  const contextPermissions = useMemo(() => {
+    const realPermissions = getPermissions();
+    if (isMockEnabled) {
+      return new Proxy([], {
+        get: (target, prop) => {
+          if (prop === "filter") {
+            return () => [true];
+          }
+          return Reflect.get(target, prop);
+        }
+      });
+    }
+    return Object.keys(realPermissions);
+  }, [isMockEnabled]);
+
   return (
     <UserContext.Provider
       value={{
         ...user,
+        permissions: contextPermissions,
         lstRole: lstRole,
         dataBeauty: dataBeauty,
         setDataBeauty: setDataBeauty,
@@ -426,8 +488,6 @@ export default function App() {
           {location.pathname == "/upload_document" && <Route path="/upload_document" element={<UploadDocument />} />}
           {location.pathname == "/collect_ticket" && <Route path="/collect_ticket" element={<CollectTicket />} />}
           {location.pathname == "/collect_warranty" && <Route path="/collect_warranty" element={<CollectWarranty />} />}
-          {location.pathname == "/send_email_confirm" && <Route path="/send_email_confirm" element={<EmailConfirm />} />}
-          {location.pathname == "/voucher_confirm" && <Route path="/voucher_confirm" element={<VoucherForm />} />}
           <Route path="/login" element={<Login />} />
         </Routes>
         <ChooseRole onShow={chooseRoleInit} onHide={() => setChooseRoleInit(false)} lstRole={lstRole} />
