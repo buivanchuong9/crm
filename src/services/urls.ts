@@ -28,7 +28,7 @@ export const urlsApi = {
     checkInProcess: prefixAdmin + "/customer/checkInProcess",
     link: prefixAdmin + "/customer/link_user",
     detail: prefixAdmin + "/customer/get",
-    area: "https://reborn.vn/api/area/child",
+    area: "https://mock.local/api/area/child",
     addOther: prefixAdmin + "/customerViewer/update",
     // api lấy ra thông tin khách hàng dựa theo id
     listById: prefixAdmin + "/customer/list_by_id",
@@ -741,7 +741,7 @@ export const urlsApi = {
   },
 
   organization: {
-    list: "https://reborn.vn/api/beautySalon/list",
+    list: "https://mock.local/api/beautySalon/list",
     customerUploadList: prefixAdmin + "/customerUpload/list",
     customerUploadDelete: prefixAdmin + "/cleanData/uploadCustomer/delete",
   },
@@ -1189,8 +1189,8 @@ export const urlsApi = {
     update: prefixAdmin + "/setting/update",
   },
   connectGmail: {
-    connect: "https://connect.reborn.vn/api/v1/google/access-token",
-    checkConnect: "https://connect.reborn.vn/api/v1/google/gmails-link-bsn",
+    connect: "https://connect.mock.local/api/v1/google/access-token",
+    checkConnect: "https://connect.mock.local/api/v1/google/gmails-link-bsn",
   },
   fanpageFacebook: {
     //* kết nối fanpage với crm
@@ -1245,31 +1245,31 @@ export const urlsApi = {
     deleteZaloChat: prefixAdmin + "/zaloChat/delete",
   },
   image: {
-    upload: "https://login.noron.vn/api/upload/image",
-    // upload: "https://reborn.vn/api/upload/file",
-    uploadReborn: "https://reborn.vn/api/upload/file",
-    uploadNoron: "https://login.noron.vn/api/upload/file",
+    upload: "https://login.mock.local/api/upload/image",
+    // upload: "https://mock.local/api/upload/file",
+    uploadReborn: "https://mock.local/api/upload/file",
+    uploadNoron: "https://login.mock.local/api/upload/file",
     // uploadReborn: "http://localhost:8000/api/upload/file"
   },
   file: {
-    upload: "https://reborn.vn/api/upload/file",
+    upload: "https://mock.local/api/upload/file",
   },
   video: {
-    upload: "https://login.noron.vn/api/upload/file",
+    upload: "https://login.mock.local/api/upload/file",
   },
   analysis: {
-    list: "https://cloud.reborn.vn/market/article/list",
-    detail: "https://cloud.reborn.vn/market/article/get",
+    list: "https://cloud.mock.local/market/article/list",
+    detail: "https://cloud.mock.local/market/article/get",
   },
   reportMa: {
     getCustomer: prefixAdmin + "/ma/dashboard/customer/byStatus",
-    // detail: "https://cloud.reborn.vn/market/article/get",
+    // detail: "https://cloud.mock.local/market/article/get",
   },
   keywordData: {
-    list: "https://cloud.reborn.vn/market/keywordData/list",
-    update: "https://cloud.reborn.vn/market/keywordData/update",
-    detail: "https://cloud.reborn.vn/market/keywordData/get",
-    delete: "https://cloud.reborn.vn/market/keywordData/delete",
+    list: "https://cloud.mock.local/market/keywordData/list",
+    update: "https://cloud.mock.local/market/keywordData/update",
+    detail: "https://cloud.mock.local/market/keywordData/get",
+    delete: "https://cloud.mock.local/market/keywordData/delete",
   },
   configCode: {
     list: prefixAdmin + "/globalConfig/list",
@@ -1353,10 +1353,10 @@ export const urlsApi = {
     checkEmail: prefixAdmin + "/email/testConnection",
   },
   industry: {
-    list: "https://cloud.reborn.vn/market/industry/list",
-    update: "https://cloud.reborn.vn/market/industry/update",
-    detail: "https://cloud.reborn.vn/market/industry/get",
-    delete: "https://cloud.reborn.vn/market/industry/delete",
+    list: "https://cloud.mock.local/market/industry/list",
+    update: "https://cloud.mock.local/market/industry/update",
+    detail: "https://cloud.mock.local/market/industry/get",
+    delete: "https://cloud.mock.local/market/industry/delete",
   },
   mailBox: {
     list: prefixAdmin + "/mailbox/list",
@@ -1602,7 +1602,7 @@ export const urlsApi = {
   },
   // video hướng dẫn
   videoSupport: {
-    list: "https://reborn.vn/api//support/list",
+    list: "https://mock.local/api//support/list",
   },
   // phiếu điều chỉnh kho
   adjustmentSlip: {
@@ -1712,12 +1712,12 @@ export const urlsApi = {
     delete: prefixAdmin + "/outlookMail/delete",
 
     // call api email
-    lstEmail: "https://connect.reborn.vn/api/v1/google/gmail/message/search",
-    sendEmailNew: "https://connect.reborn.vn/api/v1/google/gmail/message/send",
-    detailEmail: "https://connect.reborn.vn/api/v1/google/gmail/message/get-by-id",
-    sendEmailDraft: "https://connect.reborn.vn/api/v1/google/gmail/draft/send",
-    lstEmailDraft: "https://connect.reborn.vn/api/v1/google/gmail/draft/search",
-    createEmailDraft: "https://connect.reborn.vn/api/v1/google/gmail/draft/create",
+    lstEmail: "https://connect.mock.local/api/v1/google/gmail/message/search",
+    sendEmailNew: "https://connect.mock.local/api/v1/google/gmail/message/send",
+    detailEmail: "https://connect.mock.local/api/v1/google/gmail/message/get-by-id",
+    sendEmailDraft: "https://connect.mock.local/api/v1/google/gmail/draft/send",
+    lstEmailDraft: "https://connect.mock.local/api/v1/google/gmail/draft/search",
+    createEmailDraft: "https://connect.mock.local/api/v1/google/gmail/draft/create",
   },
 
   ma: {
@@ -1862,7 +1862,7 @@ export const urlsApi = {
     delete: prefixAdmin + "/surveyForm/delete",
     detail: prefixAdmin + "/surveyForm/get",
     statistic: prefixAdmin + "/survey",
-    submitVoc: "https://reborn.vn/log-capture/crm/survey",
+    submitVoc: "https://mock.local/log-capture/crm/survey",
   },
 
   //báo giá
@@ -1970,10 +1970,10 @@ export const urlsApi = {
   },
   // đoạn này lấy ra danh sách các gói
   package: {
-    list: "https://reborn.vn/api/package/list",
-    addOrgApp: "https://reborn.vn/api/orgApp/add",
-    updateBill: "https://reborn.vn/api/orgApp/update/bill",
-    calcPrice: "https://reborn.vn/api/orgApp/calc/priceRemaining",
+    list: "https://mock.local/api/package/list",
+    addOrgApp: "https://mock.local/api/orgApp/add",
+    updateBill: "https://mock.local/api/orgApp/update/bill",
+    calcPrice: "https://mock.local/api/orgApp/calc/priceRemaining",
   },
   gift: {
     list: prefixAdmin + "/gift/list",

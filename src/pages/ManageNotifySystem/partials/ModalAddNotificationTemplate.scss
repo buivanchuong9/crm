@@ -1,0 +1,51 @@
+.modal-add-notification-template {
+    .form-add-notification-template-group {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .list-form-group {
+        display: flex;
+        flex-direction: column;
+        padding: 1.6rem;
+        max-height: 52rem;
+        overflow: auto;
+      }
+  
+      .list-field-item {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem 3.2rem;
+  
+        .form-group {
+        //   &:first-child {
+            width: 100%;
+        //   }
+          // width: calc(50% - 1.6rem);
+          .radio-list {
+            .form-group {
+              display: flex;
+              align-items: center;
+              flex-wrap: wrap;
+              justify-content: flex-start;
+              gap: 0 1.2rem;
+
+              .base-radio {
+                margin: 0;
+              }
+            }
+          }
+        }
+
+        .target_object {
+          border: 1px dashed #B7B8B9;
+          border-radius: 8px;
+          width: 100%;
+          padding: 1.5rem;
+        }
+
+      }
+
+    }
+  }
+  

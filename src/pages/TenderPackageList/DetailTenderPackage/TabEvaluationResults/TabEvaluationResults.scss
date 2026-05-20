@@ -1,0 +1,114 @@
+.container-evaluation-results {
+    border: 1px solid #EEEEEF;
+    padding: 1.2rem ;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+
+    .list-round {
+        // border: 1px solid;
+        display: flex;
+        gap: 0 1rem;
+        width: 80%;
+
+        .item-round {
+          padding: 5px 12px 5px 12px;
+          border-radius: 8px;
+          background-color: #EEEEEF;
+          cursor: pointer;
+
+          &:hover {
+              background-color: var(--extra-color-20);
+          }
+        }
+    }
+
+    .button-reply{
+        padding: 5px 1.4rem 5px 1.4rem;
+        border-radius: 8px;
+        background-color: #ED1B34;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #cd021a;
+        }
+    }
+
+    .technical-profile{
+        // border: 1px solid;
+        margin-top: 2rem;
+
+        .container-header{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .table-list-evaluation{
+            // border: 1px solid;  
+            margin-top: 1.6rem;
+
+            .custom-value {
+                cursor: pointer;
+                color: #ed1b34;
+                &:hover {
+                  text-decoration: underline;
+                }
+            }
+
+        }
+    }
+
+    .finance-profile{
+        // border: 1px solid;
+        margin-top: 2rem;
+
+        .container-header{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .table-list-evaluation{
+            // border: 1px solid;  
+            margin-top: 1.6rem;
+
+            .table-header{
+                border-bottom: 1px solid #EEEEEF;
+                display: flex;
+                
+                .box-stt{
+                    border-right: 1px solid #EEEEEF;
+                    width: 20%;
+                    padding: 0.8rem 0 0.8rem 1.2rem ;
+                }
+
+                .box-bidding{
+                    // border: 1px solid;
+                    flex: 1;
+                    padding-left: 1.2rem;
+                    padding: 0.8rem 0 0.8rem 1.2rem ;
+                }
+            }
+
+            .item-evaluation{
+                border-bottom: 1px solid #EEEEEF;
+                display: flex;
+                
+                .box-stt{
+                    border-right: 1px solid #EEEEEF;
+                    width: 20%;
+                    padding: 0.8rem 0 0.8rem 1.2rem ;
+                }
+
+                .box-bidding{
+                    // border: 1px solid;
+                    flex: 1;
+                    padding-left: 1.2rem;
+                    padding: 0.8rem 0 0.8rem 1.2rem ;
+                }
+            }
+
+        }
+    }
+}

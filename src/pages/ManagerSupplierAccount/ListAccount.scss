@@ -1,0 +1,59 @@
+.page-account-list {
+  .flex-column {
+    position: relative;
+
+  }
+
+  .header_tab {
+    // border: 1px solid;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    display: flex;
+    margin-bottom: 2rem;
+    .item_tab_active {
+      // border: 1px solid;
+      padding: 0 1.4rem 0.7rem 1.4rem;
+      border-bottom: 1px solid #ED1B34;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      svg {
+        // margin-top: 4px;
+        path {
+          stroke: #ED1B34;
+        }
+      }
+
+      .label{
+        font-weight: 400;
+        font-size: 16px;
+        margin-left: 5px;
+        color: #ED1B34;
+      }
+    }
+
+    .item_tab_inactive {
+      // border: 1px solid;
+      padding: 0 1.4rem 0.7rem 1.4rem;
+      border-bottom: 1px solid #EEEEEF;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      svg {
+        // margin-top: 4px;
+      }
+
+      .label{
+        font-weight: 400;
+        font-size: 16px;
+        margin-left: 5px;
+      }
+    }
+  }
+  .title-name {
+    cursor: pointer;
+    &:hover {
+      color: #ed1b34;
+    }
+  }
+}

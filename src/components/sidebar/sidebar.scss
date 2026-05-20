@@ -22,20 +22,40 @@
     .logo {
       display: flex;
       align-items: center;
+      gap: 0.8rem;
       height: 4.2rem;
-      width: 18.2rem;
+      min-width: 0;
+      flex: 1;
       overflow: hidden;
-      flex-shrink: 0;
+      text-decoration: none;
       transition: all 0.5s ease-in-out;
+
+      &__mark {
+        width: 3.4rem;
+        height: 3.4rem;
+        flex-shrink: 0;
+        object-fit: cover;
+        object-position: center 6%;
+        border-radius: 0.4rem;
+        transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+      }
+
+      &__wordmark {
+        font-family: "Roboto", "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        text-transform: uppercase;
+        color: #5ec9d6;
+        white-space: nowrap;
+        margin-right: -0.2rem;
+        transition: opacity 0.25s ease, max-width 0.5s ease-in-out;
+      }
 
       svg {
         width: 12.6rem;
         flex-shrink: 0;
-      }
-      img{
-        width: 182px;
-        height: 42px;
-
       }
     }
     .btn-collapsed-sidebar {
@@ -97,8 +117,21 @@
           padding: 0.7rem 0.8rem;
           gap: 0.4rem;
           .logo {
-            width: 2.4rem;
-            transition: width 0.5s ease-in-out;
+            flex: 0 0 auto;
+            width: auto;
+            gap: 0;
+
+            &__mark {
+              width: 2.4rem;
+              height: 2.4rem;
+            }
+
+            &__wordmark {
+              opacity: 0;
+              max-width: 0;
+              overflow: hidden;
+            }
+
             svg {
               flex-shrink: 0;
             }

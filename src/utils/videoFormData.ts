@@ -19,7 +19,7 @@ export const uploadVideoFormData = (data, onSuccess, onError, onProgress) => {
     let formData = new FormData();
     formData.append("file", data);
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://reborn.vn/api/upload/file");
+    xhr.open("POST", "https://mock.local/api/upload/file");
     // xhr.setRequestHeader(
     //   'Content-Type',
     //   'multipart/form-data;boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'

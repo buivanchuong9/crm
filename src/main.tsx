@@ -9,7 +9,7 @@ import App from "./App";
 
 const renderApp = () => {
   const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
-  const routerBase = isMockEnabled ? "/" : "/crm/";
+  const routerBase = isMockEnabled && !window.location.pathname.startsWith("/crm") ? "/" : "/crm/";
   ReactDOM.render(
     <CookiesProvider>
       <I18nextProvider i18n={i18n}>

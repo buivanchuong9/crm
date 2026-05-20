@@ -1,0 +1,101 @@
+.page-procurement-list-TNEX {
+    .container-loading-import-file {
+        // border: 1px solid;
+        margin-top: 1.2rem;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 2rem 0 2rem;
+        .box-loading-import {
+            // border: 1px solid;
+            width: 30rem;
+
+            .loading-import{
+                border-radius: 8px;
+                background-color: #F8F8F8;
+                .line-loading{
+                    height: 8px;
+                    border-radius: 8px;
+                    background-color: #ED1B34;
+                }
+            }
+        }
+    }
+    .box-table{
+        .box-table__wrapper {
+            .table {
+              tbody {
+                tr {
+                  td {
+                    .icon-attachfile{
+                        svg {
+                            // height: 2.5rem;
+                            // width: 2.5rem;
+                        }
+                    }
+                    .container-name {
+                        // border: 1px solid;
+                        display: flex;
+                        justify-content: space-between;
+                        width: 25rem;
+                        line-height: 2.5rem;
+
+                        &:hover {
+                            .title-name {
+                                color: #ED1B34;
+                                cursor: pointer;
+                            }
+                            .box-icon{
+                                display: flex;
+                            }
+                        }
+                        .box-icon{
+                            display: none;
+                            gap: 0 1rem;
+                            // border: 1px solid;
+                            .icon-edit{
+                                cursor: pointer;
+                                &:hover {
+                                    svg {
+                                        path {
+                                            stroke: #CE182D;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .icon-upload{
+                                cursor: pointer;
+                                svg {
+                                    path {
+                                        stroke: #939394;
+                                    }
+                                }
+                                &:hover {
+                                    svg {
+                                        path {
+                                            stroke: #CE182D;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .icon-delete{
+                                cursor: pointer;
+                                &:hover {
+                                    svg {
+                                        path {
+                                            stroke: #CE182D;
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                  }
+                }
+              }
+            }
+          }
+    }
+}

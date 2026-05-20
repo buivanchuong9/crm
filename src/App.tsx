@@ -46,7 +46,7 @@ export default function App() {
   const location = useLocation();
   const returnUrl = new URLSearchParams(location.search).get("returnUrl");
   const [cookies, setCookie, removeCookie] = useCookies();
-  const isMockEnabled = true;
+  const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [user, setUser] = useState<IUser>(null);
   const [isRunRefresh, setIsRunRefresh] = useState<boolean>(false);

@@ -159,7 +159,7 @@ export function mapConfigData(
       if (componentType === "uploadFile") {
         //   [
         //     {
-        //         "url": "https://cloud-cdn.reborn.vn/reborn/2025/12/08/1179ec38-0936-4aa2-a30b-0856ec438854-1765204810.jpg",
+        //         "url": "https://cdn.mock.local/reborn/2025/12/08/1179ec38-0936-4aa2-a30b-0856ec438854-1765204810.jpg",
         //         "type": "jpg",
         //         "name": "82654ae8-0d3c-4c3e-a79e-ec1cd6b67a56-1762834257.jpg",
         //         "size": 128529

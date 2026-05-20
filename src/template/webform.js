@@ -30,7 +30,7 @@
   //   var domain = window.location.hostname; // Lấy domain hiện tại
 
   //   // t.open("POST", "https://cloud.DermaHealth.vn/adminapi/customer/update/fromPartner", true);
-  //   t.open("POST", "http://192.168.137.1:9100/adminapi/customer/update/fromPartner", true);
+  //   t.open("POST", "http://localhost:4000/adminapi/customer/update/fromPartner", true);
 
   //   // Thiết lập các headers
   //   t.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -76,7 +76,7 @@
 
     try {
       // const response = await fetch("https://cloud.DermaHealth.vn/adminapi/customer/update/webform", {
-      // const response = await fetch("http://192.168.200.33:9100/adminapi/contact/update/landingPage", {
+      // const response = await fetch("http://localhost:4000/adminapi/contact/update/landingPage", {
       const response = await fetch("https://cloud.DermaHealth.vn/adminapi/contact/update/landingPage", {
         method: "POST",
         headers: {
@@ -106,7 +106,7 @@
 
     try {
       const response = await fetch("https://cloud.DermaHealth.vn/adminapi/contact/update/webform", {
-        // const response = await fetch("http://192.168.23.33:9100/adminapi/contact/update/webform", {
+        // const response = await fetch("http://localhost:4000/adminapi/contact/update/webform", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=UTF-8",

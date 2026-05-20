@@ -4,7 +4,7 @@ export default function WebRTCEmbed() {
   useEffect(() => {
     // Load script 1 lần
     const script = document.createElement("script");
-    script.src = "https://livecall.worldfone.vn/public/js/webrtc_embed.js";
+    script.src = "https://livecall.mock.local/public/js/webrtc_embed.js";
     script.async = true;
 
     script.onload = () => {

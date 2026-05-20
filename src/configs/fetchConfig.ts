@@ -5,6 +5,7 @@ import { getRootDomain } from "utils/common";
 
 const prefixAdmin = "/adminapi";
 const prefixApi = "/api";
+const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
 
 const takeSelectedRole = localStorage.getItem("SelectedRole");
 
@@ -33,6 +34,14 @@ export default function RegisterFetch() {
         config.headers["Content-Type"] = "application/json";
       }
       config.headers["Hostname"] = location.hostname || "";
+
+      if (isMockEnabled) {
+        // Keep requests relative so MSW can intercept all API/auth calls.
+        if (!url.startsWith("http") && !url.startsWith("/")) {
+          url = `/${url}`;
+        }
+        return [url, config];
+      }
       // config.headers["Hostname"] = "mockjsc.mock.local";
       // config.headers["Hostname"] = "kcn.mock.local";
       // config.headers["Hostname"] = "boutique2shop.mock.local";
@@ -75,6 +84,9 @@ export default function RegisterFetch() {
     },
 
     response(response) {
+      if (isMockEnabled) {
+        return response;
+      }
       if (response.status === 401) {
         // eslint-disable-next-line prefer-const
         let rootDomain = getRootDomain(location.hostname || "");

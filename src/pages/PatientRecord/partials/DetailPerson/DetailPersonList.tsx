@@ -223,7 +223,7 @@ export default function DetailPersonList() {
   }
 
   const createCall = async (accessTokenAthena, phone) => {
-    const url = "https://api-athenaspear-prod.athenafs.io/api/v1/call-history/create-call";
+    const url = "https://athena.mock.local/api/v1/call-history/create-call";
     const headers = {
       "Content-Type": "application/json",
       "x-access-token": accessTokenAthena,

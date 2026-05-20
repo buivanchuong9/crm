@@ -1,0 +1,95 @@
+.modal-detail-request {
+    .form-detail-request {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .container_detail_request-modal {
+        // border: 1px dashed var(--border-color);
+        padding: 1.6rem;
+        max-height: 50rem;
+        overflow: auto;
+        
+        .body-request{
+            // border: 1px solid;
+            border-radius: 8px;
+            background-color: #F8F8F8;
+            padding: 1rem 1.4rem 1rem 1.4rem;
+
+            .box-title{
+                // border: 1px solid;
+            }
+
+            .content-request{
+                // border: 1px solid;
+                margin-top: 1rem;
+            }
+
+            .attachment-list{
+                // border: 1px solid;
+                margin-top: 2rem;
+                // display: flex;
+                // gap: 1.6rem 0rem;
+                
+                .button-download-all{
+                    padding: 8px;
+                    // width: 13.4rem;
+                    // height: 3.6rem;
+                    border-radius: 0.8rem;
+                    background-color: #fdfcfc;
+                    border: 1px solid #eceaea;
+                    //styleName: Medium/text-sm;
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 20px;
+                    text-align: left;
+            
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    svg {
+                        margin-right: 8px;
+                        width: 1.6rem;
+                        height: 1.6rem;
+                    }
+
+                    &:hover {
+                        background-color: #EEEEEF;
+                    }
+                }
+
+                .item-attachment{
+                    border: 1px solid #E8E8E9;
+                    border-radius: 8px;
+                    // width: 48.5%;
+                    padding: 1.2rem;
+                    display: flex;
+                    gap: 0 1rem;
+                    margin-top: 1rem;
+                    background-color: #FFFFFF;
+      
+                    .data-file{
+                      // border: 1px solid;
+                      flex: 1;
+                      cursor: pointer;
+                    }
+      
+                    .container-loading{
+                      // border: 1px solid;
+                      border-radius: 8px;
+                      background-color: #F8F8F8;
+                      .item-loading{
+                        height: 8px;
+                        border-radius: 8px;
+                        background-color: #ED1B34;
+                      }
+                    }
+                  }
+
+            }
+        }
+      }
+    }
+  }
+  

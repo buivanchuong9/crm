@@ -1,0 +1,58 @@
+.modal-work-assignment {
+    .form-work-assignment {
+      .confirm-work-assignment {
+        .user-adjuster {
+            .label {
+                font-size: 1.4rem;
+                font-weight: 600;
+                width: 13rem;
+            }
+        }
+        .box_line_date {
+          display: flex;      
+          align-items: center;
+          margin-top: 1rem;
+  
+          .title_time {
+            font-size: 1.4rem;
+            font-weight: 600;
+            width: 13rem;
+            flex-shrink: 0;
+          }
+  
+          .box_setting_time {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-left: 2rem;
+  
+            .box_time {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+  
+              .form-group {
+                width: 6rem;
+  
+                .base-input__input input {
+                  padding: 0.8rem;
+                  line-height: 1rem;
+                  font-size: 1.4rem;
+                  text-align: center;
+                  border: 1px solid #eee;
+                  border-radius: 10px;
+                }
+              }
+  
+              /* chữ “ngày / giờ / phút” */
+              .title_time {
+                font-size: 1.4rem;
+                font-weight: 400;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

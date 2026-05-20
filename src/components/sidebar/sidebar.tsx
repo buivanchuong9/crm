@@ -11,7 +11,7 @@ import { fadeIn, fadeOut } from "reborn-util";
 import { useWindowDimensions } from "utils/hookCustom";
 import { getDomain } from "reborn-util";
 import "./sidebar.scss";
-import LogoImg from "assets/images/logo-sidebar.png";
+import LogoImg from "assets/images/logo.jpeg";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -47,8 +47,9 @@ export default function Sidebar() {
     <Fragment>
       <div className={`sidebar${isCollapsedSidebar ? " sidebar--collapsed" : ""}`}>
         <div className="sidebar-logo d-flex align-items-center justify-content-between">
-          <Link to="/" className="logo">
-            <img src={LogoImg} style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "4px" }} alt="Logo" />
+          <Link to="/" className="logo" title="DERMAHEALTH">
+            <img src={LogoImg} className="logo__mark" alt="" aria-hidden />
+            <span className="logo__wordmark">DERMAHEALTH</span>
           </Link>
           <Button
             type="button"

@@ -1,0 +1,32 @@
+.box__view_document {
+    // padding: 2.2rem;
+    height: 100vh;
+  
+    overflow: auto;
+
+    .container-header{
+        // border: 1px solid;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 2rem;
+        
+        .button-download{
+            border: 1px solid;
+            align-items: center;
+            display: flex;
+            gap: 0 0.5rem;
+            padding: 0.3rem 1rem 0.3rem 1rem;
+            border-radius: 8px;
+            font-size: 14px;
+            color: white;
+            background-color: #ED1B34;
+            cursor: pointer;
+            svg {
+                width: 2rem;
+                height: 2rem;
+                fill: white;
+            }
+        }
+    }
+}
+  

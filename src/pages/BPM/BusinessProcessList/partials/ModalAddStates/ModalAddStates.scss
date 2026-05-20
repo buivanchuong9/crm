@@ -1,0 +1,52 @@
+.modal-edit-states {
+  .modal-body {
+    padding: 1.6rem;
+    max-height: 40rem;
+    overflow: auto;
+  }
+
+  .add-new-state {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    .btn-add {
+      padding: 0.8rem 1.6rem;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:disabled {
+        background-color: var(--extra-color-50);
+      }
+    }
+  }
+
+  .list-states {
+    .state-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--extra-color-30);
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+
+        svg {
+          cursor: pointer;
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+      .base-input,
+      .base-select {
+        width: 100%;
+      }
+    }
+  }
+}

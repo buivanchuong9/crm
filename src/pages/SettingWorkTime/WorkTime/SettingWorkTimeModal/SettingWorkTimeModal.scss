@@ -1,0 +1,109 @@
+.modal-setting-work-time {
+    .modal-dialog{
+        width: 432px;
+    }
+    .form-setting-work-time {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .list-form-group {
+        display: flex;
+        flex-direction: column;
+        padding: 1.6rem;
+        max-height: 48rem;
+        overflow: auto;
+
+        .shift_name{
+            // border: 1px solid;
+            margin-bottom: 0.5rem;
+        }
+
+        .status_active{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;    
+            margin-bottom: 1.6rem;
+        }
+
+        .list_day_week{
+            // border: 1px solid;
+            // padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .item_day{
+                border: 1px dashed var(--border-color);
+                padding: 0.8rem 1.2rem 0.8rem 1.2rem;
+                border-radius: 8px;
+                // display: flex;
+                // align-items: center;
+
+                .box_name_day {
+                    // border: 1px solid;
+                    // width: 13%;
+                    .name_day{
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+
+                .box_part {
+                    // display: flex;
+                    flex: 1;
+                    margin-top: 0.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+
+                    .box_morning,
+                    .box_afternoon{
+                        display: flex;
+                        gap: 0 1rem;
+                        align-items: center;
+                        .box_time{
+                            display: flex;
+                            // border: 1px solid;
+                            align-items: center;
+                            gap: 0 0.5rem;
+                            width: 60%;
+
+                            .time {
+                                width: 50%;
+                                border: 1px solid #EEEEEF;
+                                border-radius: 8px;
+
+                                .base-input{
+                                    input{
+                                        text-align: center;
+                                        border: 0;
+                                        border-radius: 8px;
+                                        padding-top: 0.5rem;
+                                        padding-bottom: 0.5rem;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .on-checked,
+            .on-indeterminate{
+                .checkmark{
+                  background-color: #ED1B34;
+                  border-color: #ED1B34;
+                }
+                
+            }
+        }
+  
+ 
+
+    }
+  }
+  

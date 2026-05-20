@@ -66,9 +66,10 @@ import PostExamSurvey from "pages/PostExamSurvey";
 import LinkSurvey from "pages/LinkSurvey";
 import SettingProcess from "pages/SettingProcess/SettingProcess";
 import ReportLogin from "pages/ReportLogin/ReportLogin";
-import BusinessProcessList from "pages/AIImageAnalysis/BusinessProcessList/BusinessProcessList";
-import SettingBusinessProcess from "pages/AIImageAnalysis/SettingBusinessProcess/SettingBusinessProcess";
+import BusinessProcessList from "pages/BPM/BusinessProcessList/BusinessProcessList";
+import SettingBusinessProcess from "pages/BPM/SettingBusinessProcess/SettingBusinessProcess";
 import ConfigBPM from "pages/ConfigBPM";
+import BpmForm from "pages/BPM/BpmForm";
 import ProcessedObjectList from "pages/SettingProcess/partials/ProcessedObjectList";
 import SettingProjectList from "pages/SettingProject/SettingProjectList";
 import PatientCaseList from "pages/PatientCaseList/PatientCaseList";
@@ -80,9 +81,12 @@ import DetailPatientCase from "pages/PatientCaseList/DetailPatientCase/DetailPat
 import SettingPromotionList from "pages/SettingPromotion/SettingPromotionList";
 import CxmSurveyList from "pages/CxmSurvey/CxmSurveyList/CxmSurveyList";
 import ProcessSimulation from "pages/ProcessSimulation/ProcessSimulation";
-import BusinessProcessCreate from "pages/AIImageAnalysis/BusinessProcessCreate";
-import RunAIDiagnosis from "pages/RunAIDiagnosis";
-import UploadDocument from "pages/AIImageAnalysis/UploadDocument/UploadDocument";
+import BusinessProcessCreate from "pages/BPM/BusinessProcessCreate";
+import UploadDocument from "pages/BPM/UploadDocument/UploadDocument";
+import MiddleWorkList from "pages/MiddleWork/MiddleWorkList";
+import PendingWorkList from "pages/PendingWorkList/PendingWorkList";
+import CompletedWorkList from "pages/CompletedWorkList/CompletedWorkList";
+import PriorityWorkList from "pages/PriorityWorkList/PriorityWorkList";
 import ManageDefaultProcesses from "pages/ManageDefaultProcesses";
 import AppointmentReminder from "pages/AppointmentReminder";
 import BusinessRule from "pages/BusinessRule";
@@ -483,9 +487,9 @@ export const menu: IMenuItem[] = [
         ],
       },
       {
-        title: "bpm", // Quản lý quy trình
-        path: urls.sell,
-        icon: <Icon name="CashBook" />,
+        title: "bpmModule", // BPM
+        path: urls.manage_processes,
+        icon: <Icon name="ManageWork" />,
         code: "BPM",
         children: [
           {
@@ -523,6 +527,30 @@ export const menu: IMenuItem[] = [
             path: urls.manage_default_processes, //Danh sách quy trình > Tạo mới quy trình > Cấu hình quy trình (Nằm ở đây)
             code: "BPM",
             icon: <Icon name="CashBook" />,
+          },
+          {
+            title: "taskAssignment",
+            path: urls.task_assignment,
+            code: "WORK_MANAGEMENT",
+            icon: <Icon name="ManageWork" />,
+          },
+          {
+            title: "pendingTasks",
+            path: urls.pending_tasks,
+            code: "WORK_MANAGEMENT",
+            icon: <Icon name="ManageWork" />,
+          },
+          {
+            title: "completedTasks",
+            path: urls.completed_tasks,
+            code: "WORK_MANAGEMENT",
+            icon: <Icon name="ManageWork" />,
+          },
+          {
+            title: "taskPrioritization",
+            path: urls.task_prioritization,
+            code: "WORK_MANAGEMENT",
+            icon: <Icon name="ManageWork" />,
           },
           // {
           //   title: "manageDefaultProcesses",
@@ -1335,6 +1363,22 @@ export const routes: IRouter[] = [
     component: <ProcessSimulation />,
   },
   {
+    path: urls.task_assignment,
+    component: <MiddleWorkList />,
+  },
+  {
+    path: urls.pending_tasks,
+    component: <PendingWorkList />,
+  },
+  {
+    path: urls.completed_tasks,
+    component: <CompletedWorkList />,
+  },
+  {
+    path: urls.task_prioritization,
+    component: <PriorityWorkList />,
+  },
+  {
     path: urls.object_manage,
     component: <ProcessedObjectList />,
   },
@@ -1351,8 +1395,12 @@ export const routes: IRouter[] = [
     component: <BusinessProcessCreate />,
   },
   {
+    path: urls.bpm_form,
+    component: <BpmForm />,
+  },
+  {
     path: urls.user_task_list,
-    component: <RunAIDiagnosis />,
+    component: <MiddleWorkList />,
   },
 
   {

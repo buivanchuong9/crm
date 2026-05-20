@@ -20,6 +20,7 @@ export default function HeaderFilter(props: any) {
     disableDeleteAll,
     listSaveSearch,
   } = props;
+  const hasSaveSearch = Array.isArray(listSaveSearch) && listSaveSearch.length > 0;
 
   return (
     <div className="container-header-filter">
@@ -71,7 +72,7 @@ export default function HeaderFilter(props: any) {
           <SearchBox
             name={titleSearch || ""}
             params={params}
-            isSaveSearch={true}
+            isSaveSearch={hasSaveSearch}
             listSaveSearch={listSaveSearch}
             updateParams={(paramsNew) => setParams(paramsNew)}
           />

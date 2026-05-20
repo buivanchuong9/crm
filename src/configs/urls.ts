@@ -205,8 +205,8 @@ export const urlsApi = {
     exportMulti: prefixAdmin + "/customer/export/multi",
 
     //create call tnex-athena
-    loginAccountAthena: "https://api-athenaspear-prod.athenafs.io/api/v1/account/login",
-    createCall: "https://api-athenaspear-prod.athenafs.io/api/v1/call-history/create-call",
+    loginAccountAthena: "https://athena.mock.local/api/v1/account/login",
+    createCall: "https://athena.mock.local/api/v1/call-history/create-call",
 
     //lấy tài khoản tổng đài
     getAccountCall: prefixAdmin + "/employeeAgent/employeeId",
@@ -1477,17 +1477,17 @@ export const urlsApi = {
     deleteZaloChat: prefixAdmin + "/zaloChat/delete",
   },
   image: {
-    upload: "https://login.noron.vn/api/upload/image",
+    upload: "https://login.mock.local/api/upload/image",
     // upload: "https://mock.local/api/upload/file",
     uploadmock: prefixApi + "/upload/file",
-    uploadNoron: "https://login.noron.vn/api/upload/file",
+    uploadNoron: "https://login.mock.local/api/upload/file",
     // uploadmock: "http://localhost:8000/api/upload/file"
   },
   file: {
     upload: prefixApi + "/upload/file",
   },
   video: {
-    upload: "https://login.noron.vn/api/upload/file",
+    upload: "https://login.mock.local/api/upload/file",
   },
   analysis: {
     list: "https://cloud.mock.local/market/article/list",
@@ -3274,9 +3274,14 @@ export const urls = {
   // đoạn này dùng để test chức năng mới
   bpm: "/bpm",
   bpm_create: "/bpm/create/:id",
-  manage_processes: "/manage_processes",
-  manage_default_processes: "/manage_default_processes",
-  process_simulation: "/process_simulation",
+  bpm_form: "/bpm_form",
+  manage_processes: "/bpm/manage_processes",
+  manage_default_processes: "/bpm/manage_default_processes",
+  process_simulation: "/bpm/process_simulation",
+  task_assignment: "/bpm/task_assignment",
+  pending_tasks: "/bpm/pending_tasks",
+  completed_tasks: "/bpm/completed_tasks",
+  task_prioritization: "/bpm/task_prioritization",
   object_manage: "/object_manage",
   //cài đặt quy trình
   setting_business_process: "/setting_business_process/:id",

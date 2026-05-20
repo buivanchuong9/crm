@@ -19,7 +19,6 @@ import "./ProcessSimulation.scss";
 import BusinessProcessService from "services/BusinessProcessService";
 import moment from "moment";
 import Badge from "components/badge/badge";
-import { color } from "highcharts";
 import { LogErrorTableModal } from "./LogErrorTableModal";
 
 export default function ProcessSimulation(props: any) {
