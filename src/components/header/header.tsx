@@ -134,7 +134,7 @@ export default function Header(props: any) {
   };
 
   const logoutAccountAthena = async (accessTokenAthena) => {
-    const url = "https://api-athenaspear-prod.athenafs.io/api/v1/account/logout";
+    const url = "https://athena.mock.local/api/v1/account/logout";
     const headers = {
       "Content-Type": "application/json",
       "x-access-token": accessTokenAthena,

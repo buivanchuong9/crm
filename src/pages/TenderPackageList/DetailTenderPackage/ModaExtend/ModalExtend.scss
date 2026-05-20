@@ -1,0 +1,33 @@
+.modal-extend {
+    .form-extend {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .container_extend {
+        // border: 1px dashed var(--border-color);
+        padding: 1.6rem;
+        max-height: 50rem;
+        overflow: auto;
+        
+        .body-content{
+            // border: 1px solid;
+            border-radius: 8px;
+            // background-color: #F8F8F8;
+            // padding: 1rem 1.4rem 1rem 1.4rem;
+            .button-show-history{
+                color: #ED1B34;
+                font-weight: 500;
+                font-size: 14px;
+                cursor: pointer;
+                margin-bottom: 1rem;
+    
+                &:hover {
+                  text-decoration: underline;
+                }
+            }
+        }
+      }
+    }
+  }
+  

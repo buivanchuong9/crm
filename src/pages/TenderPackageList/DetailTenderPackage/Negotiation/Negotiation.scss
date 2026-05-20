@@ -1,0 +1,89 @@
+.negotiation-page {
+    border: 1px solid #EEEEEF;
+    padding: 1.2rem ;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+
+    .list-round {
+        // border: 1px solid;
+        display: flex;
+        gap: 0 1rem;
+        width: 70%;
+
+        .item-create-round {
+        //   padding: 5px 12px 5px 12px;
+        //   border-radius: 8px;
+        //   background-color: #EEEEEF;
+          cursor: pointer;
+
+          &:hover {
+              background-color: var(--extra-color-20);
+          }
+        }
+
+        .item-round {
+            padding: 5px 12px 5px 12px;
+            border-radius: 8px;
+            background-color: #EEEEEF;
+            cursor: pointer;
+  
+            &:hover {
+                background-color: var(--extra-color-20);
+            }
+
+            &.active {
+                background-color: #ff4d4f; 
+                color: #ffffff;
+            }
+        }
+    }
+
+    .button-add-negotiation{
+        // border: 1px solid;
+        padding: 5px 12px 5px 12px;
+        border-radius: 8px;
+        background-color: #F8F8F8;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0 1rem;
+        svg {
+            width: 1.3rem;
+            height: 1.3rem;
+        }
+        &:hover {
+            background-color: var(--extra-color-20);
+        }
+    }
+    .list-bidding {
+        margin-top: 2rem;
+    
+        .container-header{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .table-list-bidding{
+            // border: 1px solid;  
+            margin-top: 1.6rem;
+
+            .bidding-name {
+                cursor: pointer;
+                color: #ED1B34;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .custom-value {
+                cursor: pointer;
+                color: #ed1b34;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+        }
+    }
+
+}

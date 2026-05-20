@@ -1,0 +1,71 @@
+.fjs-form-field-progresstracker {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.fjs-progress-tracker-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.fjs-progress-tracker-progress-bar-fill {
+  height: 100%;
+  background-color: #1976d2;
+  transition: width 0.3s ease-in-out;
+}
+
+.fjs-progress-tracker-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.fjs-progress-tracker-timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  position: relative;
+}
+
+.fjs-progress-tracker-timeline-item.completed {
+  background-color: #e6f4ea;
+  border-color: #4caf50;
+}
+
+.fjs-progress-tracker-timeline-item input[type="checkbox"] {
+  margin: 0;
+}
+
+.fjs-progress-tracker-timeline-item:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  height: 12px;
+  width: 2px;
+  background-color: #ccc;
+  left: 10px;
+  top: -12px;
+  z-index: -1;
+}
+
+.fjs-form-field-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+}
+
+.fjs-form-field-description {
+  font-size: 12px;
+  color: #666;
+}

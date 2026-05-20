@@ -3,10 +3,22 @@ import { buildDetailResponse, buildListResponse } from "./utils";
 
 const employeeInfo = {
   id: 1,
-  name: "Mock User",
+  name: "Bùi Văn Chương",
   email: "buivanchuong991510@gmail.com",
+  phone: "0369062042",
   lstOrgApp: [{}],
 };
+
+const employeeList = [
+  employeeInfo,
+  {
+    id: 2,
+    name: "Đào văn dương",
+    email: "daovanduong.mock@gmail.com",
+    phone: "0369062042",
+    lstOrgApp: [{}],
+  },
+];
 
 export const employeeHandlers = [
   http.get(/\/adminapi\/employee\/info/i, () => {
@@ -25,6 +37,6 @@ export const employeeHandlers = [
     );
   }),
   http.get(/\/adminapi\/employee\/list/i, () => {
-    return HttpResponse.json(buildListResponse([employeeInfo]));
+    return HttpResponse.json(buildListResponse(employeeList));
   }),
 ];

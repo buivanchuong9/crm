@@ -1,0 +1,183 @@
+/* Form field wrapper */
+.fjs-form-field-treeSelector {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Control box */
+.treeSelector-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 32px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.treeSelector-control:hover {
+    border-color: #999;
+}
+
+/* Disabled state */
+.fjs-disabled .treeSelector-control {
+    background: #f5f5f5;
+    cursor: not-allowed;
+    color: #888;
+}
+
+/* Dropdown menu */
+.treeSelector-menu {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    max-height: 240px;
+    overflow-y: auto;
+    margin-top: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Tree nodes */
+.treeSelector-node {
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.treeSelector-node:hover {
+    background-color: #f5f5f5;
+}
+
+/* Indent for children */
+.treeSelector-children {
+    padding-left: 16px;
+}
+
+/* Selected node */
+.treeSelector-node--selected {
+    background-color: #e6f7ff;
+}
+
+/* Disabled node */
+.treeSelector-node--disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.tree-selector-wrapper {
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+/* Input area */
+.tree-selector-wrapper .rc-tree-select-selector {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.tree-selector-wrapper .rc-tree-select-selector:hover {
+    border-color: #40a9ff;
+}
+
+.tree-selector-wrapper .rc-tree-select-selection-item {
+    background-color: #f0f0f0;
+    border-radius: 2px;
+    padding: 2px 6px;
+    margin-right: 4px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tree-selector-wrapper .rc-tree-select-selection-item-remove {
+    margin-left: 4px;
+    cursor: pointer;
+    color: #999;
+}
+
+/* Dropdown tree */
+.tree-selector-wrapper .rc-tree-select-dropdown {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+/* Tree nodes */
+.tree-selector-wrapper .rc-tree-select-tree li {
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.tree-selector-wrapper .rc-tree-select-tree li.rc-tree-select-tree-node-selected {
+    background-color: #e6f7ff;
+}
+
+.tree-selector-wrapper .rc-tree-select-tree li:hover {
+    background-color: #f5f5f5;
+}
+
+/* Placeholder text */
+.tree-selector-wrapper .rc-tree-select-placeholder {
+    color: #bfbfbf;
+}
+
+.rc-tree-select {
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+}
+
+.rc-tree-select-selector {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    min-height: 40px;
+    line-height: 40px;
+    padding: 0 12px;
+}
+
+.rc-tree-select-selection-item {
+    background-color: #e6f7ff;
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin: 2px;
+}
+
+.rc-tree-select-selection-item-remove:hover {
+    color: red;
+}
+
+.rc-tree-select-dropdown {
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.rc-tree-select-tree li {
+    padding: 6px 12px;
+}
+
+.rc-tree-select-tree li.rc-tree-select-tree-node-selected {
+    background-color: #bae7ff;
+    color: #0050b3;
+}
+
+.rc-tree-select-tree li:hover {
+    background-color: #f0f0f0;
+}
+

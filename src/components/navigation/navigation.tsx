@@ -17,6 +17,11 @@ interface NavigationProps {
 const filterMenuItemList = (menuItemList: any) => {
   //Lọc menu ở đây
   const permissions = getPermissions();
+  const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
+
+  if (isMockEnabled) {
+    return menuItemList;
+  }
 
   return menuItemList
     .map((m) => {

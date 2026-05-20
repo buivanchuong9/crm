@@ -69,7 +69,7 @@ export const uploadDocumentFormData = (
             : type === "processData"
             ? `${importBPM}/bpmapi/businessProcess/importExcel`
             : ""
-          : "https://reborn.vn/api/upload/file"
+          : "https://mock.local/api/upload/file"
       }`
     );
     // xhr.setRequestHeader(
@@ -145,7 +145,7 @@ export const uploadDocumentDirectFormData = (data, onSuccess, onError, onProgres
     let formData = new FormData();
     formData.append("file", data);
     let xhr = new XMLHttpRequest();
-    xhr.open("POST", `https://cloud.reborn.vn/adminapi/customer/import`); //Không test ở local
+    xhr.open("POST", `https://cloud.mock.local/adminapi/customer/import`); //Không test ở local
     xhr.setRequestHeader("Authorization", getToken());
     xhr.setRequestHeader("Hostname", location.hostname || "");
 

@@ -12,7 +12,7 @@ export const commonHandlers = [
         buildDetailResponse({
           user: {
             id: 1,
-            name: "Mock User",
+            name: "Bùi Văn Chương",
             phone: "0369062042",
             avatar: "",
             gender: 0,
@@ -23,7 +23,7 @@ export const commonHandlers = [
     }
 
     if (pathname.includes("/adminapi/employee/init")) {
-      return HttpResponse.json(buildDetailResponse(1));
+      return HttpResponse.json(buildDetailResponse({ value: 1 }));
     }
 
     if (pathname.includes("/adminapi/permission/resource")) {
@@ -71,7 +71,7 @@ export const commonHandlers = [
       mockList = [
         {
           id: 1,
-          name: "Nguyễn Văn Anh",
+          name: "Bùi Văn Chương",
           phone: "0369062042",
           email: "buivanchuong991510@gmail.com",
           gender: 1,
@@ -83,9 +83,9 @@ export const commonHandlers = [
         },
         {
           id: 2,
-          name: "Trần Thị Bình",
+          name: "Đào văn dương",
           phone: "0369062042",
-          email: "buivanchuong991510@gmail.com",
+          email: "daovanduong.mock@gmail.com",
           gender: 0,
           customerCode: "KH002",
           custType: 0,
@@ -95,7 +95,7 @@ export const commonHandlers = [
         },
         {
           id: 3,
-          name: "Công ty Cổ phần Bùi Văn Chương",
+          name: "Bùi Văn Chương",
           phone: "0369062042",
           email: "buivanchuong991510@gmail.com",
           gender: 1,
@@ -107,9 +107,9 @@ export const commonHandlers = [
         },
         {
           id: 4,
-          name: "Lê Hoàng Nam",
+          name: "Đào văn dương",
           phone: "0369062042",
-          email: "buivanchuong991510@gmail.com",
+          email: "daovanduong.mock@gmail.com",
           gender: 1,
           customerCode: "KH004",
           custType: 0,
@@ -119,7 +119,7 @@ export const commonHandlers = [
         },
         {
           id: 5,
-          name: "Phạm Minh Thư",
+          name: "Bùi Văn Chương",
           phone: "0369062042",
           email: "buivanchuong991510@gmail.com",
           gender: 0,
@@ -135,24 +135,24 @@ export const commonHandlers = [
         {
           id: 1,
           productName: "Gói Chăm Sóc Da Toàn Diện",
-          customerName: "Nguyễn Văn Anh",
-          contactName: "Nguyễn Văn Anh",
+          customerName: "Bùi Văn Chương",
+          contactName: "Bùi Văn Chương",
           name: "Cơ hội Gói Chăm Sóc Da",
           status: 1
         },
         {
           id: 2,
           serviceName: "Liệu Trình Trẻ Hóa Công Nghệ Cao",
-          customerName: "Trần Thị Bình",
-          contactName: "Trần Thị Bình",
+          customerName: "Đào văn dương",
+          contactName: "Đào văn dương",
           name: "Cơ hội Liệu Trình Trẻ Hóa",
           status: 1
         },
         {
           id: 3,
           productName: "Sản phẩm Dưỡng Ẩm Đặc Trị Bùi Văn Chương",
-          customerName: "Lê Hoàng Nam",
-          contactName: "Lê Hoàng Nam",
+          customerName: "Bùi Văn Chương",
+          contactName: "Bùi Văn Chương",
           name: "Cơ hội Sản phẩm Dưỡng Ẩm",
           status: 2
         }
@@ -171,8 +171,8 @@ export const commonHandlers = [
       ];
     } else if (pathname.includes("order-request") || pathname.includes("order")) {
       mockList = [
-        { id: 1, code: "DH001", customerName: "Nguyễn Văn Anh", totalAmount: 4500000, status: 1, createdTime: "2026-05-19" },
-        { id: 2, code: "DH002", customerName: "Trần Thị Bình", totalAmount: 12000000, status: 2, createdTime: "2026-05-19" }
+        { id: 1, code: "DH001", customerName: "Bùi Văn Chương", totalAmount: 4500000, status: 1, createdTime: "2026-05-19" },
+        { id: 2, code: "DH002", customerName: "Đào văn dương", totalAmount: 12000000, status: 2, createdTime: "2026-05-19" }
       ];
     } else if (pathname.includes("cxmsurvey")) {
       mockList = [
@@ -193,13 +193,21 @@ export const commonHandlers = [
     } else if (pathname.includes("employee")) {
       mockList = [
         { id: 1, name: "Bùi Văn Chương", code: "NV001", email: "buivanchuong991510@gmail.com", phone: "0369062042" },
-        { id: 2, name: "Nguyễn Văn Đạt", code: "NV002", email: "buivanchuong991510@gmail.com", phone: "0369062042" },
-        { id: 3, name: "Lê Thị Hồng", code: "NV003", email: "buivanchuong991510@gmail.com", phone: "0369062042" }
+        { id: 2, name: "Đào văn dương", code: "NV002", email: "daovanduong.mock@gmail.com", phone: "0369062042" }
       ];
     } else if (pathname.includes("campaign")) {
       mockList = [
         { id: 1, name: "Chiến dịch Tết Ấm Áp 2026", status: 1, createdTime: "2026-01-01" },
         { id: 2, name: "Chiến dịch hè rực rỡ Bùi Văn Chương", status: 1, createdTime: "2026-05-01" }
+      ];
+    } else if (pathname.includes("/adminapi/common/list")) {
+      mockList = [
+        { id: 1, name: "Bảng thông tin bệnh nhân", code: "ART-PATIENT-INFO", status: 1, type: "grid" },
+        { id: 2, name: "Lưới chỉ định thuốc", code: "ART-PRESCRIPTION", status: 1, type: "grid" },
+        { id: 3, name: "Khu vực upload ảnh da", code: "ART-SKIN-PHOTO", status: 1, type: "upload" },
+        { id: 4, name: "Bình luận điều trường", code: "ART-COMMENT", status: 1, type: "comment" },
+        { id: 5, name: "Chữ ký bác sĩ", code: "ART-SIGNATURE", status: 1, type: "signature" },
+        { id: 6, name: "Lưới kết quả xét nghiệm", code: "ART-LAB-RESULT", status: 1, type: "grid" },
       ];
     }
 

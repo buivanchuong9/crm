@@ -1,0 +1,53 @@
+.modal-add-bidding {
+    .form-add-bidding {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .container-add-bidding {
+        // border: 1px dashed var(--border-color);
+        padding: 1.6rem;
+        // max-height: 52rem;
+        max-height: calc(100vh - 170px);
+        overflow: auto;
+
+        .body-add-bidding{
+            border: 1px solid #EEEEEF;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+
+            .info-bidding {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem 0;
+
+                .box-bid,
+                .box-taxcode,
+                .box-address,
+                .box-phone, 
+                .box-email{
+                //   margin-top: 1rem;
+                  // border: 1px solid;
+                  .title {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #939394;
+                  }
+                  
+                  .content {
+                    // border: 1px solid;
+                    display: flex;
+                    font-size: 16px;
+                    font-weight: 500;
+                    align-items: center;
+                    gap: 0 8px;
+                  }
+                }
+                
+              }
+        }
+     
+      }
+    }
+  }
+  

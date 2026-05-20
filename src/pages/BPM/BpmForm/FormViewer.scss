@@ -1,0 +1,25 @@
+@import "@bpmn-io/form-js-editor/dist/assets/form-js-editor.css";
+@import "@bpmn-io/form-js/dist/assets/form-js.css";
+
+.fjs-container .fjs-powered-by {
+    display: none !important;
+}
+
+.bpmn-form-viewer .search-container {
+    width: 200px; /* Chiều rộng giới hạn */
+    white-space: nowrap; /* Ngừng xuống dòng */
+    overflow: hidden; /* Ẩn văn bản tràn */
+    text-overflow: ellipsis; /* Hiển thị ba chấm "..." khi tên quá dài */
+  }
+.hidden {
+    display: none !important;
+}
+
+.collapsible-group {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.collapsing {
+    max-height: 0 !important;
+}

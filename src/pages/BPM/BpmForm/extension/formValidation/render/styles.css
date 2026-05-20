@@ -1,0 +1,135 @@
+.fjs-form-field-validation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.fjs-form-field-validation.fjs-has-errors {
+  border-color: #f44336;
+  background-color: #ffebee;
+}
+
+.fjs-validation-validation-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.fjs-validation-validation-bar-fill {
+  height: 100%;
+  background-color: #1976d2;
+  transition: width 0.3s ease-in-out;
+}
+
+.fjs-validation-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.fjs-validation-timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.fjs-validation-timeline-item.completed {
+  background-color: #e6f4ea;
+  border-color: #4caf50;
+}
+
+.fjs-validation-timeline-item.fjs-has-errors {
+  border-color: #f44336;
+  background-color: #ffebee;
+}
+
+.fjs-validation-timeline-item input[type="checkbox"] {
+  margin: 0;
+}
+
+.fjs-validation-timeline-item:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  height: 12px;
+  width: 2px;
+  background-color: #ccc;
+  left: 10px;
+  top: -12px;
+  z-index: -1;
+}
+
+.fjs-form-field-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+}
+
+.fjs-form-field-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.fjs-form-field-errors {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Styles cho FormErrorsDisplay */
+.fjs-form-errors-display-container {
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px solid #f44336;
+  border-radius: 4px;
+  background-color: #ffebee;
+}
+
+.fjs-form-errors-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fjs-form-error-item {
+  font-size: 12px;
+  color: #f44336;
+  margin-bottom: 8px;
+}
+
+.fjs-form-error-field {
+  font-weight: 500;
+}
+
+.fjs-form-no-errors {
+  font-size: 12px;
+  color: #4caf50;
+  padding: 8px;
+  background-color: #e6f4ea;
+  border-radius: 4px;
+}
+
+.fjs-form-field-formErrorsDisplay {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.fjs-form-field-formErrorsDisplay.fjs-has-errors {
+  border-color: #f44336;
+}

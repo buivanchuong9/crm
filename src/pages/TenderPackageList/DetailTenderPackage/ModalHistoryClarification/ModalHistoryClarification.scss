@@ -1,0 +1,43 @@
+.modal-history-clarification {
+    .form-history-clarification {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .list-history-clarification {
+        // border: 1px dashed var(--border-color);
+        padding: 1.6rem;
+        max-height: 50rem;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem 0;
+        
+        .item-history{
+            border: 1px solid #E8E8E9;
+            border-radius: 8px;
+            background-color: #F8F8F8;
+            padding: 1rem 1.4rem 1rem 1.4rem;
+
+            .header-title{
+                // border: 1px solid;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+            }
+
+            .container-content{
+                width: 100%;
+
+                .base-textarea textarea {
+                    background: #FFFFFF !important;
+                }
+            }
+            
+        
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,231 @@
+.modal-bid-open {
+    .form-bid-open {
+      .modal-body {
+        padding: 0;
+      }
+  
+      .container-bid-open {
+        // border: 1px dashed var(--border-color);
+        padding: 1.6rem;
+        // max-height: 52rem;
+        max-height: calc(100vh - 170px);
+        overflow: auto;
+
+        .list-round {
+          // border: 1px solid;
+          display: flex;
+          gap: 0 1rem;
+
+          .item-round {
+            padding: 5px 12px 5px 12px;
+            border-radius: 8px;
+            background-color: #EEEEEF;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--extra-color-20);
+            }
+          }
+        }
+
+        .technical-profile {
+          // border: 1px solid;
+          margin-top: 1rem;
+
+          .table-list-employees-technical{
+            // border: 1px solid;
+            margin-top: 1rem;
+            background-color: #F8F8F8;
+            border-radius: 8px;
+            padding: 1.6rem;
+
+            .table-header{
+              display: flex;
+              gap: 0 1rem;
+              padding: 0 0 1rem 0;
+              border-bottom: 1px solid #EEEEEF;
+
+              .box-stt{
+                width: 8%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .box-employee{
+                flex: 1;
+              }
+            }
+
+            .table-body{
+              // border: 1px solid;
+              .item-employee{
+                display: flex;
+                gap: 0 1rem;
+                padding: 1rem 0 1rem 0;
+                border-bottom: 1px solid #EEEEEF;
+
+                .box-stt{
+                  width: 8%;
+                  // border: 1px solid;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+  
+                .box-employee{
+                  flex: 1;
+                  display: flex;
+                  // border: 1px solid;
+                  gap: 0 2rem;
+                  .select-employee{
+                    width: 90%;
+                  }
+
+                  .button-delete {
+                    width: 5%;
+                    // border: 1px solid;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    svg {
+                      height: 2rem;
+                      width: 2rem;
+                    }
+                  }
+                }
+              }
+            }
+
+            .table-footer{
+              // border: 1px solid;
+              margin-top: 1rem;
+              display: flex;
+
+              .button-add-employee{
+                border: 1px solid #EEEEEF;
+                border-radius: 8px;
+                padding: 0.4rem  1rem 0.4rem 1rem;
+                cursor: pointer;
+                display: flex;
+                gap: 0 0.5rem;
+                align-items: center;
+
+                svg {
+                  path {
+                    stroke: #343330
+                  }
+                }
+                &:hover {
+                  background-color: #FFFFFF;
+                }
+              }
+            }
+
+          }
+        }
+
+        .finance-profile {
+          // border: 1px solid;
+          margin-top: 1rem;
+
+          .table-list-employees-finance{
+            // border: 1px solid;
+            margin-top: 1rem;
+            background-color: #F8F8F8;
+            border-radius: 8px;
+            padding: 1.6rem;
+
+            .table-header{
+              display: flex;
+              gap: 0 1rem;
+              padding: 0 0 1rem 0;
+              border-bottom: 1px solid #EEEEEF;
+
+              .box-stt{
+                width: 8%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
+              .box-employee{
+                flex: 1;
+              }
+            }
+
+            .table-body{
+              // border: 1px solid;
+              .item-employee{
+                display: flex;
+                gap: 0 1rem;
+                padding: 1rem 0 1rem 0;
+                border-bottom: 1px solid #EEEEEF;
+
+                .box-stt{
+                  width: 8%;
+                  // border: 1px solid;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+  
+                .box-employee{
+                  flex: 1;
+                  display: flex;
+                  // border: 1px solid;
+                  gap: 0 2rem;
+                  .select-employee{
+                    width: 90%;
+                  }
+
+                  .button-delete {
+                    width: 5%;
+                    // border: 1px solid;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    svg {
+                      height: 2rem;
+                      width: 2rem;
+                    }
+                  }
+                }
+              }
+            }
+
+            .table-footer{
+              // border: 1px solid;
+              margin-top: 1rem;
+              display: flex;
+
+              .button-add-employee{
+                border: 1px solid #EEEEEF;
+                border-radius: 8px;
+                padding: 0.4rem  1rem 0.4rem 1rem;
+                cursor: pointer;
+                display: flex;
+                gap: 0 0.5rem;
+                align-items: center;
+
+                svg {
+                  path {
+                    stroke: #343330
+                  }
+                }
+                &:hover {
+                  background-color: #FFFFFF;
+                }
+              }
+            }
+
+          }
+        }
+        
+     
+      }
+    }
+  }
+  

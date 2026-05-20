@@ -12,7 +12,7 @@ export const replaceImageURL = (data, type, size) => {
     if (data) {
         let replacedData = data.replace(
             /(http|https):\/\/(10\.240\.152\.161:8080|dev8080\.api\.noron\.vn)/g,
-            'https://cdn.noron.vn'
+            'https://cdn.mock.local'
         );
         const matches = replacedData.match(
             /https?:\/\/cdn.noron.vn\/(.+?)\.(jpg|jpeg|png)\/*(\?w=[0-9]+)?/g

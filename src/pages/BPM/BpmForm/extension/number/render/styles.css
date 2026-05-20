@@ -1,0 +1,14 @@
+.number-group {  
+  flex-direction: row;
+  width: 100%;
+  height: var(--form-field-height);  
+}
+
+.number-group input {
+  width: 100%;
+  height: var(--form-field-height);
+  margin: 4px 0;
+  border: var(--border-definition);
+  border-radius: 3px;
+  color: var(--text-primary-color);
+}

@@ -18,6 +18,7 @@ import ChatFeedback from "./ChatFeedback";
 import EmployeeService from "services/EmployeeService";
 import Chatbot from "./ChatBot";
 import { getDomain } from "reborn-util";
+import ErrorBoundary from "components/ErrorBoundary";
 // import { SystemNotification } from "components/systemNotification/systemNotification";
 
 export default function Layout() {
@@ -62,7 +63,7 @@ export default function Layout() {
     const responseDataEmployee = await EmployeeService.info();
 
     if (response.code === 0 && responseDataEmployee.code === 0) {
-      const dataOption = response.result.items;
+      const dataOption = response.result?.items || response.result || [];
       const checkBranch = localStorage.getItem("valueBranch") || null;
       const branchHeadquarter = dataOption.filter((el) => el.headquarter === 1);
 
@@ -109,7 +110,7 @@ export default function Layout() {
     const response = await BeautyBranchService.list(param);
 
     if (response.code === 0) {
-      const result = response.result.items;
+      const result = response.result?.items || response.result || [];
       const listBranch = result.map((item) => {
         return {
           value: item.id,
@@ -186,7 +187,7 @@ export default function Layout() {
     const response = await BeautyBranchService.list(param);
 
     if (response.code === 0) {
-      const dataOption = response.result.items;
+      const dataOption = response.result?.items || response.result || [];
 
       return {
         options: [
@@ -199,7 +200,7 @@ export default function Layout() {
               })
             : []),
         ],
-        hasMore: response.result.loadMoreAble,
+        hasMore: response.result?.loadMoreAble || false,
         additional: {
           page: page + 1,
         },
@@ -322,7 +323,9 @@ export default function Layout() {
               <div className="main-content__wrapper">
                 <Routes>
                   {routes.map((r, index) => {
-                    return <Route key={index} path={r.path} element={r.component} />;
+                    return (
+                      <Route key={index} path={r.path} element={<ErrorBoundary key={r.path}>{r.component}</ErrorBoundary>} />
+                    );
                     // if (!r.permission || permissions.filter((per) => r.permission.includes(per)).length > 0) {
                     //   return <Route key={index} path={r.path} element={r.component} />;
                     // } else {

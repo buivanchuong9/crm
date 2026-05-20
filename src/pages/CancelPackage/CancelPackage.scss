@@ -1,0 +1,106 @@
+.page-cancel-package {
+    .flex-column {
+      position: relative;
+      .container-button-right {
+        position: absolute;
+        right: 190px;
+        display: flex;
+        gap: 0 0.8rem;
+        align-items: center;
+        // border: 1px solid;
+        .search-container {
+          padding: 0;
+          width: 30rem;
+        }
+  
+        .button_export {
+          border: 1px solid #eeeeef;
+          display: flex;
+          padding: 8px 12px 8px 12px;
+          align-items: center;
+          border-radius: 8px;
+          background-color: #ffffff;
+          cursor: pointer;
+          .label {
+            font-size: 16px;
+            font-weight: 500;
+            margin-left: 5px;
+          }
+          &:hover {
+            background-color: #eeeeef;
+          }
+        }
+  
+        .button_cancel_filter {
+          // border: 1px solid;
+          border-radius: 30px;
+          padding: 0.2rem 0.8rem 0.2rem 0.8rem;
+          display: flex;
+          align-items: center;
+          gap: 0 0.6rem;
+          background-color: #e8e8e9;
+  
+          svg {
+            width: 2rem;
+            height: 2rem;
+            cursor: pointer;
+            &:hover {
+              fill: #b7b8b9;
+            }
+          }
+        }
+  
+        .container_filter {
+          .button_filter {
+            border: 1px solid #eeeeef;
+            display: flex;
+            padding: 8px 12px 8px 12px;
+            align-items: center;
+            border-radius: 5px;
+            background-color: #ffffff;
+            cursor: pointer;
+            .label {
+              font-size: 16px;
+              font-weight: 500;
+              margin-left: 5px;
+            }
+            &:hover {
+              background-color: #eeeeef;
+            }
+          }
+  
+          .button_filter_active {
+            border: 1px solid #eeeeef;
+            display: flex;
+            padding: 8px 12px 8px 12px;
+            align-items: center;
+            border-radius: 5px;
+            background-color: #ed1b34;
+            cursor: pointer;
+            .label {
+              font-size: 16px;
+              font-weight: 500;
+              margin-left: 5px;
+              color: #ffffff;
+            }
+            svg {
+              // fill: #FFFFFF;
+              path {
+                stroke: #ffffff;
+              }
+            }
+            // &:hover {
+            //   background-color: #EEEEEF;
+            // }
+          }
+        }
+      }
+    }
+    .title-name {
+      cursor: pointer;
+      &:hover {
+        color: #ed1b34;
+      }
+    }
+  }
+  

@@ -1,0 +1,251 @@
+const now = "2026-05-20T08:30:00Z";
+const day = (offset: number) => `2026-05-${String(10 + offset).padStart(2, "0")}T10:00:00Z`;
+
+export const mockEmployees = [
+  { id: 1, name: "Bùi Văn Chương" },
+  { id: 2, name: "Đào văn dương" },
+];
+
+export const mockPatients = [
+  "Bùi Văn Chương",
+  "Đào văn dương",
+];
+
+export const mockProcesses = [
+  { id: 1, code: "QT-KCB-001", name: "Quy trình tiếp nhận - khám ngoại trú", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 2, code: "QT-KCB-002", name: "Quy trình điều trị nội trú", employeeName: "Đào văn dương", status: 1, opType: "EX", createdTime: now },
+  { id: 3, code: "QT-KCB-003", name: "Quy trình xét nghiệm & chẩn đoán", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 4, code: "QT-KCB-004", name: "Quy trình phẫu thuật thẩm mỹ", employeeName: "Đào văn dương", status: 0, opType: "EX", createdTime: now },
+  { id: 5, code: "QT-KCB-005", name: "Quy trình chăm sóc sau điều trị", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 6, code: "QT-KCB-006", name: "Quy trình phân tích hình ảnh AI", employeeName: "Đào văn dương", status: 1, opType: "EX", createdTime: now },
+  { id: 7, code: "QT-KCB-007", name: "Quy trình xuất viện & tái khám", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 8, code: "QT-KCB-008", name: "Quy trình cấp cứu nhanh", employeeName: "Đào văn dương", status: 0, opType: "EX", createdTime: now },
+];
+
+const diagnoses = [
+  "Viêm da cơ địa",
+  "Mụn viêm độ II",
+  "Nám sâu vùng má",
+  "Dị ứng thuốc",
+  "Bỏng độ I",
+  "Thâm nám sau điều trị",
+  "Seo lõm sau mụn",
+  "Viêm nang lông",
+];
+
+export const mockProcessedObjects = mockPatients.map((patient, index) => ({
+  id: index + 1,
+  name: `Hồ sơ ${patient} - ${diagnoses[index % diagnoses.length]}`,
+  code: `HS-${String(index + 1).padStart(4, "0")}`,
+  employeeId: mockEmployees[index % mockEmployees.length].id,
+  employeeName: mockEmployees[index % mockEmployees.length].name,
+  status: index % 5,
+  processId: (index % mockProcesses.length) + 1,
+  processName: mockProcesses[index % mockProcesses.length].name,
+  createdTime: day(index % 8),
+  startTime: day(index % 8),
+  endTime: index % 3 === 2 ? day(index % 8 + 3) : "",
+  sheetId: 1,
+}));
+
+const workTitles = [
+  "Tiếp nhận & đo sinh hiệu",
+  "Khám lâm sàng da liễu",
+  "Chỉ định xét nghiệm máu",
+  "Phân tích ảnh AI vùng mặt",
+  "Tư vấn phác đồ điều trị",
+  "Thực hiện laser fractional",
+  "Theo dõi sau liệu trình 7 ngày",
+  "Tái khám định kỳ 2 tuần",
+  "Cập nhật hồ sơ điều dưỡng",
+  "Phê duyệt xuất viện",
+];
+
+const makeWorkOrder = (id: number, overrides: Record<string, any> = {}) => {
+  const process = mockProcesses[(id - 1) % mockProcesses.length];
+  const employee = mockEmployees[(id - 1) % mockEmployees.length];
+  const patient = mockPatients[(id - 1) % mockPatients.length];
+  const status = overrides.status ?? (id % 6 === 0 ? 2 : id % 5 === 0 ? 4 : id % 4 === 0 ? 1 : 0);
+  const priorityLevel = overrides.priorityLevel ?? (id % 7 === 0 ? 4 : id % 3 === 0 ? 3 : id % 2);
+
+  return {
+    id,
+    name: `${workTitles[(id - 1) % workTitles.length]} - ${patient}`,
+    content: `Nhiệm vụ xử lý ca bệnh #${id} theo ${process.name}`,
+    startTime: day((id - 1) % 10),
+    endTime: status === 2 ? day((id - 1) % 10 + 2) : "",
+    workLoad: 4 + (id % 4),
+    workLoadUnit: "giờ",
+    wteId: 1,
+    docLink: "",
+    projectId: process.id,
+    projectName: process.name,
+    opportunityId: 0,
+    managerId: 1,
+    managerName: "Bùi Văn Chương",
+    employeeId: employee.id,
+    employeeName: employee.name,
+    participants: "",
+    customers: patient,
+    status,
+    percent: status === 2 ? 100 : 15 + (id % 70),
+    priorityLevel,
+    nodeName: workTitles[(id - 1) % workTitles.length],
+    iteration: 1,
+    processId: process.id,
+    potId: `HS-${String((id % 12) + 1).padStart(4, "0")}`,
+    ...overrides,
+  };
+};
+
+export const mockWorkOrders = Array.from({ length: 36 }, (_, i) => makeWorkOrder(i + 1));
+
+export const mockBpmTriggers = Array.from({ length: 24 }, (_, i) => {
+  const process = mockProcesses[i % mockProcesses.length];
+  const status = i % 6;
+  return {
+    id: i + 1,
+    processId: process.id,
+    processName: process.name,
+    fromNodeId: 1000 + (i % 4),
+    toNodeId: 1001 + (i % 4),
+    potId: `HS-${String((i % 12) + 1).padStart(4, "0")}`,
+    createdTime: day(i % 10),
+    status,
+    messageError: status === 5 ? "Lỗi kết nối dịch vụ AI phân tích ảnh" : "",
+  };
+});
+
+export const mockWorkflowTasks = Array.from({ length: 18 }, (_, i) => {
+  const process = mockProcesses[i % mockProcesses.length];
+  const patient = mockPatients[i % mockPatients.length];
+  return {
+    id: 101 + i,
+    potId: `HS-${String((i % 12) + 1).padStart(4, "0")}`,
+    nodeId: 11 + (i % 5),
+    nodeName: workTitles[i % workTitles.length],
+    processId: process.id,
+    processName: process.name,
+    customerName: patient,
+    employeeName: mockEmployees[i % mockEmployees.length].name,
+    departmentName: "Khoa Da liễu",
+    projectName: diagnoses[i % diagnoses.length],
+    bidPackpage: `Bước ${(i % 4) + 1}`,
+    status: i % 3,
+    receivedTime: day(i % 8),
+    planResponseDay: 0,
+    planResponseHour: 2 + (i % 4),
+    planResponseMinute: 0,
+    planExecutionDay: 1,
+    planExecutionHour: 0,
+    planExecutionMinute: 0,
+  };
+});
+
+export const mockBusinessRules = [
+  { id: 1, name: "Luật phân loại mức ưu tiên ca", code: "RULE-PRIORITY", linkedCount: 2 },
+  { id: 2, name: "Luật chỉ định xét nghiệm bổ sung", code: "RULE-LAB", linkedCount: 1 },
+  { id: 3, name: "Luật chuyển chuyên khoa", code: "RULE-REFERRAL", linkedCount: 0 },
+  { id: 4, name: "Luật cảnh báo dị ứng thuốc", code: "RULE-ALLERGY", linkedCount: 3 },
+  { id: 5, name: "Luật tái khám định kỳ", code: "RULE-FOLLOWUP", linkedCount: 1 },
+  { id: 6, name: "Luật phê duyệt phác đồ điều trị", code: "RULE-APPROVE", linkedCount: 2 },
+];
+
+export const mockDecisionInputs: Record<number, any[]> = {
+  1: [
+    { id: 1, businessRuleId: 1, code: "age", name: "Tuổi bệnh nhân", dataType: "Number", position: 1 },
+    { id: 2, businessRuleId: 1, code: "severity", name: "Mức độ nặng", dataType: "String", position: 2 },
+  ],
+  2: [
+    { id: 3, businessRuleId: 2, code: "symptomDays", name: "Số ngày có triệu chứng", dataType: "Number", position: 1 },
+    { id: 4, businessRuleId: 2, code: "hasFever", name: "Có sốt", dataType: "Boolean", position: 2 },
+  ],
+  4: [
+    { id: 5, businessRuleId: 4, code: "allergen", name: "Dị nguyên", dataType: "String", position: 1 },
+  ],
+};
+
+export const mockDecisionOutputs: Record<number, any[]> = {
+  1: [{ id: 1, businessRuleId: 1, code: "priorityLevel", name: "Mức ưu tiên", dataType: "Number", position: 1 }],
+  2: [{ id: 2, businessRuleId: 2, code: "labPanel", name: "Gói xét nghiệm", dataType: "String", position: 1 }],
+  4: [{ id: 3, businessRuleId: 4, code: "blockDrug", name: "Chặn thuốc", dataType: "Boolean", position: 1 }],
+};
+
+export const mockBusinessRuleItems: Record<number, any[]> = {
+  1: [
+    { id: 1, businessRuleId: 1, inputs: JSON.stringify({ age: 65, severity: "cao" }), outputs: JSON.stringify({ priorityLevel: 4 }) },
+    { id: 2, businessRuleId: 1, inputs: JSON.stringify({ age: 30, severity: "thấp" }), outputs: JSON.stringify({ priorityLevel: 2 }) },
+    { id: 3, businessRuleId: 1, inputs: JSON.stringify({ age: 45, severity: "trung bình" }), outputs: JSON.stringify({ priorityLevel: 3 }) },
+  ],
+  2: [
+    { id: 4, businessRuleId: 2, inputs: JSON.stringify({ symptomDays: 7, hasFever: true }), outputs: JSON.stringify({ labPanel: "CBC + CRP" }) },
+    { id: 5, businessRuleId: 2, inputs: JSON.stringify({ symptomDays: 2, hasFever: false }), outputs: JSON.stringify({ labPanel: "CBC" }) },
+  ],
+  4: [
+    { id: 6, businessRuleId: 4, inputs: JSON.stringify({ allergen: "penicillin" }), outputs: JSON.stringify({ blockDrug: true }) },
+  ],
+};
+
+export const mockProcessPermissions = [
+  { id: 1, name: "Mặc định tiếp nhận ngoại trú", uri: "/treatmentHistory/", processCode: "QT-KCB-001", processName: "Quy trình tiếp nhận - khám ngoại trú" },
+  { id: 2, name: "Mặc định điều trị nội trú", uri: "/ticket/", processCode: "QT-KCB-002", processName: "Quy trình điều trị nội trú" },
+  { id: 3, name: "Mặc định tái khám", uri: "/treatmentHistory/", processCode: "QT-KCB-007", processName: "Quy trình xuất viện & tái khám" },
+  { id: 4, name: "Mặc định bảo hành điều trị", uri: "/warranty/", processCode: "QT-KCB-005", processName: "Quy trình chăm sóc sau điều trị" },
+  { id: 5, name: "Mặc định hỗ trợ sau khám", uri: "/ticket/", processCode: "QT-KCB-005", processName: "Quy trình chăm sóc sau điều trị" },
+  { id: 6, name: "Mặc định xử lý AI", uri: "/treatmentHistory/", processCode: "QT-KCB-006", processName: "Quy trình phân tích hình ảnh AI" },
+];
+
+export const mockObjectGroups = [
+  { id: 1, name: "Hồ sơ bệnh nhân ngoại trú", code: "PATIENT_OUTPATIENT", status: 1, description: "Đối tượng hồ sơ khám ngoại trú" },
+  { id: 2, name: "Hồ sơ điều trị nội trú", code: "PATIENT_INPATIENT", status: 1, description: "Đối tượng hồ sơ nội trú" },
+  { id: 3, name: "Hồ sơ phẫu thuật", code: "PATIENT_SURGERY", status: 1, description: "Đối tượng hồ sơ phẫu thuật" },
+  { id: 4, name: "Hồ sơ xét nghiệm", code: "PATIENT_LAB", status: 1, description: "Đối tượng chỉ định xét nghiệm" },
+];
+
+export const mockObjectAttributes = [
+  { id: 1, name: "Mức độ ưu tiên", fieldName: "priority", dataType: "select", status: 1, groupId: 1 },
+  { id: 2, name: "Nhóm máu", fieldName: "bloodType", dataType: "select", status: 1, groupId: 1 },
+  { id: 3, name: "Tiền sử dị ứng", fieldName: "allergyHistory", dataType: "text", status: 1, groupId: 1 },
+  { id: 4, name: "Chẩn đoán chính", fieldName: "mainDiagnosis", dataType: "text", status: 1, groupId: 2 },
+  { id: 5, name: "Ngày nhập viện", fieldName: "admissionDate", dataType: "date", status: 1, groupId: 2 },
+];
+
+export const mockFormCategories = [
+  { id: 1, name: "Phiếu tiếp nhận bệnh nhân", code: "FORM-RECEPTION", status: 1, groupId: 1, groupName: "Hồ sơ bệnh nhân ngoại trú" },
+  { id: 2, name: "Phiếu khám da liễu", code: "FORM-DERMA-EXAM", status: 1, groupId: 1, groupName: "Hồ sơ bệnh nhân ngoại trú" },
+  { id: 3, name: "Phiếu chỉ định xét nghiệm", code: "FORM-LAB-ORDER", status: 1, groupId: 4, groupName: "Hồ sơ xét nghiệm" },
+  { id: 4, name: "Phiếu phẫu thuật thẩm mỹ", code: "FORM-SURGERY", status: 1, groupId: 3, groupName: "Hồ sơ phẫu thuật" },
+  { id: 5, name: "Phiếu tái khám", code: "FORM-FOLLOWUP", status: 1, groupId: 1, groupName: "Hồ sơ bệnh nhân ngoại trú" },
+  { id: 6, name: "Phiếu chăm sóc sau điều trị", code: "FORM-AFTERCARE", status: 1, groupId: 2, groupName: "Hồ sơ điều trị nội trú" },
+];
+
+export const mockArtifacts = [
+  { id: 1, name: "Bảng thông tin bệnh nhân", code: "ART-PATIENT-INFO", status: 1, type: "grid" },
+  { id: 2, name: "Lưới chỉ định thuốc", code: "ART-PRESCRIPTION", status: 1, type: "grid" },
+  { id: 3, name: "Khu vực upload ảnh da", code: "ART-SKIN-PHOTO", status: 1, type: "upload" },
+  { id: 4, name: "Bình luận điều trường", code: "ART-COMMENT", status: 1, type: "comment" },
+  { id: 5, name: "Chữ ký bác sĩ", code: "ART-SIGNATURE", status: 1, type: "signature" },
+];
+
+export const mockBpmForms = mockFormCategories.map((form) => ({
+  ...form,
+  schema: JSON.stringify({
+    type: "default",
+    components: [
+      { key: "patientName", label: "Họ tên bệnh nhân", type: "textfield" },
+      { key: "diagnosis", label: "Chẩn đoán", type: "textarea" },
+    ],
+  }),
+}));
+
+export const mockWorkflowSteps = mockProcesses.flatMap((process, pIndex) =>
+  ["Tiếp nhận", "Khám lâm sàng", "Cận lâm sàng", "Kết luận"].map((step, sIndex) => ({
+    id: pIndex * 10 + sIndex + 1,
+    processId: process.id,
+    stepName: step,
+    stepNumber: sIndex + 1,
+    name: step,
+  }))
+);
+
+export { now };
