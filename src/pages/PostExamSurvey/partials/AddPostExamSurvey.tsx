@@ -6,7 +6,7 @@ import { ModalFooter } from "components/modal/modal";
 import Icon from "components/icon";
 import Input from "components/input/input";
 import CheckboxList from "components/checkbox/checkboxList";
-import RebornEditor from "components/editor/reborn";
+import SlateEditor from "components/editor/slateEditor";
 import DatePickerCustom from "components/datepickerCustom/datepickerCustom";
 import Button from "components/button/button";
 import { IActionModal } from "model/OtherModel";
@@ -481,7 +481,7 @@ export default function AddPostExamSurvey(props: IAddPostExamSurveyProps) {
           </div>
           {/* Nội dung khảo sát */}
           <div className="form-group">
-            <RebornEditor
+            <SlateEditor
               name="content"
               label={"Nội dung khảo sát"}
               required={true}

@@ -9,7 +9,7 @@ import BusinessProcessService from "services/BusinessProcessService";
 import { handDownloadFileOrigin, showToast } from "utils/common";
 import Button from "components/button/button";
 import { useNavigate } from "react-router-dom";
-import FormViewerComponent from "pages/AIImageAnalysis/BpmForm/FormViewer";
+import FormViewerComponent from "pages/BPM/BpmForm/FormViewer";
 import OnHoldModal from "../HandleTask/OnHoldModal/OnHoldModal";
 import OnRejectModal from "../HandleTask/OnRejectModal/OnRejectModal";
 import { saveAs } from "file-saver";

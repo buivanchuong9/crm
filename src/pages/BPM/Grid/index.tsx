@@ -217,7 +217,7 @@ export default function GridForm(props: any) {
   //   //       {
   //   //         id: 1,
   //   //         avatar: ImageThirdGender,
-  //   //         name: "Hoàng Văn Lợi",
+  //   //         name: "Bùi Văn Chương",
   //   //         time: "21:01 Hôm qua",
   //   //         content: "Comment đầu",
   //   //         isEdit: false,
@@ -225,7 +225,7 @@ export default function GridForm(props: any) {
   //   //       {
   //   //         id: 2,
   //   //         avatar: ImageThirdGender,
-  //   //         name: "Hoàng Văn Lợi",
+  //   //         name: "Bùi Văn Chương",
   //   //         time: "21:01 Hôm qua",
   //   //         content: "Comment thứ 2",
   //   //         isEdit: false,

@@ -20,6 +20,8 @@ import BusinessProcessService from "services/BusinessProcessService";
 import moment from "moment";
 import Badge from "components/badge/badge";
 import { LogErrorTableModal } from "./LogErrorTableModal";
+import Modal, { ModalBody, ModalHeader } from "components/modal/modal";
+import ViewProcess from "components/kanbanBpm/HistoryKanbanBpm/ViewProcess";
 
 export default function ProcessSimulation(props: any) {
   document.title = "Mô phỏng quy trình";
@@ -69,6 +71,8 @@ export default function ProcessSimulation(props: any) {
 
   const abortController = new AbortController();
 
+  const [showViewer, setShowViewer] = useState<boolean>(false);
+  const [viewerDataObject, setViewerDataObject] = useState<any>(null);
   const getListProcess = async (paramsSearch: any) => {
     setIsLoading(true);
 
@@ -198,6 +202,14 @@ export default function ProcessSimulation(props: any) {
       // permissions["CUSTOMER_SOURCE_UPDATE"] == 1 && {
       //   title: "Sửa",
       //   icon: <Icon name="Pencil" />,
+      {
+        title: "Xem luồng",
+        icon: <Icon name="Eye" />,
+        callback: () => {
+          setViewerDataObject({ processId: item.processId, potId: item.potId });
+          setShowViewer(true);
+        },
+      },
       //   callback: () => {
       //     setDataCustomerSource(item);
       //     setShowModalAdd(true);
@@ -359,6 +371,12 @@ export default function ProcessSimulation(props: any) {
       </div>
 
       <LogErrorTableModal isOpen={isOpen} setIsOpen={setIsOpen} processDetail={processDetail} />
+      <Modal isOpen={showViewer} toggle={() => setShowViewer(false)} isCentered={true} className="modal-view-process">
+        <ModalHeader title={`Xem luồng quy trình ${viewerDataObject?.processId ?? ""}`} toggle={() => setShowViewer(false)} />
+        <ModalBody>
+          {showViewer && <ViewProcess dataObject={viewerDataObject} />}
+        </ModalBody>
+      </Modal>
     </Fragment>
   );
 }

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import moment from "moment";
 import { IUser } from "model/user/UserResponseModel";
-import { getDomain } from "reborn-util";
 import { getRootDomain } from "utils/common";
 
 import "./index.scss";
@@ -19,9 +18,15 @@ export default function Index() {
   const isLoginMode = useMemo(() => mode === "login", [mode]);
 
   const handleMockAuth = (mode: "login" | "register") => {
-    const sourceDomain = getDomain(decodeURIComponent(document.location.href));
-    const rootDomain = getRootDomain(sourceDomain);
+    const returnUrl = new URLSearchParams(window.location.search).get("returnUrl");
+    const hostname = window.location.hostname;
+    const rootDomain = getRootDomain(hostname);
     const dateExpires = moment().add(7, "days").toDate();
+    const cookieOptions = {
+      path: "/",
+      expires: dateExpires,
+      ...(!["localhost", "127.0.0.1"].includes(hostname) && { domain: rootDomain }),
+    };
     const mockUser = {
       id: 1,
       name: "Mock User",
@@ -31,12 +36,12 @@ export default function Index() {
       role: "mock",
     } as IUser;
 
-    setCookie("token", "mock-token", { path: "/", domain: rootDomain, expires: dateExpires });
-    setCookie("user", JSON.stringify(mockUser), { path: "/", domain: rootDomain, expires: dateExpires });
+    setCookie("token", "mock-token", cookieOptions);
+    setCookie("user", JSON.stringify(mockUser), cookieOptions);
     localStorage.setItem("permissions", "{}");
     localStorage.setItem("user.root", "1");
     localStorage.setItem("auth.mode", mode);
-    navigate("/customer");
+    navigate(returnUrl || "/customer");
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

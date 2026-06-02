@@ -1,4 +1,4 @@
-import FormViewerComponent from 'pages/AIImageAnalysis/BpmForm/FormViewer';
+import FormViewerComponent from 'pages/BPM/BpmForm/FormViewer';
 import React, { useEffect, useRef, useState } from 'react';
 
 const defaultSchema = {

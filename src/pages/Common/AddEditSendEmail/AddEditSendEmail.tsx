@@ -26,7 +26,7 @@ import moment from "moment";
 import NummericInput from "components/input/numericInput";
 import Checkbox from "components/checkbox/checkbox";
 import CustomScrollbar from "components/customScrollbar";
-import RebornEditor from "components/editor/reborn";
+import SlateEditor from "components/editor/slateEditor";
 import SelectCustom from "components/selectCustom/selectCustom";
 import Dialog, { IContentDialog } from "components/dialog/dialog";
 import { ModalFooter } from "components/modal/modal";
@@ -1649,7 +1649,7 @@ export default function AddEditSendEmail(props: ISendEmail) {
                   </div>
                   {/* Nội dung email gửi đi */}
                   <div className="form-group">
-                    <RebornEditor
+                    <SlateEditor
                       name="content"
                       fill={true}
                       initialValue={contentEmail ? contentEmail : ""}

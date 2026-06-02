@@ -23,7 +23,7 @@ import "@bpmn-io/form-js/dist/assets/form-js-editor.css";
 import "@bpmn-io/form-js/dist/assets/form-js-playground.css";
 import Dialog, { IContentDialog } from "components/dialog/dialog";
 import { IActionModal } from "model/OtherModel";
-import FormEditorComponent from "pages/AIImageAnalysis/BpmForm/FormEditor";
+import FormEditorComponent from "pages/BPM/BpmForm/FormEditor";
 import FormEditorSeting from "./FormEditorSeting";
 import { stringify } from "uuid";
 import FormCategoryService from "services/FormCategoryService";

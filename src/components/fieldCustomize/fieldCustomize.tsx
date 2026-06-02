@@ -10,11 +10,7 @@ import { convertToId, capitalize } from "reborn-util";
 import DatePickerCustom from "components/datepickerCustom/datepickerCustom";
 import moment from "moment";
 import TextArea from "components/textarea/textarea";
-import RebornEditor from "components/editor/reborn";
-// import RebornEditor from "components/editor/richtext";
-// import RebornEditor from "components/editor/hoveringToolbar";
-// import RebornEditor from "components/editor/images";
-// import RebornEditor from "components/editor/videos";
+import SlateEditor from "components/editor/slateEditor";
 
 export default function FieldCustomize(props: { field: IFieldCustomize; handleUpdate: (e) => void; formData: IFormData }) {
   const { field, handleUpdate, formData } = props;
@@ -278,7 +274,7 @@ export default function FieldCustomize(props: { field: IFieldCustomize; handleUp
         );
       case "editor":
         return (
-          <RebornEditor
+          <SlateEditor
             label={field.label}
             required={field.required}
             fill={field.fill}

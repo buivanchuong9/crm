@@ -30,7 +30,7 @@ import NummericInput from "components/input/numericInput";
 import CheckboxList from "components/checkbox/checkboxList";
 import Checkbox from "components/checkbox/checkbox";
 import DatePickerCustom from "components/datepickerCustom/datepickerCustom";
-import ModalTypeForm from "pages/AIImageAnalysis/SettingBusinessProcess/ConfigModal/partials/ModalTypeForm/ModalTypeForm";
+import ModalTypeForm from "pages/BPM/SettingBusinessProcess/ConfigModal/partials/ModalTypeForm/ModalTypeForm";
 import ContractEformService from "services/ContractEformService";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);

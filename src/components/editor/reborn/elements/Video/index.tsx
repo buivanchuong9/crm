@@ -36,7 +36,7 @@ const Video = ({ attributes, children, element }) => {
                             Trình duyệt không hỗ trợ thẻ video
                         </video>
 
-                        {/* Hiển thị gợi ý tạo đoạn mới => Tùng style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
+                        {/* Hiển thị gợi ý tạo đoạn mới => Dương style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
                         {
                             focused && selected ?
                                 <div style={{ cursor: 'pointer', marginTop: '10px' }} onClick={() => insertNewParagraph()}>Tạo đoạn mới</div>
@@ -120,7 +120,7 @@ const Video = ({ attributes, children, element }) => {
                                 <Icon name="Pencil" />
                             </Button>
 
-                            {/* Hiển thị gợi ý tạo đoạn mới => Tùng style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
+                            {/* Hiển thị gợi ý tạo đoạn mới => Dương style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
                             {
                                 focused && selected ?
                                     <div style={{ cursor: 'pointer', marginTop: '10px' }} onClick={() => insertNewParagraph()}>Tạo đoạn mới</div>

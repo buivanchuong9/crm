@@ -64,7 +64,7 @@ const Image = ({ attributes, children, element }) => {
           />
           {getControl(element, desc, link, editor, path, selected, focused, width, height, align, showModalEdit, setShowModalEdit)}
 
-          {/* Hiển thị gợi ý tạo đoạn mới => Tùng style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
+          {/* Hiển thị gợi ý tạo đoạn mới => Dương style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
           {focused && selected ? (
             <div style={{ cursor: "pointer", marginTop: "10px" }} onClick={() => insertNewParagraph()}>
               Tạo đoạn mới
@@ -100,7 +100,7 @@ const Image = ({ attributes, children, element }) => {
           />
           {getControl(element, desc, link, editor, path, selected, focused, width, height, align, showModalEdit, setShowModalEdit)}
 
-          {/* Hiển thị gợi ý tạo đoạn mới => Tùng style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
+          {/* Hiển thị gợi ý tạo đoạn mới => Dương style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
           {focused && selected ? (
             <div style={{ cursor: "pointer", marginTop: "10px" }} onClick={() => insertNewParagraph()}>
               Tạo đoạn mới
@@ -136,7 +136,7 @@ const Image = ({ attributes, children, element }) => {
           />
           {getControl(element, desc, link, editor, path, selected, focused, width, height, align, showModalEdit, setShowModalEdit)}
 
-          {/* Hiển thị gợi ý tạo đoạn mới => Tùng style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
+          {/* Hiển thị gợi ý tạo đoạn mới => Dương style lại theo link tham khảo nha: Tham khảo UI: https://onlinehtmleditor.dev/ */}
           {focused && selected ? (
             <div style={{ cursor: "pointer", marginTop: "10px" }} onClick={() => insertNewParagraph()}>
               Tạo đoạn mới

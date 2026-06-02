@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, Suspense, useContext, useEffect, useState } from "react";
 import { Routes, Route, Outlet, useNavigate } from "react-router-dom";
 import Icon from "components/icon";
 import Button from "components/button/button";
@@ -19,6 +19,7 @@ import EmployeeService from "services/EmployeeService";
 import Chatbot from "./ChatBot";
 import { getDomain } from "reborn-util";
 import ErrorBoundary from "components/ErrorBoundary";
+import Loading from "components/loading";
 // import { SystemNotification } from "components/systemNotification/systemNotification";
 
 export default function Layout() {
@@ -321,6 +322,7 @@ export default function Layout() {
                 )}
               </div>
               <div className="main-content__wrapper">
+                <Suspense fallback={<Loading />}>
                 <Routes>
                   {routes.map((r, index) => {
                     return (
@@ -334,6 +336,7 @@ export default function Layout() {
                   })}
                   <Route path="*" element={<Page404 />} />
                 </Routes>
+                </Suspense>
               </div>
             </Fragment>
           </CustomScrollbar>

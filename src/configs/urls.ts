@@ -2583,6 +2583,13 @@ export const urlsApi = {
     delete: prefixBpm + "/bpmParticipant/delete",
   },
 
+  segmentFilter: {
+    listMapping: prefixBpm + "/bpmSegmentFilter/mapping/list",
+    updateMapping: prefixBpm + "/bpmSegmentFilter/mapping/update",
+    deleteMapping: prefixBpm + "/bpmSegmentFilter/mapping/delete",
+    update: prefixBpm + "/bpmSegmentFilter/update",
+  },
+
   bpmEformMapping: {
     lstSource: prefixBpm + "/eformMapping/list/source",
     update: prefixBpm + "/eformMapping/update",

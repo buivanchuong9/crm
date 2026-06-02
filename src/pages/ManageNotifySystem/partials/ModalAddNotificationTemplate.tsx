@@ -13,7 +13,7 @@ import BusinessCategoryService from "services/BusinessCategoryService";
 import ButtonOnOff from "components/ButtonOnOff/ButtonOnOff";
 import { is } from "bpmn-js/lib/util/ModelUtil";
 import Input from "components/input/input";
-import RebornEditor from "components/editor/reborn";
+import SlateEditor from "components/editor/slateEditor";
 import { serialize } from "utils/editor";
 import RadioList from "components/radio/radioList";
 import SelectCustom from "components/selectCustom/selectCustom";
@@ -358,7 +358,7 @@ export default function ModalAddNotificationTemplate(props: any) {
                       Nội dung thông báo <span style={{ color: "red" }}>*</span>
                     </span>
                   </div>
-                  <RebornEditor
+                  <SlateEditor
                     name="content"
                     fill={true}
                     initialValue={contentEmail ? contentEmail : ""}

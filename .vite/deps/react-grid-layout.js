@@ -1,7 +1,7 @@
 import { a as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
 import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
-import { t as require_prop_types } from "./prop-types-DWpwruwU.js";
+import { t as require_prop_types } from "./prop-types-DBYNccqP.js";
 //#region node_modules/fast-equals/dist/fast-equals.js
 var require_fast_equals = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	(function(global, factory) {
