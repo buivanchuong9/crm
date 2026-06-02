@@ -19,7 +19,7 @@ import { serialize } from "utils/editor";
 import "./AddEmailModal.scss";
 import ViewTemplateEmailModal from "../SendEmailModal/partials/ViewTemplateEmailModal";
 import { ITemplateEmailResponseModel } from "model/templateEmail/TemplateEmailResponseModel";
-import RebornEditor from "components/editor/reborn";
+import SlateEditor from "components/editor/slateEditor";
 
 export default function AddEmailEventModal(props: IAddEmailModelProps) {
   const { onShow, onHide, data } = props;
@@ -297,7 +297,7 @@ export default function AddEmailEventModal(props: IAddEmailModelProps) {
 
               <div className="form-group">
                 {/* TODO: lỗi phần này do trình soạn thảo */}
-                <RebornEditor
+                <SlateEditor
                   name="content"
                   fill={true}
                   initialValue={formData?.values["content"] ? formData?.values["content"] : ""}

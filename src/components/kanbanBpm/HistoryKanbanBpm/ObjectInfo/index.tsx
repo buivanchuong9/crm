@@ -1,5 +1,5 @@
 import Loading from "components/loading";
-import FormViewerComponent from "pages/AIImageAnalysis/BpmForm/FormViewer";
+import FormViewerComponent from "pages/BPM/BpmForm/FormViewer";
 import React, { useEffect, useRef, useState } from "react";
 import ObjectGroupService from "services/ObjectGroupService";
 import { showToast } from "utils/common";

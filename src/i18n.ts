@@ -476,7 +476,7 @@ i18n.use(initReactI18next).init({
           // meterSpace: "Meter space",
 
           building: "Tòa nhà/Tầng/Căn hộ",
-          project: "Danh sách dự án",
+          project: "Danh sách ca bệnh",
           managementFeeRate: "Biểu giá phí quản lý",
           managementFee: "Biểu phí kết xuất hàng tháng",
           pakingFee: "Biểu phí đỗ xe",

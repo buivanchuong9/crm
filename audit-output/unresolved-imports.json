@@ -1,0 +1,802 @@
+[
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/chooseItem/chooseItem.tsx",
+    "spec": "services/ProductOrProductService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/elements/Button/index.tsx",
+    "spec": "../../../custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/plugins/withMedias.tsx",
+    "spec": "../../custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/plugins/withShortcuts.tsx",
+    "spec": "../../custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/toolbars/CTA/index.tsx",
+    "spec": "components/editor/custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/toolbars/ColorPicker/index.tsx",
+    "spec": "components/editor/custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/toolbars/Image/index.tsx",
+    "spec": "components/editor/custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/toolbars/Table/index.tsx",
+    "spec": "components/editor/custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/editor/slateEditor/toolbars/Video/index.tsx",
+    "spec": "components/editor/custom-types"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/kanbanBpm/HistoryKanbanBpm/index.tsx",
+    "spec": "pages/Contract/ModalHistorySignature/partials/ModalSendEmail"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/printSmall/printSmall.tsx",
+    "spec": "assets/images/qr-bill.png"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/components/printSmall/printSmall.tsx",
+    "spec": "services/PrintingSettingsService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BpmForm/FormViewer.tsx",
+    "spec": "./FormattedNumberField"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BpmForm/FormViewer.tsx",
+    "spec": "./extension/range/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BpmForm/FormViewer.tsx",
+    "spec": "./extension/hidden/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BpmForm/FormViewer.tsx",
+    "spec": "./extension/number/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BpmForm/FormViewer.tsx",
+    "spec": "./extension/treeSelector/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BusinessProcessCreate/partials/ModalUserTask/partials/ModalBpmParticipant/TeamEmployeeAdvance/ModalAddFilter/ModalAddFilter.tsx",
+    "spec": "services/SegmentFilterService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BusinessProcessCreate/partials/ModalUserTask/partials/ModalBpmParticipant/TeamEmployeeAdvance/TeamEmployeeAdvance.tsx",
+    "spec": "services/SegmentFilterService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BusinessProcessList/BusinessProcessList copy.tsx",
+    "spec": "./BuninessProcessList/AddMAModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BusinessProcessList/BusinessProcessList.tsx",
+    "spec": "./BuninessProcessList/AddMAModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BusinessProcessList/HistoryProcess/index.tsx",
+    "spec": "pages/Contract/ModalHistorySignature/partials/ModalSendEmail"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/BusinessProcessList/Kanban/partials/TaskItem/TaskItem.tsx",
+    "spec": "./partials/TippyInvoiceInfo"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/Grid/partials/ModalImport/index.tsx",
+    "spec": "pages/Grid"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/Grid/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridAg/partial/ModalImportGrid/index.tsx",
+    "spec": "../../Lookup"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridAg/partial/ModalImportGrid/index.tsx",
+    "spec": "../../exportOla"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridAg/partial/ModalImportGrid/index.tsx",
+    "spec": "../../convertToDataRow"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridForm/partials/ModalImport/index.tsx",
+    "spec": "pages/Grid"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridForm/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridFormSetting/index.tsx",
+    "spec": "./GridConfigHsmt"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AIImageAnalysis/GridFormSetting/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AppointmentReminder/partials/ListWork/partials/WorkTableByGroup/partials/JobReport/JobReport.tsx",
+    "spec": "./partials/ReportEmployeePerformance/ReportEmployeePerformance"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/AppointmentReminder/partials/ListWork/partials/WorkTableByGroup/partials/JobReport/partials/ReportInteractCustomerTable/index.tsx",
+    "spec": "../SupportInstructionsRecord"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/BusinessProcessCreate/indexBackUp.tsx",
+    "spec": "./partials/ModalIntermediateCatchEvent/ModalIntermediateCatchEvent"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/BusinessProcessCreate/partials/ModalUserTask/partials/ModalBpmParticipant/TeamEmployeeAdvance/ModalAddFilter/ModalAddFilter.tsx",
+    "spec": "services/SegmentFilterService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/BusinessProcessCreate/partials/ModalUserTask/partials/ModalBpmParticipant/TeamEmployeeAdvance/TeamEmployeeAdvance.tsx",
+    "spec": "services/SegmentFilterService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/BusinessProcessList/BusinessProcessList.tsx",
+    "spec": "./BuninessProcessList/AddMAModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/BusinessProcessList/HistoryProcess/index.tsx",
+    "spec": "pages/Contract/ModalHistorySignature/partials/ModalSendEmail"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/BusinessProcessList/Kanban/partials/TaskItem/TaskItem.tsx",
+    "spec": "./partials/TippyInvoiceInfo"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/Grid/partials/ModalImport/index.tsx",
+    "spec": "pages/Grid"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/Grid/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridAg/partial/ModalImportGrid/index.tsx",
+    "spec": "../../Lookup"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridAg/partial/ModalImportGrid/index.tsx",
+    "spec": "../../exportOla"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridAg/partial/ModalImportGrid/index.tsx",
+    "spec": "../../convertToDataRow"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridForm/partials/ModalImport/index.tsx",
+    "spec": "pages/Grid"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridForm/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridFormSetting/index.tsx",
+    "spec": "./GridConfigHsmt"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BPM/GridFormSetting/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BiddingFormList/BiddingFormList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/BiddingFormList/partials/ModalImport/ModalImport.tsx",
+    "spec": "pages/Grid"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Business/Business.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Business/partials/AddBusinessModal.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Common/ViewHistorySignature/index.tsx",
+    "spec": "pages/Contract/ModalHistorySignature/partials/ModalSendEmail"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/CompletedWorkList/ListCompletedWork/ListCompletedWork.tsx",
+    "spec": "./partials/AddWorkModal/AddWorkModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/FormEditorSeting.tsx",
+    "spec": "./extension/range/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/FormEditorSeting.tsx",
+    "spec": "./extension/range/propertiesPanel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/FormEditorSeting.tsx",
+    "spec": "./extension/hidden/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/FormEditorSeting.tsx",
+    "spec": "./extension/hidden/propertiesPanel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/FormEditorSeting.tsx",
+    "spec": "./extension/number/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/FormEditorSeting.tsx",
+    "spec": "./extension/number/propertiesPanel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/index.tsx",
+    "spec": "./extension/range/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/index.tsx",
+    "spec": "./extension/range/propertiesPanel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/index.tsx",
+    "spec": "./extension/hidden/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/index.tsx",
+    "spec": "./extension/hidden/propertiesPanel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/index.tsx",
+    "spec": "./extension/number/render"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/FormCategory/SettingForm/index.tsx",
+    "spec": "./extension/number/propertiesPanel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/ObjectAttribute/ObjectAttributeList.tsx",
+    "spec": "./partials/AddContractAtributeModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ConfigBPM/ObjectGroup/index.tsx",
+    "spec": "./partials/AddContractCategoryModal/AddContractCategoryModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Contact/KanbanContact/ViewModal/ViewModal.tsx",
+    "spec": "./ViewWorkModal.scss"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/CxmSurvey/CxmSurveyList/CxmSurveyList.tsx",
+    "spec": "pages/SettingOperate/partials/Space/SpaceList"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/CxmSurvey/CxmSurveyList/CxmSurveyList.tsx",
+    "spec": "pages/SettingOperate/partials/BuildingFloorList/partials/AddBuildingFloorModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/CxmSurvey/CxmSurveyList/CxmSurveyList.tsx",
+    "spec": "pages/SettingOperate/partials/Space/partials/AddSpaceModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/CxmSurvey/CxmSurveyList/CxmSurveyList.tsx",
+    "spec": "pages/SettingOperate/partials/BuildingFloorList/BuildingFloorList"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DailyProgressLog/partials/ListWork/partials/JobReport/JobReport.tsx",
+    "spec": "./partials/ReportEmployeePerformance/ReportEmployeePerformance"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DailyProgressLog/partials/ListWork/partials/JobReport/partials/ReportInteractCustomerTable/index.tsx",
+    "spec": "../SupportInstructionsRecord"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DoctorQnA/partials/ReportStatistic/partials/CallAnalysis/CallAnalysis.tsx",
+    "spec": "../FilterContract/FilterContract"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DocumentList/DocumentList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DocumentReceiveTNEX/DocumentReceiveTNEX.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DocumentReceiveTNEX/ModalAddDocumentTNEX/ModalAddDocumentTNEX.tsx",
+    "spec": "../HandleTask/OnHoldModal/OnHoldModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DocumentReceiveTNEX/ModalAddDocumentTNEX/ModalAddDocumentTNEX.tsx",
+    "spec": "../HandleTask/OnRejectModal/OnRejectModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/DocumentReceiveTNEX/ModalAddDocumentTNEX/ModalAddDocumentTNEX.tsx",
+    "spec": "./partials/ModalConfirmRelease/ModalConfirmRelease"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Eform/EformList.tsx",
+    "spec": "./partials/AddContractCategoryModal/AddContractCategoryModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Eform/EformList.tsx",
+    "spec": "./partials/AddContractEformModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Eform/EformList.tsx",
+    "spec": "./SettingEform/SetttingEform"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Eform/EformList.tsx",
+    "spec": "./PreviewEform/PreviewEformModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/FieldList/FieldList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/FieldList/partials/ModalAddField.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/IntegrationHris/index.tsx",
+    "spec": "./FilterModal/FilterModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/IntegrationHris/partials/SettingIntegrationModal/SettingIntegrationModal.tsx",
+    "spec": "components/TimePickerCustom/TimePickerCustom"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/InvestorList/InvestorList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/InvestorList/partials/ModalAddInvestor.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Kpi/KpiObjectList/partials/DetailKpiObject/partials/KpiDiagram/KpiDiagram.tsx",
+    "spec": "./CustomNode"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManageDefaultProcesses/index.tsx",
+    "spec": "./partials/AddContractCategoryModal/AddContractCategoryModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManageNotifySystem/NotificationSettingModal/NotificationSettingModal.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManageNotifySystem/partials/ModalAddNotificationTemplate.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManagerSupplierAccount/ListAccount.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManagerSupplierAccount/SupplierAccountList/SupplierAccountList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManagerSupplierAccount/SupplierListPortal/SupplierListPortal.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ManagerSupplierAccount/partials/ModalAddAccount.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MaterialList/MaterialList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MaterialList/partials/ModalAddMaterial.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/MiddleWorkList.tsx",
+    "spec": "pages/Common/InProgress"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/DetailWork/DetailWork.tsx",
+    "spec": "components/CountDown/CountDown"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/JobReport/JobReport.tsx",
+    "spec": "./partials/ReportEmployeePerformance/ReportEmployeePerformance"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/JobReport/partials/ReportInteractCustomerTable/index.tsx",
+    "spec": "../SupportInstructionsRecord"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/ModalHandleTask/partials/BackupModalHandleTask/index.tsx",
+    "spec": "./ModalHandleTask.scss"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/ModalHandleTask/partials/BackupModalHandleTask/index.tsx",
+    "spec": "../HandleTask/OnHoldModal/OnHoldModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/ModalHandleTask/partials/BackupModalHandleTask/index.tsx",
+    "spec": "../HandleTask/OnRejectModal/OnRejectModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/ModalHandleTask/partials/BackupModalHandleTask/index.tsx",
+    "spec": "./partials/ModalConfirmRelease/ModalConfirmRelease"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/ModalHandleTask/partials/BackupModalHandleTask/index.tsx",
+    "spec": "./partials/ModalCustomPopup"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/MiddleWork/partials/ListWork/partials/ModalHandleTask/partials/BackupModalHandleTask/index.tsx",
+    "spec": "./partials/ModalSelectJump/ModalSelectJump"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientCaseList/DetailPatientCase/DetailPatientCase.tsx",
+    "spec": "services/ProjectAttributeService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientCaseList/DetailPatientCase/DetailPatientCase.tsx",
+    "spec": "services/ProjectExtraInfoService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientRecord/PatientRecordList.tsx",
+    "spec": "./partials/PurchaseInvoice/PurchaseInvoiceList"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientRecord/partials/AddCustomerSchedulerModal/AddCustomerSchedulerModal.tsx",
+    "spec": "./AddCustomerSchedulerModal.scss"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientRecord/partials/DetailPerson/partials/ListDetailTab/partials/CustomerZaloList/CustomerZaloList.tsx",
+    "spec": "./partials/AddCustomerSMSModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientRecord/partials/DetailPerson/partials/ListDetailTab/partials/CustomerZaloList/CustomerZaloList.tsx",
+    "spec": "./partials/CustomPlaceholder/AddCustomPlaceholderModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientRecord/partials/DetailPerson/partials/ListDetailTab/partials/InteractList/partials/CustomerZaloList/CustomerZaloList.tsx",
+    "spec": "./partials/AddCustomerSMSModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PatientRecord/partials/DetailPerson/partials/ListDetailTab/partials/InteractList/partials/CustomerZaloList/CustomerZaloList.tsx",
+    "spec": "./partials/CustomPlaceholder/AddCustomPlaceholderModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PendingWorkList/ListPendingWork/ListPendingWork.tsx",
+    "spec": "./partials/AddWorkModal/AddWorkModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/PriorityWorkList/partials/ListPriorityWork/ListPriorityWork.tsx",
+    "spec": "./partials/AddWorkModal/AddWorkModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementList/ModalAddProcurementNew/ModalAddProcurementNew.tsx",
+    "spec": "../HandleTask/OnHoldModal/OnHoldModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementList/ModalAddProcurementNew/ModalAddProcurementNew.tsx",
+    "spec": "../HandleTask/OnRejectModal/OnRejectModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementList/ModalAddProcurementNew/ModalAddProcurementNew.tsx",
+    "spec": "./partials/ModalConfirmRelease/ModalConfirmRelease"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementList/ProcurementList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementListTNEX/ModalAddProcurementNewTNEX/ModalAddProcurementNewTNEX.tsx",
+    "spec": "../HandleTask/OnHoldModal/OnHoldModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementListTNEX/ModalAddProcurementNewTNEX/ModalAddProcurementNewTNEX.tsx",
+    "spec": "../HandleTask/OnRejectModal/OnRejectModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementListTNEX/ModalAddProcurementNewTNEX/ModalAddProcurementNewTNEX.tsx",
+    "spec": "./partials/ModalConfirmRelease/ModalConfirmRelease"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementListTNEX/ProcurementListTNEX.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementTypeList/ProcurementTypeList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProcurementTypeList/partials/ModalAddProcurementType.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProfileStatusList/ProfileStatusList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProfileStatusList/partials/ShowModalProcedure/index.tsx",
+    "spec": "model/profileStatus/PropsModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProfileStatusList/partials/ShowModalProcedure/index.tsx",
+    "spec": "model/profileStatus/ProfileStatusResponseModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProjectCatalogList/ProjectCatalogList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProjectCatalogList/partials/ModalAddProjectCatalog.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProjectRealtyList/ProjectRealtyList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ProjectRealtyList/partials/ModalAddProjectRealty.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportCommonPending/ReportCommon.tsx",
+    "spec": "./MedicalAIStatistics.scss"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/MostUsedProcessReport/partials/DataTable/index.tsx",
+    "spec": "../SupportInstructionsRecord"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/MostUsedProcessReport/partials/DataTable/index.tsx",
+    "spec": "./partials/ViewInteractModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/MostUsedProcessReport/partials/ProcessUsageTrend/index.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ProcessVariableReport/partials/ProcessVariableByDepartment.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ProcessVariableReport/partials/ProcessVariableCompare.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ProcessVariableReport/partials/ProcessVariableHeatmap.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ProcessVariableReport/partials/ProcessVariableOverview.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ProcessVariableReport/partials/ProcessVariableTimeTracker.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ReportBottleneck/partials/BottleneckError.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ReportBottleneck/partials/BottleneckMax.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ReportProcessingTime/partials/ProcessTimeCompare.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ReportProcessingTime/partials/ProcessTimeGantt.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/ReportProcessingTime/partials/ProcessTimeOverView.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/SlaBreachReport/partials/SlaBreachCompare.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/SlaBreachReport/partials/SlaBreachHeatMap.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/SlaBreachReport/partials/SlaBreachOverview.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/SlaBreachReport/partials/SlaStatusByDepartment.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/SlaBreachReport/partials/SlaTimeTracker.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/StatusReport/partials/ReportStatusOverview.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/UserPerformanceReport/partials/DataTable/index.tsx",
+    "spec": "../SupportInstructionsRecord"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/UserPerformanceReport/partials/DataTable/index.tsx",
+    "spec": "./partials/ViewInteractModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/UserPerformanceReport/partials/PerformanceHeatMap.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/ReportManagement/UserPerformanceReport/partials/ProcessingTrend/index.tsx",
+    "spec": "components/charts/HighChart"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/RunAIDiagnosis/partials/ListWork/partials/JobReport/JobReport.tsx",
+    "spec": "./partials/ReportEmployeePerformance/ReportEmployeePerformance"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/RunAIDiagnosis/partials/ListWork/partials/JobReport/partials/ReportInteractCustomerTable/index.tsx",
+    "spec": "../SupportInstructionsRecord"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingCode/SettingCode.tsx",
+    "spec": "./partials/CategoryProject/CategoryProject"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingCode/SettingCode.tsx",
+    "spec": "./partials/SettingWork/SettingWork"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingPartner/SettingPartnerList.tsx",
+    "spec": "./partials/CustomerAttribute/CustomerAttributeList"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingProcess/partials/ProcessedObjectList/partials/AddFormObjectBackup/index.tsx",
+    "spec": "services/SheetFieldObjectFormService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingProject/partials/SettingWork/SettingWork.tsx",
+    "spec": "./partials/AddCategoryProjectModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingPromotion/SettingPromotionList.tsx",
+    "spec": "pages/SettingContract/partials/ContractEform/PreviewEform/PreviewEformModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingPromotion/SettingPromotionList.tsx",
+    "spec": "pages/SettingContract/partials/ContractEform/SettingEform/SetttingEform"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingSMS/partials/WhiteList/WhiteList.tsx",
+    "spec": "./partials/AddTemplateCategory"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingWorkTime/WorkTime/SettingWorkTimeModal/SettingWorkTimeModal.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingWorkTime/WorkTime/WorkTime.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingZalo/SettingZalo.tsx",
+    "spec": "./partials/TemplateEmail/TemplateEmailList"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SettingZalo/partials/TemplateZaloList/TemplateZaloList.tsx",
+    "spec": "./partials/AddTemplateZaloModal"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/SocialCrmZalo/SocialCrmZalo.tsx",
+    "spec": "./partials/ListComment"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Supplier/SupplierList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/Supplier/partials/ModalAddSupplier.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/DetailTenderPackage.tsx",
+    "spec": "components/CountDown/CountDown"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/DetailTenderPackage.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/ModalAddBidding/ModalAddBidding.tsx",
+    "spec": "./ModalConfirmCancel/ModalConfirmCancel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/ModalBidOpen/ModalBidOpen.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/ModalBidOpen/ModalBidOpen.tsx",
+    "spec": "./ModalConfirmCancel/ModalConfirmCancel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/ModalBiddingProfile/GridData/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/Negotiation/DetailNegotiationModal/GridData/partials/SelectLookup/SelectLookup.tsx",
+    "spec": "services/BlackListService"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TenderPackageList/DetailTenderPackage/Negotiation/Negotiation.tsx",
+    "spec": "components/CountDown/CountDown"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TypeOfCause/TypeOfCause.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/TypeOfCause/partials/AddReasonModal.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/UnitList/UnitList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/UnitList/partials/ModalAddUnit.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/WorkCategoryList/WorkCategoryList.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/pages/WorkCategoryList/partials/ModalAddWorkCategory.tsx",
+    "spec": "components/ButtonOnOff/ButtonOnOff"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/services/ContractStageService.ts",
+    "spec": "model/contractApproach/ContractStageRequestModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/services/JobTitleService.ts",
+    "spec": "model/jobTitle/JobTitleRequestModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/services/ProfileStatusService.ts",
+    "spec": "model/profileStatus/ProfileStatusRequestModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/services/ReportManagementService.ts",
+    "spec": "model/reportStatus/ReportStatusRequestModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/services/TipGroupEmployeeService.ts",
+    "spec": "model/tipGroupEmployee/TipGroupEmployeeRequestModel"
+  },
+  {
+    "file": "/Users/chuong/Documents/CareFollow/crm/src/utils/editor.ts",
+    "spec": "components/editor/custom-types"
+  }
+]

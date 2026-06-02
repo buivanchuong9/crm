@@ -4,7 +4,7 @@ import { IActionModal } from "model/OtherModel";
 import { showToast } from "utils/common";
 import "./index.scss";
 import ObjectGroupService from "services/ObjectGroupService";
-import FormEditorComponent from "pages/AIImageAnalysis/BpmForm/FormEditor";
+import FormEditorComponent from "pages/BPM/BpmForm/FormEditor";
 
 export default function ObjectSettingModal(props: any) {
   const { onShow, onHide, dataObject } = props;

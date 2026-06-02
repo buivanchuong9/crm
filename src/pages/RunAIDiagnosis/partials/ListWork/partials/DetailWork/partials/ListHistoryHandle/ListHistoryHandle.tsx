@@ -14,7 +14,7 @@ import BoxTable from "components/boxTable/boxTable";
 import Loading from "components/loading";
 import { SystemNotification } from "components/systemNotification/systemNotification";
 import Badge from "components/badge/badge";
-import ModalTime from "pages/AIImageAnalysis/BusinessProcessList/HistoryProcess/HistoryProcess/ModalTime/ModalTime";
+import ModalTime from "pages/BPM/BusinessProcessList/HistoryProcess/HistoryProcess/ModalTime/ModalTime";
 
 export default function ListHistoryHandle(props) {
   const { dataObject } = props;

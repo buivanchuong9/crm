@@ -89,7 +89,7 @@ export default function NoteField(props: INoteFieldProps) {
     // {
     //   id: 1,
     //   avatar: ImageThirdGender,
-    //   name: "Hoàng Văn Lợi",
+    //   name: "Nguyễn Mạnh Cường",
     //   time: "21:01 Hôm qua",
     //   content: "Comment đầu",
     //   isEdit: false,
@@ -97,7 +97,7 @@ export default function NoteField(props: INoteFieldProps) {
     // {
     //   id: 2,
     //   avatar: ImageThirdGender,
-    //   name: "Hoàng Văn Lợi",
+    //   name: "Nguyễn Mạnh Cường",
     //   time: "21:01 Hôm qua",
     //   content: "Comment thứ 2",
     //   isEdit: false,
@@ -105,7 +105,7 @@ export default function NoteField(props: INoteFieldProps) {
     // {
     //   id: 3,
     //   avatar: ImageThirdGender,
-    //   name: "Hoàng Văn Lợi",
+    //   name: "Nguyễn Mạnh Cường",
     //   time: "21:01 Hôm qua",
     //   content: "Comment thứ 2",
     //   isEdit: false,
@@ -113,7 +113,7 @@ export default function NoteField(props: INoteFieldProps) {
     // {
     //   id: 4,
     //   avatar: ImageThirdGender,
-    //   name: "Hoàng Văn Lợi",
+    //   name: "Nguyễn Mạnh Cường",
     //   time: "21:01 Hôm qua",
     //   content: "Comment thứ 2",
     //   isEdit: false,

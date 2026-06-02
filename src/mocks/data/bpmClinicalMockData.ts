@@ -9,6 +9,16 @@ export const mockEmployees = [
 export const mockPatients = [
   "Bùi Văn Chương",
   "Đào văn dương",
+  "Nguyễn Minh Anh",
+  "Trần Thu Hà",
+  "Lê Hoàng Nam",
+  "Phạm Gia Hân",
+  "Vũ Đức Long",
+  "Hoàng Kim Chi",
+  "Đặng Quốc Bảo",
+  "Mai Thanh Trúc",
+  "Ngô Bảo Ngọc",
+  "Đỗ Nhật Minh",
 ];
 
 export const mockProcesses = [
@@ -37,6 +47,11 @@ export const mockProcessedObjects = mockPatients.map((patient, index) => ({
   id: index + 1,
   name: `Hồ sơ ${patient} - ${diagnoses[index % diagnoses.length]}`,
   code: `HS-${String(index + 1).padStart(4, "0")}`,
+  potId: `HS-${String(index + 1).padStart(4, "0")}`,
+  customerName: patient,
+  patientName: patient,
+  mainDiagnosis: diagnoses[index % diagnoses.length],
+  priority: index % 4 === 0 ? "urgent" : index % 3 === 0 ? "high" : "normal",
   employeeId: mockEmployees[index % mockEmployees.length].id,
   employeeName: mockEmployees[index % mockEmployees.length].name,
   status: index % 5,
@@ -141,6 +156,47 @@ export const mockWorkflowTasks = Array.from({ length: 18 }, (_, i) => {
     planExecutionMinute: 0,
   };
 });
+
+export const mockProcessErrorLogs = Array.from({ length: 12 }, (_, i) => {
+  const process = mockProcesses[i % mockProcesses.length];
+  const patient = mockPatients[i % mockPatients.length];
+  return {
+    id: i + 1,
+    processId: process.id,
+    processName: process.name,
+    nodeId: 1000 + ((i % 5) + 1),
+    nodeName: workTitles[i % workTitles.length],
+    potId: `HS-${String((i % 12) + 1).padStart(4, "0")}`,
+    patientName: patient,
+    errorCode: i % 2 === 0 ? "AI_TIMEOUT" : "RULE_VALIDATION_FAILED",
+    message: i % 2 === 0 ? "Dịch vụ AI phân tích ảnh phản hồi quá thời gian" : "Thiếu dữ liệu đầu vào cho luật xử lý y khoa",
+    createdTime: day(i % 10),
+    stackTrace: "Mock stack: bpm-engine -> node-executor -> clinical-rule-adapter",
+  };
+});
+
+export const mockVariableDeclares = [
+  { id: 1, processId: 1, name: "Tên bệnh nhân", code: "patientName", dataType: "String", defaultValue: "Bùi Văn Chương" },
+  { id: 2, processId: 1, name: "Chẩn đoán", code: "diagnosis", dataType: "String", defaultValue: "Viêm da cơ địa" },
+  { id: 3, processId: 1, name: "Mức ưu tiên", code: "priority", dataType: "String", defaultValue: "high" },
+  { id: 4, processId: 2, name: "Số ngày điều trị", code: "treatmentDays", dataType: "Number", defaultValue: 7 },
+  { id: 5, processId: 3, name: "Có sốt", code: "hasFever", dataType: "Boolean", defaultValue: false },
+  { id: 6, processId: 6, name: "Điểm AI", code: "aiScore", dataType: "Number", defaultValue: 82 },
+];
+
+export const mockVariableInstances = mockVariableDeclares.map((item, index) => ({
+  ...item,
+  id: index + 101,
+  variableDeclareId: item.id,
+  value: item.defaultValue,
+  potId: `HS-${String((index % 12) + 1).padStart(4, "0")}`,
+}));
+
+export const mockServiceLevels = [
+  { id: 1, processId: 1, nodeId: 1002, nodeName: "Khám lâm sàng", planResponseHour: 2, planExecutionHour: 8, warningPercent: 80 },
+  { id: 2, processId: 1, nodeId: 1003, nodeName: "Phân tích AI", planResponseHour: 1, planExecutionHour: 2, warningPercent: 75 },
+  { id: 3, processId: 2, nodeId: 2002, nodeName: "Thực hiện phác đồ", planResponseHour: 4, planExecutionHour: 24, warningPercent: 70 },
+];
 
 export const mockBusinessRules = [
   { id: 1, name: "Luật phân loại mức ưu tiên ca", code: "RULE-PRIORITY", linkedCount: 2 },

@@ -52,7 +52,7 @@ export default function PatientCaseList() {
   const [listSaveSearch] = useState<ISaveSearch[]>([
     {
       key: "all",
-      name: "Danh sách dự án",
+      name: "Danh sách ca bệnh",
       is_active: true,
     },
   ]);
@@ -429,7 +429,7 @@ export default function PatientCaseList() {
   const [dataProjectReport, setDataProjectReport] = useState(null);
   const [lstTitleHeader, setLstTitleHeader] = useState([
     {
-      name: "Danh sách dự án",
+      name: "Danh sách ca bệnh",
       type: 1,
     },
     // {
@@ -1164,7 +1164,7 @@ export default function PatientCaseList() {
   return (
     <Fragment>
       <div className={`page-content page-project${isNoItem ? " bg-white" : ""}`}>
-        <TitleAction title="Danh sách dự án" titleActions={titleActions} />
+        <TitleAction title="Danh sách ca bệnh" titleActions={titleActions} />
         <div className="card-box d-flex flex-column">
           <div className="search__box--project">
             <ul className="line__height--project">

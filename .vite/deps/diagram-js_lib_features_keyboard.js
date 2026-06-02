@@ -1,2 +1,2 @@
-import { t as keyboard_default } from "./keyboard-B5MlLfV_.js";
+import { t as keyboard_default } from "./keyboard-BZ-XMdx-.js";
 export { keyboard_default as default };

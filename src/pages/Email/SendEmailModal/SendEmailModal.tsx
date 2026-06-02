@@ -22,7 +22,7 @@ import Input from "components/input/input";
 import Icon from "components/icon";
 import ViewTemplateEmailModal from "./partials/ViewTemplateEmailModal";
 import { ITemplateEmailResponseModel } from "model/templateEmail/TemplateEmailResponseModel";
-import RebornEditor from "components/editor/reborn";
+import SlateEditor from "components/editor/slateEditor";
 import SelectCustom from "components/selectCustom/selectCustom";
 import { ICustomerFilterRequest } from "model/customer/CustomerRequestModel";
 import PlaceholderService from "services/PlaceholderService";
@@ -551,7 +551,7 @@ export default function SendEmailModal(props: IAddEmailModelProps) {
               </div>
 
               <div className="form-group">
-                <RebornEditor
+                <SlateEditor
                   name="content"
                   fill={true}
                   initialValue={formData?.values["content"] ? formData?.values["content"] : ""}

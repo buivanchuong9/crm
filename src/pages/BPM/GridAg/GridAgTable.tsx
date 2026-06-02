@@ -76,10 +76,10 @@ const GridAgTable = (
     //Bắt sự kiện từ grid khác gửi sang
     if (linkingConfigDeparture && linkingConfigDeparture?.params && linkingConfigDeparture?.idGrid == linkingConfig?.gridDeparture) {
       if (linkingConfigDeparture?.params) {
-        if (linkingConfigDeparture?.params?.HoVaTen == "Hoàng Văn Lợi") {
+        if (linkingConfigDeparture?.params?.HoVaTen == "Bùi Văn Chương") {
           setDataFetch((prev) => ({ ...prev, data: [sampleData[0]] }));
-        } else if (linkingConfigDeparture?.params?.HoVaTen == "Bùi Đức Năng") {
-          console.log("setDataFetch Bùi Đức Năng");
+        } else if (linkingConfigDeparture?.params?.HoVaTen == "Đào Văn Dương") {
+          console.log("setDataFetch Đào Văn Dương");
 
           setDataFetch((prev) => ({ ...prev, data: [sampleData[1]] }));
         } else {

@@ -4,7 +4,7 @@ import "./index.scss";
 import FileService from "services/FileService";
 import { uploadDocumentFormData } from "utils/document";
 import Icon from "components/icon";
-import ModalViewDocument from "pages/AIImageAnalysis/UploadDocument/ModalViewDocument/ModalViewDocument";
+import ModalViewDocument from "pages/BPM/UploadDocument/ModalViewDocument/ModalViewDocument";
 import { handDownloadFileOrigin } from "utils/common";
 import ImgExcel from "assets/images/img-excel.png";
 import ImgWord from "assets/images/img-word.png";

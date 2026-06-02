@@ -10,9 +10,13 @@ import {
   mockFormCategories,
   mockObjectAttributes,
   mockObjectGroups,
+  mockProcessErrorLogs,
   mockProcessedObjects,
   mockProcesses,
   mockProcessPermissions,
+  mockServiceLevels,
+  mockVariableDeclares,
+  mockVariableInstances,
   mockWorkflowSteps,
   mockWorkflowTasks,
   mockWorkOrders,
@@ -21,6 +25,7 @@ import {
 import { buildDetailResponse, buildListResponse, buildOkResponse, getRequestInfo, parseQueryParams } from "./utils";
 
 const processes = [...mockProcesses];
+let processPermissions = [...mockProcessPermissions];
 
 const defaultBpmnXml = `<?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
@@ -230,6 +235,9 @@ const getWorkflowStepsByProcess = (processIdParam?: number) => {
 const resolveList = (pathname: string, params: Record<string, any>) => {
   if (pathname.includes("businessprocess") && pathname.includes("/list")) return processes;
   if (pathname.includes("bpmtrigger")) return mockBpmTriggers;
+  if (pathname.includes("variabledeclare")) return mockVariableDeclares;
+  if (pathname.includes("variableinstance")) return mockVariableInstances;
+  if (pathname.includes("servicelevel")) return mockServiceLevels;
   if (pathname.includes("processedobject")) return mockProcessedObjects;
   if (pathname.includes("workorder")) return mockWorkOrders;
   if (pathname.includes("workflowstatus")) return mockWorkflowTasks;
@@ -238,7 +246,7 @@ const resolveList = (pathname: string, params: Record<string, any>) => {
     return mockBusinessRuleItems[ruleId] || [];
   }
   if (pathname.includes("businessrule")) return mockBusinessRules;
-  if (pathname.includes("process-permission")) return mockProcessPermissions;
+  if (pathname.includes("process-permission")) return processPermissions;
   if (pathname.includes("decisiontableinput")) {
     const ruleId = Number(params.businessRuleId) || 1;
     return mockDecisionInputs[ruleId] || [];
@@ -261,8 +269,34 @@ const resolveList = (pathname: string, params: Record<string, any>) => {
   return [{ id: 1, name: "Mock BPM item", code: "BPM-MOCK", status: 1, createdTime: now }];
 };
 
+const getNodeIdFromParams = (params: Record<string, any>) => params.nodeId || params.id || "Task_1";
+
+const buildNodeDetail = (params: Record<string, any>, processId: number) => {
+  const nodeId = getNodeIdFromParams(params);
+  return {
+    id: nodeId,
+    nodeId,
+    processId,
+    childProcessId: processId,
+    formId: 1,
+    bpmFormId: 1,
+    name: "Khám lâm sàng",
+    title: "Khám lâm sàng",
+    typeNode: "bpmn:UserTask",
+    assigneeType: "EMPLOYEE",
+    employeeId: 1,
+    employeeName: "Bùi Văn Chương",
+    departmentId: 1,
+    departmentName: "Khoa Da liễu",
+    businessRuleId: 1,
+    businessRuleName: "Luật phân loại mức ưu tiên ca",
+    serviceCode: "AI_SKIN_ANALYSIS",
+    config: "{}",
+  };
+};
+
 const bpmApiRegex =
-  /\/(bpmapi|application|cs|adminapi)\/.*(bpm|businessprocess|processedobject|workorder|workflow|sla|artifact|form|participant|objectgroup|objectattribute|businessrule|bpmtrigger|process-permission|decisiontable|formcategory|bpmformpopup|statemapping)/i;
+  /\/(bpmapi|application|cs|adminapi)\/.*(bpm|businessprocess|processedobject|workorder|workflow|sla|artifact|form|participant|objectgroup|objectattribute|businessrule|bpmtrigger|process-permission|decisiontable|formcategory|bpmformpopup|statemapping|variable|servicelevel|findbycriteria|state)/i;
 
 export const bpmHandlers = [
   http.all(bpmApiRegex, async ({ request }) => {
@@ -295,8 +329,42 @@ export const bpmHandlers = [
       return HttpResponse.json(buildOkResponse({ id: targetProcessId, config: processDiagramXml[targetProcessId] }));
     }
 
+    // Manage default process permissions (create/update/delete) for mock
+    if (pathname.includes("/process-permission/update") && method === "POST") {
+      const body = (await request.json().catch(() => ({}))) as any;
+      const id = Number(body?.id) || 0;
+      if (id > 0) {
+        const foundIndex = processPermissions.findIndex((p) => Number(p.id) === id);
+        if (foundIndex >= 0) {
+          processPermissions[foundIndex] = { ...processPermissions[foundIndex], ...body };
+        } else {
+          processPermissions.push({ ...body, id });
+        }
+        return HttpResponse.json(buildOkResponse(processPermissions.find((p) => Number(p.id) === id)));
+      }
+
+      const nextId = processPermissions.reduce((max, p) => Math.max(max, Number(p.id || 0)), 0) + 1;
+      const newItem = { id: nextId, name: body?.name || `Config ${nextId}`, uri: body?.uri || "", processCode: body?.processCode || "", processName: body?.processName || "" };
+      processPermissions.push(newItem);
+      return HttpResponse.json(buildOkResponse(newItem));
+    }
+
+    if (pathname.includes("/process-permission/delete") && method === "DELETE") {
+      const id = Number(params.id) || 0;
+      const before = processPermissions.length;
+      processPermissions = processPermissions.filter((p) => Number(p.id) !== id);
+      const after = processPermissions.length;
+      return HttpResponse.json(buildOkResponse({ id, deleted: before !== after }));
+    }
+
     if (pathname.includes("/bpmtrigger/activate")) {
-      return HttpResponse.json(buildOkResponse({ id: params.id || 1, activated: true }));
+      const triggerId = Number(params.id) || 1;
+      const trigger = mockBpmTriggers.find((item) => Number(item.id) === triggerId);
+      if (trigger) {
+        trigger.status = 2;
+        trigger.messageError = "";
+      }
+      return HttpResponse.json(buildOkResponse({ id: triggerId, activated: true, status: 2 }));
     }
 
     if (pathname.includes("/workflow/update") && method === "POST") {
@@ -462,21 +530,90 @@ export const bpmHandlers = [
       return HttpResponse.json(buildOkResponse({ processId: targetProcessId, configs: targetDiagram.configs }));
     }
 
-    if (pathname.includes("/bpmconfignode/get")) {
+    if (pathname.includes("/bpmconfignode/list")) {
+      const targetProcessId = Number(params.processId || params.childProcessId || processId) || 1;
+      const nodes = getProcessDiagram(targetProcessId).nodes.map((node) => ({
+        ...node,
+        nodeId: node.id,
+        label: node.name,
+        title: node.name,
+      }));
+      return HttpResponse.json(buildListResponse(nodes, params));
+    }
+
+    if (pathname.includes("/bpmconfiglinknode/list")) {
+      const targetProcessId = Number(params.processId || params.childProcessId || processId) || 1;
+      const links = getProcessDiagram(targetProcessId).configs.map((config) => ({
+        ...config,
+        linkId: config.id,
+        sourceRef: config.fromNodeId,
+        targetRef: config.toNodeId,
+        name: config.condition ? "Đạt điều kiện" : "Mặc định",
+      }));
+      return HttpResponse.json(buildListResponse(links, params));
+    }
+
+    if (pathname.includes("/bpmconfiglinknode/get")) {
       return HttpResponse.json(
         buildDetailResponse({
-          id: "Task_1",
-          nodeId: "Task_1",
+          id: params.linkId || "Flow_1",
+          linkId: params.linkId || "Flow_1",
+          fromNodeId: params.fromNodeId || "Task_1",
+          toNodeId: params.toNodeId || "Task_2",
           processId,
-          childProcessId: processId,
-          name: "Khám lâm sàng",
-          typeNode: "bpmn:UserTask",
+          condition: "priority == 'high'",
+          name: "Đủ điều kiện",
         })
       );
     }
 
+    if (pathname.includes("/bpmconfignode/get")) {
+      return HttpResponse.json(
+        buildDetailResponse(buildNodeDetail(params, processId))
+      );
+    }
+
+    if (
+      pathname.includes("/usertask/get") ||
+      pathname.includes("/servicetask/get") ||
+      pathname.includes("/scripttask/get") ||
+      pathname.includes("/manualtask/get") ||
+      pathname.includes("/sendtask/get") ||
+      pathname.includes("/receivetask/get") ||
+      pathname.includes("/callactivity/get") ||
+      pathname.includes("/parallelgateway/get") ||
+      pathname.includes("/exclusivegateway/get") ||
+      pathname.includes("/inclusivegateway/get") ||
+      pathname.includes("/complexgateway/get") ||
+      pathname.includes("/subprocess/get") ||
+      pathname.includes("/timertask/get") ||
+      pathname.includes("/starttask/get") ||
+      pathname.includes("/message") ||
+      pathname.includes("/signal") ||
+      pathname.includes("/error") ||
+      pathname.includes("/compensation") ||
+      pathname.includes("/conditional")
+    ) {
+      return HttpResponse.json(buildDetailResponse(buildNodeDetail(params, processId)));
+    }
+
     if (pathname.includes("/bpmform/get")) {
       return HttpResponse.json(buildDetailResponse({ ...mockBpmForms[0], formId: 1, formSchema: mockBpmForms[0].schema }));
+    }
+
+    if (pathname.includes("/bpmformdata/getbynodeid")) {
+      return HttpResponse.json(
+        buildDetailResponse({
+          nodeId: params.nodeId || "Task_1",
+          potId: params.potId || "HS-0001",
+          data: {
+            patientName: "Bùi Văn Chương",
+            diagnosis: "Viêm da cơ địa",
+            priority: "high",
+            aiScore: 82,
+          },
+        })
+      );
     }
 
     if (pathname.includes("/artifactdata") || pathname.includes("/dataform") || pathname.includes("/bpmarkifactdata")) {
@@ -488,6 +625,20 @@ export const bpmHandlers = [
           priority: "high",
         })
       );
+    }
+
+    if (pathname.includes("/findbycriteria")) {
+      let result = [...mockProcessErrorLogs];
+      if (params.processId) {
+        result = result.filter((item) => Number(item.processId) === Number(params.processId));
+      }
+      if (params.nodeId) {
+        result = result.filter((item) => String(item.nodeId) === String(params.nodeId));
+      }
+      if (params.potId) {
+        result = result.filter((item) => String(item.potId) === String(params.potId));
+      }
+      return HttpResponse.json(buildListResponse(result, params));
     }
 
     const isList =

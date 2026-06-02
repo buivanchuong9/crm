@@ -1,6 +1,6 @@
 import { o as __toESM } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { C as setCSSProperty, D as getWindow, E as getDocument, S as now, T as showWarning, a as elementChildren, c as elementNextAll, d as elementParents, f as elementPrevAll, h as extend$1, i as deleteProps, o as elementIndex, p as elementStyle, r as createElement, s as elementIsChildOf, t as animateCSSModeScroll, u as elementOuterSize, v as getTranslate, w as setInnerHTML, x as nextTick } from "./utils-Dbv8tLLD.js";
+import { C as setCSSProperty, D as getWindow, E as getDocument, S as now, T as showWarning, a as elementChildren, c as elementNextAll, d as elementParents, f as elementPrevAll, h as extend$1, i as deleteProps, o as elementIndex, p as elementStyle, r as createElement, s as elementIsChildOf, t as animateCSSModeScroll, u as elementOuterSize, v as getTranslate, w as setInnerHTML, x as nextTick } from "./utils-DyrD5csy.js";
 //#region node_modules/swiper/shared/swiper-core.mjs
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 var support;

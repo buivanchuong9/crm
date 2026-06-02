@@ -1,4 +1,4 @@
-import { _ as isPlainObject, g as createEditor$1, i as Node, m as Text, n as Element, u as Range } from "./index.es-EC4XYGKV.js";
+import { _ as isPlainObject, g as createEditor$1, i as Node, m as Text, n as Element, u as Range } from "./index.es-Cvt3Mw6e.js";
 //#region node_modules/slate-hyperscript/dist/index.es.js
 function _defineProperty(obj, key, value) {
 	if (key in obj) Object.defineProperty(obj, key, {
