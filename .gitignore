@@ -12,7 +12,6 @@ dist/
 .env.staging
 
 # package-lock
-package-lock.json
 yarn.lock
 yarn-error.log
 
