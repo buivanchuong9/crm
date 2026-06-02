@@ -1,232 +1,73 @@
 name: CI/CD Deploy CRM
 
-
-
 on:
-
   push:
-
     branches: [main]
 
-
-
 env:
-
   NODE_VERSION: '20'
-
   BUILD_OUTPUT_DIR: 'dist'
-
-
+  NGINX_ROOT: '/home/phonglv/FE_Y_TE/crm/bundle'
+  BACKUP_DIR: '/home/phonglv/FE_Y_TE/crm/backup'
+  INCOMING_DIR: '/tmp/crm-incoming'
 
 jobs:
-
   ci:
-
     name: 🔍 CI — Build & Test
-
     runs-on: ubuntu-latest
-
     steps:
-
-      - name: 📥 Checkout
-
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 1}
+      - uses: actions/setup-node@v4
+        with: {node-version: ${{ env.NODE_VERSION }}, cache: 'npm'}
+      - run: npm ci
+      - run: npm run build
+        env: {NODE_ENV: production}
+      - uses: actions/upload-artifact@v4
         with:
-
-          fetch-depth: 1
-
-
-
-      - name: ⚙️ Setup Node.js
-
-        uses: actions/setup-node@v4
-
-        with:
-
-          node-version: ${{ env.NODE_VERSION }}
-
-          cache: 'npm'
-
-
-
-      - name: 📦 Install dependencies
-
-        run: npm ci
-
-
-
-      - name: 🏗️ Build
-
-        run: npm run build
-
-        env:
-
-          NODE_ENV: production
-
-
-
-      # THÊM MỚI: chặn artifact rỗng trước khi upload
-
-      - name: ✅ Verify build output
-
-        run: |
-
-          if [ ! -f "${{ env.BUILD_OUTPUT_DIR }}/index.html" ]; then
-
-            echo "❌ Build failed: index.html not found in dist/"
-
-            exit 1
-
-          fi
-
-          echo "✅ $(find ${{ env.BUILD_OUTPUT_DIR }} -type f | wc -l) files built"
-
-
-
-      - name: 📤 Upload Artifact
-
-        uses: actions/upload-artifact@v4
-
-        with:
-
           name: crm-build
-
           path: ${{ env.BUILD_OUTPUT_DIR }}
-
           retention-days: 1
-
-          if-no-files-found: error   # Thêm dòng này: fail rõ ràng nếu trống
-
-
+          if-no-files-found: error
 
   deploy:
-
     name: 🚀 Deploy to VPS
-
     runs-on: ubuntu-latest
-
     needs: ci
-
     steps:
-
-      - name: 📥 Download Artifact
-
-        uses: actions/download-artifact@v4
-
-        with:
-
-          name: crm-build
-
-          path: ./dist
-
-
+      - uses: actions/download-artifact@v4
+        with: {name: crm-build, path: ./dist}
 
       - name: 📤 SCP Copy
-
         uses: appleboy/scp-action@v0.1.7
-
         with:
-
           host: ${{ secrets.SERVER_HOST }}
-
           username: ${{ secrets.SERVER_USER }}
-
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          port: ${{ secrets.SERVER_PORT }}  # <--- Đã thêm port Secret
           source: "./dist/*"
-
-          target: "/tmp/crm-incoming"
-
+          target: "${{ env.INCOMING_DIR }}"
           strip_components: 1
 
-
-
       - name: 🔄 Sync & Reload
-
         uses: appleboy/ssh-action@v1.0.3
-
         with:
-
           host: ${{ secrets.SERVER_HOST }}
-
           username: ${{ secrets.SERVER_USER }}
-
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          port: ${{ secrets.SERVER_PORT }}  # <--- Đã thêm port Secret
           script: |
-
             set -euo pipefail
-
-
-
-            # FIX: Khai báo tường minh trên server — không dùng ${{ env.X }} trong remote shell
-
-            NGINX_ROOT="/home/phonglv/FE_Y_TE/crm/bundle"
-
-            BACKUP_DIR="/home/phonglv/FE_Y_TE/crm/backup"
-
-            INCOMING="/tmp/crm-incoming"
-
-
-
-            # 1. Kiểm tra file nhận được
-
-            if [ ! -f "$INCOMING/index.html" ]; then
-
-              echo "❌ ERROR: index.html not found in $INCOMING"
-
-              rm -rf "$INCOMING"
-
-              exit 1
-
+            if [ ! -f "${{ env.INCOMING_DIR }}/index.html" ]; then exit 1; fi
+            mkdir -p "${{ env.BACKUP_DIR }}"
+            if [ -d "${{ env.NGINX_ROOT }}" ]; then
+              cp -r "${{ env.NGINX_ROOT }}" "${{ env.BACKUP_DIR }}/backup-$(date +%Y%m%d-%H%M%S)"
+              ls -dt ${{ env.BACKUP_DIR }}/backup-* 2>/dev/null | tail -n +6 | xargs rm -rf 2>/dev/null || true
             fi
-
-            echo "✅ $(find $INCOMING -type f | wc -l) files received"
-
-
-
-            # 2. Backup bản hiện tại
-
-            mkdir -p "$BACKUP_DIR"
-
-            if [ -d "$NGINX_ROOT" ] && [ "$(ls -A $NGINX_ROOT 2>/dev/null)" ]; then
-
-              cp -r "$NGINX_ROOT" "$BACKUP_DIR/backup-$(date +%Y%m%d-%H%M%S)"
-
-              # FIX: Chỉ giữ 5 bản backup gần nhất, tránh đầy disk
-
-              ls -dt "$BACKUP_DIR"/backup-* 2>/dev/null | tail -n +6 | xargs rm -rf
-
-            fi
-
-
-
-            # 3. Sync vào Nginx root
-
-            mkdir -p "$NGINX_ROOT"
-
-            rsync -av --delete "$INCOMING/" "$NGINX_ROOT/"
-
-
-
-            # 4. Permissions
-
-            find "$NGINX_ROOT" -type f -exec chmod 644 {} \;
-
-            find "$NGINX_ROOT" -type d -exec chmod 755 {} \;
-
-
-
-            # 5. Reload Nginx
-
+            mkdir -p "${{ env.NGINX_ROOT }}"
+            rsync -av --delete "${{ env.INCOMING_DIR }}/" "${{ env.NGINX_ROOT }}/"
+            find "${{ env.NGINX_ROOT }}" -type f -exec chmod 644 {} \;
+            find "${{ env.NGINX_ROOT }}" -type d -exec chmod 755 {} \;
             sudo nginx -t && sudo nginx -s reload
-
-
-
-            # 6. Dọn dẹp
-
-            rm -rf "$INCOMING"
-
-            echo "✅ Deploy thành công lúc $(date)" 
-
+            rm -rf "${{ env.INCOMING_DIR }}"
+            echo "✅ Deploy thành công lúc $(date)"
