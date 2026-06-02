@@ -22,14 +22,79 @@ export const mockPatients = [
 ];
 
 export const mockProcesses = [
-  { id: 1, code: "QT-KCB-001", name: "Quy trình tiếp nhận - khám ngoại trú", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
-  { id: 2, code: "QT-KCB-002", name: "Quy trình điều trị nội trú", employeeName: "Đào văn dương", status: 1, opType: "EX", createdTime: now },
-  { id: 3, code: "QT-KCB-003", name: "Quy trình xét nghiệm & chẩn đoán", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
-  { id: 4, code: "QT-KCB-004", name: "Quy trình phẫu thuật thẩm mỹ", employeeName: "Đào văn dương", status: 0, opType: "EX", createdTime: now },
-  { id: 5, code: "QT-KCB-005", name: "Quy trình chăm sóc sau điều trị", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
-  { id: 6, code: "QT-KCB-006", name: "Quy trình phân tích hình ảnh AI", employeeName: "Đào văn dương", status: 1, opType: "EX", createdTime: now },
-  { id: 7, code: "QT-KCB-007", name: "Quy trình xuất viện & tái khám", employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
-  { id: 8, code: "QT-KCB-008", name: "Quy trình cấp cứu nhanh", employeeName: "Đào văn dương", status: 0, opType: "EX", createdTime: now },
+  { id: 1, code: "QT-KCB-001", name: "Quy trình tiếp nhận - khám ngoại trú", employeeId: 1, employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 2, code: "QT-KCB-002", name: "Quy trình điều trị nội trú", employeeId: 2, employeeName: "Đào văn dương", status: 1, opType: "EX", createdTime: now },
+  { id: 3, code: "QT-KCB-003", name: "Quy trình xét nghiệm & chẩn đoán", employeeId: 1, employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 4, code: "QT-KCB-004", name: "Quy trình phẫu thuật thẩm mỹ", employeeId: 2, employeeName: "Đào văn dương", status: 0, opType: "EX", createdTime: now },
+  { id: 5, code: "QT-KCB-005", name: "Quy trình chăm sóc sau điều trị", employeeId: 1, employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 6, code: "QT-KCB-006", name: "Quy trình phân tích hình ảnh AI", employeeId: 2, employeeName: "Đào văn dương", status: 1, opType: "EX", createdTime: now },
+  { id: 7, code: "QT-KCB-007", name: "Quy trình xuất viện & tái khám", employeeId: 1, employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+  { id: 8, code: "QT-KCB-008", name: "Quy trình cấp cứu nhanh", employeeId: 2, employeeName: "Đào văn dương", status: 0, opType: "EX", createdTime: now },
+  { id: 9, code: "QT-CSK-001", name: "Quy trình chăm sóc sau khám (Demo E2E)", employeeId: 1, employeeName: "Bùi Văn Chương", status: 1, opType: "EX", createdTime: now },
+];
+
+/** BPMN XML cho quy trình chăm sóc sau khám - 4 bước chính (Demo E2E) */
+export const e2eBpmnXml = `<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Definitions_E2E" targetNamespace="http://bpmn.io/schema/bpmn">
+  <process id="Process_E2E" isExecutable="true">
+    <startEvent id="SE_TiepNhan" name="Tiếp nhận bệnh nhân">
+      <outgoing>Flow_01</outgoing>
+    </startEvent>
+    <userTask id="UT_KhamChanDoan" name="Khám &amp; chẩn đoán">
+      <incoming>Flow_01</incoming>
+      <outgoing>Flow_02</outgoing>
+    </userTask>
+    <exclusiveGateway id="GW_KiemTra" name="Cần điều trị?">
+      <incoming>Flow_02</incoming>
+      <outgoing>Flow_03</outgoing>
+      <outgoing>Flow_04</outgoing>
+    </exclusiveGateway>
+    <userTask id="UT_DieuTri" name="Chăm sóc &amp; điều trị">
+      <incoming>Flow_03</incoming>
+      <outgoing>Flow_05</outgoing>
+    </userTask>
+    <userTask id="UT_TaiKham" name="Lên lịch tái khám">
+      <incoming>Flow_04</incoming>
+      <incoming>Flow_05</incoming>
+      <outgoing>Flow_06</outgoing>
+    </userTask>
+    <endEvent id="EE_HoanTat" name="Hoàn tất chăm sóc">
+      <incoming>Flow_06</incoming>
+    </endEvent>
+    <sequenceFlow id="Flow_01" sourceRef="SE_TiepNhan" targetRef="UT_KhamChanDoan" />
+    <sequenceFlow id="Flow_02" sourceRef="UT_KhamChanDoan" targetRef="GW_KiemTra" />
+    <sequenceFlow id="Flow_03" sourceRef="GW_KiemTra" targetRef="UT_DieuTri" name="Có" />
+    <sequenceFlow id="Flow_04" sourceRef="GW_KiemTra" targetRef="UT_TaiKham" name="Không" />
+    <sequenceFlow id="Flow_05" sourceRef="UT_DieuTri" targetRef="UT_TaiKham" />
+    <sequenceFlow id="Flow_06" sourceRef="UT_TaiKham" targetRef="EE_HoanTat" />
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_E2E">
+    <bpmndi:BPMNPlane id="BPMNPlane_E2E" bpmnElement="Process_E2E">
+      <bpmndi:BPMNShape id="SE_TiepNhan_di" bpmnElement="SE_TiepNhan"><dc:Bounds x="152" y="242" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UT_KhamChanDoan_di" bpmnElement="UT_KhamChanDoan"><dc:Bounds x="260" y="220" width="160" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GW_KiemTra_di" bpmnElement="GW_KiemTra" isMarkerVisible="true"><dc:Bounds x="495" y="235" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UT_DieuTri_di" bpmnElement="UT_DieuTri"><dc:Bounds x="620" y="120" width="160" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UT_TaiKham_di" bpmnElement="UT_TaiKham"><dc:Bounds x="860" y="220" width="160" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EE_HoanTat_di" bpmnElement="EE_HoanTat"><dc:Bounds x="1092" y="242" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_01_di" bpmnElement="Flow_01"><di:waypoint x="188" y="260" /><di:waypoint x="260" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02_di" bpmnElement="Flow_02"><di:waypoint x="420" y="260" /><di:waypoint x="495" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03_di" bpmnElement="Flow_03"><di:waypoint x="520" y="235" /><di:waypoint x="520" y="160" /><di:waypoint x="620" y="160" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04_di" bpmnElement="Flow_04"><di:waypoint x="545" y="260" /><di:waypoint x="860" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05_di" bpmnElement="Flow_05"><di:waypoint x="780" y="160" /><di:waypoint x="940" y="160" /><di:waypoint x="940" y="220" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06_di" bpmnElement="Flow_06"><di:waypoint x="1020" y="260" /><di:waypoint x="1092" y="260" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>`;
+
+/** Hồ sơ bệnh nhân gắn với quy trình E2E Demo (processId = 9) */
+export const mockE2eProcessedObjects = [
+  { id: 901, name: "Hồ sơ Nguyễn Minh Anh - Nám sâu vùng má", code: "HS-E2E-001", potId: "HS-E2E-001", customerId: 1, customerName: "Nguyễn Minh Anh", patientName: "Nguyễn Minh Anh", mainDiagnosis: "Nám sâu vùng má", priority: "high", employeeId: 1, employeeName: "Bùi Văn Chương", status: 1, processId: 9, processName: "Quy trình chăm sóc sau khám (Demo E2E)", createdTime: "2026-05-20T10:00:00Z", startTime: "2026-05-20T10:00:00Z", endTime: "", sheetId: 9 },
+  { id: 902, name: "Hồ sơ Trần Thu Hà - Mụn viêm độ II", code: "HS-E2E-002", potId: "HS-E2E-002", customerId: 2, customerName: "Trần Thu Hà", patientName: "Trần Thu Hà", mainDiagnosis: "Mụn viêm độ II", priority: "normal", employeeId: 2, employeeName: "Đào văn dương", status: 2, processId: 9, processName: "Quy trình chăm sóc sau khám (Demo E2E)", createdTime: "2026-05-18T09:00:00Z", startTime: "2026-05-18T09:00:00Z", endTime: "2026-05-25T11:00:00Z", sheetId: 9 },
+  { id: 903, name: "Hồ sơ Lê Hoàng Nam - Sẹo lõm sau mụn", code: "HS-E2E-003", potId: "HS-E2E-003", customerId: 3, customerName: "Lê Hoàng Nam", patientName: "Lê Hoàng Nam", mainDiagnosis: "Sẹo lõm sau mụn", priority: "urgent", employeeId: 1, employeeName: "Bùi Văn Chương", status: 0, processId: 9, processName: "Quy trình chăm sóc sau khám (Demo E2E)", createdTime: "2026-05-22T08:00:00Z", startTime: "2026-05-22T08:00:00Z", endTime: "", sheetId: 9 },
 ];
 
 const diagnoses = [

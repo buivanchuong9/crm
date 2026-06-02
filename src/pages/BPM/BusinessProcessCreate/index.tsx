@@ -3,6 +3,7 @@ import BpmnJS from "bpmn-js/dist/bpmn-modeler.production.min.js";
 import { useParams, useNavigate } from "react-router-dom";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "bpmn-js/dist/assets/bpmn-js.css";
+import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css"; // Icon font - bắt buộc cho palette hiển icon
 import copyPasteModule from "bpmn-js/lib/features/copy-paste";
 import keyboardModule from "diagram-js/lib/features/keyboard";
 import "./index.scss";
@@ -533,8 +534,9 @@ const BusinessProcessCreate = () => {
     const tooltip = tooltipRef.current;
     // Handle mouse over event
     bpmnModeler.current.on("element.hover", function (event) {
+      if (!tooltip) return;
       const element = event.element;
-      const name = element.id || "Unnamed";
+      const name = element.businessObject?.name || element.id || "";
 
       if (element.type === "bpmn:SequenceFlow") {
         console.log("Hover vào SequenceFlow:", element.id);
@@ -542,12 +544,18 @@ const BusinessProcessCreate = () => {
 
       // Display tooltip
       tooltip.innerHTML = name;
-      tooltip.style.display = "block";
+      tooltip.style.display = name ? "block" : "none";
 
       // Position the tooltip near the mouse pointer
       const mousePosition = event.originalEvent;
-      tooltip.style.left = `${mousePosition.clientX + 10}px`; // Adjust for better visibility
-      tooltip.style.top = `${mousePosition.clientY + 10}px`;
+      if (mousePosition) {
+        tooltip.style.left = `${mousePosition.clientX + 10}px`;
+        tooltip.style.top = `${mousePosition.clientY + 10}px`;
+      }
+    });
+
+    bpmnModeler.current.on("element.out", function () {
+      if (tooltip) tooltip.style.display = "none";
     });
 
     //Dùng lasso tool để kéo chuột bao chọn được nhiều node
@@ -617,6 +625,16 @@ const BusinessProcessCreate = () => {
         hookSelection(bpmnModeler.current);
         if (warnings.length) {
           console.warn("Warnings", warnings);
+        }
+
+        // Force mở palette kéo thả ngay khi load xong
+        try {
+          const palette = bpmnModeler.current.get("palette");
+          if (palette && !palette.isOpen()) {
+            palette.open();
+          }
+        } catch (e) {
+          // palette service may not be available in viewer mode
         }
         
         bpmnModeler.current.on("element.click", (event) => {

@@ -126,6 +126,12 @@ export default function App() {
 
           //Nếu là nhân viên thì mới lấy vai trò
           handleGetRoles(cookies.token);
+        } else {
+          // Fix lỗi trắng trang: Nếu có token nhưng API báo không hợp lệ -> xoá cookie và redirect về login
+          removeCookie("token", { path: "/" });
+          removeCookie("user", { path: "/" });
+          setIsLogin(false);
+          navigate("/login");
         }
       } else if (location.pathname !== "/login") {
         if (location.pathname !== "/link_survey") {

@@ -6,6 +6,7 @@ import "./index.scss";
 import BusinessProcessService from "services/BusinessProcessService";
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-js.css';
+import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css';
 import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
 import ModalUserTask from "pages/BPM/BusinessProcessCreate/partials/ModalUserTask";
 import ModalServiceTask from "pages/BPM/BusinessProcessCreate/partials/ModalServiceTask";

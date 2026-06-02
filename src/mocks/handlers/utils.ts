@@ -68,18 +68,19 @@ export const filterAndPaginate = <T extends Record<string, any>>(items: T[], par
   const start = (page - 1) * limit;
   const pageItems = filtered.slice(start, start + limit);
 
-  const arr: any = [...pageItems];
-  arr.items = pageItems;
-  arr.loadMoreAble = page * limit < total;
-  arr.total = total;
-  arr.totalCount = total;
-  arr.page = page;
-  arr.limit = limit;
+  const resultObj = {
+    items: pageItems,
+    loadMoreAble: page * limit < total,
+    total: total,
+    totalCount: total,
+    page: page,
+    limit: limit,
+  };
 
   return {
     code: 0,
     message: "mock",
-    result: arr,
+    result: resultObj,
     total,
     totalCount: total,
     recordsTotal: total,
@@ -92,22 +93,23 @@ export const buildListResponse = (result: any[] = [], params: Record<string, any
     return filterAndPaginate(result, params);
   }
 
-  const arr = [...result] as any;
-  arr.items = arr;
-  arr.loadMoreAble = false;
-  arr.total = arr.length;
-  arr.totalCount = arr.length;
-  arr.page = 1;
-  arr.limit = 10;
+  const resultObj = {
+    items: result,
+    loadMoreAble: false,
+    total: result.length,
+    totalCount: result.length,
+    page: 1,
+    limit: 10,
+  };
 
   return {
     code: 0,
     message: "mock",
-    result: arr,
-    total: arr.length,
-    totalCount: arr.length,
-    recordsTotal: arr.length,
-    recordsFiltered: arr.length,
+    result: resultObj,
+    total: result.length,
+    totalCount: result.length,
+    recordsTotal: result.length,
+    recordsFiltered: result.length,
   };
 };
 

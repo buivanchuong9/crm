@@ -1825,54 +1825,33 @@ export const urlsApi = {
     delete: prefixBpm + "/bpm/deleteReason",
   },
   userTask: {
-    // list: prefixAdmin + "/workOrder/list",
-    list: prefixBpm + "/workOrder/list",
-    update: prefixAdmin + "/workOrder/update",
-    detail: prefixBpm + "/workOrder/get",
-    // detail: prefixBpm + "/workOrder/get",
-    updatePause: prefixAdmin + "/workOrder/update/pause",
-    // listPause: prefixAdmin + "/workOrder/list/pause",
+    // --- BPM API /bpmapi/userTask/* (Ca bệnh chờ xử lý runtime) ---
+    list: prefixBpm + "/userTask/list",
+    update: prefixBpm + "/userTask/update",
+    detail: prefixBpm + "/userTask/get",
+    updateStatus: prefixBpm + "/userTask/updateStatus",
+    updateRating: prefixBpm + "/userTask/updateRating",
+    addWorkExchange: prefixBpm + "/userTask/addWorkExchange",
+    updateParticipant: prefixBpm + "/userTask/updateParticipant",
+    updateCustomer: prefixBpm + "/userTask/updateCustomer",
+    updatePriorityLevel: prefixBpm + "/userTask/updatePriorityLevel",
+    updatePause: prefixBpm + "/userTask/updatePause",
+    // --- endpoints chưa có trong BPM API doc (giữ nguyên để không bị lỗi) ---
     listPause: prefixBpm + "/workOrder/list/pause",
     delete: prefixAdmin + "/workOrder/delete",
-    // Lấy thông tin người liên quan
     relatedPeople: prefixAdmin + "/workOrder/get/related_people",
-    // cập nhật thông tin người tham gia trong công việc
-    updateParticipant: prefixAdmin + "/workOrder/update/participant",
-    // cập nhật thông tin khách hàng tham gia trong công việc
-    updateCustomer: prefixAdmin + "/workOrder/update/customer",
-    // cập nhật thông tin công việc liên quan
     updateOtherWorkOrder: prefixAdmin + "/workOrder/update/other_work_order",
-    // Lấy danh sách công việc liên quan
     getOtherWorkOrder: prefixAdmin + "/workOrder/get/other_work_order",
-    // Cập nhật tiến độ công việc
     updateWorkInprogress: prefixSale + "/workInprogress/update",
-    // Lấy tiến độ công việc
     getWorkInprogress: prefixSale + "/workInprogress/get",
-    // Lấy danh sách cập nhật tiến độ công việc
     getWorkInprogressList: prefixSale + "/workInprogress/list",
-    // Cập nhật trạng thái công việc
-    updateStatus: prefixAdmin + "/workOrder/update/status",
-    // Lấy danh sách người giao việc
     employeeManagers: prefixSystem + "/employee/managers",
-    // Lấy danh sách người nhận việc
     employeeAssignees: prefixSystem + "/employee/assignees",
-    // danh sách trao đổi trong công việc
     workExchange: prefixSale + "/workExchange/list",
-    // báo cáo công việc
     workReport: prefixAdmin + "/workOrder/report",
-    // xóa 1 trao đổi trong công việc
     deleteWorkExchange: prefixSale + "/workExchange/delete",
-    // thêm mới 1 trao đổi công việc
-    addWorkExchange: prefixSale + "/workExchange/update",
-    // chỉnh sửa 1 trao đổi công việc
     updateWorkExchange: prefixSale + "/workExchange/get",
-    // cập nhật đánh giá chất lượng công việc
-    updateRating: prefixAdmin + "/workOrder/update/review",
-    // cập nhật mức độ ưu tiên công việc
-    updatePriorityLevel: prefixAdmin + "/workOrder/update/priorityLevel",
-    //exportOLA
     exportOLA: prefixAdmin + "/ola/export",
-    //exportSLA
     exportSLA: prefixAdmin + "/sla/export",
   },
   bpmField: {
@@ -2279,9 +2258,10 @@ export const urlsApi = {
     //Lấy về toàn bộ biến quy trình
     listVariableDeclareGlobal: prefixBpm + "/variableDeclare/list/global",
 
-    //user task
+    //user task (BPM Designer - cấu hình node)
     updateUserTask: prefixBpm + "/bpmForm/update",
     detailUserTask: prefixBpm + "/bpmForm/get",
+    detailUserTaskNode: prefixBpm + "/userTask/detail",
     cloneUserTask: prefixBpm + "/userTask/clone",
     //clone form mapping
     cloneFormMapping: prefixBpm + "/formMapping/clone",

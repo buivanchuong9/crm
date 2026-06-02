@@ -7,6 +7,7 @@ import {
   mockBusinessRules,
   mockDecisionInputs,
   mockDecisionOutputs,
+  mockE2eProcessedObjects,
   mockFormCategories,
   mockObjectAttributes,
   mockObjectGroups,
@@ -21,6 +22,7 @@ import {
   mockWorkflowTasks,
   mockWorkOrders,
   now,
+  e2eBpmnXml,
 } from "../data/bpmClinicalMockData";
 import { buildDetailResponse, buildListResponse, buildOkResponse, getRequestInfo, parseQueryParams } from "./utils";
 
@@ -85,6 +87,8 @@ const defaultBpmnXml = `<?xml version="1.0" encoding="UTF-8"?>
 </definitions>`;
 
 const processDiagramXml: Record<number, string> = Object.fromEntries(processes.map((p) => [p.id, defaultBpmnXml]));
+// Override process 9 with the full E2E demo BPMN
+processDiagramXml[9] = e2eBpmnXml;
 const stateMappings = [
   { id: 1, stateCode: "NEW", stateName: "Mới tiếp nhận", color: "#64748B" },
   { id: 2, stateCode: "IN_PROGRESS", stateName: "Đang xử lý", color: "#2563EB" },
@@ -238,7 +242,7 @@ const resolveList = (pathname: string, params: Record<string, any>) => {
   if (pathname.includes("variabledeclare")) return mockVariableDeclares;
   if (pathname.includes("variableinstance")) return mockVariableInstances;
   if (pathname.includes("servicelevel")) return mockServiceLevels;
-  if (pathname.includes("processedobject")) return mockProcessedObjects;
+  if (pathname.includes("processedobject")) return [...mockProcessedObjects, ...mockE2eProcessedObjects];
   if (pathname.includes("workorder")) return mockWorkOrders;
   if (pathname.includes("workflowstatus")) return mockWorkflowTasks;
   if (pathname.includes("businessruleitem")) {

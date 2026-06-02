@@ -10,8 +10,10 @@
   color: white;
   padding: 5px;
   border-radius: 4px;
-  pointer-events: none; /* Prevent mouse events on the tooltip */
-  z-index: 1000; /* Ensure it appears above other elements */
+  pointer-events: none;
+  /* Prevent mouse events on the tooltip */
+  z-index: 1000;
+  /* Ensure it appears above other elements */
   font-size: 10px
 }
 
@@ -19,13 +21,35 @@
   display: none !important;
 }
 
+/* ========= PALETTE TOOLBAR - Luôn hiện icons kéo thả ========= */
+/* Force entries luôn hiển thị, kể cả khi palette chưa .open */
+.djs-palette .djs-palette-entries {
+  display: block !important;
+}
+.djs-palette:not(.open) .djs-palette-entries {
+  display: block !important;
+}
+/* Xóa overflow ẩn (nguyên nhân entries bị clip) */
+.djs-palette,
+.djs-palette:not(.open),
+.djs-palette.open {
+  overflow: visible !important;
+}
+/* Ẩn nút toggle thu/mở để palette luôn mở */
+.djs-palette .djs-palette-toggle {
+  display: none !important;
+}
+
 .zoom-buttons {
   position: absolute;
-  bottom: 110px;  /* Cách mép dưới */
-  right: 45px;   /* Cách mép phải */
+  bottom: 110px;
+  /* Cách mép dưới */
+  right: 45px;
+  /* Cách mép phải */
   display: flex;
   flex-direction: column;
-  gap: 10px;  /* Khoảng cách giữa các nút */
+  gap: 10px;
+  /* Khoảng cách giữa các nút */
 }
 
 .zoom-btn {
@@ -33,13 +57,15 @@
   height: 25px;
   border-radius: 50%;
   border: none;
-  background-color: var(--extra-color-50);  /* Màu nền xanh lá */
+  background-color: var(--extra-color-50);
+  /* Màu nền xanh lá */
   // background-color: #4CAF50;  /* Màu nền xanh lá */
   color: white;
   font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+  transition: background-color 0.3s ease;
+  /* Hiệu ứng khi hover */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,11 +73,12 @@
 
 .zoom-btn:hover {
   // background-color: #45a049; /* Đổi màu khi hover */
-  background-color: var(--primary-color); /* Đổi màu khi hover */
+  background-color: var(--primary-color);
+  /* Đổi màu khi hover */
 }
 
 // .zoom-btn:active {
-  
+
 //   background-color: var(--primary-color); /* Màu khi click */
 // }
 
@@ -71,11 +98,13 @@
   display: flex;
   cursor: pointer;
   align-items: center;
+
   svg {
     width: 2rem;
     height: 2rem;
     margin-left: 0.5rem;
   }
+
   &:hover {
     background-color: var(--extra-color-20);
   }
