@@ -35,6 +35,7 @@ import WorkOrderService from "services/WorkOrderService";
 import ModalListGrid from "./ModalListGrid/ModalListGrid";
 import { uploadDocumentFormData } from "utils/document";
 import FileService from "services/FileService";
+import ActionCell from "./partials/ActionCell/ActionCell";
 
 const colorData = [
   "#E98E4C",
@@ -147,29 +148,35 @@ export default function BusinessProcessList() {
 
   const getListBusinessProcess = async (paramsSearch: any) => {
     setIsLoading(true);
-    const response = await BusinessProcessService.list(paramsSearch, abortController.signal);
+    try {
+      const response = await BusinessProcessService.list(paramsSearch, abortController.signal);
 
-    if (response.code == 0) {
-      const result = response.result;
-      setListBusinessProcess(result.items);
+      if (response.code == 0) {
+        const result = response.result;
+        setListBusinessProcess(result.items || []);
 
-      setPagination({
-        ...pagination,
-        page: +result.page,
-        sizeLimit: params.limit ?? DataPaginationDefault.sizeLimit,
-        totalItem: +result.total,
-        totalPage: Math.ceil(+result.total / +(params.limit ?? DataPaginationDefault.sizeLimit)),
-      });
+        setPagination({
+          ...pagination,
+          page: +result.page,
+          sizeLimit: params.limit ?? DataPaginationDefault.sizeLimit,
+          totalItem: +result.total,
+          totalPage: Math.ceil(+result.total / +(params.limit ?? DataPaginationDefault.sizeLimit)),
+        });
 
-      if (+result.total === 0 && !params?.name && +result.page === 1) {
-        setIsNoItem(true);
+        if (+result.total === 0 && !params?.name && +result.page === 1) {
+          setIsNoItem(true);
+        }
+      } else if (response.code == 400) {
+        setIsPermissions(true);
+      } else {
+        showToast(response.message ?? "Có lỗi xảy ra. Vui lòng thử lại sau", "error");
       }
-    } else if (response.code == 400) {
-      setIsPermissions(true);
-    } else {
-      showToast(response.message ?? "Có lỗi xảy ra. Vui lòng thử lại sau", "error");
+    } catch (error) {
+      console.error("Lỗi khi tải danh sách quy trình:", error);
+      showToast("Không thể kết nối đến máy chủ", "error");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -295,35 +302,37 @@ export default function BusinessProcessList() {
     ],
   };
 
-  const titles = ["STT", "Tên quy trình", "Mã quy trình", "Người phụ trách", "Trạng thái"];
+  const titles = ["STT", "Tên quy trình", "Mã quy trình", "Người phụ trách", "Trạng thái", "Thao tác"];
 
   const dataFormat = ["text-center", "", "", "", "text-center", "text-center"];
 
   const dataMappingArray = (item: any, index: number) => [
     getPageOffset(params) + index + 1,
-    // <Link
-    //   key={item.id}
-    //   to={`/detail_marketing_automation/maId/${item.id}`}
-    //   onClick={() => {
-    //     //
-    //   }}
-    //   className="detail-marketing-automation"
-    // >
-    //   {item.name}
-    // </Link>,
     item.name,
     item.code,
-    // <div
-    //   key={item.id}
-    //   className={`action__view--customer`}
-    //   onClick={() => {
-    //     navigate(`/detail_marketing_automation/maId/${item.id}`);
-    //   }}
-    // >
-    //   <a>Xem thêm</a>
-    // </div>,
     item.employeeName,
     <Badge key={index} variant={item.status === 1 ? "success" : "secondary"} text={item.status === 1 ? "Đã phê duyệt" : "Chưa phê duyệt"} />,
+    // Cột Thao tác — inline với 2 nút chính + dropdown 3 chấm
+    <ActionCell
+      key={`action-${item.id}`}
+      item={item}
+      permissions={permissions}
+      listIdChecked={listIdChecked}
+      onDesign={() => {
+        navigate(`/bpm/create/${item.id}`);
+        localStorage.setItem("backUpUrlProcess", JSON.stringify(params));
+      }}
+      onSettingGrid={() => {
+        setShowSettingGrid(item);
+        setDataBusinessProcess(item);
+      }}
+      onEdit={() => {
+        setShowModalAdd(true);
+        setDataBusinessProcess(item);
+      }}
+      onClone={() => showDialogConfirmClone(item)}
+      onDelete={() => showDialogConfirmDelete(item)}
+    />,
   ];
 
   const onApprove = async (id, status) => {
@@ -367,87 +376,8 @@ export default function BusinessProcessList() {
     setContentDialog(null);
   };
 
-  const actionsTable = (item: any): IAction[] => {
-    return [
-      // {
-      //   title: "Đổi trạng thái",
-      //   icon: <Icon name="ResetPassword" className="icon-warning" />,
-      //   callback: () => {
-      //   //   setIdCampaign(item.id);
-      //   //   setIsDetailCampaignDetail(true);
-      //   },
-      // },
-      {
-        title: "Export SLA",
-        icon: <Icon name="Download" />,
-        callback: () => {
-          exportCallback(item, "excel", "sla");
-        },
-      },
-      {
-        title: "Sao chép quy trình",
-        icon: <Icon name="Copy" style={{ width: 18 }} />,
-        callback: () => {
-          showDialogConfirmClone(item);
-          // handleClone(item.id)
-        },
-      },
-
-      {
-        title: "Cài đặt quy trình",
-        icon: <Icon name="Settings" style={{ width: 18 }} />,
-        callback: () => {
-          navigate(`/bpm/create/${item.id}`);
-          localStorage.setItem("backUpUrlProcess", JSON.stringify(params));
-        },
-      },
-      {
-        title: "Cài đặt Grid",
-        icon: <Icon name="SettingGrid" style={{ width: 18 }} />,
-        callback: () => {
-          setShowSettingGrid(item);
-          setDataBusinessProcess(item);
-        },
-      },
-      {
-        title: "Debug",
-        icon: <Icon name="Debug" style={{ width: 18 }} className="icon-error" />,
-        callback: () => {
-          setShowDebug(item);
-          setDataBusinessProcess(item);
-        },
-      },
-      permissions["PROCESS_MANAGEMENT_UPDATE"] == 1 && {
-        title: listIdChecked.length > 0 ? "" : "Sửa",
-        disabled: listIdChecked.length > 0 ? true : false,
-        icon: <Icon name="PencilSimpleLine" className={listIdChecked.length > 0 ? "icon-edit-inactive" : "icon-edit-active"} />,
-        callback: () => {
-          //   setIdCampaign(item.id);
-          setShowModalAdd(true);
-          setDataBusinessProcess(item);
-        },
-      },
-
-      // ...(item.status !== 1 ? [
-      //   {
-      //     title: listIdChecked.length > 0 ? '' : "Xóa",
-      //     disabled: listIdChecked.length > 0 ? true : false,
-      //     icon: <Icon name="TrashRox" className={listIdChecked.length > 0 ? "icon-delete-inactive" : "icon-delete-active"} />,
-      //     callback: () => {
-      //       showDialogConfirmDelete(item);
-      //     },
-      //   },
-      // ] : [])
-      permissions["PROCESS_MANAGEMENT_DELETE"] == 1 && {
-        title: listIdChecked.length > 0 ? "" : "Xóa",
-        disabled: listIdChecked.length > 0 ? true : false,
-        icon: <Icon name="TrashRox" className={listIdChecked.length > 0 ? "icon-delete-inactive" : "icon-delete-active"} />,
-        callback: () => {
-          showDialogConfirmDelete(item);
-        },
-      },
-    ];
-  };
+  const actionsTable = (_item: any): IAction[] => [];
+  // ☝️ Đã chuyển action sang ActionCell render inline trong dataMappingArray
 
   const onDeleteAll = async () => {
     const arrayPromise = [];

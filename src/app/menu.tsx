@@ -8,79 +8,87 @@ import {
   sourceDomain,
 } from "./subdomains";
 
+// ============================================================
+// 🏥 DERMAHEALTH — Menu tinh gọn cho phòng khám da liễu
+// ============================================================
+// Phiên bản: 2.1 — Áp dụng chiến lược Scale-down 03/06/2026
+//
+// NHÓM ĐÃ TRẢM (không hiển thị):
+//   ❌ Timekeeping     — dùng HRM riêng
+//   ❌ DiarySurgery    — chỉ dành cho bệnh viện lớn
+//   ❌ TenderPackage   — không phù hợp phòng khám tư
+//   ❌ ReportLogin     — làm rác Database
+//   ❌ ProcessSimulation — chỉ dành cho dev/admin
+//   ❌ BusinessRule    — quá phức tạp, thay bằng BPM
+//
+// NHÓM ĐÃ GỘP (gom vào 1 route):
+//   ✅ Settings: ~15 routes → 1 SettingsLayout tại /settings/*
+//   ✅ Warranty → "Thẻ cam kết liệu trình"
+//   ✅ Ticket   → "Phiếu sự cố"
+//   ✅ CrmCampaign → "Automation Campaigns" (3-5 kịch bản cố định)
+// ============================================================
+
 export const menu: IMenuItem[] = [
   ...(!checkSubdomainTNEX
     ? [
+      // ── 1. TRANG CHỦ ──────────────────────────────────────
       {
-        title: "dashboard", // Trang chủ
+        title: "dashboard",
         path: urls.dashboard,
         icon: <Icon name="Home" />,
         code: "DASHBOARD",
       },
+
+      // ── 2. LỊCH KHÁM & NHẮC NHỞ ──────────────────────────
       ...(checkSubdomainMock
         ? [
           {
-            title: "managerWork", // Quản lý công việc
+            title: "managerWork",
             path: urls.manager_work,
             icon: <Icon name="Job" />,
             code: "WORK_PROJECT",
           },
         ]
         : []),
+
+      // ── 3. HỒ SƠ BÁC SĨ / CÁ NHÂN ───────────────────────
       {
-        title: "personal", // Cá nhân
+        title: "personal",
         path: urls.personal,
         icon: <Icon name="Person" />,
         code: "PERSONAL",
         children: [
           {
-            title: "calendar", // Lịch
+            title: "calendar",
             path: urls.calendar_common,
             icon: <Icon name="CalendarFill" />,
             code: "CALENDAR",
           },
           {
-            title: "internalMail", // Thư nội bộ
+            title: "internalMail",
             path: urls.internal_mail,
             icon: <Icon name="EmailFill" />,
             code: "MAILBOX",
           },
-          // {
-          //   title: "document", // document
-          //   path: urls.internal_mail,
-          //   icon: <Icon name="DocumentFill" />,
-          //   code: "DOCUMENT",
-          // },
+          // TRẢ LẠI 4 TÍNH NĂNG KPI VÀO MENU (Bỏ gộp KpiDashboard do UI lặp)
           {
             title: "createKPIFramework", // Tạo bộ KPI
             path: urls.kpi,
             icon: <Icon name="KpiCustomer" />,
-            code: "", //KPI_APPLY
+            code: "", 
           },
           {
             title: "createKPITask", // Tạo phiếu giao KPI
             path: urls.kpiApply,
             icon: <Icon name="KpiCustomer" />,
-            code: "", //KPI_APPLY
+            code: "", 
           },
           {
             title: "kpiManagement", // Quản lý KPI
             path: urls.kpiObject,
             icon: <Icon name="KpiCustomer" />,
-            code: "", //KPI_APPLY
+            code: "", 
           },
-          // {
-          //   title: "Chấm công",
-          //   path: urls.internal_mail,
-          //   icon: <Icon name="TimeKeeping" />,
-          //   code: "TIMEKEEPING",
-          // },
-          // {
-          //   title: "Hoa hồng",
-          //   path: urls.internal_mail,
-          //   icon: <Icon name="MoneyFill" />,
-          //   code: "EARNINGS",
-          // },
           {
             title: "settingKPI", // Cài đặt KPI
             path: urls.setting_kpi,
@@ -89,26 +97,28 @@ export const menu: IMenuItem[] = [
           },
         ],
       },
+
+      // ── 4. CA BỆNH ĐANG THEO DÕI ──────────────────────────
       {
-        title: "project", // dự án
+        title: "project",
         path: urls.project,
         icon: <Icon name="Job" />,
         code: "WORK_PROJECT",
         children: [
           {
-            title: "projectListChild", // Danh sách ca bệnh
+            title: "projectListChild",
             path: urls.project,
             icon: <Icon name="Job" />,
             code: "WORK_PROJECT",
           },
           {
-            title: "job", // Công việc
+            title: "job",
             path: urls.middle_work,
             icon: <Icon name="Job" />,
             code: "WORK_ORDER",
           },
           {
-            title: "settingProject", // Cài đặt dự án
+            title: "settingProject",
             path: urls.setting_project,
             icon: <Icon name="SettingJob" />,
             code: "",
@@ -117,19 +127,21 @@ export const menu: IMenuItem[] = [
       },
     ]
     : []),
+
+  // ── 5. QUẢN LÝ BỆNH NHÂN ──────────────────────────────────
   {
-    title: "customer", // Khách hàng
+    title: "customer",
     path: urls.customer,
     icon: <Icon name="Customer" />,
     code: "CUSTOMER",
     children: [
       {
-        title: "PatientGroups", // Phân khúc khách hàng
+        title: "PatientGroups",
         path: urls.customer_segment,
         icon: <Icon name="Profile" />,
       },
       {
-        title: "customerProfile", // Hồ sơ khách hàng
+        title: "customerProfile",
         path: urls.customer,
         icon: <Icon name="Profile" />,
         code: "CUSTOMER",
@@ -137,26 +149,10 @@ export const menu: IMenuItem[] = [
       ...(!checkSubdomainTNEX
         ? [
           {
-            title: "contactProfile", // Hồ sơ người liên hệ
+            title: "contactProfile",
             path: urls.contact,
             icon: <Icon name="Profile" />,
             code: "CUSTOMER",
-          },
-        ]
-        : []),
-      {
-        title: "settingCustomer", // Cài đặt khách hàng
-        path: urls.setting_customer,
-        icon: <Icon name="SettingCustomer" />,
-        code: "MENU_SETUP_CUSTOMER",
-      },
-      ...(!checkSubdomainTNEX
-        ? [
-          {
-            title: "settingContact", // Cài đặt người liên hệ
-            path: urls.setting_contact,
-            icon: <Icon name="SettingCustomer" />,
-            code: "",
           },
         ]
         : []),
@@ -165,237 +161,194 @@ export const menu: IMenuItem[] = [
 
   ...(!checkSubdomainTNEX
     ? [
+      // ── 6. TƯ VẤN TRỰC TUYẾN (Omnichannel Hub) ───────────
       {
-        title: "customerCare", // Chăm sóc khách hàng
+        title: "customerCare",
         path: urls.customer_care,
         icon: <Icon name="OnlineConsultation" />,
         code: "CUSTOMER_CARE",
         children: [
           {
-            title: "customerServiceHotline", // Tổng đài CSKH
+            title: "customerServiceHotline",
             path: urls.call_center,
             icon: <Icon name="CustomerSupport" />,
             code: "",
           },
           {
-            title: "customerCareEmail", // Email CSKH
+            title: "customerCareEmail",
             path: urls.email,
             icon: <Icon name="EmailFill" />,
             code: "",
           },
+
           {
-            title: "receiveWarranty", // Tiếp nhận bảo hành
+            title: "treatmentCommitment",    // Thẻ cam kết liệu trình
             path: urls.warranty,
             icon: <Icon name="ReceiveWarranty" />,
             code: "WARRANTY",
           },
           {
-            title: "receiveWarrantyProcess", // Tiếp nhận bảo hành
+            title: "treatmentCommitmentKanban",  // Theo dõi liệu trình
             path: urls.warranty_process,
             icon: <Icon name="ReceiveWarranty" />,
             code: "KANBAN_V2",
           },
+
           {
-            title: "receiveTicket", // Tiếp nhận hỗ trợ
+            title: "incidentTicket",         // Phiếu sự cố
             path: urls.ticket,
             icon: <Icon name="ReceiveTicket" />,
             code: "TICKET",
           },
           {
-            title: "receiveTicketProcess", // Tiếp nhận hỗ trợ
+            title: "incidentTicketProcess",  // Xử lý phiếu sự cố
             path: urls.ticket_process,
             icon: <Icon name="ReceiveTicket" />,
             code: "KANBAN_V2",
           },
+
           ...(sourceDomain == "dermajsc.mock.local" || sourceDomain == "localhost"
             ? [
               {
-                title: "feedbackEnhancement", // Góp ý cải tiến
+                title: "feedbackEnhancement",
                 path: urls.feedback_customer,
                 icon: <Icon name="Feedback" />,
                 code: "",
               },
             ]
             : []),
+
           {
-            title: "customerSurvey", // Khảo sát khách hàng
+            title: "customerSurvey",
             path: urls.customer_survey,
             icon: <Icon name="SpeakerNotes" />,
             code: "",
           },
+
           {
-            title: "cxmSurvey", // Chiến dịch khảo sát
-            path: urls.cxmSurvey,
+            title: "automationCampaigns",    // Tự động hóa chăm sóc
+            path: urls.crm_campaign,
             icon: <Icon name="Customer" />,
             code: "CXM_SURVEY",
           },
-          // {
-          //   title: "cxmResponse", // Danh sách câu hỏi khảo sát
-          //   path: urls.utilityReading,
-          //   icon: <Icon name="KpiCustomer" />,
-          //   code: "",
-          // },
-          {
-            title: "settingWarranty", // Cài đặt bảo hành
-            path: urls.setting_warranty,
-            icon: <Icon name="SettingWarranty" />,
-            code: "",
-          },
-          {
-            title: "settingTicket", // Cài đặt hỗ trợ
-            path: urls.setting_ticket,
-            icon: <Icon name="SettingTicket" />,
-            code: "",
-          },
         ],
       },
+
+      // ── 7. THỐNG KÊ Y TẾ & AI ─────────────────────────────
       {
-        title: "report", // Báo cáo
+        title: "report",
         path: urls.report,
         icon: <Icon name="ReportFill" />,
         code: "MENU_REPORT",
         children: [
           {
-            title: "cashbook", // Tài chính
+            title: "cashbook",
             path: urls.cashbook,
             icon: <Icon name="CashBook" />,
             code: "CASHBOOK",
           },
           {
-            title: "reportRevenue", // Doanh thu
+            title: "reportRevenue",
             path: urls.report_common,
             icon: <Icon name="Statistical" />,
             code: "",
           },
           {
-            title: "reportCustomer", // Khách hàng
+            title: "reportCustomer",
             path: urls.report_customer,
             icon: <Icon name="Customer" />,
             code: "",
           },
           {
-            title: "reportLogin", // Khách hàng
-            path: urls.report_login,
-            icon: <Icon name="Headquarters" />,
-            code: "",
-          },
-          // {
-          //   title: "Hoa hồng",
-          //   path: "",
-          //   icon: <Icon name="Rose" />,
-          //   code: "",
-          // },
-          // {
-          //   title: "Lịch sử tác động",
-          //   path: "",
-          //   icon: <Icon name="ImpactHistory" />,
-          //   code: "",
-          // },
-          {
-            title: "settingCashbook", // Cài đặt tài chính
+            title: "settingCashbook",
             path: urls.setting_cash_book,
             icon: <Icon name="SettingCashbook" />,
             code: "MENU_SETUP_CASHBOOK",
           },
           {
-            title: "settingDashboard", // cài đặt Dashboard
+            title: "settingDashboard",
             path: urls.setting_dashboard,
             icon: <Icon name="ReportFill" />,
             code: "",
           },
         ],
       },
+
+      // ── 8. QUY TRÌNH KHÁM CHỮA BỆNH (BPM) ────────────────
       {
-        title: "bpmModule", // BPM
+        title: "bpmModule",
         path: urls.manage_processes,
         icon: <Icon name="ManageWork" />,
         code: "BPM",
         children: [
           {
-            title: "manageProcesses",
-            path: urls.manage_processes, //Danh sách quy trình > Tạo mới quy trình > Cấu hình quy trình (Nằm ở đây)
+            title: "manageProcesses",       
+            path: urls.manage_processes,
             code: "BPM",
             icon: <Icon name="CashBook" />,
           },
           {
-            title: "processSimulation",
-            path: urls.process_simulation, //Mô phỏng quy trình
-            code: "PROCESS_SIMULATION",
-            icon: <Icon name="CashBook" />,
-          },
-          {
-            title: "objectManage", // Quản lý hồ sơ
+            title: "objectManage",          
             path: urls.object_manage,
             code: "OBJECT_MANAGE",
             icon: <Icon name="CashBook" />,
           },
           {
-            title: "userTaskList", // Xử lý hồ sơ
+            title: "userTaskList",          
             path: urls.user_task_list,
             code: "WORK_MANAGEMENT",
             icon: <Icon name="ManageWork" />,
           },
           {
-            title: "configBpm", // Cấu hình quy trình
+            title: "configBpm",             
             path: urls.config_bpm,
             icon: <Icon name="SettingJob" />,
             code: "",
           },
           {
-            title: "manageDefaultProcesses",
-            path: urls.manage_default_processes, //Danh sách quy trình > Tạo mới quy trình > Cấu hình quy trình (Nằm ở đây)
+            title: "manageDefaultProcesses", 
+            path: urls.manage_default_processes,
             code: "BPM",
             icon: <Icon name="CashBook" />,
           },
           {
-            title: "taskAssignment",
+            title: "taskAssignment",        
             path: urls.task_assignment,
             code: "WORK_MANAGEMENT",
             icon: <Icon name="ManageWork" />,
           },
           {
-            title: "pendingTasks",
+            title: "pendingTasks",          
             path: urls.pending_tasks,
             code: "WORK_MANAGEMENT",
             icon: <Icon name="ManageWork" />,
           },
           {
-            title: "completedTasks",
+            title: "completedTasks",        
             path: urls.completed_tasks,
             code: "WORK_MANAGEMENT",
             icon: <Icon name="ManageWork" />,
           },
           {
-            title: "taskPrioritization",
+            title: "taskPrioritization",    
             path: urls.task_prioritization,
             code: "WORK_MANAGEMENT",
             icon: <Icon name="ManageWork" />,
-          },
-          // {
-          //   title: "manageDefaultProcesses",
-          //   path: urls.manage_default_processes,
-          //   code: "BPM",
-          //   icon: <Icon name="CashBook" />,
-          // },
-          {
-            title: "business_rule", // Loại luật nghiệp vụ
-            path: urls.business_rule,
-            icon: <Icon name="SettingJob" />,
-            code: "",
           },
         ],
       },
     ]
     : []),
 
+  // ── 9. CÀI ĐẶT HỆ THỐNG ───────────────────────────────────
   {
-    title: "settings", // Cài đặt
+    title: "settings",
     path: urls.setting_common,
     icon: <Icon name="Settings" />,
     code: "",
     children: [
       {
-        title: "settingBasis", // Cài đặt cơ sở
+        title: "settingBasis",              
         path: urls.setting_basis,
         icon: <Icon name="Headquarters" />,
         code: "MENU_SETUP_BASIC",
@@ -403,120 +356,63 @@ export const menu: IMenuItem[] = [
       ...(!checkSubdomainTNEX
         ? [
           {
-            title: "settingPersonal", // Cài đặt cá nhân
+            title: "settingPersonal",       
             path: urls.setting_account,
             icon: <Icon name="ContactCustomer" />,
             code: "",
           },
-        ]
-        : []),
-      // {
-      //   title: "Cài đặt chấm công",
-      //   path: urls.setting_timekeeping,
-      //   icon: <Icon name="SettingTimekeeping" />,
-      //   code: "",
-      // },
-      ...(!checkSubdomainTNEX
-        ? [
-          // {
-          //   title: "Cài đặt hoa hồng",
-          //   path: urls.setting_rose,
-          //   icon: <Icon name="SettingRose" />,
-          //   code: "",
-          // },
-          // {
-          //   title: "Cài đặt tìm khách hàng",
-          //   path: urls.setting_market_research,
-          //   icon: <Icon name="SettingAnalytics" />,
-          //   code: "",
-          // },
           {
-            title: "settingSMS", // Cài đặt SMS
+            title: "settingSMS",
             path: urls.setting_sms,
             icon: <Icon name="SettingSMS" />,
             code: "MENU_SETUP_SMS",
           },
           {
-            title: "settingEmail", // Cài đặt Email
+            title: "settingEmail",
             path: urls.setting_email,
             icon: <Icon name="SettingEmail" />,
             code: "MENU_SETUP_EMAIL",
           },
           {
-            title: "settingZalo", //Cài đặt Zalo
+            title: "settingZalo",
             path: urls.setting_zalo,
             icon: <Icon name="Zalo" />,
             code: "",
           },
-          // {
-          //   title: "settingReport",
-          //   path: urls.setting_report,
-          //   icon: <Icon name="ReportFill" />,
-          //   code: "MENU_SETUP_REPORT",
-          // },
-          // {
-          //   title: "integratedMonitoring", // Giám sát tích hợp
-          //   path: urls.integrated_monitoring,
-          //   icon: <Icon name="ReportFill" />,
-          //   code: "",
-          // },
         ]
         : []),
-      // (checkSubdomainTNPM || checkSubdomainGREENSPA) && {
-      //   title: "settingOperate", // Cài đặt vận hành
-      //   path: urls.setting_operate,
-      //   icon: <Icon name="Settings" />,
-      //   code: "",
-      // },
+
       {
-        title: "settingSwitchboard", // Cài đặt tổng đài
+        title: "settingSwitchboard",
         path: urls.setting_call,
         icon: <Icon name="SettingSMS" />,
         code: "MENU_SETUP_CALL",
       },
 
       {
-        title: "settingApplication", // Cài đặt ứng dụng
+        title: "settingApplication",
         path: urls.install_app,
         icon: <Icon name="Download" />,
         code: "",
       },
+
       {
-        title: "settingConfiguration", // Cài đặt danh mục
+        title: "settingConfiguration",
         path: urls.setting,
         icon: <Icon name="Settings" />,
         code: "",
       },
+
       ...(!checkSubdomainTNEX
         ? [
           {
-            title: "manage_data_sharing", // Cài đặt chia sẻ dữ liệu
+            title: "manage_data_sharing",
             path: urls.manage_data_sharing,
             icon: <Icon name="FileSharing" style={{ width: 35, height: 35, marginLeft: -5 }} />,
             code: "",
           },
-          // {
-          //   title: "resourceManagement", // Quản trị tài nguyên
-          //   path: urls.resource_management,
-          //   icon: <Icon name="SettingJob" />,
-          //   code: "RESOURCE",
-          // },
         ]
         : []),
     ],
   },
-
-  // đoạn này dùng để test chức năng mới
-  // {
-  //   title: "BPM",
-  //   path: urls.bpm,
-  //   icon: <Icon name="CashBook" />,
-  //   code: "",
-  // },
-  // {
-  //   title: "Test",
-  //   path: urls.test,
-  //   icon: <Icon name="CashBook" />,
-  //   code: "",
-  // },
 ];

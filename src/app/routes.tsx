@@ -127,10 +127,11 @@ export const routes: IRouter[] = [
     path: urls.schedule,
     component: <TreatmentScheduleList />,
   },
-  {
-    path: urls.timekeeping,
-    component: <TimeKeepingList />,
-  },
+  // ❌ TRẢM: Timekeeping — dùng HRM riêng, không để trong CRM
+  // {
+  //   path: urls.timekeeping,
+  //   component: <TimeKeepingList />,
+  // },
   {
     path: urls.cashbook,
     component: <CashBookList />,
@@ -233,10 +234,11 @@ export const routes: IRouter[] = [
     path: urls.detail_ticket,
     component: <DetailTicket />,
   },
-  {
-    path: urls.diary_surgery,
-    component: <DiarySurgeryList />,
-  },
+  // ❌ TRẢM: DiarySurgery — chỉ dành cho bệnh viện lớn
+  // {
+  //   path: urls.diary_surgery,
+  //   component: <DiarySurgeryList />,
+  // },
   {
     path: urls.setting_ticket,
     component: <SettingTicketList />,
@@ -416,10 +418,11 @@ export const routes: IRouter[] = [
     path: urls.setting_process,
     component: <SettingProcess />,
   },
-  {
-    path: urls.report_login,
-    component: <ReportLogin />,
-  },
+  // ❌ TRẢM: ReportLogin — làm rác Database, không có giá trị nghiệp vụ
+  // {
+  //   path: urls.report_login,
+  //   component: <ReportLogin />,
+  // },
 
   //Cài đặt vận hành
 

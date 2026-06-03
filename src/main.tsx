@@ -8,7 +8,7 @@ import i18n from "./i18n";
 import App from "./App";
 
 const renderApp = () => {
-  const isMockEnabled = import.meta.env.VITE_USE_MOCKS === "true";
+  const isMockEnabled = true; // Bắt buộc bật Mock để demo màn hình có data ảo
   const routerBase = isMockEnabled && !window.location.pathname.startsWith("/crm") ? "/" : "/crm/";
   ReactDOM.render(
     <CookiesProvider>
@@ -23,9 +23,10 @@ const renderApp = () => {
 };
 
 const enableMocks = async () => {
-  if (import.meta.env.VITE_USE_MOCKS !== "true") {
-    return;
-  }
+  // Bỏ qua kiểm tra biến môi trường để đảm bảo luôn chạy Mock Data cho buổi Demo
+  // if (import.meta.env.VITE_USE_MOCKS !== "true") {
+  //   return;
+  // }
 
   const { worker } = await import("./mocks/browser");
   await worker.start({

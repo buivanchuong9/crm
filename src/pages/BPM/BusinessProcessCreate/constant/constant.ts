@@ -88,15 +88,15 @@ export const checkType = (type) => {
       case "bpmn:BusinessRuleTask":
         return true;
       case "bpmn:CallActivity":
-        return true;
+        return false; // 🚭 Bỏ CallActivity trong clinic mode
       case "bpmn:ComplexGateway":
         return true;
       case "bpmn:DataInputAssociation":
         return false;
       case "bpmn:DataObjectReference":
-        return true;
+        return false; // 🚭 Bỏ Data Object
       case "bpmn:DataStoreReference":
-        return true;
+        return false; // 🚭 Bỏ Data Store
       case "bpmn:EndEvent":
         return true;
       case "bpmn:ExclusiveGateway":
@@ -130,7 +130,7 @@ export const checkType = (type) => {
       case "bpmn:StartEvent":
         return true;
       case "bpmn:SubProcess":
-        return true;
+        return false; // 🚭 Bỏ SubProcess trong clinic mode
       case "bpmn:Task":
         return true;
       case "bpmn:TextAnnotation":

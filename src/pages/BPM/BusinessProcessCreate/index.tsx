@@ -16,6 +16,38 @@ import ModalExportProcess from "./partials/ModalExportProcess/ModalExportProcess
 import Dialog, { IContentDialog } from "components/dialog/dialog";
 import { checkType, eventDefinitionHandlers, EVENT_TYPE_MAP } from "./constant/constant";
 import BpmnModals from "./BpmModals/BpmModals";
+import { clinicPaletteModule } from "./constant/clinicPaletteProvider";
+
+// ────────────────────────────────────────────────────────────
+// Module chặn kéo-thả Pools / Swimlanes / DataObject / DataStore
+// ────────────────────────────────────────────────────────────
+const BLOCKED_TYPES = new Set([
+  "bpmn:Participant",
+  "bpmn:Lane",
+  "bpmn:DataObjectReference",
+  "bpmn:DataStoreReference",
+  "bpmn:DataInputAssociation",
+  "bpmn:DataOutputAssociation",
+  "bpmn:Group",
+  "bpmn:TextAnnotation",
+]);
+
+function BlockedElementsModule(eventBus: any, modeling: any) {
+  eventBus.on("commandStack.shape.create.preExecute", (event: any) => {
+    const shape = event.context?.shape;
+    if (shape && BLOCKED_TYPES.has(shape.type)) {
+      // Huỷ lệnh tạo shape, không cho phép thêm loại này
+      event.stopPropagation();
+      showToast("Loại phần tử này không được hỗ trợ trong chế độ phòng khám.", "error");
+    }
+  });
+}
+BlockedElementsModule.$inject = ["eventBus", "modeling"];
+
+const blockedElementsModule = {
+  __init__: ["blockedElementsModule"],
+  blockedElementsModule: ["type", BlockedElementsModule],
+};
 
 /**
  * Cho phép tạo mới một quy trình
@@ -362,6 +394,10 @@ const BusinessProcessCreate = () => {
       additionalModules: [
         copyPasteModule,
         keyboardModule,
+        // 🏥 Clinic Mode: ẩn palette node không cần thiết
+        clinicPaletteModule,
+        // 🚫 Chặn Pool / Swimlane / DataObject / DataStore
+        blockedElementsModule,
         {
           __init__: ["customContextPad"],
           customContextPad: ["type", CustomContextPadProvider],

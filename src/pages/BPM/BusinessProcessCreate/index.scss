@@ -77,19 +77,6 @@
   /* Đổi màu khi hover */
 }
 
-// .zoom-btn:active {
-
-//   background-color: var(--primary-color); /* Màu khi click */
-// }
-
-// .zoom-in {
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Hiệu ứng đổ bóng */
-// }
-
-// .zoom-out {
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Hiệu ứng đổ bóng */
-// }
-
 .button-import,
 .button-export {
   padding: 0.5rem 1rem 0.5rem 1rem;
@@ -108,4 +95,98 @@
   &:hover {
     background-color: var(--extra-color-20);
   }
+}
+
+// ============================================================
+// 🏥 CLINIC MODE — Ẩn các node không cần thiết khỏi Palette
+// ============================================================
+
+// Ẩn tất cả entry không nằm trong danh sách cho phép
+// bpmn-js render data-action="create.xxx" trên mỗi entry
+.djs-palette {
+  // Gateways không cần thiết
+  [data-action="create.parallel-gateway"],
+  [data-action="create.inclusive-gateway"],
+  [data-action="create.complex-gateway"] {
+    display: none !important;
+  }
+
+  // Tasks không cần thiết
+  [data-action="create.task"],
+  [data-action="create.script-task"],
+  [data-action="create.manual-task"],
+  [data-action="create.send-task"],
+  [data-action="create.receive-task"],
+  [data-action="create.business-rule-task"],
+  [data-action="create.call-activity"],
+  [data-action="create.subprocess-expanded"],
+  [data-action="create.ad-hoc-subprocess"] {
+    display: none !important;
+  }
+
+  // Data Objects / Stores
+  [data-action="create.data-object"],
+  [data-action="create.data-store"] {
+    display: none !important;
+  }
+
+  // Intermediate Events (tất cả dạng catch/throw)
+  [data-action="create.intermediate-event"],
+  [data-action="create.intermediate-catch-event"],
+  [data-action="create.intermediate-throw-event"] {
+    display: none !important;
+  }
+}
+
+// ============================================================
+// 🗺️ Tắt Mini-map (không cần cho sơ đồ ≤ 10 node)
+// ============================================================
+.djs-minimap {
+  display: none !important;
+}
+
+// ============================================================
+// 🚫 Ẩn "Create Participant" button thường xuất hiện trên canvas
+// ============================================================
+.bpmn-icon-participant,
+[data-action="replace.toggle-parallel-mi"],
+[data-action="replace.toggle-sequential-mi"],
+[data-action="replace.toggle-loop"] {
+  display: none !important;
+}
+
+// ============================================================
+// ✂️ CONTEXT PAD — Dọn dẹp menu nổi khi click vào node
+// ============================================================
+
+// 1. Nút Cờ Lê "Change Type" — lỗ hổng nguy hiểm nhất:
+//    user có thể đổi sang Receive Task, Script Task... làm mất cấu hình
+.djs-context-pad [data-action="replace"] {
+  display: none !important;
+}
+
+// 2. Nút Text Annotation [ — ghi chú lơ lửng, làm rác sơ đồ
+.djs-context-pad [data-action="append.text-annotation"] {
+  display: none !important;
+}
+
+// 3. Nút Intermediate Event (vòng tròn kép) — Boundary Event thừa thãi
+.djs-context-pad [data-action="append.intermediate-event"] {
+  display: none !important;
+}
+
+// ============================================================
+// 🧹 PALETTE — Dọn nốt các tool ít dùng
+// ============================================================
+
+// Space Tool (mũi tên 2 chiều ↔): cắt/giãn khoảng trống,
+// rất giật cục → bỏ, user kéo tay node ra cho lành
+.djs-palette [data-action="space-tool"] {
+  display: none !important;
+}
+
+// Lasso Tool (nét đứt): chọn vùng bằng khung kéo
+// → bỏ vì đã có Shift+Click để multi-select
+.djs-palette [data-action="lasso-tool"] {
+  display: none !important;
 }
