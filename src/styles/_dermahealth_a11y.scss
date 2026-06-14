@@ -1,0 +1,188 @@
+// DermaHealth v2 — Accessibility styles
+// Target: elderly & young users, minimum 16px font, high contrast, large touch targets
+
+// ─── Base font size ──────────────────────────────────────────────────────────
+body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+// Force Ant Design components to respect minimum 16px font
+.ant-typography,
+.ant-table,
+.ant-menu,
+.ant-form-item,
+.ant-input,
+.ant-select,
+.ant-btn,
+.ant-list-item,
+.ant-tag,
+.ant-statistic-title,
+.ant-card-head-title,
+.ant-tabs-tab {
+  font-size: 15px;
+}
+
+// ─── Large buttons ───────────────────────────────────────────────────────────
+.ant-btn {
+  min-height: 40px;
+  min-width: 80px;
+  font-size: 15px;
+  border-radius: 8px;
+  font-weight: 500;
+
+  &-lg {
+    min-height: 48px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  &-sm {
+    min-height: 36px;
+    font-size: 14px;
+  }
+}
+
+// ─── Large form inputs ────────────────────────────────────────────────────────
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-picker {
+  font-size: 15px;
+  min-height: 42px;
+  border-radius: 8px;
+}
+
+// ─── Table readability ────────────────────────────────────────────────────────
+.ant-table {
+  font-size: 15px;
+
+  .ant-table-thead > tr > th {
+    font-size: 15px;
+    font-weight: 600;
+    background: #fafafa;
+    padding: 14px 16px;
+  }
+
+  .ant-table-tbody > tr > td {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+
+  .ant-table-tbody > tr:hover > td {
+    background: #f0f7ff;
+  }
+}
+
+// ─── Menu sidebar ─────────────────────────────────────────────────────────────
+.ant-menu-item,
+.ant-menu-submenu-title {
+  font-size: 15px;
+  height: 46px;
+  line-height: 46px;
+  margin: 2px 0;
+}
+
+.ant-menu-inline .ant-menu-item {
+  height: 44px;
+  line-height: 44px;
+}
+
+// ─── Card headings ────────────────────────────────────────────────────────────
+.ant-card-head {
+  font-size: 16px;
+  min-height: 56px;
+
+  .ant-card-head-title {
+    font-size: 17px;
+    font-weight: 600;
+  }
+}
+
+// ─── Tags ─────────────────────────────────────────────────────────────────────
+.ant-tag {
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+// ─── High contrast focus ring ──────────────────────────────────────────────────
+:focus-visible {
+  outline: 3px solid #1890ff;
+  outline-offset: 2px;
+}
+
+// ─── Progress bars ────────────────────────────────────────────────────────────
+.ant-progress-bg {
+  border-radius: 4px;
+}
+
+// ─── Statistic values ─────────────────────────────────────────────────────────
+.ant-statistic-content-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.ant-statistic-title {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+.ant-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ant-modal-body {
+  font-size: 15px;
+}
+
+// ─── Tabs ─────────────────────────────────────────────────────────────────────
+.ant-tabs-tab {
+  font-size: 15px;
+  padding: 10px 16px;
+  font-weight: 500;
+
+  &-active .ant-tabs-tab-btn {
+    font-weight: 600;
+  }
+}
+
+// ─── List items ───────────────────────────────────────────────────────────────
+.ant-list-item {
+  font-size: 15px;
+}
+
+// ─── Steps ───────────────────────────────────────────────────────────────────
+.ant-steps-item-title {
+  font-size: 14px;
+}
+
+// ─── Alert ───────────────────────────────────────────────────────────────────
+.ant-alert-message {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.ant-alert-description {
+  font-size: 14px;
+}
+
+// ─── Timeline ─────────────────────────────────────────────────────────────────
+.ant-timeline-item-content {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+// ─── Danger row highlight ─────────────────────────────────────────────────────
+.derma-row-danger {
+  td {
+    background: #fff2f0 !important;
+  }
+  &:hover td {
+    background: #ffe0dd !important;
+  }
+}

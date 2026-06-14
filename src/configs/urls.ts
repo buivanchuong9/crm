@@ -3322,6 +3322,32 @@ export const urls = {
   //Loại luật nghiệp vụ
   business_rule: "/bpm/business_rule",
   business_rule_config: "/bpm/business_rule_config/:id",
+
+  // ─── DermaHealth: AI Studio ──────────────────────────────────────────────
+  ai_skin_assessment: "/ai/skin-assessment",
+  ai_journey_generator: "/ai/journey-generator",
+  ai_progress_analysis: "/ai/progress-analysis",
+  ai_revisit_risk: "/ai/revisit-risk",
+
+  // ─── DermaHealth: AI Assistant (v2) ──────────────────────────────────────
+  ai_followup_assistant: "/ai/followup-assistant",
+
+  // ─── DermaHealth: Treatment Monitoring ──────────────────────────────────
+  monitoring_images: "/monitoring/images",
+  health_monitoring: "/health-monitoring",
+
+  // ─── DermaHealth: Follow-up Center (v2) ─────────────────────────────────
+  followup_dashboard: "/followup/dashboard",
+  followup_reminders: "/followup/reminders",
+  followup_risk: "/followup/risk",
+  followup_lab_results: "/followup/lab-results",
+
+  // ─── DermaHealth: Patient Portal ─────────────────────────────────────────
+  portal_my_journey: "/portal/my-journey",
+  portal_daily_checkin: "/portal/daily-checkin",
+  portal_progress_photos: "/portal/progress-photos",
+  portal_medication: "/portal/medication",
+  portal_followup: "/portal/followup",
 };
 
 

@@ -1,7 +1,7 @@
 import { a as __toCommonJS, n as __esmMin, r as __exportAll, t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { n as require_object_assign, t as require_react } from "./react.js";
 import { t as require_react_dom } from "./react-dom-CtbBIW7I.js";
-import { t as require_prop_types } from "./prop-types-DBYNccqP.js";
+import { t as require_prop_types } from "./prop-types-CxBbhKIh.js";
 //#region node_modules/ag-grid-community/dist/ag-grid-community.auto.esm.js
 var ag_grid_community_auto_esm_exports = /* @__PURE__ */ __exportAll({
 	AbstractHeaderCellCtrl: () => AbstractHeaderCellCtrl,

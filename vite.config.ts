@@ -51,6 +51,7 @@ export default defineConfig(({ mode }) => {
         assets: path.resolve(__dirname, "src/assets"),
         styles: path.resolve(__dirname, "src/styles"),
         model: path.resolve(__dirname, "src/model"),
+        features: path.resolve(__dirname, "src/features"),
         exports: path.resolve(__dirname, "src/exports"),
         types: path.resolve(__dirname, "src/types"),
         webrtc: path.resolve(__dirname, "src/webrtc"),

@@ -1,6 +1,6 @@
 import { t as __commonJSMin } from "./chunk-CqwQKh_b.js";
 import { t as require_react } from "./react.js";
-import { t as require_prop_types } from "./prop-types-DBYNccqP.js";
+import { t as require_prop_types } from "./prop-types-CxBbhKIh.js";
 //#region node_modules/performance-now/lib/performance-now.js
 var require_performance_now = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 	(function() {

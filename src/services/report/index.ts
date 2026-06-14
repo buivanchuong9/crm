@@ -1,0 +1,15 @@
+// Reports & Analytics domain — barrel re-exports
+export { default as ReportService } from "../ReportService";
+export { default as ReportCustomerService } from "../ReportCustomerService";
+export { default as ReportChartService } from "../ReportChartService";
+export { default as ReportTemplateService } from "../ReportTemplateService";
+export { default as CashbookService } from "../CashbookService";
+export { default as EarningsService } from "../EarningsService";
+export { default as KpiService } from "../KpiService";
+export { default as KpiApplyService } from "../KpiApplyService";
+export { default as KpiDatasourceService } from "../KpiDatasourceService";
+export { default as KpiGoalService } from "../KpiGoalService";
+export { default as KpiObjectService } from "../KpiObjectService";
+export { default as KpiSetupService } from "../KpiSetupService";
+export { default as KpiTemplateService } from "../KpiTemplateService";
+export { default as KpiTemplateGoalService } from "../KpiTemplateGoalService";

@@ -27,6 +27,7 @@
       "assets/*": ["src/assets/*"],
       "styles/*": ["src/styles/*"],
       "model/*": ["src/model/*"],
+      "features/*": ["src/features/*"],
       "exports/*": ["src/exports/*"],
       "types/*": ["src/types/*"],
       "webrtc/*": ["src/webrtc/*"],

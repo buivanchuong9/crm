@@ -1,4 +1,4 @@
-import { C as setCSSProperty, D as getWindow, E as getDocument, S as now, _ as getSlideTransformEl, a as elementChildren, b as makeElementsArray, d as elementParents, g as getRotateFix, l as elementOffset, m as elementTransitionEnd, n as classesToTokens, o as elementIndex, r as createElement, u as elementOuterSize, v as getTranslate, w as setInnerHTML, x as nextTick, y as isObject } from "./utils-DyrD5csy.js";
+import { C as setCSSProperty, D as getWindow, E as getDocument, S as now, _ as getSlideTransformEl, a as elementChildren, b as makeElementsArray, d as elementParents, g as getRotateFix, l as elementOffset, m as elementTransitionEnd, n as classesToTokens, o as elementIndex, r as createElement, u as elementOuterSize, v as getTranslate, w as setInnerHTML, x as nextTick, y as isObject } from "./utils-CUQ9IFPM.js";
 //#region node_modules/swiper/modules/virtual.mjs
 function Virtual(_ref) {
 	let { swiper, extendParams, on, emit } = _ref;
